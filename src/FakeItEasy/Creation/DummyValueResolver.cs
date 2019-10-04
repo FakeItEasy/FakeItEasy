@@ -28,6 +28,7 @@ namespace FakeItEasy.Creation
                     new ResolveFromDummyFactoryStrategy(dummyFactory),
                     new ResolveByCreatingTaskStrategy(),
                     new ResolveByCreatingLazyStrategy(),
+                    new ResolveByCreatingTupleStrategy(),
                     new ResolveByActivatingValueTypeStrategy(),
                     new ResolveByCreatingFakeStrategy(fakeObjectCreator),
                     new ResolveByInstantiatingClassUsingDummyValuesAsConstructorArgumentsStrategy()
@@ -188,6 +189,37 @@ namespace FakeItEasy.Creation
             {
                 return () => value;
             }
+        }
+
+        private class ResolveByCreatingTupleStrategy : ResolveStrategy
+        {
+            public override CreationResult TryCreateDummyValue(Type typeOfDummy, IDummyValueResolver resolver, LoopDetectingResolutionContext resolutionContext)
+            {
+                if (IsTuple(typeOfDummy))
+                {
+                    var argTypes = typeOfDummy.GetTypeInfo().GetGenericArguments();
+                    var args = new object[argTypes.Length];
+                    for (int i = 0; i < argTypes.Length; i++)
+                    {
+                        var argType = argTypes[i];
+                        var creationResult = resolver.TryResolveDummyValue(argType, resolutionContext);
+                        args[i] = creationResult.WasSuccessful
+                            ? creationResult.Result
+                            : argType.GetDefaultValue();
+                    }
+
+                    var dummy = Activator.CreateInstance(typeOfDummy, args);
+                    return CreationResult.SuccessfullyCreated(dummy);
+                }
+
+                return CreationResult.FailedToCreateDummy(typeOfDummy, "It is not a tuple.");
+            }
+
+            private static bool IsTuple(Type type) =>
+                type.GetTypeInfo().IsGenericType
+                && !type.GetTypeInfo().IsGenericTypeDefinition
+                && (type.FullName.StartsWith("System.Tuple`", StringComparison.Ordinal) ||
+                    type.FullName.StartsWith("System.ValueTuple`", StringComparison.Ordinal));
         }
 
         private class ResolveByInstantiatingClassUsingDummyValuesAsConstructorArgumentsStrategy : ResolveStrategy

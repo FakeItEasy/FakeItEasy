@@ -242,6 +242,7 @@ namespace FakeItEasy.Specs
     No Dummy Factory produced a result.
     It is not a Task.
     It is not a Lazy.
+    It is not a tuple.
     It is not a value type.
 
   The constructors with the following signatures were not tried:
@@ -270,6 +271,7 @@ namespace FakeItEasy.Specs
     No Dummy Factory produced a result.
     It is not a Task.
     It is not a Lazy.
+    It is not a tuple.
     It is not a value type.
     It has no public constructors.
 
@@ -300,6 +302,7 @@ namespace FakeItEasy.Specs
     No Dummy Factory produced a result.
     It is not a Task.
     It is not a Lazy.
+    It is not a tuple.
     It is not a value type.
 
   Below is a list of reasons for failure per attempted constructor:
@@ -327,6 +330,7 @@ namespace FakeItEasy.Specs
     No Dummy Factory produced a result.
     It is not a Task.
     It is not a Lazy.
+    It is not a tuple.
     It is not a value type.
     It is abstract.
 
@@ -355,6 +359,7 @@ namespace FakeItEasy.Specs
     No Dummy Factory produced a result.
     It is not a Task.
     It is not a Lazy.
+    It is not a tuple.
     It is not a value type.
 
   The constructors with the following signatures were not tried:
@@ -383,6 +388,7 @@ namespace FakeItEasy.Specs
     No Dummy Factory produced a result.
     It is not a Task.
     It is not a Lazy.
+    It is not a tuple.
     It is not a value type.
     It has no public constructors.
 
@@ -425,6 +431,25 @@ namespace FakeItEasy.Specs
 
             "And it was created using the one-parameter constructor"
                 .x(() => dummy2.NumberOfConstructorParameters.Should().Be(1));
+        }
+
+        [Scenario]
+        public void TupleCreation(Tuple<Foo, string> dummy)
+        {
+            "Given a type"
+                .See<Foo>();
+
+            "And another type"
+                .See<string>();
+
+            "When I create a dummy value tuple of those types"
+                .x(() => dummy = A.Dummy<Tuple<Foo, string>>());
+
+            "Then the first item of the tuple is a dummy"
+                .x(() => dummy.Item1.Should().BeOfType<Foo>());
+
+            "And the second item of the tuple is a dummy"
+                .x(() => dummy.Item2.Should().BeOfType<string>());
         }
 
         [Scenario]
