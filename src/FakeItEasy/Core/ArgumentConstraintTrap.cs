@@ -27,8 +27,14 @@ namespace FakeItEasy.Core
             var trappedConstraints = new List<IArgumentConstraint>();
 
             saveTrappedConstraintAction.Value = trappedConstraints.Add;
-            actionThatProducesConstraint.Invoke();
-            saveTrappedConstraintAction.Value = ThrowWhenUnpreparedToTrapConstraint;
+            try
+            {
+                actionThatProducesConstraint.Invoke();
+            }
+            finally
+            {
+                saveTrappedConstraintAction.Value = ThrowWhenUnpreparedToTrapConstraint;
+            }
 
             return trappedConstraints.Count == 0 ? defaultConstraintFactory.Invoke() :
                 trappedConstraints.Count == 1 ? trappedConstraints[0] :
