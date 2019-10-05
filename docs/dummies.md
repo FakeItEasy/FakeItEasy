@@ -64,8 +64,9 @@ When FakeItEasy needs to access a Dummy of type `T`, it tries a number
 of approaches in turn, until one succeeds:
 
 1. If there's a user-supplied
-  [custom Dummy creation](custom-dummy-creation.md) mechanism for `T`,
+  [dummy factory](custom-dummy-creation.md) for `T`,
   return whatever it makes.
+1. If `T` is `String`, return an empty string.
 1. If `T` is `Task`, the returned Dummy will be an actual `Task` that
   completes immediately.
 1. If `T` is `Task<TResult>`, the returned Dummy will be an actual
@@ -76,10 +77,14 @@ of approaches in turn, until one succeeds:
   `Lazy<TValue>` whose `Value` is a Dummy of type
   `TValue`, or a default `TValue` if no Dummy can be made
   for `TValue`.
-1. If `T` is [fakeable](what-can-be-faked.md), the Dummy will be a
-  Fake `T`.
+1. If `T` is a tuple type (`Tuple<>` or `ValueTuple<>`), the Dummy will
+be a tuple whose elements are dummies, or default values when dummies
+can't be made.
+  `Activator.CreateInstance`.
 1. If `T` is a value type, the Dummy will be a `T` created via
   `Activator.CreateInstance`.
+1. If `T` is [fakeable](what-can-be-faked.md), the Dummy will be a
+  Fake `T`.
 1. If nothing above matched, then `T` is a class. Loop over all its constructors in _descending order of argument list length_.
   For each constructor, attempt to get Dummies to satisfy the argument
   list. If the Dummies can be found, use `Activator.CreateInstance` to
