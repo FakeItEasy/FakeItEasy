@@ -25,6 +25,28 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
+        public void ExceptionInArgumentConstraintExpression(IFoo fake, Exception exception)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IFoo>());
+
+            "And an argument constraint factory that throws an exception"
+                .See(ThrowingConstraintFactory);
+
+            "When a call to the fake is configured using that constraint factory"
+                .x(() => exception = Record.Exception(() => A.CallTo(() => fake.Bar(ThrowingConstraintFactory())).Returns(42)));
+
+            "Then a UserCallbackException should be thrown"
+                .x(() => exception.Should().BeAnExceptionOfType<UserCallbackException>());
+
+            "And its message should describe where the exception was thrown from"
+                .x(() => exception.Message.Should().Be("Argument constraint expression <ThrowingConstraintFactory()> threw an exception. See inner exception for details."));
+
+            "And the inner exception should be the original exception"
+                .x(() => exception.InnerException.Should().BeAnExceptionOfType<MyException>().Which.Message.Should().Be("Oops"));
+        }
+
+        [Scenario]
         public void ExceptionInArgumentMatcher(IFoo fake, Exception exception)
         {
             "Given a fake"
@@ -380,6 +402,12 @@ namespace FakeItEasy.Specs
         private static bool ThrowException()
         {
             throw new MyException("Oops");
+        }
+
+        private static int ThrowingConstraintFactory()
+        {
+            ThrowException();
+            return 42;
         }
 
         public class MyException : Exception

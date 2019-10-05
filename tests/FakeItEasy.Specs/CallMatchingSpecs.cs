@@ -820,8 +820,8 @@ namespace FakeItEasy.Specs
             "And I try to create an argument constraint outside a call configuration"
                 .x(() => exception2 = Record.Exception(() => A<int>.Ignored));
 
-            "Then the first call configuration throws a TargetInvocationException"
-                .x(() => exception1.Should().BeAnExceptionOfType<TargetInvocationException>()
+            "Then the first call configuration throws a UserCallbackException"
+                .x(() => exception1.Should().BeAnExceptionOfType<UserCallbackException>()
                     .WithInnerException<InvalidOperationException>());
 
             "And creation of the argument constraint throws an InvalidOperationException"
