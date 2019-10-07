@@ -251,7 +251,7 @@ namespace FakeItEasy.Creation
 
                             if (result.ProxyWasSuccessfullyGenerated)
                             {
-                                this.parameterTypesCache[typeOfFake] = parameterTypes;
+                                this.parameterTypesCache.TryAdd(typeOfFake, parameterTypes);
                                 return CreationResult.SuccessfullyCreated(result.GeneratedProxy);
                             }
 
