@@ -210,14 +210,7 @@ namespace FakeItEasy.Configuration
 
             var indexes = GetIndexesOfOutAndRefParameters(fakeObjectCall);
             ICollection<object> values;
-            try
-            {
-                values = this.OutAndRefParametersValueProducer(fakeObjectCall);
-            }
-            catch (Exception ex) when (!(ex is FakeConfigurationException))
-            {
-                throw new UserCallbackException(ExceptionMessages.UserCallbackThrewAnException("Out and ref parameter value producer"), ex);
-            }
+            values = this.OutAndRefParametersValueProducer(fakeObjectCall);
 
             if (values.Count != indexes.Count)
             {

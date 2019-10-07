@@ -314,7 +314,7 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
-        public void ExceptionInReturnValueProducer(IFoo fake, Exception exception)
+        public void ExceptionInReturnValueProducerIsNotWrapped(IFoo fake, Exception exception)
         {
             "Given a fake"
                 .x(() => fake = A.Fake<IFoo>());
@@ -325,18 +325,12 @@ namespace FakeItEasy.Specs
             "When the configured method is called"
                 .x(() => exception = Record.Exception(() => fake.Bar(0)));
 
-            "Then a UserCallbackException should be thrown"
-                .x(() => exception.Should().BeAnExceptionOfType<UserCallbackException>());
-
-            "And its message should describe where the exception was thrown from"
-                .x(() => exception.Message.Should().Be("Return value producer threw an exception. See inner exception for details."));
-
-            "And the inner exception should be the original exception"
-                .x(() => exception.InnerException.Should().BeAnExceptionOfType<MyException>().Which.Message.Should().Be("Oops"));
+            "Then the original exception should be thrown"
+                .x(() => exception.Should().BeAnExceptionOfType<MyException>().Which.Message.Should().Be("Oops"));
         }
 
         [Scenario]
-        public void ExceptionInOutAndRefValueProducer(IFoo fake, Exception exception, int x, string s)
+        public void ExceptionInOutAndRefValueProducerIsNotWrapped(IFoo fake, Exception exception, int x, string s)
         {
             "Given a fake"
                 .x(() => fake = A.Fake<IFoo>());
@@ -347,18 +341,12 @@ namespace FakeItEasy.Specs
             "When the configured method is called"
                 .x(() => exception = Record.Exception(() => fake.OutAndRef(ref x, out s)));
 
-            "Then a UserCallbackException should be thrown"
-                .x(() => exception.Should().BeAnExceptionOfType<UserCallbackException>());
-
-            "And its message should describe where the exception was thrown from"
-                .x(() => exception.Message.Should().Be("Out and ref parameter value producer threw an exception. See inner exception for details."));
-
-            "And the inner exception should be the original exception"
-                .x(() => exception.InnerException.Should().BeAnExceptionOfType<MyException>().Which.Message.Should().Be("Oops"));
+            "Then the original exception should be thrown"
+                .x(() => exception.Should().BeAnExceptionOfType<MyException>().Which.Message.Should().Be("Oops"));
         }
 
         [Scenario]
-        public void ExceptionInExceptionFactory(IFoo fake, Exception exception)
+        public void ExceptionInExceptionFactoryIsNotWrapped(IFoo fake, Exception exception)
         {
             "Given a fake"
                 .x(() => fake = A.Fake<IFoo>());
@@ -373,14 +361,8 @@ namespace FakeItEasy.Specs
             "When the configured method is called"
                 .x(() => exception = Record.Exception(() => fake.Bar(0)));
 
-            "Then a UserCallbackException should be thrown"
-                .x(() => exception.Should().BeAnExceptionOfType<UserCallbackException>());
-
-            "And its message should describe where the exception was thrown from"
-                .x(() => exception.Message.Should().Be("Exception factory threw an exception. See inner exception for details."));
-
-            "And the inner exception should be the original exception"
-                .x(() => exception.InnerException.Should().BeAnExceptionOfType<MyException>().Which.Message.Should().Be("Oops"));
+            "Then the original exception should be thrown"
+                .x(() => exception.Should().BeAnExceptionOfType<MyException>().Which.Message.Should().Be("Oops"));
         }
 
         [Scenario]

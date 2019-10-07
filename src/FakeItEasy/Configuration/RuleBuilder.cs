@@ -69,20 +69,7 @@ namespace FakeItEasy.Configuration
         public virtual IAfterCallConfiguredConfiguration<IVoidConfiguration> Throws(Func<IFakeObjectCall, Exception> exceptionFactory)
         {
             this.AddRuleIfNeeded();
-            this.RuleBeingBuilt.UseApplicator(call =>
-            {
-                Exception exceptionToThrow;
-                try
-                {
-                    exceptionToThrow = exceptionFactory(call);
-                }
-                catch (Exception ex) when (!(ex is FakeConfigurationException))
-                {
-                    throw new UserCallbackException(ExceptionMessages.UserCallbackThrewAnException("Exception factory"), ex);
-                }
-
-                throw exceptionToThrow;
-            });
+            this.RuleBeingBuilt.UseApplicator(call => throw exceptionFactory(call));
             return this;
         }
 
@@ -221,20 +208,7 @@ namespace FakeItEasy.Configuration
             {
                 Guard.AgainstNull(valueProducer, nameof(valueProducer));
                 this.ParentConfiguration.AddRuleIfNeeded();
-                this.ParentConfiguration.RuleBeingBuilt.UseApplicator(call =>
-                {
-                    TMember returnValue;
-                    try
-                    {
-                        returnValue = valueProducer(call);
-                    }
-                    catch (Exception ex) when (!(ex is FakeConfigurationException))
-                    {
-                        throw new UserCallbackException(ExceptionMessages.UserCallbackThrewAnException("Return value producer"), ex);
-                    }
-
-                    call.SetReturnValue(returnValue);
-                });
+                this.ParentConfiguration.RuleBeingBuilt.UseApplicator(call => call.SetReturnValue(valueProducer(call)));
                 return this;
             }
 
