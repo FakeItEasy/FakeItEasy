@@ -35,17 +35,18 @@ namespace FakeItEasy.Creation
                 return CreationResult.FailedToCreateFake(typeOfFake, "Recursive dependency detected. Already resolving " + typeOfFake + '.');
             }
 
-            var result = this.CreateFakeWithoutLoopDetection(
-                typeOfFake,
-                proxyOptions,
-                resolver,
-                resolutionContext);
-            if (result.WasSuccessful)
+            try
             {
-                resolutionContext.OnSuccessfulResolve(typeOfFake);
+                return this.CreateFakeWithoutLoopDetection(
+                    typeOfFake,
+                    proxyOptions,
+                    resolver,
+                    resolutionContext);
             }
-
-            return result;
+            finally
+            {
+                resolutionContext.EndResolve(typeOfFake);
+            }
         }
 
         public CreationResult CreateFakeWithoutLoopDetection(
@@ -251,7 +252,7 @@ namespace FakeItEasy.Creation
 
                             if (result.ProxyWasSuccessfullyGenerated)
                             {
-                                this.parameterTypesCache[typeOfFake] = parameterTypes;
+                                this.parameterTypesCache.TryAdd(typeOfFake, parameterTypes);
                                 return CreationResult.SuccessfullyCreated(result.GeneratedProxy);
                             }
 

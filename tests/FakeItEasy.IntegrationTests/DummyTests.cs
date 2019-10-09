@@ -58,6 +58,86 @@ namespace FakeItEasy.IntegrationTests
             exception.Should().BeNull("all creations should have succeeded");
         }
 
+        [Fact]
+        public void Short_constructor_is_always_used_when_simultaneously_creating_two_dummies_with_self_referential_constructors()
+        {
+            // Implemented to ensure #1639 is fixed. Essentially a very fancy version of just making two Dummies on separate threads,
+            // but with a whole lot of extra synchronization built in to ensure that different phases of the creation in the two threads
+            // line up to recreate the bug:
+            // - task1 should start resolving long constructor before task2 starts (this is mostly to help establish which task is which)
+            // - task2 should start resolving long constructor before task1 has finished the short constructor and cached it
+            // - task1 should finish resolving its Dummy before task2 tries to resolve the ClassWithLongSelfReferentialConstructor argument
+            //   for the long constructor
+            var task1 = Task.Run(() =>
+                {
+                    var dummy = A.Dummy<ClassWithLongSelfReferentialConstructor>();
+                    ClassWithLongSelfReferentialConstructor.Argument1OfLongConstructor.Task1IsFinishedResolvingItsDummy.Set();
+                    return dummy;
+                });
+
+            var task2 = Task.Run(() =>
+            {
+                ClassWithLongSelfReferentialConstructor.Argument1OfLongConstructor.Task1IsResolvingLongConstructor.Wait();
+                return A.Dummy<ClassWithLongSelfReferentialConstructor>();
+            });
+
+            Task.WaitAll(task1, task2);
+            task1.Result.NumberOfConstructorParameters.Should().Be(1);
+            task2.Result.NumberOfConstructorParameters.Should().Be(1);
+        }
+
+        public class ClassWithLongSelfReferentialConstructor
+        {
+            public readonly object NumberOfConstructorParameters;
+
+            [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "singleArgument", Justification = "This is just a dummy argument.")]
+            public ClassWithLongSelfReferentialConstructor(SingleArgument singleArgument) =>
+                this.NumberOfConstructorParameters = 1;
+
+            [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "firstArgument", Justification = "This is just a dummy argument.")]
+            [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "classWithLongSelfReferentialConstructor", Justification = "This is just a dummy argument.")]
+            public ClassWithLongSelfReferentialConstructor(
+                Argument1OfLongConstructor firstArgument,
+                ClassWithLongSelfReferentialConstructor classWithLongSelfReferentialConstructor) =>
+                this.NumberOfConstructorParameters = 2;
+
+            public sealed class Argument1OfLongConstructor
+            {
+                public static readonly ManualResetEventSlim Task1IsResolvingLongConstructor = new ManualResetEventSlim(false);
+                public static readonly ManualResetEventSlim Task2IsResolvingLongConstructor = new ManualResetEventSlim(false);
+                public static readonly ManualResetEventSlim Task1IsFinishedResolvingItsDummy = new ManualResetEventSlim(false);
+                private static bool isTask1 = true;
+
+                public Argument1OfLongConstructor()
+                {
+                    if (isTask1)
+                    {
+                        isTask1 = false;
+                        Task1IsResolvingLongConstructor.Set();
+                    }
+                    else
+                    {
+                        Task2IsResolvingLongConstructor.Set();
+                        Task1IsFinishedResolvingItsDummy.Wait();
+                    }
+                }
+            }
+
+            public sealed class SingleArgument
+            {
+                private static bool isTask1 = true;
+
+                public SingleArgument()
+                {
+                    if (isTask1)
+                    {
+                        isTask1 = false;
+                        Argument1OfLongConstructor.Task2IsResolvingLongConstructor.Wait();
+                    }
+                }
+            }
+        }
+
         public class Dummy
         {
         }

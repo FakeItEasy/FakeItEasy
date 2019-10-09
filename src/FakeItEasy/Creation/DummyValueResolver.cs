@@ -37,23 +37,30 @@ namespace FakeItEasy.Creation
 
         public CreationResult TryResolveDummyValue(Type typeOfDummy, LoopDetectingResolutionContext resolutionContext)
         {
-            if (this.strategyCache.TryGetValue(typeOfDummy, out ResolveStrategy cachedStrategy))
-            {
-                return cachedStrategy.TryCreateDummyValue(typeOfDummy, this, resolutionContext);
-            }
-
+            // Make sure we're not already resolving typeOfDummy. It may seem that we could skip this check when we have
+            // a cached resolution strategy in strategyCache, but it's necessary in case multiple threads are involved and
+            // typeOfDummy has a constructor that takes typeOfDummy as a parameter.
+            // In that situation, perhaps this thread starts trying to resolve a Dummy using the constructor that takes a
+            // typeOfDummy. Meanwhile another thread does the same thing, but gets more processing time and eventually fails to
+            // use that constructor, but then it succeeds in making a typeOfDummy using a different constructor. Then the strategy
+            // is cached. This thread sees the cached strategy, creates a typeOfDummy for the constructor parameter, and then
+            // uses it to make the "outer" typeOfDummy. Then we'd have Dummies created via two different constructors, which
+            // might have different behavior. This is essentially the problem that arose in issue 1639.
             if (!resolutionContext.TryBeginToResolve(typeOfDummy))
             {
                 return CreationResult.FailedToCreateDummy(typeOfDummy, "Recursive dependency detected. Already resolving " + typeOfDummy + '.');
             }
 
-            var creationResult = this.TryResolveDummyValueWithAllAvailableStrategies(typeOfDummy, resolutionContext);
-            if (creationResult.WasSuccessful)
+            try
             {
-                resolutionContext.OnSuccessfulResolve(typeOfDummy);
+                return this.strategyCache.TryGetValue(typeOfDummy, out ResolveStrategy cachedStrategy)
+                    ? cachedStrategy.TryCreateDummyValue(typeOfDummy, this, resolutionContext)
+                    : this.TryResolveDummyValueWithAllAvailableStrategies(typeOfDummy, resolutionContext);
             }
-
-            return creationResult;
+            finally
+            {
+                resolutionContext.EndResolve(typeOfDummy);
+            }
         }
 
         private CreationResult TryResolveDummyValueWithAllAvailableStrategies(
@@ -273,7 +280,7 @@ namespace FakeItEasy.Creation
 
                         if (resolvedConstructor.WasSuccessfullyResolved && TryCreateDummyValueUsingConstructor(constructor, resolvedConstructor, out object result))
                         {
-                            this.cachedConstructors[typeOfDummy] = constructor;
+                            this.cachedConstructors.TryAdd(typeOfDummy, constructor);
                             return CreationResult.SuccessfullyCreated(result);
                         }
 
