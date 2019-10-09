@@ -3,7 +3,7 @@
 [![NuGet version](https://img.shields.io/nuget/v/FakeItEasy.svg?style=flat)](https://www.nuget.org/packages/FakeItEasy)
 [![Build status](https://ci.appveyor.com/api/projects/status/tmxobysgprwpecsb/branch/master?svg=true)](https://ci.appveyor.com/project/FakeItEasy/fakeiteasy/branch/master)
 
-A .Net dynamic fake library for creating all types of fake objects, mocks, stubs etc.
+A .NET dynamic fake library for creating all types of fake objects, mocks, stubs etc.
 
 * Easier semantics, all fake objects are just that - fakes - the use of the fakes determines whether they're mocks or stubs.
 * Context-aware fluent interface guides the developer.
