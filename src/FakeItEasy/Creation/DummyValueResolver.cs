@@ -51,16 +51,16 @@ namespace FakeItEasy.Creation
                 return CreationResult.FailedToCreateDummy(typeOfDummy, "Recursive dependency detected. Already resolving " + typeOfDummy + '.');
             }
 
-            var creationResult = this.strategyCache.TryGetValue(typeOfDummy, out ResolveStrategy cachedStrategy)
-                ? cachedStrategy.TryCreateDummyValue(typeOfDummy, this, resolutionContext)
-                : this.TryResolveDummyValueWithAllAvailableStrategies(typeOfDummy, resolutionContext);
-
-            if (creationResult.WasSuccessful)
+            try
             {
-                resolutionContext.OnSuccessfulResolve(typeOfDummy);
+                return this.strategyCache.TryGetValue(typeOfDummy, out ResolveStrategy cachedStrategy)
+                    ? cachedStrategy.TryCreateDummyValue(typeOfDummy, this, resolutionContext)
+                    : this.TryResolveDummyValueWithAllAvailableStrategies(typeOfDummy, resolutionContext);
             }
-
-            return creationResult;
+            finally
+            {
+                resolutionContext.EndResolve(typeOfDummy);
+            }
         }
 
         private CreationResult TryResolveDummyValueWithAllAvailableStrategies(
