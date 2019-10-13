@@ -1,9 +1,11 @@
 ﻿namespace FakeItEasy.Deploy
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Runtime.CompilerServices;
+    using System.Text.RegularExpressions;
     using System.Threading.Tasks;
     using FakeItEasy.Tools;
     using Octokit;
@@ -63,7 +65,51 @@
                 await UploadPackageToNuGetAsync(file, nugetServerUrl, nugetApiKey);
             }
 
+            var issuesInCurrentRelease = GetIssuesReferencedFromReleases(new[] { release });
+            var preReleases = GetPreReleasesContributingToThisRelease(release, releases);
+            var issuesInPreReleases = GetIssuesReferencedFromReleases(preReleases);
+            var newIssueNumbers = issuesInCurrentRelease.Except(issuesInPreReleases).Select(s => Int32.Parse(s));
+
+            Console.WriteLine($"Adding 'released as part of' notes to {newIssueNumbers.Count()} issues");
+            var commentText = $"This change has been released as part of [{repoName} {releaseName}](https://github.com/{repoOwner}/{repoName}/releases/tag/{releaseName}).";
+            await Task.WhenAll(newIssueNumbers.Select(n => gitHubClient.Issue.Comment.Create(repoOwner, repoName, n, commentText)));
+
             Console.WriteLine("Finished deploying");
+        }
+
+        private static IEnumerable<Release> GetPreReleasesContributingToThisRelease(Release release, IReadOnlyList<Release> releases)
+        {
+            if (release.Prerelease)
+            {
+                return Enumerable.Empty<Release>();
+            }
+
+            string baseName = BaseName(release);
+            return releases.Where(r => r.Prerelease && BaseName(r) == baseName);
+
+            string BaseName(Release release) => release.Name.Split('-')[0];
+        }
+
+        private static ICollection<string> GetIssuesReferencedFromReleases(IEnumerable<Release> releases)
+        {
+            // Release bodies should contain references to fixed issues in the form
+            // (#1234), or (#1234, #1235, #1236) if multiple issues apply to a topic.
+            // It's hard (impossible?) to harvest values from a repeated capture group,
+            // so grab everything between the ()s and split manually.
+            var issuesReferencedFromRelease = new HashSet<string>();
+            foreach (var release in releases)
+            {
+                foreach (Match match in Regex.Matches(release.Body, @"\((?<issueNumbers>#[0-9]+((, )#[0-9]+)*)\)"))
+                {
+                    var issueNumbers = match.Groups["issueNumbers"].Value;
+                    foreach (var issueNumber in issueNumbers.Split(new[] { '#', ' ', ',' }, StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        issuesReferencedFromRelease.Add(issueNumber);
+                    }
+                }
+            }
+
+            return issuesReferencedFromRelease;
         }
 
         private static async Task UploadArtifactToGitHubReleaseAsync(GitHubClient client, Release release, string path)
