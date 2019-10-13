@@ -3,10 +3,10 @@ namespace FakeItEasy.PrepareRelease
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text.RegularExpressions;
     using System.Threading.Tasks;
     using FakeItEasy.Tools;
     using Octokit;
+    using static FakeItEasy.Tools.ReleaseHelpers;
 
     public static class Program
     {
@@ -101,28 +101,6 @@ namespace FakeItEasy.PrepareRelease
             var issues = (await gitHubClient.Issue.GetAllForRepository(RepoOwner, RepoName, issueRequest)).ToList();
             Console.WriteLine($"Fetched {issues.Count} issues in milestone '{milestone.Title}'");
             return issues;
-        }
-
-        private static ICollection<string> GetIssuesReferencedFromReleases(IEnumerable<Release> releases)
-        {
-            // Release bodies should contain references to fixed issues in the form
-            // (#1234), or (#1234, #1235, #1236) if multiple issues apply to a topic.
-            // It's hard (impossible?) to harvest values from a repeated capture group,
-            // so grab everything between the ()s and split manually.
-            var issuesReferencedFromRelease = new HashSet<string>();
-            foreach (var release in releases)
-            {
-                foreach (Match match in Regex.Matches(release.Body, @"\((?<issueNumbers>#[0-9]+((, )#[0-9]+)*)\)"))
-                {
-                    var issueNumbers = match.Groups["issueNumbers"].Value;
-                    foreach (var issueNumber in issueNumbers.Split(new[] { '#', ' ', ',' }, StringSplitOptions.RemoveEmptyEntries))
-                    {
-                        issuesReferencedFromRelease.Add(issueNumber);
-                    }
-                }
-            }
-
-            return issuesReferencedFromRelease;
         }
 
         private static Issue GetExistingReleaseIssue(IList<Issue> issues)
