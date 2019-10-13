@@ -65,10 +65,10 @@
                 await UploadPackageToNuGetAsync(file, nugetServerUrl, nugetApiKey);
             }
 
-            var issuesInCurrentRelease = GetIssuesReferencedFromReleases(new[] { release });
+            var issueNumbersInCurrentRelease = GetIssueNumbersReferencedFromReleases(new[] { release });
             var preReleases = GetPreReleasesContributingToThisRelease(release, releases);
-            var issuesInPreReleases = GetIssuesReferencedFromReleases(preReleases);
-            var newIssueNumbers = issuesInCurrentRelease.Except(issuesInPreReleases).Select(s => Int32.Parse(s));
+            var issueNumbersInPreReleases = GetIssueNumbersReferencedFromReleases(preReleases);
+            var newIssueNumbers = issueNumbersInCurrentRelease.Except(issueNumbersInPreReleases);
 
             Console.WriteLine($"Adding 'released as part of' notes to {newIssueNumbers.Count()} issues");
             var commentText = $"This change has been released as part of [{repoName} {releaseName}](https://github.com/{repoOwner}/{repoName}/releases/tag/{releaseName}).";

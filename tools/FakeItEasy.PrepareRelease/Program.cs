@@ -37,9 +37,9 @@ namespace FakeItEasy.PrepareRelease
 
             var nonReleaseIssuesInMilestone = ExcludeReleaseIssues(issuesInExistingMilestone, releasesForExistingMilestone);
 
-            var issuesReferencedFromReleases = GetIssuesReferencedFromReleases(releasesForExistingMilestone);
+            var issueNumbersReferencedFromReleases = GetIssueNumbersReferencedFromReleases(releasesForExistingMilestone);
 
-            if (!CrossReferenceIssues(nonReleaseIssuesInMilestone, issuesReferencedFromReleases))
+            if (!CrossReferenceIssues(nonReleaseIssuesInMilestone, issueNumbersReferencedFromReleases))
             {
                 return;
             }
@@ -115,11 +115,11 @@ namespace FakeItEasy.PrepareRelease
             return issues.Where(issue => releases.All(release => $"Release {release.Name}" != issue.Title)).ToList();
         }
 
-        private static bool CrossReferenceIssues(ICollection<Issue> issuesInMilestone, ICollection<string> issueNumbersReferencedFromRelease)
+        private static bool CrossReferenceIssues(ICollection<Issue> issuesInMilestone, ICollection<int> issueNumbersReferencedFromRelease)
         {
-            var issueNumbersInMilestone = issuesInMilestone.Select(i => i.Number.ToString());
+            var issueNumbersInMilestone = issuesInMilestone.Select(i => i.Number);
             var issueNumbersInReleaseButNotMilestone = issueNumbersReferencedFromRelease.Except(issueNumbersInMilestone).ToList();
-            var issuesInMilestoneButNotRelease = issuesInMilestone.Where(i => !issueNumbersReferencedFromRelease.Contains(i.Number.ToString())).ToList();
+            var issuesInMilestoneButNotRelease = issuesInMilestone.Where(i => !issueNumbersReferencedFromRelease.Contains(i.Number)).ToList();
 
             if (!issuesInMilestoneButNotRelease.Any() && !issueNumbersInReleaseButNotMilestone.Any())
             {
