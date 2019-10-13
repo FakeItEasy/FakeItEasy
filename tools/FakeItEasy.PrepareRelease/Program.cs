@@ -3,10 +3,10 @@ namespace FakeItEasy.PrepareRelease
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text.RegularExpressions;
     using System.Threading.Tasks;
     using FakeItEasy.Tools;
     using Octokit;
+    using static FakeItEasy.Tools.ReleaseHelpers;
 
     public static class Program
     {
@@ -37,9 +37,9 @@ namespace FakeItEasy.PrepareRelease
 
             var nonReleaseIssuesInMilestone = ExcludeReleaseIssues(issuesInExistingMilestone, releasesForExistingMilestone);
 
-            var issuesReferencedFromReleases = GetIssuesReferencedFromReleases(releasesForExistingMilestone);
+            var issueNumbersReferencedFromReleases = GetIssueNumbersReferencedFromReleases(releasesForExistingMilestone);
 
-            if (!CrossReferenceIssues(nonReleaseIssuesInMilestone, issuesReferencedFromReleases))
+            if (!CrossReferenceIssues(nonReleaseIssuesInMilestone, issueNumbersReferencedFromReleases))
             {
                 return;
             }
@@ -103,28 +103,6 @@ namespace FakeItEasy.PrepareRelease
             return issues;
         }
 
-        private static ICollection<string> GetIssuesReferencedFromReleases(IEnumerable<Release> releases)
-        {
-            // Release bodies should contain references to fixed issues in the form
-            // (#1234), or (#1234, #1235, #1236) if multiple issues apply to a topic.
-            // It's hard (impossible?) to harvest values from a repeated capture group,
-            // so grab everything between the ()s and split manually.
-            var issuesReferencedFromRelease = new HashSet<string>();
-            foreach (var release in releases)
-            {
-                foreach (Match match in Regex.Matches(release.Body, @"\((?<issueNumbers>#[0-9]+((, )#[0-9]+)*)\)"))
-                {
-                    var issueNumbers = match.Groups["issueNumbers"].Value;
-                    foreach (var issueNumber in issueNumbers.Split(new[] { '#', ' ', ',' }, StringSplitOptions.RemoveEmptyEntries))
-                    {
-                        issuesReferencedFromRelease.Add(issueNumber);
-                    }
-                }
-            }
-
-            return issuesReferencedFromRelease;
-        }
-
         private static Issue GetExistingReleaseIssue(IList<Issue> issues)
         {
             var issue = issues.Single(i => i.Title == $"Release {ExistingReleaseName}");
@@ -137,11 +115,11 @@ namespace FakeItEasy.PrepareRelease
             return issues.Where(issue => releases.All(release => $"Release {release.Name}" != issue.Title)).ToList();
         }
 
-        private static bool CrossReferenceIssues(ICollection<Issue> issuesInMilestone, ICollection<string> issueNumbersReferencedFromRelease)
+        private static bool CrossReferenceIssues(ICollection<Issue> issuesInMilestone, ICollection<int> issueNumbersReferencedFromRelease)
         {
-            var issueNumbersInMilestone = issuesInMilestone.Select(i => i.Number.ToString());
+            var issueNumbersInMilestone = issuesInMilestone.Select(i => i.Number);
             var issueNumbersInReleaseButNotMilestone = issueNumbersReferencedFromRelease.Except(issueNumbersInMilestone).ToList();
-            var issuesInMilestoneButNotRelease = issuesInMilestone.Where(i => !issueNumbersReferencedFromRelease.Contains(i.Number.ToString())).ToList();
+            var issuesInMilestoneButNotRelease = issuesInMilestone.Where(i => !issueNumbersReferencedFromRelease.Contains(i.Number)).ToList();
 
             if (!issuesInMilestoneButNotRelease.Any() && !issueNumbersInReleaseButNotMilestone.Any())
             {

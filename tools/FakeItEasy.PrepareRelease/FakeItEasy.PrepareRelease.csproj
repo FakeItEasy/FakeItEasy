@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <Compile Include="../GitHubTokenSource.cs" />
+    <Compile Include="../ReleaseHelpers.cs" />
   </ItemGroup>
 
 </Project>
