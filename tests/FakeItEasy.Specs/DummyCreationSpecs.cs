@@ -414,11 +414,11 @@ namespace FakeItEasy.Specs
             "And the class has a two-parameter constructor using its own type"
                 .See(() => new ClassWithLongSelfReferentialConstructor(typeof(object), default));
 
-            "When I create a dummy of the class"
-                .x(() => dummy1 = A.Dummy<ClassWithLongSelfReferentialConstructor>());
+            "When a dummy of the class is requested"
+                .x(() => dummy1 = this.CreateDummy<ClassWithLongSelfReferentialConstructor>());
 
             "And I create another dummy of the class"
-                .x(() => dummy2 = A.Dummy<ClassWithLongSelfReferentialConstructor>());
+                .x(() => dummy2 = this.CreateDummy<ClassWithLongSelfReferentialConstructor>());
 
             "Then the first dummy is not null"
                 .x(() => dummy1.Should().NotBeNull());
@@ -442,8 +442,8 @@ namespace FakeItEasy.Specs
             "And another type"
                 .See<string>();
 
-            "When I create a dummy value tuple of those types"
-                .x(() => dummy = A.Dummy<Tuple<Foo, string>>());
+            "When a dummy tuple of those types of these types is requested"
+                .x(() => dummy = this.CreateDummy<Tuple<Foo, string>>());
 
             "Then the first item of the tuple is a dummy"
                 .x(() => dummy.Item1.Should().BeOfType<Foo>());
@@ -461,8 +461,8 @@ namespace FakeItEasy.Specs
             "And another type"
                 .See<string>();
 
-            "When I create a dummy value tuple of those types"
-                .x(() => dummy = A.Dummy<(Foo, string)>());
+            "When a dummy value tuple of those types is requested"
+                .x(() => dummy = this.CreateDummy<(Foo, string)>());
 
             "Then the first item of the tuple is a dummy"
                 .x(() => dummy.foo.Should().BeOfType<Foo>());
