@@ -180,6 +180,7 @@ namespace FakeItEasy
         public static T GetArgument<T>(this FakeItEasy.Core.IFakeObjectCall call, string argumentName) { }
     }
     public abstract class FakeOptionsBuilder<TFake> : FakeItEasy.IFakeOptionsBuilder
+        where TFake :  class
     {
         protected FakeOptionsBuilder() { }
         public virtual FakeItEasy.Priority Priority { get; }
@@ -187,9 +188,11 @@ namespace FakeItEasy
     }
     public class static FakeOptionsExtensions
     {
-        public static FakeItEasy.Creation.IFakeOptions<T> CallsBaseMethods<T>(this FakeItEasy.Creation.IFakeOptions<T> options) { }
+        public static FakeItEasy.Creation.IFakeOptions<T> CallsBaseMethods<T>(this FakeItEasy.Creation.IFakeOptions<T> options)
+            where T :  class { }
         public static FakeItEasy.Creation.IFakeOptions CallsBaseMethods(this FakeItEasy.Creation.IFakeOptions options) { }
-        public static FakeItEasy.Creation.IFakeOptions<T> Strict<T>(this FakeItEasy.Creation.IFakeOptions<T> options) { }
+        public static FakeItEasy.Creation.IFakeOptions<T> Strict<T>(this FakeItEasy.Creation.IFakeOptions<T> options)
+            where T :  class { }
         public static FakeItEasy.Creation.IFakeOptions Strict(this FakeItEasy.Creation.IFakeOptions options) { }
     }
     public class Fake<T> : FakeItEasy.IHideObjectMembers
@@ -555,6 +558,7 @@ namespace FakeItEasy.Creation
         FakeItEasy.Creation.IFakeOptions Wrapping(object wrappedInstance);
     }
     public interface IFakeOptions<T> : FakeItEasy.IHideObjectMembers
+        where T :  class
     {
         FakeItEasy.Creation.IFakeOptions<T> ConfigureFake(System.Action<T> action);
         FakeItEasy.Creation.IFakeOptions<T> Implements(System.Type interfaceType);

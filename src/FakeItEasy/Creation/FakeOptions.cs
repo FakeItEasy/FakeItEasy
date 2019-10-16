@@ -6,7 +6,7 @@ namespace FakeItEasy.Creation
     using System.Linq.Expressions;
     using FakeItEasy.Core;
 
-    internal class FakeOptions<T> : IFakeOptions<T>, IFakeOptions
+    internal class FakeOptions<T> : IFakeOptions<T>, IFakeOptions where T : class
     {
         private readonly ProxyOptions proxyOptions;
 
