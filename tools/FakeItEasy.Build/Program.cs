@@ -22,6 +22,7 @@
             "src/FakeItEasy/bin/Release/net45/FakeItEasy.pdb",
             "src/FakeItEasy/bin/Release/netstandard1.6/FakeItEasy.pdb",
             "src/FakeItEasy/bin/Release/netstandard2.0/FakeItEasy.pdb",
+            "src/FakeItEasy/bin/Release/netstandard2.1/FakeItEasy.pdb",
             "src/FakeItEasy.Analyzer.CSharp/bin/Release/FakeItEasy.Analyzer.Csharp.pdb",
             "src/FakeItEasy.Analyzer.VisualBasic/bin/Release/FakeItEasy.Analyzer.VisualBasic.pdb"
         };

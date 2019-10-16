@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Tests.Approval
+namespace FakeItEasy.Tests.Approval
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
@@ -42,6 +42,14 @@
         public void ApproveApiNetStd20()
         {
             ApproveApi("netstandard2.0");
+        }
+
+        [Fact]
+        [UseReporter(typeof(DiffReporter))]
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        public void ApproveApiNetStd21()
+        {
+            ApproveApi("netstandard2.1");
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]

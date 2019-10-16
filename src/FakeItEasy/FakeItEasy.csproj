@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net40;net45;netstandard1.6;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>net40;net45;netstandard1.6;netstandard2.0;netstandard2.1</TargetFrameworks>
     <AssemblyName>FakeItEasy</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <SignAssembly>true</SignAssembly>
@@ -32,9 +32,19 @@
   <!-- Release -->
 
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
-    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\FakeItEasy.xml</DocumentationFile>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <DebugType>pdbonly</DebugType>
   </PropertyGroup>
+
+  <!-- .NET Standard 2.1 -->
+
+  <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
+    <DefineConstants>$(DefineConstants);FEATURE_REFLECTION_GETASSEMBLIES;FEATURE_EXCEPTION_DISPATCH_INFO;FEATURE_ARRAY_EMPTY;FEATURE_PARAMETERINFO_CUSTOMATTRIBUTES_PROPERTY</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
+    <PackageReference Include="Castle.Core" Version="$(CastleCoreVersion)" />
+  </ItemGroup>
 
   <!-- .NET Standard 2.0 -->
 
