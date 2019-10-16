@@ -6,6 +6,7 @@ namespace FakeItEasy.Specs
     using System.IO;
     using System.Linq;
     using System.Threading;
+    using System.Threading.Tasks;
     using FakeItEasy.Core;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
@@ -471,6 +472,98 @@ namespace FakeItEasy.Specs
                 .x(() => dummy.s.Should().BeOfType<string>());
         }
 
+        [Scenario]
+        public void LazyCreation(Lazy<string> dummy)
+        {
+            "Given a type"
+                .See<string>();
+
+            "When a dummy lazy of that type is requested"
+                .x(() => dummy = this.CreateDummy<Lazy<string>>());
+
+            "Then it returns a lazy"
+                .x(() => dummy.Should().BeOfType<Lazy<string>>());
+
+            "And the lazy's value isn't created yet"
+                .x(() => dummy.IsValueCreated.Should().BeFalse());
+
+            "And the lazy's value returns a dummy of its type"
+                .x(() => dummy.Value.Should().BeOfType<string>());
+        }
+
+        [Scenario]
+        public void LazyCreationNonDummyable(Lazy<NonDummyable> dummy)
+        {
+            "Given a non-dummyable type"
+                .See<NonDummyable>();
+
+            "When a dummy lazy of that type is requested"
+                .x(() => dummy = this.CreateDummy<Lazy<NonDummyable>>());
+
+            "Then it returns a lazy"
+                .x(() => dummy.Should().BeOfType<Lazy<NonDummyable>>());
+
+            "And the lazy's value isn't created yet"
+                .x(() => dummy.IsValueCreated.Should().BeFalse());
+
+            "And the lazy's value returns null"
+                .x(() => dummy.Value.Should().BeNull());
+        }
+
+        [Scenario]
+        public void TaskCreation(Task dummy)
+        {
+            "Given the Task type"
+                .See<Task>();
+
+            "When a dummy task is requested"
+                .x(() => dummy = this.CreateDummy<Task>());
+
+            "Then it returns a task"
+                .x(() => dummy.Should().BeAssignableTo<Task>());
+
+            "And the task is completed successfully"
+                .x(() => dummy.Status.Should().Be(TaskStatus.RanToCompletion));
+        }
+
+        [Scenario]
+        public void TaskOfTCreation(Task<string> dummy)
+        {
+            "Given a type"
+                .See<string>();
+
+            "When a dummy task of that type is requested"
+                .x(() => dummy = this.CreateDummy<Task<string>>());
+
+            "Then it returns a task"
+                .x(() => dummy.Should().BeOfType<Task<string>>());
+
+            "And the task is completed successfully"
+                .x(() => dummy.Status.Should().Be(TaskStatus.RanToCompletion));
+
+            "And the task's result is a dummy of the value type"
+                .x(() => dummy.Result.Should().BeOfType<string>());
+        }
+
+        [Scenario]
+        public void TaskOfTCreationNonDummyable(Task<NonDummyable> dummy)
+        {
+            "Given a non-dummyable type"
+                .See<NonDummyable>();
+
+            "When a dummy task of that type is requested"
+                .x(() => dummy = this.CreateDummy<Task<NonDummyable>>());
+
+            "Then it returns a task"
+                .x(() => dummy.Should().BeOfType<Task<NonDummyable>>());
+
+            "And the task is completed successfully"
+                .x(() => dummy.Status.Should().Be(TaskStatus.RanToCompletion));
+
+            "And the task's result is null"
+                .x(() => dummy.Result.Should().BeNull());
+        }
+
         public class ClassWithNoPublicConstructors
         {
             private ClassWithNoPublicConstructors()
@@ -528,6 +621,14 @@ namespace FakeItEasy.Specs
             protected override Foo Create()
             {
                 return new Foo { Bar = 42 };
+            }
+        }
+
+        public class NonDummyable
+        {
+            // Internal constructor prevents creation of a dummy
+            internal NonDummyable()
+            {
             }
         }
 
