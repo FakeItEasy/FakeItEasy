@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Build
+namespace FakeItEasy.Build
 {
     using System.Collections.Generic;
     using System.IO;
@@ -12,6 +12,7 @@
         private static readonly Project[] ProjectsToPack =
         {
             "src/FakeItEasy/FakeItEasy.csproj",
+            "src/FakeItEasy.Extensions.ValueTask/FakeItEasy.Extensions.ValueTask.csproj",
             "src/FakeItEasy.Analyzer.CSharp/FakeItEasy.Analyzer.CSharp.csproj",
             "src/FakeItEasy.Analyzer.VisualBasic/FakeItEasy.Analyzer.VisualBasic.csproj"
         };
@@ -23,6 +24,9 @@
             "src/FakeItEasy/bin/Release/netstandard1.6/FakeItEasy.pdb",
             "src/FakeItEasy/bin/Release/netstandard2.0/FakeItEasy.pdb",
             "src/FakeItEasy/bin/Release/netstandard2.1/FakeItEasy.pdb",
+            "src/FakeItEasy.Extensions.ValueTask/bin/Release/net45/FakeItEasy.Extensions.ValueTask.pdb",
+            "src/FakeItEasy.Extensions.ValueTask/bin/Release/netstandard1.6/FakeItEasy.Extensions.ValueTask.pdb",
+            "src/FakeItEasy.Extensions.ValueTask/bin/Release/netstandard2.0/FakeItEasy.Extensions.ValueTask.pdb",
             "src/FakeItEasy.Analyzer.CSharp/bin/Release/FakeItEasy.Analyzer.Csharp.pdb",
             "src/FakeItEasy.Analyzer.VisualBasic/bin/Release/FakeItEasy.Analyzer.VisualBasic.pdb"
         };

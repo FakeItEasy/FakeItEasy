@@ -168,4 +168,8 @@
     </Compile>
   </ItemGroup>
 
+  <ItemGroup Condition="'$(TargetFramework)' == 'net40' OR '$(TargetFramework)' == 'net45' OR '$(TargetFramework)' == 'netstandard1.6' OR '$(TargetFramework)' == 'netstandard2.0'">
+    <Compile Remove="ValueTaskReturnValueConfigurationExtensions.cs" />
+  </ItemGroup>
+
 </Project>

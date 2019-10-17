@@ -1,0 +1,59 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net45;netstandard1.6;netstandard2.0;netstandard2.1</TargetFrameworks>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Package properties">
+    <Title>FakeItEasy.Extensions.ValueTask</Title>
+    <Authors>Thomas Levesque, FakeItEasy contributors</Authors>
+    <Description>Provides extension methods for configuring methods that return ValueTask or ValueTask&lt;T&gt;.</Description>
+    <PackageTags>FakeItEasy;ValueTask</PackageTags>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <DebugType>full</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <DebugType>pdbonly</DebugType>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net45' OR '$(TargetFramework)' == 'netstandard1.6' OR '$(TargetFramework)' == 'netstandard2.0'">
+    <Compile Include="../FakeItEasy/ValueTaskReturnValueConfigurationExtensions.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FakeItEasy\FakeItEasy.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net45' OR '$(TargetFramework)' == 'netstandard1.6' OR '$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.3" />
+  </ItemGroup>
+
+  <!-- Include PDB in package -->
+  <ItemGroup>
+    <None Include="$(OutputPath)/net45/$(AssemblyName).pdb" Pack="true" PackagePath="lib/net45" Visible="false" />
+    <None Include="$(OutputPath)/netstandard1.6/$(AssemblyName).pdb" Pack="true" PackagePath="lib/netstandard1.6" Visible="false" />
+    <None Include="$(OutputPath)/netstandard2.0/$(AssemblyName).pdb" Pack="true" PackagePath="lib/netstandard2.0" Visible="false" />
+  </ItemGroup>
+
+  <!-- Exclude files from netstandard2.1 folder in package -->
+  <Target Name="RemoveNetStd21Files" AfterTargets="_WalkEachTargetPerFramework">
+    <ItemGroup>
+      <_BuildOutputInPackage Remove="$(MSBuildThisFileDirectory)$(IntermediateOutputPath)netstandard2.1/$(AssemblyName).*" Pack="false" />
+    </ItemGroup>
+  </Target>
+
+  <!-- Include a placeholder file in netstandard2.1 folder in package -->
+
+  <Target Name="AddNetStd21Placeholder" BeforeTargets="_WalkEachTargetPerFramework">
+    <WriteLinesToFile File="$(IntermediateOutputPath)_._" Overwrite="true" Lines="" />
+    <ItemGroup>
+      <None Include="$(IntermediateOutputPath)_._" Pack="true" PackagePath="lib/netstandard2.1" Visible="false" />
+    </ItemGroup>
+  </Target>
+
+</Project>
