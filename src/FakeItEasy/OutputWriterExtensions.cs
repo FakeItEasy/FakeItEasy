@@ -57,9 +57,8 @@ namespace FakeItEasy
         /// </summary>
         /// <param name="writer">The writer to write to.</param>
         /// <param name="values">The values to write to the writer.</param>
-        /// <param name="skipFormatting">Specify that argument values should not be formatted.</param>
         /// <returns>The writer.</returns>
-        internal static IOutputWriter WriteArgumentValues(this IOutputWriter writer, IEnumerable values, bool skipFormatting = false)
+        internal static IOutputWriter WriteArgumentValues(this IOutputWriter writer, IEnumerable values)
         {
             Guard.AgainstNull(writer, nameof(writer));
             Guard.AgainstNull(values, nameof(values));
@@ -67,14 +66,14 @@ namespace FakeItEasy
             var list = values.AsList();
             if (list.Count <= 5)
             {
-                writer.WriteArgumentValuesImpl(list, skipFormatting);
+                writer.WriteArgumentValuesImpl(list);
             }
             else
             {
-                writer.WriteArgumentValuesImpl(list.Take(2), skipFormatting);
+                writer.WriteArgumentValuesImpl(list.Take(2));
                 int remainingCount = list.Count - 4;
                 writer.Write($", … ({remainingCount} more elements) …, ");
-                writer.WriteArgumentValuesImpl(list.Skip(list.Count - 2), skipFormatting);
+                writer.WriteArgumentValuesImpl(list.Skip(list.Count - 2));
             }
 
             return writer;
@@ -85,9 +84,8 @@ namespace FakeItEasy
         /// </summary>
         /// <param name="writer">The writer to write to.</param>
         /// <param name="values">The values to write to the writer.</param>
-        /// <param name="skipFormatting">Specify that argument values should not be formatted.</param>
         /// <returns>The writer.</returns>
-        private static IOutputWriter WriteArgumentValuesImpl(this IOutputWriter writer, IEnumerable values, bool skipFormatting = false)
+        private static IOutputWriter WriteArgumentValuesImpl(this IOutputWriter writer, IEnumerable values)
         {
             bool first = true;
             foreach (var value in values)
@@ -97,14 +95,7 @@ namespace FakeItEasy
                     writer.Write(", ");
                 }
 
-                if (skipFormatting)
-                {
-                    writer.Write(value);
-                }
-                else
-                {
-                    writer.WriteArgumentValue(value);
-                }
+                writer.WriteArgumentValue(value);
 
                 first = false;
             }
