@@ -50,7 +50,7 @@ namespace FakeItEasy
         /// </summary>
         /// <typeparam name="TReturnType">The type of the result produced by the <see cref="Task{T}"/>.</typeparam>
         /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
-/// <param name="configuration">The configuration to extend.</param>
+        /// <param name="configuration">The configuration to extend.</param>
         /// <param name="valueProducer">A function that produces the <see cref="Task{T}.Result"/> of the <see cref="Task{T}"/>.</param>
         /// <returns>The configuration object.</returns>
         /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="valueProducer"/> do not match.</exception>
@@ -103,7 +103,7 @@ namespace FakeItEasy
         /// <typeparam name="TReturnType">The type of the result produced by the <see cref="Task{T}"/>.</typeparam>
         /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
         /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
-/// <param name="configuration">The configuration to extend.</param>
+        /// <param name="configuration">The configuration to extend.</param>
         /// <param name="valueProducer">A function that produces the <see cref="Task{T}.Result"/> of the <see cref="Task{T}"/>.</param>
         /// <returns>The configuration object.</returns>
         /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="valueProducer"/> do not match.</exception>
@@ -158,7 +158,7 @@ namespace FakeItEasy
         /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
         /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
         /// <typeparam name="T3">The type of the third argument of the faked method call.</typeparam>
-/// <param name="configuration">The configuration to extend.</param>
+        /// <param name="configuration">The configuration to extend.</param>
         /// <param name="valueProducer">A function that produces the <see cref="Task{T}.Result"/> of the <see cref="Task{T}"/>.</param>
         /// <returns>The configuration object.</returns>
         /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="valueProducer"/> do not match.</exception>
@@ -215,7 +215,7 @@ namespace FakeItEasy
         /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
         /// <typeparam name="T3">The type of the third argument of the faked method call.</typeparam>
         /// <typeparam name="T4">The type of the fourth argument of the faked method call.</typeparam>
-/// <param name="configuration">The configuration to extend.</param>
+        /// <param name="configuration">The configuration to extend.</param>
         /// <param name="valueProducer">A function that produces the <see cref="Task{T}.Result"/> of the <see cref="Task{T}"/>.</param>
         /// <returns>The configuration object.</returns>
         /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="valueProducer"/> do not match.</exception>
@@ -274,7 +274,7 @@ namespace FakeItEasy
         /// <typeparam name="T3">The type of the third argument of the faked method call.</typeparam>
         /// <typeparam name="T4">The type of the fourth argument of the faked method call.</typeparam>
         /// <typeparam name="T5">The type of the fifth argument of the faked method call.</typeparam>
-/// <param name="configuration">The configuration to extend.</param>
+        /// <param name="configuration">The configuration to extend.</param>
         /// <param name="valueProducer">A function that produces the <see cref="Task{T}.Result"/> of the <see cref="Task{T}"/>.</param>
         /// <returns>The configuration object.</returns>
         /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="valueProducer"/> do not match.</exception>
@@ -335,7 +335,7 @@ namespace FakeItEasy
         /// <typeparam name="T4">The type of the fourth argument of the faked method call.</typeparam>
         /// <typeparam name="T5">The type of the fifth argument of the faked method call.</typeparam>
         /// <typeparam name="T6">The type of the sixth argument of the faked method call.</typeparam>
-/// <param name="configuration">The configuration to extend.</param>
+        /// <param name="configuration">The configuration to extend.</param>
         /// <param name="valueProducer">A function that produces the <see cref="Task{T}.Result"/> of the <see cref="Task{T}"/>.</param>
         /// <returns>The configuration object.</returns>
         /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="valueProducer"/> do not match.</exception>
@@ -398,7 +398,7 @@ namespace FakeItEasy
         /// <typeparam name="T5">The type of the fifth argument of the faked method call.</typeparam>
         /// <typeparam name="T6">The type of the sixth argument of the faked method call.</typeparam>
         /// <typeparam name="T7">The type of the seventh argument of the faked method call.</typeparam>
-/// <param name="configuration">The configuration to extend.</param>
+        /// <param name="configuration">The configuration to extend.</param>
         /// <param name="valueProducer">A function that produces the <see cref="Task{T}.Result"/> of the <see cref="Task{T}"/>.</param>
         /// <returns>The configuration object.</returns>
         /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="valueProducer"/> do not match.</exception>
@@ -463,7 +463,7 @@ namespace FakeItEasy
         /// <typeparam name="T6">The type of the sixth argument of the faked method call.</typeparam>
         /// <typeparam name="T7">The type of the seventh argument of the faked method call.</typeparam>
         /// <typeparam name="T8">The type of the eighth argument of the faked method call.</typeparam>
-/// <param name="configuration">The configuration to extend.</param>
+        /// <param name="configuration">The configuration to extend.</param>
         /// <param name="valueProducer">A function that produces the <see cref="Task{T}.Result"/> of the <see cref="Task{T}"/>.</param>
         /// <returns>The configuration object.</returns>
         /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="valueProducer"/> do not match.</exception>
