@@ -35,6 +35,8 @@ namespace FakeItEasy.Analyzer
                 throw new ArgumentNullException(nameof(context));
             }
 
+            context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.Analyze | GeneratedCodeAnalysisFlags.ReportDiagnostics);
+            context.EnableConcurrentExecution();
             context.RegisterSyntaxNodeAction(AnalyzeCall, SyntaxKind.InvocationExpression);
         }
 
