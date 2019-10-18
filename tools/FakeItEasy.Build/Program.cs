@@ -80,7 +80,7 @@ namespace FakeItEasy.Build
             Target(
                 "pdbgit",
                 DependsOn("build"),
-                forEach: Pdbs,
+                forEach: Pdbs.Where(pdb => File.Exists(pdb.Path)),
                 action: pdb => Run(ToolPaths.PdbGit, $"-u https://github.com/FakeItEasy/FakeItEasy -s {pdb.Path}"));
 
             RunTargetsAndExit(args, messageOnly: ex => ex is NonZeroExitCodeException);
