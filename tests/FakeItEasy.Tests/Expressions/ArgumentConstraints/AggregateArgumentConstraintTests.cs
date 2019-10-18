@@ -2,6 +2,7 @@ namespace FakeItEasy.Tests.Expressions.ArgumentConstraints
 {
     using System.Collections.Generic;
     using FakeItEasy.Expressions.ArgumentConstraints;
+    using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using Xunit;
 

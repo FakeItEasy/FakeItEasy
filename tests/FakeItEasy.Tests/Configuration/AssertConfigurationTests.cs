@@ -4,6 +4,7 @@ namespace FakeItEasy.Tests.Configuration
     using System.Linq.Expressions;
     using FakeItEasy.Configuration;
     using FakeItEasy.Tests;
+    using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using Xunit;
 

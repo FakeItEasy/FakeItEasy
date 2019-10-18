@@ -8,7 +8,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.Compilers" Version="2.1.0" />
     <ProjectReference Include="..\..\src\FakeItEasy\FakeItEasy.csproj" />
-    <ProjectReference Include="..\..\tests\FakeItEasy.Tests\FakeItEasy.Tests.csproj" />
+    <ProjectReference Include="..\FakeItEasy.Tests.TestHelpers\FakeItEasy.Tests.TestHelpers.csproj" />
   </ItemGroup>
 
 </Project>

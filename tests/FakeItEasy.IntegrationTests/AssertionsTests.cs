@@ -1,7 +1,6 @@
 namespace FakeItEasy.IntegrationTests
 {
     using System;
-    using FakeItEasy.Tests;
     using Xunit;
 
     public class AssertionsTests

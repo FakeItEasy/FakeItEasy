@@ -6,6 +6,7 @@ namespace FakeItEasy.Tests.Creation
     using System.Threading.Tasks;
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
+    using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using Xunit;
 

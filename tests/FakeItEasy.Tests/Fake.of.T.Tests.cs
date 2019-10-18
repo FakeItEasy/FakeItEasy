@@ -4,8 +4,8 @@ namespace FakeItEasy.Tests
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
-    using FakeItEasy.Configuration;
     using FakeItEasy.Creation;
+    using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using Xunit;
 

@@ -7,7 +7,6 @@ namespace FakeItEasy.Specs
     using System.Linq;
     using System.Reflection;
     using FakeItEasy.Creation;
-    using FakeItEasy.Tests;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using Xbehave;

@@ -9,6 +9,7 @@
     using FakeItEasy.Core;
     using FakeItEasy.Creation.CastleDynamicProxy;
     using FakeItEasy.Expressions;
+    using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using Xunit;
 

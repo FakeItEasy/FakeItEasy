@@ -2,7 +2,7 @@ namespace FakeItEasy.Analyzer.CSharp.Tests
 {
     using System.Collections.Generic;
     using FakeItEasy.Analyzer.Tests.Helpers;
-    using FakeItEasy.Tests;
+    using FakeItEasy.Tests.TestHelpers;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CodeFixes;
     using Microsoft.CodeAnalysis.Diagnostics;

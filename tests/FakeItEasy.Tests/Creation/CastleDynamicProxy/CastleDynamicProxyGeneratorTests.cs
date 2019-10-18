@@ -8,7 +8,6 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
     using System.Linq.Expressions;
     using FakeItEasy.Core;
     using FakeItEasy.Creation.CastleDynamicProxy;
-    using FakeItEasy.Tests;
     using FakeItEasy.Tests.TestHelpers;
     using Xunit;
 

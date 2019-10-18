@@ -5,6 +5,7 @@ namespace FakeItEasy.Tests.Configuration
     using System.Linq;
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
+    using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using Xunit;
     using ExceptionFactory = System.Func<FakeItEasy.Core.IFakeObjectCall, System.Exception>;
