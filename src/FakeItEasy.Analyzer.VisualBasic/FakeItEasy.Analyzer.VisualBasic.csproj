@@ -1,13 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.1</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>FakeItEasy.Analyzer</RootNamespace>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <FileAlignment>512</FileAlignment>
     <SignAssembly>true</SignAssembly>
     <DefineConstants>$(DefineConstants);VISUAL_BASIC</DefineConstants>
-    <PackageTargetFallback>portable45-net45+win8</PackageTargetFallback>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>
 
@@ -19,17 +18,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Update="NetStandard.Library" Version="$(NetStandardImplicitPackageVersion)" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="1.1.0" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic.Workspaces" Version="1.1.0" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.Composition" Version="1.0.27" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="2.9.6" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic.Workspaces" Version="3.3.1" PrivateAssets="all" />
   </ItemGroup>
-    
+
   <ItemGroup>
     <None Include="$(OutputPath)$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/vb" Visible="false" />
     <None Include="$(OutputPath)$(AssemblyName).pdb" Pack="true" PackagePath="analyzers/dotnet/vb" Visible="false" />
   </ItemGroup>
-    
+
   <Import Project="..\FakeItEasy.Analyzer.Shared\FakeItEasy.Analyzer.Shared.projitems" Label="Shared" />
 
 </Project>

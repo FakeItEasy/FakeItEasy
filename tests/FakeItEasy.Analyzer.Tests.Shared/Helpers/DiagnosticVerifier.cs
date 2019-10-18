@@ -177,7 +177,11 @@ Diagnostic:
 Diagnostic:
     {FormatDiagnostics(analyzer, diagnostic)}
 ";
+#if FEATURE_STRING_CONTAINS_COMPARISONTYPE
+            (actualSpan.Path == expected.Path || (actualSpan.Path is object && actualSpan.Path.Contains("Test0.", StringComparison.Ordinal) && expected.Path.Contains("Test.", StringComparison.Ordinal)))
+#else
             (actualSpan.Path == expected.Path || (actualSpan.Path is object && actualSpan.Path.Contains("Test0.") && expected.Path.Contains("Test.")))
+#endif
                 .Should().BeTrue(message);
 
             var actualLinePosition = actualSpan.StartLinePosition;

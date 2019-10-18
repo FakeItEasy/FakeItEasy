@@ -3,6 +3,7 @@ namespace FakeItEasy.Analyzer.Tests.Helpers
     using System;
     using System.Collections.Generic;
     using System.Collections.Immutable;
+    using System.IO;
     using System.Linq;
     using System.Runtime.ExceptionServices;
     using System.Text;
@@ -22,15 +23,7 @@ namespace FakeItEasy.Analyzer.Tests.Helpers
     /// </summary>
     public abstract partial class DiagnosticVerifier
     {
-        private static readonly MetadataReference CorlibReference = MetadataReference.CreateFromFile(typeof(object).Assembly.Location);
-        private static readonly MetadataReference SystemCoreReference = MetadataReference.CreateFromFile(typeof(Enumerable).Assembly.Location);
-#if CSHARP
-        private static readonly MetadataReference CSharpSymbolsReference = MetadataReference.CreateFromFile(typeof(CSharpCompilation).Assembly.Location);
-#elif VISUAL_BASIC
-        private static readonly MetadataReference VisualBasicSymbolsReference = MetadataReference.CreateFromFile(typeof(VisualBasicCompilation).Assembly.Location);
-#endif
-        private static readonly MetadataReference CodeAnalysisReference = MetadataReference.CreateFromFile(typeof(Compilation).Assembly.Location);
-        private static readonly MetadataReference FakeItEasyReference = MetadataReference.CreateFromFile(typeof(Fake).Assembly.Location);
+        private static readonly MetadataReference[] MetadataReferences = GetMetadataReferences();
 
         internal static string DefaultFilePathPrefix { get; } = "Test";
 
@@ -201,15 +194,7 @@ namespace FakeItEasy.Analyzer.Tests.Helpers
                         projectId,
                         new VisualBasicCompilationOptions(OutputKind.DynamicallyLinkedLibrary, optionStrict: OptionStrict.On))
 #endif
-                    .AddMetadataReference(projectId, CorlibReference)
-                    .AddMetadataReference(projectId, SystemCoreReference)
-#if CSHARP
-                    .AddMetadataReference(projectId, CSharpSymbolsReference)
-#elif VISUAL_BASIC
-                    .AddMetadataReference(projectId, VisualBasicSymbolsReference)
-#endif
-                    .AddMetadataReference(projectId, CodeAnalysisReference)
-                    .AddMetadataReference(projectId, FakeItEasyReference);
+                    .AddMetadataReferences(projectId, MetadataReferences);
 
                 int count = 0;
                 foreach (var source in sources)
@@ -245,6 +230,37 @@ namespace FakeItEasy.Analyzer.Tests.Helpers
         private static Diagnostic[] SortDiagnostics(IEnumerable<Diagnostic> diagnostics)
         {
             return diagnostics.OrderBy(d => d.Location.SourceSpan.Start).ToArray();
+        }
+
+        private static MetadataReference[] GetMetadataReferences()
+        {
+            var systemAssemblyLocation = typeof(object).Assembly.Location;
+            var coreDir = Path.GetDirectoryName(systemAssemblyLocation);
+            var paths = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+            {
+                systemAssemblyLocation,
+                Path.Combine(coreDir, "System.Runtime.dll"),
+                Path.Combine(coreDir, "mscorlib.dll"),
+                typeof(Enumerable).Assembly.Location,
+                typeof(System.Linq.Expressions.Expression).Assembly.Location,
+#if CSHARP
+                typeof(CSharpCompilation).Assembly.Location,
+#elif VISUAL_BASIC
+                typeof(VisualBasicCompilation).Assembly.Location,
+#endif
+                typeof(Compilation).Assembly.Location,
+                typeof(Fake).Assembly.Location,
+                GetNetStandardAssemblyLocation()
+            };
+
+            return paths.Select(path => MetadataReference.CreateFromFile(path)).ToArray();
+        }
+
+        private static string GetNetStandardAssemblyLocation()
+        {
+            var assembly = AppDomain.CurrentDomain.GetAssemblies()
+                .First(a => string.Equals(a.GetName().Name, "netstandard", StringComparison.OrdinalIgnoreCase));
+            return assembly.Location;
         }
     }
 }

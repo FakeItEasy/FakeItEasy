@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net461</TargetFrameworks>
+    <TargetFrameworks>net461;netcoreapp2.1;netcoreapp3.0</TargetFrameworks>
     <AssemblyName>FakeItEasy.Analyzer.VisualBasic.Tests</AssemblyName>
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
@@ -10,10 +10,13 @@
     <DefineConstants>$(DefineConstants);VISUAL_BASIC</DefineConstants>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(TargetFramework)' != 'net461'">
+    <DefineConstants>$(DefineConstants);FEATURE_STRING_CONTAINS_COMPARISONTYPE</DefineConstants>
+  </PropertyGroup>
+
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic.Workspaces" Version="1.1.0" />
-    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="1.1.0" />
-    <PackageReference Include="System.Collections.Immutable" Version="1.2.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic.Workspaces" Version="3.3.1" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="2.9.6" />
     <ProjectReference Include="..\..\src\FakeItEasy.Analyzer.VisualBasic\FakeItEasy.Analyzer.VisualBasic.csproj" />
     <ProjectReference Include="..\..\src\FakeItEasy\FakeItEasy.csproj" />
     <ProjectReference Include="..\FakeItEasy.Tests\FakeItEasy.Tests.csproj" />
