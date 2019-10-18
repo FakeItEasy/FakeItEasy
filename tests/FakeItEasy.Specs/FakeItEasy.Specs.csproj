@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net461;netcoreapp1.0;netcoreapp2.1;netcoreapp3.0</TargetFrameworks>
+    <TargetFrameworks>$(SpecsTargetFrameworks)</TargetFrameworks>
     <AssemblyName>FakeItEasy.Specs</AssemblyName>
     <CodeAnalysisRuleset>FakeItEasy.Specs.ruleset</CodeAnalysisRuleset>
     <SignAssembly>true</SignAssembly>
