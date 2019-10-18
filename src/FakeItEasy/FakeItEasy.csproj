@@ -39,7 +39,7 @@
   <!-- .NET Standard 2.1 -->
 
   <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
-    <DefineConstants>$(DefineConstants);FEATURE_REFLECTION_GETASSEMBLIES;FEATURE_EXCEPTION_DISPATCH_INFO;FEATURE_ARRAY_EMPTY;FEATURE_PARAMETERINFO_CUSTOMATTRIBUTES_PROPERTY</DefineConstants>
+    <DefineConstants>$(DefineConstants);FEATURE_REFLECTION_GETASSEMBLIES;FEATURE_EXCEPTION_DISPATCH_INFO;FEATURE_ARRAY_EMPTY;FEATURE_PARAMETERINFO_CUSTOMATTRIBUTES_PROPERTY;FEATURE_STRING_CONTAINS_COMPARISONTYPE</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">

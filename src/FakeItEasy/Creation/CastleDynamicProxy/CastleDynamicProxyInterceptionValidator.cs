@@ -31,7 +31,11 @@
 
             if (method.IsFinal)
             {
+#if FEATURE_STRING_CONTAINS_COMPARISONTYPE
+                var explicitImplementation = method.Name.Contains('.', StringComparison.Ordinal);
+#else
                 var explicitImplementation = method.Name.Contains('.');
+#endif
                 if (!explicitImplementation)
                 {
                     return "Non-virtual members can not be intercepted. Only interface members and virtual, overriding, and abstract members can be intercepted.";
