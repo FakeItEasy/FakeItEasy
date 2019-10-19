@@ -14,58 +14,63 @@ namespace FakeItEasy.Tests.Approval
     public class ApiApproval
     {
         [Theory]
-        [InlineData("net40", "ApproveApi40")]
-        [InlineData("net45", "ApproveApi45")]
-        [InlineData("netstandard1.6", "ApproveApiNetStd16")]
-        [InlineData("netstandard2.0", "ApproveApiNetStd20")]
-        [InlineData("netstandard2.1", "ApproveApiNetStd21")]
+        [InlineData("net40")]
+        [InlineData("net45")]
+        [InlineData("netstandard1.6")]
+        [InlineData("netstandard2.0")]
+        [InlineData("netstandard2.1")]
         [UseReporter(typeof(DiffReporter))]
         [MethodImpl(MethodImplOptions.NoInlining)]
-        public void ApproveApi(string frameworkVersion, string baseName)
+        public void ApproveFakeItEasyApi(string frameworkVersion)
         {
-            ApproveApi("FakeItEasy", frameworkVersion, baseName);
+            ApproveApi("FakeItEasy", frameworkVersion);
         }
 
         [Theory]
-        [InlineData("net45", "ApproveExtensionsValueTaskApi45")]
-        [InlineData("netstandard1.6", "ApproveExtensionsValueTaskApiNetStd16")]
-        [InlineData("netstandard2.0", "ApproveExtensionsValueTaskApiNetStd20")]
+        [InlineData("net45")]
+        [InlineData("netstandard1.6")]
+        [InlineData("netstandard2.0")]
         [UseReporter(typeof(DiffReporter))]
         [MethodImpl(MethodImplOptions.NoInlining)]
-        public void ApproveExtensionsValueTaskApi(string frameworkVersion, string baseName)
+        public void ApproveExtensionsValueTaskApi(string frameworkVersion)
         {
-            ApproveApi("FakeItEasy.Extensions.ValueTask", frameworkVersion, baseName);
+            ApproveApi("FakeItEasy.Extensions.ValueTask", frameworkVersion);
         }
 
-        private static void ApproveApi(string projectName, string frameworkVersion, string baseName)
+        private static void ApproveApi(string projectName, string frameworkVersion)
         {
             string codeBase = Assembly.GetExecutingAssembly().CodeBase;
             UriBuilder uri = new UriBuilder(new Uri(codeBase));
             string assemblyPath = Uri.UnescapeDataString(uri.Path);
             var containingDirectory = Path.GetDirectoryName(assemblyPath);
             var configurationName = new DirectoryInfo(containingDirectory).Parent.Name;
-            var assemblyFile = $@"..\..\..\..\..\src\{projectName}\bin\{configurationName}\{frameworkVersion}\{projectName}.dll";
+            var assemblyFile = Path.GetFullPath(
+                Path.Combine(
+                    GetSourceDirectory(),
+                    $@"..\..\src\{projectName}\bin\{configurationName}\{frameworkVersion}\{projectName}.dll"));
 
             var assembly = Assembly.LoadFile(Path.GetFullPath(assemblyFile));
             var publicApi = ApiGenerator.GeneratePublicApi(assembly);
 
             Approvals.Verify(
                 WriterFactory.CreateTextWriter(publicApi),
-                new ApprovalNamer($"{nameof(ApiApproval)}.{baseName}"),
+                new ApprovalNamer(projectName, frameworkVersion),
                 Approvals.GetReporter());
         }
 
         private class ApprovalNamer : IApprovalNamer
         {
-            public ApprovalNamer(string name, [CallerFilePath] string sourcePath = null)
+            public ApprovalNamer(string projectName, string frameworkVersion)
             {
-                this.Name = name;
-                this.SourcePath = Path.GetDirectoryName(sourcePath);
+                this.Name = frameworkVersion;
+                this.SourcePath = Path.Combine(GetSourceDirectory(), "ApprovedApi", projectName);
             }
 
             public string SourcePath { get; }
 
             public string Name { get; }
         }
+
+        private static string GetSourceDirectory([CallerFilePath] string path = null) => Path.GetDirectoryName(path);
     }
 }
