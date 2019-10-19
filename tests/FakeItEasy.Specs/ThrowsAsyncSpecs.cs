@@ -48,7 +48,7 @@ namespace FakeItEasy.Specs
                 .x(() => task.Status.Should().Be(TaskStatus.Faulted));
 
             "And the task's exception is the configured exception"
-                .x(() => task.Exception?.InnerException.Should().BeAnExceptionOfType<MyException>());
+                .x(() => (task.Exception?.InnerException).Should().BeAnExceptionOfType<MyException>());
         }
 
         [Scenario]
@@ -67,7 +67,7 @@ namespace FakeItEasy.Specs
                 .x(() => task.Status.Should().Be(TaskStatus.Faulted));
 
             "And the task's exception is the configured exception"
-                .x(() => task.Exception?.InnerException.Should().BeAnExceptionOfType<MyException>());
+                .x(() => (task.Exception?.InnerException).Should().BeAnExceptionOfType<MyException>());
         }
 
         [Scenario]
@@ -86,7 +86,7 @@ namespace FakeItEasy.Specs
                 .x(() => task.Status.Should().Be(TaskStatus.Faulted));
 
             "And the task's exception is the configured exception"
-                .x(() => task.Exception?.InnerException.Should().BeAnExceptionOfType<MyException>());
+                .x(() => (task.Exception?.InnerException).Should().BeAnExceptionOfType<MyException>());
         }
 
         [Scenario]
@@ -105,7 +105,7 @@ namespace FakeItEasy.Specs
                 .x(() => task.Status.Should().Be(TaskStatus.Faulted));
 
             "And the task's exception is the configured exception"
-                .x(() => task.Exception?.InnerException.Should().BeAnExceptionOfType<MyException>());
+                .x(() => (task.Exception?.InnerException).Should().BeAnExceptionOfType<MyException>());
         }
 
         [Scenario]
@@ -124,7 +124,7 @@ namespace FakeItEasy.Specs
                 .x(() => task.Status.Should().Be(TaskStatus.Faulted));
 
             "And the task's exception is the configured exception"
-                .x(() => task.Exception?.InnerException.Should().BeAnExceptionOfType<MyException>());
+                .x(() => (task.Exception?.InnerException).Should().BeAnExceptionOfType<MyException>());
         }
 
         [Scenario]
@@ -143,7 +143,7 @@ namespace FakeItEasy.Specs
                 .x(() => task.Status.Should().Be(TaskStatus.Faulted));
 
             "And the task's exception is the configured exception"
-                .x(() => task.Exception?.InnerException.Should().BeAnExceptionOfType<MyException>());
+                .x(() => (task.Exception?.InnerException).Should().BeAnExceptionOfType<MyException>());
         }
 
         [Scenario]
@@ -162,7 +162,7 @@ namespace FakeItEasy.Specs
                 .x(() => task.Status.Should().Be(TaskStatus.Faulted));
 
             "And the task's exception is the configured exception"
-                .x(() => task.Exception?.InnerException.Should().BeAnExceptionOfType<MyException>());
+                .x(() => (task.Exception?.InnerException).Should().BeAnExceptionOfType<MyException>());
         }
 
         [Scenario]
@@ -181,7 +181,7 @@ namespace FakeItEasy.Specs
                 .x(() => task.Status.Should().Be(TaskStatus.Faulted));
 
             "And the task's exception is the configured exception"
-                .x(() => task.Exception?.InnerException.Should().BeAnExceptionOfType<MyException>());
+                .x(() => (task.Exception?.InnerException).Should().BeAnExceptionOfType<MyException>());
         }
 
         [Scenario]
@@ -201,7 +201,7 @@ namespace FakeItEasy.Specs
                 .x(() => task.Status.Should().Be(TaskStatus.Faulted));
 
             "And the task's exception is the configured exception"
-                .x(() => task.Exception?.InnerException.Should().BeAnExceptionOfType<MyException>());
+                .x(() => (task.Exception?.InnerException).Should().BeAnExceptionOfType<MyException>());
         }
 
         [Scenario]
@@ -221,7 +221,7 @@ namespace FakeItEasy.Specs
                 .x(() => task.Status.Should().Be(TaskStatus.Faulted));
 
             "And the task's exception is the configured exception"
-                .x(() => task.Exception?.InnerException.Should().BeAnExceptionOfType<MyException>());
+                .x(() => (task.Exception?.InnerException).Should().BeAnExceptionOfType<MyException>());
         }
 
         [Scenario]
@@ -241,7 +241,7 @@ namespace FakeItEasy.Specs
                 .x(() => task.Status.Should().Be(TaskStatus.Faulted));
 
             "And the task's exception is the configured exception"
-                .x(() => task.Exception?.InnerException.Should().BeAnExceptionOfType<MyException>());
+                .x(() => (task.Exception?.InnerException).Should().BeAnExceptionOfType<MyException>());
         }
 
         [Scenario]
@@ -261,7 +261,7 @@ namespace FakeItEasy.Specs
                 .x(() => task.Status.Should().Be(TaskStatus.Faulted));
 
             "And the task's exception is the configured exception"
-                .x(() => task.Exception?.InnerException.Should().BeAnExceptionOfType<MyException>());
+                .x(() => (task.Exception?.InnerException).Should().BeAnExceptionOfType<MyException>());
         }
 
         [Scenario]
@@ -281,7 +281,7 @@ namespace FakeItEasy.Specs
                 .x(() => task.Status.Should().Be(TaskStatus.Faulted));
 
             "And the task's exception is the configured exception"
-                .x(() => task.Exception?.InnerException.Should().BeAnExceptionOfType<MyException>());
+                .x(() => (task.Exception?.InnerException).Should().BeAnExceptionOfType<MyException>());
         }
 
         [Scenario]
@@ -301,7 +301,7 @@ namespace FakeItEasy.Specs
                 .x(() => task.Status.Should().Be(TaskStatus.Faulted));
 
             "And the task's exception is the configured exception"
-                .x(() => task.Exception?.InnerException.Should().BeAnExceptionOfType<MyException>());
+                .x(() => (task.Exception?.InnerException).Should().BeAnExceptionOfType<MyException>());
         }
 
         [SuppressMessage("Microsoft.Design", "CA1032:ImplementStandardExceptionConstructors", Justification = "Irrelevant for test purposes")]
