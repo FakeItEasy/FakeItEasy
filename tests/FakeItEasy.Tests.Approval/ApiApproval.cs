@@ -1,82 +1,43 @@
 namespace FakeItEasy.Tests.Approval
 {
     using System;
-    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Reflection;
     using System.Runtime.CompilerServices;
     using ApprovalTests;
+    using ApprovalTests.Core;
     using ApprovalTests.Reporters;
+    using ApprovalTests.Writers;
     using PublicApiGenerator;
     using Xunit;
 
     public class ApiApproval
     {
-        [Fact]
+        [Theory]
+        [InlineData("net40", "ApproveApi40")]
+        [InlineData("net45", "ApproveApi45")]
+        [InlineData("netstandard1.6", "ApproveApiNetStd16")]
+        [InlineData("netstandard2.0", "ApproveApiNetStd20")]
+        [InlineData("netstandard2.1", "ApproveApiNetStd21")]
         [UseReporter(typeof(DiffReporter))]
         [MethodImpl(MethodImplOptions.NoInlining)]
-        public void ApproveApi45()
+        public void ApproveApi(string frameworkVersion, string baseName)
         {
-            ApproveApi("FakeItEasy", "net45");
+            ApproveApi("FakeItEasy", frameworkVersion, baseName);
         }
 
-        [Fact]
+        [Theory]
+        [InlineData("net45", "ApproveExtensionsValueTaskApi45")]
+        [InlineData("netstandard1.6", "ApproveExtensionsValueTaskApiNetStd16")]
+        [InlineData("netstandard2.0", "ApproveExtensionsValueTaskApiNetStd20")]
         [UseReporter(typeof(DiffReporter))]
         [MethodImpl(MethodImplOptions.NoInlining)]
-        public void ApproveApi40()
+        public void ApproveExtensionsValueTaskApi(string frameworkVersion, string baseName)
         {
-            ApproveApi("FakeItEasy", "net40");
+            ApproveApi("FakeItEasy.Extensions.ValueTask", frameworkVersion, baseName);
         }
 
-        [Fact]
-        [UseReporter(typeof(DiffReporter))]
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        public void ApproveApiNetStd16()
-        {
-            ApproveApi("FakeItEasy", "netstandard1.6");
-        }
-
-        [Fact]
-        [UseReporter(typeof(DiffReporter))]
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        public void ApproveApiNetStd20()
-        {
-            ApproveApi("FakeItEasy", "netstandard2.0");
-        }
-
-        [Fact]
-        [UseReporter(typeof(DiffReporter))]
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        public void ApproveApiNetStd21()
-        {
-            ApproveApi("FakeItEasy", "netstandard2.1");
-        }
-
-        [Fact]
-        [UseReporter(typeof(DiffReporter))]
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        public void ApproveExtensionsValueTaskApi45()
-        {
-            ApproveApi("FakeItEasy.Extensions.ValueTask", "net45");
-        }
-
-        [Fact]
-        [UseReporter(typeof(DiffReporter))]
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        public void ApproveExtensionsValueTaskApiNetStd16()
-        {
-            ApproveApi("FakeItEasy.Extensions.ValueTask", "netstandard1.6");
-        }
-
-        [Fact]
-        [UseReporter(typeof(DiffReporter))]
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        public void ApproveExtensionsValueTaskApiNetStd20()
-        {
-            ApproveApi("FakeItEasy.Extensions.ValueTask", "netstandard2.0");
-        }
-
-        private static void ApproveApi(string projectName, string frameworkVersion)
+        private static void ApproveApi(string projectName, string frameworkVersion, string baseName)
         {
             string codeBase = Assembly.GetExecutingAssembly().CodeBase;
             UriBuilder uri = new UriBuilder(new Uri(codeBase));
@@ -86,7 +47,25 @@ namespace FakeItEasy.Tests.Approval
             var assemblyFile = $@"..\..\..\..\..\src\{projectName}\bin\{configurationName}\{frameworkVersion}\{projectName}.dll";
 
             var assembly = Assembly.LoadFile(Path.GetFullPath(assemblyFile));
-            Approvals.Verify(ApiGenerator.GeneratePublicApi(assembly));
+            var publicApi = ApiGenerator.GeneratePublicApi(assembly);
+
+            Approvals.Verify(
+                WriterFactory.CreateTextWriter(publicApi),
+                new ApprovalNamer($"{nameof(ApiApproval)}.{baseName}"),
+                Approvals.GetReporter());
+        }
+
+        private class ApprovalNamer : IApprovalNamer
+        {
+            public ApprovalNamer(string name, [CallerFilePath] string sourcePath = null)
+            {
+                this.Name = name;
+                this.SourcePath = Path.GetDirectoryName(sourcePath);
+            }
+
+            public string SourcePath { get; }
+
+            public string Name { get; }
         }
     }
 }
