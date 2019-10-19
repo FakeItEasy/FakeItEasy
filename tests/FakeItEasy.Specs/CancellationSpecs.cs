@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Specs
+namespace FakeItEasy.Specs
 {
     using System;
     using System.Threading;
@@ -19,6 +19,10 @@
             Task<int> BarAsync(CancellationToken cancellationToken);
 
             Task BazAsync(CancellationToken cancellationToken);
+
+            ValueTask<int> ValueBarAsync(CancellationToken cancellationToken);
+
+            ValueTask ValueBazAsync(CancellationToken cancellationToken);
         }
 
         [Scenario]
@@ -359,6 +363,223 @@
 
             "Then it returns a canceled task"
                 .x(() => task.Status.Should().Be(TaskStatus.Canceled));
+        }
+
+        [Scenario]
+        public static void ValueTaskWithResultNonCanceledToken(
+            IFoo fake,
+            CancellationToken cancellationToken,
+            ValueTask<int> task)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IFoo>());
+
+            "And a cancellation token that is not canceled"
+                .x(() => cancellationToken = new CancellationToken(false));
+
+            "When an async method returning ValueTask is called with this cancellation token"
+                .x(() => { task = fake.ValueBarAsync(cancellationToken); });
+
+            "Then it returns a successfully completed task"
+                .x(() => task.IsCompleted.Should().BeTrue());
+
+            "And the task's result should be the default value"
+                .x(() => task.Result.Should().Be(0));
+        }
+
+        [Scenario]
+        public static void ValueTaskWithResultNonCanceledTokenWithConfiguredCall(
+            IFoo fake,
+            CancellationToken cancellationToken,
+            ValueTask<int> task)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IFoo>());
+
+            "And a call to an async method returning ValueTask configured on that fake"
+                .x(() => A.CallTo(() => fake.ValueBarAsync(A<CancellationToken>._)).Returns(42));
+
+            "And a cancellation token that is not canceled"
+                .x(() => cancellationToken = new CancellationToken(false));
+
+            "When the configured async method is called with this cancellation token"
+                .x(() => { task = fake.ValueBarAsync(cancellationToken); });
+
+            "Then it returns a successfully completed task"
+                .x(() => task.IsCompleted.Should().BeTrue());
+
+            "And the task's result is the configured value"
+                .x(() => task.Result.Should().Be(42));
+        }
+
+        [Scenario]
+        public static void ValueTaskWithResultCanceledToken(
+            IFoo fake,
+            CancellationToken cancellationToken,
+            ValueTask<int> task)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IFoo>());
+
+            "And a cancellation token that is canceled"
+                .x(() => cancellationToken = new CancellationToken(true));
+
+            "When an async method returning ValueTask is called with this cancellation token"
+                .x(() => { task = fake.ValueBarAsync(cancellationToken); });
+
+            "Then it returns a canceled task"
+                .x(() => task.IsCanceled.Should().BeTrue());
+        }
+
+        [Scenario]
+        public static void ValueTaskWithResultCanceledTokenWithConfiguredCallForAnyToken(
+            IFoo fake,
+            CancellationToken cancellationToken,
+            ValueTask<int> task)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IFoo>());
+
+            "And a call to an async method returning ValueTask configured on that fake"
+                .x(() => A.CallTo(() => fake.ValueBarAsync(A<CancellationToken>._)).Returns(42));
+
+            "And a cancellation token that is canceled"
+                .x(() => cancellationToken = new CancellationToken(true));
+
+            "When the configured async method is called with this cancellation token"
+                .x(() => { task = fake.ValueBarAsync(cancellationToken); });
+
+            "Then it returns a successfully completed task"
+                .x(() => task.IsCompleted.Should().BeTrue());
+
+            "And the task's result is the configured value"
+                .x(() => task.Result.Should().Be(42));
+        }
+
+        [Scenario]
+        public static void ValueTaskWithResultCanceledTokenWithConfiguredCallForNonCanceledToken(
+            IFoo fake,
+            CancellationToken cancellationToken,
+            ValueTask<int> task)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IFoo>());
+
+            "And a call to an async method returning ValueTask configured on that fake for a non-canceled token"
+                .x(() => A.CallTo(() => fake.ValueBarAsync(A<CancellationToken>.That.IsNotCanceled())).Returns(42));
+
+            "And a cancellation token that is canceled"
+                .x(() => cancellationToken = new CancellationToken(true));
+
+            "When the configured async method is called with this cancellation token"
+                .x(() => { task = fake.ValueBarAsync(cancellationToken); });
+
+            "Then it returns a canceled task"
+                .x(() => task.IsCanceled.Should().BeTrue());
+        }
+
+        [Scenario]
+        public static void ValueTaskWithoutResultNonCanceledToken(
+            IFoo fake,
+            CancellationToken cancellationToken,
+            ValueTask task)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IFoo>());
+
+            "And a cancellation token that is not canceled"
+                .x(() => cancellationToken = new CancellationToken(false));
+
+            "When an async method returning ValueTask is called with this cancellation token"
+                .x(() => { task = fake.ValueBazAsync(cancellationToken); });
+
+            "Then it returns a successfully completed task"
+                .x(() => task.IsCompletedSuccessfully.Should().BeTrue());
+        }
+
+        [Scenario]
+        public static void ValueTaskWithoutResultNonCanceledTokenWithConfiguredCall(
+            IFoo fake,
+            CancellationToken cancellationToken,
+            ValueTask task)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IFoo>());
+
+            "And a call to an async method returning ValueTask configured on that fake"
+                .x(() => A.CallTo(() => fake.ValueBazAsync(A<CancellationToken>._)).Returns(default(ValueTask)));
+
+            "And a cancellation token that is not canceled"
+                .x(() => cancellationToken = new CancellationToken(false));
+
+            "When the configured async method is called with this cancellation token"
+                .x(() => { task = fake.ValueBazAsync(cancellationToken); });
+
+            "Then it returns a successfully completed task"
+                .x(() => task.IsCompletedSuccessfully.Should().BeTrue());
+        }
+
+        [Scenario]
+        public static void ValueTaskWithoutResultCanceledToken(
+            IFoo fake,
+            CancellationToken cancellationToken,
+            ValueTask task)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IFoo>());
+
+            "And a cancellation token that is canceled"
+                .x(() => cancellationToken = new CancellationToken(true));
+
+            "When an async method returning ValueTask is called with this cancellation token"
+                .x(() => { task = fake.ValueBazAsync(cancellationToken); });
+
+            "Then it returns a canceled task"
+                .x(() => task.IsCanceled.Should().BeTrue());
+        }
+
+        [Scenario]
+        public static void ValueTaskWithoutResultCanceledTokenWithConfiguredCallForAnyToken(
+            IFoo fake,
+            CancellationToken cancellationToken,
+            ValueTask task)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IFoo>());
+
+            "And a call to an async method returning ValueTask configured on that fake"
+                .x(() => A.CallTo(() => fake.ValueBazAsync(A<CancellationToken>._)).Returns(default(ValueTask)));
+
+            "And a cancellation token that is canceled"
+                .x(() => cancellationToken = new CancellationToken(true));
+
+            "When the configured async method is called with this cancellation token"
+                .x(() => { task = fake.ValueBazAsync(cancellationToken); });
+
+            "Then it returns a successfully completed task"
+                .x(() => task.IsCompletedSuccessfully.Should().BeTrue());
+        }
+
+        [Scenario]
+        public static void ValueTaskWithoutResultCanceledTokenWithConfiguredCallForNonCanceledToken(
+            IFoo fake,
+            CancellationToken cancellationToken,
+            ValueTask task)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IFoo>());
+
+            "And a call to an async method returning ValueTask configured on that fake for a non-canceled token"
+                .x(() => A.CallTo(() => fake.ValueBazAsync(A<CancellationToken>.That.IsNotCanceled())).Returns(default(ValueTask)));
+
+            "And a cancellation token that is canceled"
+                .x(() => cancellationToken = new CancellationToken(true));
+
+            "When the configured async method is called with this cancellation token"
+                .x(() => { task = fake.ValueBazAsync(cancellationToken); });
+
+            "Then it returns a canceled task"
+                .x(() => task.IsCanceled.Should().BeTrue());
         }
     }
 }
