@@ -22,17 +22,8 @@
     <PackageReference Include="Castle.Core" Version="4.3.1" />
   </ItemGroup>
 
-  <!-- Debug -->
-
-  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
-    <DebugType>full</DebugType>
-  </PropertyGroup>
-
-  <!-- Release -->
-
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <DebugType>pdbonly</DebugType>
   </PropertyGroup>
 
   <!-- .NET Standard 2.1 -->

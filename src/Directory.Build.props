@@ -12,6 +12,10 @@
     <NoPackageAnalysis>true</NoPackageAnalysis>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <DebugType>portable</DebugType>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="MinVer" Version="2.0.0" PrivateAssets="All" />
   </ItemGroup>

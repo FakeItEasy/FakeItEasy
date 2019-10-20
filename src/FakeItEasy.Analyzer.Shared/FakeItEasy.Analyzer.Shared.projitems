@@ -13,12 +13,6 @@
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)FakeItEasy.Analyzer.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
-    <DebugType>full</DebugType>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
-    <DebugType>pdbonly</DebugType>
-  </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)..\*.cs" />
   </ItemGroup>
