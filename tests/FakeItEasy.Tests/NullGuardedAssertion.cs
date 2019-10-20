@@ -156,8 +156,8 @@ namespace FakeItEasy.Tests
 
                 private static bool IsNullableType(Type type)
                 {
-                    return !type.GetTypeInformation().IsValueType ||
-                           (type.GetTypeInformation().IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>));
+                    return !type.GetTypeInfo().IsValueType ||
+                           (type.GetTypeInfo().IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>));
                 }
 
                 private static void WriteArgumentList(StringBuilderOutputWriter builder, IEnumerable<ArgumentInfo> arguments)
