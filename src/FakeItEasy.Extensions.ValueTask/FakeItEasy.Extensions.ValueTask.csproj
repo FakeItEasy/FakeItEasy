@@ -23,6 +23,7 @@
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net45' OR '$(TargetFramework)' == 'netstandard1.6' OR '$(TargetFramework)' == 'netstandard2.0'">
     <Compile Include="../FakeItEasy/ValueTaskReturnValueConfigurationExtensions.cs" />
+    <Compile Include="../FakeItEasy/ValueTaskReturnValueConfigurationExtensions.StronglyTyped.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -32,6 +33,10 @@
   <ItemGroup Condition="'$(TargetFramework)' == 'net45' OR '$(TargetFramework)' == 'netstandard1.6' OR '$(TargetFramework)' == 'netstandard2.0'">
     <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.3" />
   </ItemGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard1.6'">
+    <DefineConstants>$(DefineConstants);FEATURE_NETCORE_REFLECTION</DefineConstants>
+  </PropertyGroup>
 
   <!-- Include PDB in package -->
   <ItemGroup>

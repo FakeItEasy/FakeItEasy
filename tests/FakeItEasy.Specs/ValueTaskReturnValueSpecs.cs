@@ -10,6 +10,12 @@ namespace FakeItEasy.Specs
         public interface IReturnValueTask
         {
             ValueTask<int> GetValueAsync();
+
+            ValueTask<int> GetValueAsync(int a);
+
+            ValueTask<int> GetValueAsync(int a, string b);
+
+            ValueTask<int> GetValueAsync(int a, string b, bool c);
         }
 
         [Scenario]
@@ -89,6 +95,72 @@ namespace FakeItEasy.Specs
 
             "Then it returns a ValueTask whose result is a dummy"
                 .x(() => task4.Result.Should().Be(0));
+        }
+
+        [Scenario]
+        public void ValueTaskStronglyTypedLazilyComputed1Parameter(IReturnValueTask fake, Func<int, int> valueProducer, ValueTask<int> task)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IReturnValueTask>());
+
+            "And a strongly typed value producer that returns a value based on the argument's value"
+                .x(() => valueProducer = a => a + 1);
+
+            "And a ValueTask-returning method of the fake configured to return a value computed by the value producer"
+                .x(() => A.CallTo(() => fake.GetValueAsync(A<int>._)).ReturnsLazily(valueProducer));
+
+            "When the configured method is called"
+                .x(() => task = fake.GetValueAsync(41));
+
+            "Then it returns a successfully completed ValueTask"
+                .x(() => task.IsCompletedSuccessfully.Should().BeTrue());
+
+            "And the ValueTask's result is the result of the value producer"
+                .x(() => task.Result.Should().Be(42));
+        }
+
+        [Scenario]
+        public void ValueTaskStronglyTypedLazilyComputed2Parameters(IReturnValueTask fake, Func<int, string, int> valueProducer, ValueTask<int> task)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IReturnValueTask>());
+
+            "And a strongly typed value producer that returns a value based on the arguments' values"
+                .x(() => valueProducer = (a, b) => a + b.Length);
+
+            "And a ValueTask-returning method of the fake configured to return a value computed by the value producer"
+                .x(() => A.CallTo(() => fake.GetValueAsync(A<int>._, A<string>._)).ReturnsLazily(valueProducer));
+
+            "When the configured method is called"
+                .x(() => task = fake.GetValueAsync(37, "hello"));
+
+            "Then it returns a successfully completed ValueTask"
+                .x(() => task.IsCompletedSuccessfully.Should().BeTrue());
+
+            "And the ValueTask's result is the result of the value producer"
+                .x(() => task.Result.Should().Be(42));
+        }
+
+        [Scenario]
+        public void ValueTaskStronglyTypedLazilyComputed3Parameters(IReturnValueTask fake, Func<int, string, bool, int> valueProducer, ValueTask<int> task)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IReturnValueTask>());
+
+            "And a strongly typed value producer that returns a value based on the arguments' values"
+                .x(() => valueProducer = (a, b, c) => a + b.Length + (c ? 1 : 0));
+
+            "And a ValueTask-returning method of the fake configured to return a value computed by the value producer"
+                .x(() => A.CallTo(() => fake.GetValueAsync(A<int>._, A<string>._, A<bool>._)).ReturnsLazily(valueProducer));
+
+            "When the configured method is called"
+                .x(() => task = fake.GetValueAsync(36, "hello", true));
+
+            "Then it returns a successfully completed ValueTask"
+                .x(() => task.IsCompletedSuccessfully.Should().BeTrue());
+
+            "And the ValueTask's result is the result of the value producer"
+                .x(() => task.Result.Should().Be(42));
         }
     }
 }

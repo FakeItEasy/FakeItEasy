@@ -10,7 +10,7 @@ namespace FakeItEasy
     /// <summary>
     /// Provides extension methods for <see cref="IReturnValueConfiguration{T}"/> to configure methods returning <see cref="ValueTask{TResult}"/>.
     /// </summary>
-    public static class ValueTaskReturnValueConfigurationExtensions
+    public static partial class ValueTaskReturnValueConfigurationExtensions
     {
         /// <summary>
         /// Specifies the <see cref="ValueTask{T}.Result"/> of the <see cref="ValueTask{T}"/> which is returned when the configured call is made.
