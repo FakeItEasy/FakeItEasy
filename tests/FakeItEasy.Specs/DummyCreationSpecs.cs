@@ -564,6 +564,60 @@ namespace FakeItEasy.Specs
                 .x(() => dummy.Result.Should().BeNull());
         }
 
+        [Scenario]
+        public void ValueTaskCreation(ValueTask dummy)
+        {
+            "Given the ValueTask type"
+                .See<ValueTask>();
+
+            "When a dummy ValueTask is requested"
+                .x(() => dummy = this.CreateDummy<ValueTask>());
+
+            "Then it returns a ValueTask"
+                .x(() => dummy.Should().BeOfType<ValueTask>());
+
+            "And the ValueTask is completed successfully"
+                .x(() => dummy.IsCompletedSuccessfully.Should().BeTrue());
+        }
+
+        [Scenario]
+        public void ValueTaskOfTCreation(ValueTask<string> dummy)
+        {
+            "Given a type"
+                .See<string>();
+
+            "When a dummy ValueTask of that type is requested"
+                .x(() => dummy = this.CreateDummy<ValueTask<string>>());
+
+            "Then it returns a ValueTask"
+                .x(() => dummy.Should().BeOfType<ValueTask<string>>());
+
+            "And the ValueTask is completed successfully"
+                .x(() => dummy.IsCompletedSuccessfully.Should().BeTrue());
+
+            "And the ValueTask's result is a dummy of the value type"
+                .x(() => dummy.Result.Should().BeOfType<string>());
+        }
+
+        [Scenario]
+        public void ValueTaskOfTCreationNonDummyable(ValueTask<NonDummyable> dummy)
+        {
+            "Given a type"
+                .See<NonDummyable>();
+
+            "When a dummy ValueTask of that type is requested"
+                .x(() => dummy = this.CreateDummy<ValueTask<NonDummyable>>());
+
+            "Then it returns a ValueTask"
+                .x(() => dummy.Should().BeOfType<ValueTask<NonDummyable>>());
+
+            "And the ValueTask is completed successfully"
+                .x(() => dummy.IsCompletedSuccessfully.Should().BeTrue());
+
+            "And the ValueTask's result is null"
+                .x(() => dummy.Result.Should().BeNull());
+        }
+
         public class ClassWithNoPublicConstructors
         {
             private ClassWithNoPublicConstructors()
