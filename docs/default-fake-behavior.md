@@ -54,8 +54,8 @@ This behavior can be used to
 When a faked method that accepts a `CancellationToken` receives a canceled token
 (i.e. with `IsCancellationRequested` set to `true`), it will either:
 
-* return a canceled task, if it is asynchronous (i.e. if it returns a `Task` or
-  `Task<T>`);
+* return a canceled task, if it is asynchronous (i.e. if it returns a `Task`,
+  `Task<T>`, `ValueTask` or `ValueTask<T>`);
 * throw an `OperationCanceledException`, if it is synchronous.
 
 ## Examples

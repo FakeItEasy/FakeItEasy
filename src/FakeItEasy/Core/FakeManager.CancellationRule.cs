@@ -1,5 +1,6 @@
 namespace FakeItEasy.Core
 {
+    using System;
 #if FEATURE_NETCORE_REFLECTION
     using System.Reflection;
 #endif
@@ -34,6 +35,23 @@ namespace FakeItEasy.Core
 
                     fakeObjectCall.SetReturnValue(task);
                 }
+                else if (IsValueTask(returnType, out var taskResultType))
+                {
+                    if (taskResultType == null)
+                    {
+                        var canceledTask = TaskHelper.Canceled();
+                        var ctor = returnType.GetConstructor(new[] { typeof(Task) });
+                        var valueTask = ctor.Invoke(new object[] { canceledTask });
+                        fakeObjectCall.SetReturnValue(valueTask);
+                    }
+                    else
+                    {
+                        var canceledTask = TaskHelper.Canceled(taskResultType);
+                        var ctor = returnType.GetConstructor(new[] { canceledTask.GetType() });
+                        var valueTask = ctor.Invoke(new object[] { canceledTask });
+                        fakeObjectCall.SetReturnValue(valueTask);
+                    }
+                }
                 else
                 {
                     GetCanceledToken(fakeObjectCall)?.ThrowIfCancellationRequested();
@@ -56,6 +74,26 @@ namespace FakeItEasy.Core
                 }
 
                 return null;
+            }
+
+            private static bool IsValueTask(Type type, out Type valueType)
+            {
+                if (type.FullName == "System.Threading.Tasks.ValueTask")
+                {
+                    valueType = null;
+                    return true;
+                }
+
+                if (type.GetTypeInfo().IsGenericType &&
+                    !type.GetTypeInfo().IsGenericTypeDefinition &&
+                    type.FullName.StartsWith("System.Threading.Tasks.ValueTask`", StringComparison.Ordinal))
+                {
+                    valueType = type.GetGenericArguments()[0];
+                    return true;
+                }
+
+                valueType = null;
+                return false;
             }
         }
     }

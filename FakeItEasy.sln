@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26730.10
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29324.140
 MinimumVisualStudioVersion = 15.0.0.0
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A6A7B553-5359-4FB9-B19C-8A23004F49DB}"
 	ProjectSection(SolutionItems) = preProject
@@ -131,6 +131,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FakeItEasy.PrepareRelease",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FakeItEasy.Deploy", "tools\FakeItEasy.Deploy\FakeItEasy.Deploy.csproj", "{5F4FC5FA-E2FA-456D-813F-6057B7CE7FF0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeItEasy.Extensions.ValueTask", "src\FakeItEasy.Extensions.ValueTask\FakeItEasy.Extensions.ValueTask.csproj", "{17B22C7C-9ECB-4D05-A238-48B40DDA06E8}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		tests\FakeItEasy.Analyzer.Tests.Shared\FakeItEasy.Analyzer.Tests.Shared.projitems*{38f3191b-1ce0-4ee0-930f-794a2f2f4cdb}*SharedItemsImports = 4
@@ -196,6 +198,10 @@ Global
 		{0E2ED1CD-C7ED-4641-9482-C4BBBA58B623}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5F4FC5FA-E2FA-456D-813F-6057B7CE7FF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5F4FC5FA-E2FA-456D-813F-6057B7CE7FF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17B22C7C-9ECB-4D05-A238-48B40DDA06E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17B22C7C-9ECB-4D05-A238-48B40DDA06E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17B22C7C-9ECB-4D05-A238-48B40DDA06E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17B22C7C-9ECB-4D05-A238-48B40DDA06E8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -222,6 +228,7 @@ Global
 		{81779103-4CA9-4177-B78A-A435FC37DADC} = {9D99B251-FB4F-49BF-8405-F6E0DE46EB32}
 		{0E2ED1CD-C7ED-4641-9482-C4BBBA58B623} = {9D99B251-FB4F-49BF-8405-F6E0DE46EB32}
 		{5F4FC5FA-E2FA-456D-813F-6057B7CE7FF0} = {9D99B251-FB4F-49BF-8405-F6E0DE46EB32}
+		{17B22C7C-9ECB-4D05-A238-48B40DDA06E8} = {59466C4D-C407-4DD9-B77B-D99162B9FC7C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E70BBF50-5920-49F2-835D-4A2DBD73F0E1}

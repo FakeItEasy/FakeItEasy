@@ -63,3 +63,8 @@ As with `Throws` above, `ThrowsAsync` has several overloads, including those tha
 8 parameters, and one that takes a `Func` that operates on an `IFakeObjectCall`. The latter is suitable
 for examining, in detail, the call that triggers the exception, or for configuring a method that has
 more than 8 parameters.
+
+These overloads of `ThrowsAsync` also exist for `ValueTask` and `ValueTask<T>`. If your test project
+targets a framework compatible with .NET Standard 2.1 or higher, they're built into FakeItEasy itself;
+otherwise, they're in a separate package:
+[`FakeItEasy.Extensions.ValueTask`](https://www.nuget.org/packages/FakeItEasy.Extensions.ValueTask).

@@ -77,7 +77,11 @@ namespace FakeItEasy
         /// <returns>A dummy argument value.</returns>
         public static string Contains(this IArgumentConstraintManager<string> manager, string value)
         {
+#if FEATURE_STRING_CONTAINS_COMPARISONTYPE
+            return manager.NullCheckedMatches(x => x.Contains(value, StringComparison.CurrentCulture), x => x.Write("string that contains ").WriteArgumentValue(value));
+#else
             return manager.NullCheckedMatches(x => x.Contains(value), x => x.Write("string that contains ").WriteArgumentValue(value));
+#endif
         }
 
         /// <summary>

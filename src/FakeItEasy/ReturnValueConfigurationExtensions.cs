@@ -117,7 +117,7 @@ namespace FakeItEasy
             configuration.ReturnsNextFromQueue(new ConcurrentQueue<Task<T>>(values.Select(TaskHelper.FromResult)));
         }
 
-        private static void ReturnsNextFromQueue<T>(this IReturnValueConfiguration<T> configuration, ConcurrentQueue<T> queue)
+        internal static void ReturnsNextFromQueue<T>(this IReturnValueConfiguration<T> configuration, ConcurrentQueue<T> queue)
         {
             configuration.ReturnsLazily(x =>
             {

@@ -67,12 +67,11 @@ of approaches in turn, until one succeeds:
   [dummy factory](custom-dummy-creation.md) for `T`,
   return whatever it makes.
 1. If `T` is `String`, return an empty string.
-1. If `T` is `Task`, the returned Dummy will be an actual `Task` that
-  completes immediately.
-1. If `T` is `Task<TResult>`, the returned Dummy will be an actual
-  `Task<TResult>` that completes immediately and whose
-  `Result` is a Dummy of type `TResult`, or a default `TResult` if no
-  Dummy can be made for `TResult`.
+1. If `T` is `Task` or `ValueTask`, the returned Dummy will be an actual `Task` or `ValueTask`
+   that is already completed.
+1. If `T` is `Task<TResult>` or `ValueTask<TResult>`, the returned Dummy will be an actual
+  `Task<TResult>` or `ValueTask<TResult>` that is alredy completed and whose `Result` is a
+  Dummy of type `TResult`, or a default `TResult` if no  Dummy can be made for `TResult`.
 1. If `T` is a `Lazy<TValue>` the returned Dummy will be an actual
   `Lazy<TValue>` whose `Value` is a Dummy of type
   `TValue`, or a default `TValue` if no Dummy can be made

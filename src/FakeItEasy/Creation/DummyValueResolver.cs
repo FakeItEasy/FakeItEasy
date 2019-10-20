@@ -148,6 +148,25 @@ namespace FakeItEasy.Creation
                     return CreationResult.SuccessfullyCreated(method.Invoke(null, new[] { taskResult }));
                 }
 
+                if (typeOfDummy.FullName == "System.Threading.Tasks.ValueTask")
+                {
+                    return CreationResult.SuccessfullyCreated(typeOfDummy.GetDefaultValue());
+                }
+
+                if (typeOfDummy.GetTypeInfo().IsGenericType &&
+                    !typeOfDummy.GetTypeInfo().IsGenericTypeDefinition &&
+                    typeOfDummy.FullName.StartsWith("System.Threading.Tasks.ValueTask`", StringComparison.Ordinal))
+                {
+                    var typeOfTaskResult = typeOfDummy.GetGenericArguments()[0];
+                    var creationResult = resolver.TryResolveDummyValue(typeOfTaskResult, resolutionContext);
+                    object taskResult = creationResult.WasSuccessful
+                        ? creationResult.Result
+                        : typeOfTaskResult.GetDefaultValue();
+
+                    var ctor = typeOfDummy.GetConstructor(new[] { typeOfTaskResult });
+                    return CreationResult.SuccessfullyCreated(ctor.Invoke(new[] { taskResult }));
+                }
+
                 return CreationResult.FailedToCreateDummy(typeOfDummy, "It is not a Task.");
             }
 
