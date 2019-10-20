@@ -26,7 +26,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{59466C4D-C40
 		src\FakeItEasy.Dictionary.xml = src\FakeItEasy.Dictionary.xml
 		src\FakeItEasy.ruleset = src\FakeItEasy.ruleset
 		src\FakeItEasy.snk = src\FakeItEasy.snk
-		src\ILMerge.Internalize.Exclude.txt = src\ILMerge.Internalize.Exclude.txt
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FakeItEasy.Examples", "samples\FakeItEasy.Examples\FakeItEasy.Examples.csproj", "{1ED2F1A2-40E3-498C-B13F-AF066EACF58F}"

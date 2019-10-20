@@ -14,13 +14,12 @@
     <PackageTags>TDD;unittesting;mocks;mocking;fakes;faking;stubs;stubbing;spy;spies;doubles;isolation;substitutes;substitution</PackageTags>
   </PropertyGroup>
 
-  <PropertyGroup Label="Common referenced package versions">
-    <CastleCoreVersion>4.3.1</CastleCoreVersion>
-    <ILMergeVersion>3.0.21</ILMergeVersion>
-  </PropertyGroup>
-
   <ItemGroup>
     <Compile Include="../*.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Castle.Core" Version="4.3.1" />
   </ItemGroup>
 
   <!-- Debug -->
@@ -42,19 +41,11 @@
     <DefineConstants>$(DefineConstants);FEATURE_REFLECTION_GETASSEMBLIES;FEATURE_EXCEPTION_DISPATCH_INFO;FEATURE_ARRAY_EMPTY;FEATURE_PARAMETERINFO_CUSTOMATTRIBUTES_PROPERTY;FEATURE_STRING_CONTAINS_COMPARISONTYPE</DefineConstants>
   </PropertyGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
-    <PackageReference Include="Castle.Core" Version="$(CastleCoreVersion)" />
-  </ItemGroup>
-
   <!-- .NET Standard 2.0 -->
 
   <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
     <DefineConstants>$(DefineConstants);FEATURE_REFLECTION_GETASSEMBLIES;FEATURE_EXCEPTION_DISPATCH_INFO;FEATURE_ARRAY_EMPTY;FEATURE_PARAMETERINFO_CUSTOMATTRIBUTES_PROPERTY</DefineConstants>
   </PropertyGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <PackageReference Include="Castle.Core" Version="$(CastleCoreVersion)" />
-  </ItemGroup>
 
   <!-- .NET Standard 1.6 -->
 
@@ -63,7 +54,6 @@
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.6'">
-    <PackageReference Include="Castle.Core" Version="$(CastleCoreVersion)" />
     <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="1.0.0" />
     <PackageReference Include="System.Collections.Concurrent" Version="4.3.0" />
     <PackageReference Include="System.Runtime.Loader" Version="4.0.0" />
@@ -75,30 +65,11 @@
     <DefineConstants>$(DefineConstants);FEATURE_REFLECTION_GETASSEMBLIES;FEATURE_REFLECTIONONLYLOAD;FEATURE_PARAMETERINFO_CUSTOMATTRIBUTES_PROPERTY</DefineConstants>
   </PropertyGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'net45'">
-    <PackageReference Include="ILMerge" Version="$(ILMergeVersion)" PrivateAssets="all" />
-    <PackageReference Include="Castle.Core" Version="$(CastleCoreVersion)" PrivateAssets="all" />
-  </ItemGroup>
-
-  <Target Name="ILMerge45" AfterTargets="Build" Condition="'$(TargetFramework)' == 'net45'">
-    <Exec Command="&quot;$(ILMergeConsolePath)&quot; /keyfile:..\FakeItEasy.snk /lib:$(OutputPath) /targetplatform:&quot;v4,$(MSBuildProgramFiles32)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5&quot; /internalize:&quot;..\ILMerge.Internalize.Exclude.txt&quot; /out:@(MainAssembly) /log:$(OutputPath)ILMerge.log &quot;@(IntermediateAssembly)&quot; &quot;$(OutputPath)Castle.Core.dll&quot;" />
-  </Target>
-
   <!-- .NET 4.0 -->
 
   <PropertyGroup Condition="'$(TargetFramework)' == 'net40'">
     <DefineConstants>$(DefineConstants);FEATURE_REFLECTION_GETASSEMBLIES;FEATURE_REFLECTIONONLYLOAD;FEATURE_EVENT_ARGS_MUST_EXTEND_EVENTARGS</DefineConstants>
   </PropertyGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'net40'">
-    <PackageReference Include="ILMerge" Version="$(ILMergeVersion)" PrivateAssets="all" />
-    <PackageReference Include="Castle.Core" Version="$(CastleCoreVersion)" PrivateAssets="all" />
-  </ItemGroup>
-
-  <Target Name="ILMerge40" AfterTargets="Build" Condition="'$(TargetFramework)' == 'net40'">
-    <Exec Command="&quot;$(ILMergeConsolePath)&quot; /keyfile:..\FakeItEasy.snk /lib:$(OutputPath) /targetplatform:&quot;v4,$(MSBuildProgramFiles32)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0&quot; /internalize:&quot;..\ILMerge.Internalize.Exclude.txt&quot; /out:@(MainAssembly) /log:$(OutputPath)ILMerge.log &quot;@(IntermediateAssembly)&quot; &quot;$(OutputPath)Castle.Core.dll&quot;" />
-  </Target>
-
 
   <!-- Include PDB in package -->
 
