@@ -136,6 +136,10 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ReturnValueConfigurationExtensions.StronglyTyped.cs</LastGenOutput>
     </None>
+    <None Update="ValueTaskAsyncReturnValueConfigurationExtensions.StronglyTyped.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ValueTaskAsyncReturnValueConfigurationExtensions.StronglyTyped.cs</LastGenOutput>
+    </None>
     <None Update="ValueTaskReturnValueConfigurationExtensions.StronglyTyped.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ValueTaskReturnValueConfigurationExtensions.StronglyTyped.cs</LastGenOutput>
@@ -170,6 +174,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>ReturnValueConfigurationExtensions.StronglyTyped.tt</DependentUpon>
     </Compile>
+    <Compile Update="ValueTaskAsyncReturnValueConfigurationExtensions.StronglyTyped.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ValueTaskAsyncReturnValueConfigurationExtensions.StronglyTyped.tt</DependentUpon>
+    </Compile>
     <Compile Update="ValueTaskReturnValueConfigurationExtensions.StronglyTyped.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -180,6 +189,8 @@
   <ItemGroup Condition="'$(TargetFramework)' == 'net40' OR '$(TargetFramework)' == 'net45' OR '$(TargetFramework)' == 'netstandard1.6' OR '$(TargetFramework)' == 'netstandard2.0'">
     <Compile Remove="ValueTaskReturnValueConfigurationExtensions.cs" />
     <Compile Remove="ValueTaskReturnValueConfigurationExtensions.StronglyTyped.cs" />
+    <Compile Remove="ValueTaskAsyncReturnValueConfigurationExtensions.cs" />
+    <Compile Remove="ValueTaskAsyncReturnValueConfigurationExtensions.StronglyTyped.cs" />
   </ItemGroup>
 
 </Project>

@@ -24,6 +24,8 @@
   <ItemGroup Condition="'$(TargetFramework)' == 'net45' OR '$(TargetFramework)' == 'netstandard1.6' OR '$(TargetFramework)' == 'netstandard2.0'">
     <Compile Include="../FakeItEasy/ValueTaskReturnValueConfigurationExtensions.cs" />
     <Compile Include="../FakeItEasy/ValueTaskReturnValueConfigurationExtensions.StronglyTyped.cs" />
+    <Compile Include="../FakeItEasy/ValueTaskAsyncReturnValueConfigurationExtensions.cs" />
+    <Compile Include="../FakeItEasy/ValueTaskAsyncReturnValueConfigurationExtensions.StronglyTyped.cs" />
   </ItemGroup>
 
   <ItemGroup>
