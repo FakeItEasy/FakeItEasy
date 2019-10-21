@@ -1,13 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.1</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>FakeItEasy.Analyzer</RootNamespace>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <FileAlignment>512</FileAlignment>
     <SignAssembly>true</SignAssembly>
     <DefineConstants>$(DefineConstants);CSHARP</DefineConstants>
-    <PackageTargetFallback>portable45-net45+win8</PackageTargetFallback>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>
 
@@ -19,10 +18,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Update="NetStandard.Library" Version="$(NetStandardImplicitPackageVersion)" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="1.1.0" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="1.1.0" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.Composition" Version="1.0.27" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="2.9.6" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="3.3.1" PrivateAssets="all" />
   </ItemGroup>
 
   <ItemGroup>

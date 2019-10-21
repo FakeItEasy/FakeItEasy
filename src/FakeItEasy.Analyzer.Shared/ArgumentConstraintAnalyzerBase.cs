@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Analyzer
+namespace FakeItEasy.Analyzer
 {
     using System;
     using Microsoft.CodeAnalysis;
@@ -21,6 +21,8 @@
                 throw new ArgumentNullException(nameof(context));
             }
 
+            context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.Analyze | GeneratedCodeAnalysisFlags.ReportDiagnostics);
+            context.EnableConcurrentExecution();
             context.RegisterSyntaxNodeAction(this.AnalyzeNode, SyntaxKind.SimpleMemberAccessExpression);
         }
 

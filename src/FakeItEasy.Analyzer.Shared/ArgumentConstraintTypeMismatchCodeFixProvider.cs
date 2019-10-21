@@ -51,13 +51,15 @@ namespace FakeItEasy.Analyzer
                 context.RegisterCodeFix(
                   CodeAction.Create(
                       MakeConstraintNullableCodeFixTitle,
-                      ct => MakeConstraintNullableAsync(context, diagnostic, ct)),
+                      ct => MakeConstraintNullableAsync(context, diagnostic, ct),
+                      equivalenceKey: "MakeConstraintNullable"),
                   diagnostic);
 
                 context.RegisterCodeFix(
                     CodeAction.Create(
                         MakeNotNullConstraintCodeFixTitle,
-                        ct => MakeNotNullConstraintAsync(context, diagnostic, ct)),
+                        ct => MakeNotNullConstraintAsync(context, diagnostic, ct),
+                        equivalenceKey: "MakeNotNullConstraint"),
                     diagnostic);
             }
             else if (diagnostic.Descriptor.Id == DiagnosticDefinitions.ArgumentConstraintTypeMismatch.Id)
@@ -65,12 +67,15 @@ namespace FakeItEasy.Analyzer
                 context.RegisterCodeFix(
                     CodeAction.Create(
                         ChangeConstraintTypeCodeFixTitle,
-                        ct => ChangeConstraintTypeAsync(context, diagnostic, ct)),
+                        ct => ChangeConstraintTypeAsync(context, diagnostic, ct),
+                        equivalenceKey: "ChangeConstraintType"),
                     diagnostic);
             }
 
             return CompletedTask;
         }
+
+        public override FixAllProvider GetFixAllProvider() => WellKnownFixAllProviders.BatchFixer;
 
         private static SyntaxNode GetConstraintNode(Diagnostic diagnostic, SyntaxNode root)
         {

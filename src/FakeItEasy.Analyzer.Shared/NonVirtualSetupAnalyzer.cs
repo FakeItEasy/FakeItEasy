@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Analyzer
+namespace FakeItEasy.Analyzer
 {
     using System;
     using System.Collections.Immutable;
@@ -49,6 +49,9 @@
             {
                 throw new ArgumentNullException(nameof(context));
             }
+
+            context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.Analyze | GeneratedCodeAnalysisFlags.ReportDiagnostics);
+            context.EnableConcurrentExecution();
 
             context.RegisterSyntaxNodeAction(
                 AnalyzeMethod,
