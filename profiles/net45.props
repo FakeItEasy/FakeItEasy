@@ -1,0 +1,14 @@
+<Project>
+  <!-- .NET Framework 4.5 only -->
+  <PropertyGroup>
+    <FakeItEasyTargetFrameworks>net45</FakeItEasyTargetFrameworks>
+    <ValueTaskExtensionsTargetFrameworks>net45</ValueTaskExtensionsTargetFrameworks>
+    <ExampleTargetFrameworks>net45</ExampleTargetFrameworks>
+    <SpecsTargetFrameworks>net461</SpecsTargetFrameworks>
+    <IntegrationTestsTargetFrameworks>net461</IntegrationTestsTargetFrameworks>
+    <UnitTestsTargetFrameworks>net461</UnitTestsTargetFrameworks>
+    <AnalyzerTestsTargetFrameworks>net461</AnalyzerTestsTargetFrameworks>
+    <TestHelpersTargetFrameworks>net461</TestHelpersTargetFrameworks>
+    <ApprovalTestsTargetFrameworks>net461</ApprovalTestsTargetFrameworks>
+  </PropertyGroup>
+</Project>
