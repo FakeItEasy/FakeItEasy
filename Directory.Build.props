@@ -17,6 +17,9 @@
     </CodeAnalysisDictionary>
   </ItemGroup>
 
+  <!-- User properties -->
+  <Import Project="$(MSBuildThisFileDirectory)FakeItEasy.user.props" Condition="Exists('$(MSBuildThisFileDirectory)FakeItEasy.user.props')" />
+
   <!-- Build profiles -->
 
   <PropertyGroup>
