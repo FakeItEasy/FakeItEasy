@@ -14,30 +14,17 @@ namespace FakeItEasy.Tests.Approval
     public class ApiApproval
     {
         [Theory]
-        [InlineData("net40")]
-        [InlineData("net45")]
-        [InlineData("netstandard1.6")]
-        [InlineData("netstandard2.0")]
-        [InlineData("netstandard2.1")]
+        [InlineData("FakeItEasy", "net40")]
+        [InlineData("FakeItEasy", "net45")]
+        [InlineData("FakeItEasy", "netstandard1.6")]
+        [InlineData("FakeItEasy", "netstandard2.0")]
+        [InlineData("FakeItEasy", "netstandard2.1")]
+        [InlineData("FakeItEasy.Extensions.ValueTask", "net45")]
+        [InlineData("FakeItEasy.Extensions.ValueTask", "netstandard1.6")]
+        [InlineData("FakeItEasy.Extensions.ValueTask", "netstandard2.0")]
         [UseReporter(typeof(DiffReporter))]
         [MethodImpl(MethodImplOptions.NoInlining)]
-        public void ApproveFakeItEasyApi(string frameworkVersion)
-        {
-            ApproveApi("FakeItEasy", frameworkVersion);
-        }
-
-        [Theory]
-        [InlineData("net45")]
-        [InlineData("netstandard1.6")]
-        [InlineData("netstandard2.0")]
-        [UseReporter(typeof(DiffReporter))]
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        public void ApproveExtensionsValueTaskApi(string frameworkVersion)
-        {
-            ApproveApi("FakeItEasy.Extensions.ValueTask", frameworkVersion);
-        }
-
-        private static void ApproveApi(string projectName, string frameworkVersion)
+        public void ApproveApi(string projectName, string frameworkVersion)
         {
             string codeBase = Assembly.GetExecutingAssembly().CodeBase;
             UriBuilder uri = new UriBuilder(new Uri(codeBase));
