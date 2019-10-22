@@ -2,6 +2,7 @@ namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
 {
     using System;
     using System.Collections.Generic;
+    using FakeItEasy.Tests.TestHelpers;
     using Xunit;
 
     public class CollectionContainsTests

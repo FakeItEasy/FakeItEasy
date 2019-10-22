@@ -3,6 +3,7 @@ namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using FakeItEasy.Tests.TestHelpers;
     using Xunit;
 
     public class CollectionIsEmptyTests

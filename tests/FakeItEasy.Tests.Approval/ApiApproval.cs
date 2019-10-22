@@ -13,7 +13,7 @@ namespace FakeItEasy.Tests.Approval
 
     public class ApiApproval
     {
-        [Theory]
+        [SkippableTheory]
         [InlineData("FakeItEasy", "net40")]
         [InlineData("FakeItEasy", "net45")]
         [InlineData("FakeItEasy", "netstandard1.6")]
@@ -35,6 +35,8 @@ namespace FakeItEasy.Tests.Approval
                 Path.Combine(
                     GetSourceDirectory(),
                     $@"..\..\src\{projectName}\bin\{configurationName}\{frameworkVersion}\{projectName}.dll"));
+
+            Skip.IfNot(File.Exists(assemblyFile), "Assembly doesn't exist.");
 
             var assembly = Assembly.LoadFile(Path.GetFullPath(assemblyFile));
             var publicApi = ApiGenerator.GeneratePublicApi(assembly);

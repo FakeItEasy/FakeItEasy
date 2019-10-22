@@ -8,6 +8,7 @@ namespace FakeItEasy.Tests.Configuration
     using FakeItEasy.Core;
     using FakeItEasy.Expressions;
     using FakeItEasy.Tests;
+    using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using Xunit;
 

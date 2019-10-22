@@ -8,7 +8,6 @@ namespace FakeItEasy.IntegrationTests
 #endif
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
-    using FakeItEasy.Tests;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using Xunit;
@@ -20,6 +19,11 @@ namespace FakeItEasy.IntegrationTests
             IEnumerable<object> Collection { get; }
 
             IFoo Foo { get; }
+        }
+
+        [SuppressMessage("Microsoft.Design", "CA1040:AvoidEmptyInterfaces", Justification = "Required for testing.")]
+        public interface IEmpty
+        {
         }
 
         [Fact]
@@ -85,7 +89,7 @@ namespace FakeItEasy.IntegrationTests
             // Assert
             const string ExpectedMessage = @"
   The constructors with the following signatures were not tried:
-    (FakeItEasy.Tests.IFoo, *FakeItEasy.IntegrationTests.GeneralTests+NoInstanceType)
+    (FakeItEasy.IntegrationTests.IFoo, *FakeItEasy.IntegrationTests.GeneralTests+NoInstanceType)
     (*FakeItEasy.IntegrationTests.GeneralTests+NoInstanceType)
 
     Types marked with * could not be resolved. Please provide a Dummy Factory to enable these constructors.

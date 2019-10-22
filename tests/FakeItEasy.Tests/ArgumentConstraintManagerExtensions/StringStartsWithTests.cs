@@ -1,6 +1,7 @@
 namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
 {
     using System.Collections.Generic;
+    using FakeItEasy.Tests.TestHelpers;
     using Xunit;
 
     public class StringStartsWithTests

@@ -30,6 +30,8 @@ After the build has completed, the build artifacts will be located in `artifacts
 
 ## Extras
 
+### Running specific build tasks
+
 `build.cmd` wraps a [Bullseye](https://github.com/adamralph/bullseye) targets project, so you can use all the usual command line arguments that you would use with Bullseye, e.g.:
 
 * View the full list of build targets:
@@ -44,6 +46,42 @@ After the build has completed, the build artifacts will be located in `artifacts
 
     `build.cmd spec pack`
 
+* Run a target without running its dependencies (might fail if the dependencies
+  haven't been previously built):
+
+    `build.cmd -s spec`
+
 * View the full list of options:
 
     `build.cmd -?`
+
+### Building only a subset of the supported target frameworks
+
+FakeItEasy targets multiple versions of .NET (.NET Framework 4.0 and 4.5, .NET
+Standard 1.6, 2.0 and 2.1), and the tests also run on multiple frameworks (.NET
+Framework 4.6.1 and several versions of .NET Core). A consequence is that a full
+build can take a significant amount of time. When working on the code, you might
+want a faster feedback loop. To this end, FakeItEasy's build infrastructure has
+the concept of "build profiles", which makes it possible to build only a subset
+of all the target frameworks supported by FakeItEasy. The following profiles are
+available:
+
+* `full`: the default profile, builds all supported target frameworks
+* `net45`: builds only the .NET Framework 4.5 target framework
+* `netcore2.1`: builds only .NET Core 2.1 / .NET Standard 2.0 target frameworks
+* `netcore3.0`: builds only .NET Core 3.0 / .NET Standard 2.1 target frameworks
+* `netcoreall`: builds all supported .NET Core / .NET Standard target frameworks
+
+In order to select a profile, create a `FakeItEasy.user.props` file at the root
+of the repository, and set the `BuildProfile` MSBuild property like this:
+
+```xml
+<Project>
+  <PropertyGroup>
+    <BuildProfile>netcore3.0</BuildProfile>
+  </PropertyGroup>
+</Project>
+```
+
+Note that Visual Studio will not reflect a change of build profile until you
+reload the solution. The command line build will reflect the change immediately.

@@ -1,14 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net461</TargetFrameworks>
+    <TargetFrameworks>$(ApprovalTestsTargetFrameworks)</TargetFrameworks>
     <AssemblyName>FakeItEasy.Tests.Approval</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ApprovalTests" Version="3.0.11" />
-    <PackageReference Include="ApprovalUtilities" Version="3.0.11" />
+    <PackageReference Include="ApprovalTests" Version="4.2.2" />
+    <PackageReference Include="ApprovalUtilities" Version="4.2.2" />
     <PackageReference Include="PublicApiGenerator" Version="9.3.0" />
+    <PackageReference Include="Xunit.SkippableFact" Version="1.3.12" />
   </ItemGroup>
 
 </Project>

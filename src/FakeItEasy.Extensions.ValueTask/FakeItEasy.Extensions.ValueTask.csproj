@@ -1,8 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net45;netstandard1.6;netstandard2.0;netstandard2.1</TargetFrameworks>
+    <TargetFrameworks>$(ValueTaskExtensionsTargetFrameworks)</TargetFrameworks>
     <SignAssembly>true</SignAssembly>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <BeforePack>AddNetStd21Placeholder;$(BeforePackOn)</BeforePack>
   </PropertyGroup>
 
   <PropertyGroup Label="Package properties">
@@ -40,23 +42,16 @@
     <DefineConstants>$(DefineConstants);FEATURE_NETCORE_REFLECTION</DefineConstants>
   </PropertyGroup>
 
-  <!-- Include PDB in package -->
+  <!-- Selectively include build output for package -->
   <ItemGroup>
-    <None Include="$(OutputPath)/net45/$(AssemblyName).pdb" Pack="true" PackagePath="lib/net45" Visible="false" />
-    <None Include="$(OutputPath)/netstandard1.6/$(AssemblyName).pdb" Pack="true" PackagePath="lib/netstandard1.6" Visible="false" />
-    <None Include="$(OutputPath)/netstandard2.0/$(AssemblyName).pdb" Pack="true" PackagePath="lib/netstandard2.0" Visible="false" />
+    <None Include="$(OutputPath)/**/$(AssemblyName).dll" Pack="true" PackagePath="lib" Visible="false" />
+    <None Include="$(OutputPath)/**/$(AssemblyName).pdb" Pack="true" PackagePath="lib" Visible="false" />
+    <None Include="$(OutputPath)/**/$(AssemblyName).xml" Pack="true" PackagePath="lib" Visible="false" />
+    <None Remove="$(OutputPath)/netstandard2.1/*" />
   </ItemGroup>
 
-  <!-- Exclude files from netstandard2.1 folder in package -->
-  <Target Name="RemoveNetStd21Files" AfterTargets="_WalkEachTargetPerFramework">
-    <ItemGroup>
-      <_BuildOutputInPackage Remove="$(MSBuildThisFileDirectory)$(IntermediateOutputPath)netstandard2.1/$(AssemblyName).*" Pack="false" />
-    </ItemGroup>
-  </Target>
-
   <!-- Include a placeholder file in netstandard2.1 folder in package -->
-
-  <Target Name="AddNetStd21Placeholder" BeforeTargets="_WalkEachTargetPerFramework">
+  <Target Name="AddNetStd21Placeholder">
     <WriteLinesToFile File="$(IntermediateOutputPath)_._" Overwrite="true" Lines="" />
     <ItemGroup>
       <None Include="$(IntermediateOutputPath)_._" Pack="true" PackagePath="lib/netstandard2.1" Visible="false" />

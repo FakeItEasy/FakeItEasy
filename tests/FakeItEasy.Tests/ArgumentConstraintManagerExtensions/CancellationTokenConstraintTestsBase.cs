@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Threading;
+    using FakeItEasy.Tests.TestHelpers;
 
     public abstract class CancellationTokenConstraintTestsBase : ArgumentConstraintTestBase<CancellationToken>
     {

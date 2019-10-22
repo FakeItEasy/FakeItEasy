@@ -7,19 +7,12 @@ namespace FakeItEasy.IntegrationTests
     using System.Threading.Tasks;
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
-    using FakeItEasy.Tests;
+    using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using Xunit;
 
     public class ConcurrentCallTests
     {
-        public interface IFoo
-        {
-            int IntProperty { get; }
-
-            string StringProperty { get; set; }
-        }
-
         public static IEnumerable<object[]> UserRuleMutatingActions =>
             TestCases.FromObject(
                 new GetUnconfiguredProperty(),

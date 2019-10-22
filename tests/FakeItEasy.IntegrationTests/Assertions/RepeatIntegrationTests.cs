@@ -1,6 +1,5 @@
 namespace FakeItEasy.IntegrationTests.Assertions
 {
-    using FakeItEasy.Tests;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using Xunit;

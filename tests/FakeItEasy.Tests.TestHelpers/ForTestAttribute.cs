@@ -1,4 +1,4 @@
-namespace FakeItEasy.Tests
+namespace FakeItEasy.Tests.TestHelpers
 {
     using System;
 

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net461;netcoreapp2.1;netcoreapp3.0</TargetFrameworks>
+    <TargetFrameworks>$(AnalyzerTestsTargetFrameworks)</TargetFrameworks>
     <AssemblyName>FakeItEasy.Analyzer.VisualBasic.Tests</AssemblyName>
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
@@ -19,7 +19,7 @@
     <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="2.9.6" />
     <ProjectReference Include="..\..\src\FakeItEasy.Analyzer.VisualBasic\FakeItEasy.Analyzer.VisualBasic.csproj" />
     <ProjectReference Include="..\..\src\FakeItEasy\FakeItEasy.csproj" />
-    <ProjectReference Include="..\FakeItEasy.Tests\FakeItEasy.Tests.csproj" />
+    <ProjectReference Include="..\FakeItEasy.Tests.TestHelpers\FakeItEasy.Tests.TestHelpers.csproj" />
   </ItemGroup>
 
   <ItemGroup>

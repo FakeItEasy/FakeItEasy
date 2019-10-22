@@ -1,14 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net461;netcoreapp1.0;netcoreapp2.1;netcoreapp3.0</TargetFrameworks>
+    <TargetFrameworks>$(IntegrationTestsTargetFrameworks)</TargetFrameworks>
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.Compilers" Version="2.1.0" />
     <ProjectReference Include="..\..\src\FakeItEasy\FakeItEasy.csproj" />
-    <ProjectReference Include="..\..\tests\FakeItEasy.Tests\FakeItEasy.Tests.csproj" />
+    <ProjectReference Include="..\FakeItEasy.Tests.TestHelpers\FakeItEasy.Tests.TestHelpers.csproj" />
   </ItemGroup>
 
 </Project>

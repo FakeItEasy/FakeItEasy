@@ -1,12 +1,11 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>$(UnitTestsTargetFrameworks)</TargetFrameworks>
-    <AssemblyName>FakeItEasy.Tests</AssemblyName>
+    <TargetFrameworks>$(TestHelpersTargetFrameworks)</TargetFrameworks>
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(TargetFramework)' == 'netcoreapp1.0'">
+  <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard1.6'">
     <DefineConstants>$(DefineConstants);FEATURE_NETCORE_REFLECTION</DefineConstants>
   </PropertyGroup>
 
@@ -16,7 +15,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\FakeItEasy\FakeItEasy.csproj" />
-    <ProjectReference Include="..\FakeItEasy.Tests.TestHelpers\FakeItEasy.Tests.TestHelpers.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Remove="xunit.runner.visualstudio" />
   </ItemGroup>
 
 </Project>

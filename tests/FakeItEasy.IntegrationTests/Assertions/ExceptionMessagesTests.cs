@@ -1,7 +1,6 @@
 namespace FakeItEasy.IntegrationTests.Assertions
 {
     using System;
-    using FakeItEasy.Tests;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using Xunit;
@@ -29,14 +28,14 @@ namespace FakeItEasy.IntegrationTests.Assertions
 @"
 
   Assertion failed for the following call:
-    FakeItEasy.Tests.IFoo.Bar(argument: string.Empty)
+    FakeItEasy.IntegrationTests.IFoo.Bar(argument: string.Empty)
   Expected to find it twice or more but didn't find it among the calls:
-    1: FakeItEasy.Tests.IFoo.Bar() 2 times
+    1: FakeItEasy.IntegrationTests.IFoo.Bar() 2 times
     ...
-    3: FakeItEasy.Tests.IFoo.Bar(argument: ""test"")
-    4: FakeItEasy.Tests.IFoo.Bar(argument: 4/5/1977 12:00:00 AM, argument2: ""birthday"")
-    5: FakeItEasy.Tests.IFoo.ToString()
-    6: FakeItEasy.Tests.IFoo.Biz()
+    3: FakeItEasy.IntegrationTests.IFoo.Bar(argument: ""test"")
+    4: FakeItEasy.IntegrationTests.IFoo.Bar(argument: 4/5/1977 12:00:00 AM, argument2: ""birthday"")
+    5: FakeItEasy.IntegrationTests.IFoo.ToString()
+    6: FakeItEasy.IntegrationTests.IFoo.Biz()
 
 ";
             exception.Should().BeAnExceptionOfType<ExpectationException>()
@@ -60,14 +59,14 @@ namespace FakeItEasy.IntegrationTests.Assertions
 @"
 
   Assertion failed for the following call:
-    FakeItEasy.Tests.IFoo.Bar(argument: string.Empty)
+    FakeItEasy.IntegrationTests.IFoo.Bar(argument: string.Empty)
   Expected to find it twice or more but didn't find it among the calls:
-    1: FakeItEasy.Tests.IFoo.Bar(
+    1: FakeItEasy.IntegrationTests.IFoo.Bar(
           argument1: 1,
           argument2: 2,
           argument3: ""three"") 2 times
     ...
-    3: FakeItEasy.Tests.IFoo.Bar()
+    3: FakeItEasy.IntegrationTests.IFoo.Bar()
 
 ";
 
@@ -92,9 +91,9 @@ namespace FakeItEasy.IntegrationTests.Assertions
 @"
 
   Assertion failed for the following call:
-    FakeItEasy.Tests.IFoo.Bar(argument: <Ignored>, argument2: <Starts with ""lorem"">)
+    FakeItEasy.IntegrationTests.IFoo.Bar(argument: <Ignored>, argument2: <Starts with ""lorem"">)
   Expected to find it twice or more but found it once among the calls:
-    1: FakeItEasy.Tests.IFoo.Bar(argument: System.Object, argument2: ""lorem ipsum"")
+    1: FakeItEasy.IntegrationTests.IFoo.Bar(argument: System.Object, argument2: ""lorem ipsum"")
 
 ";
 
@@ -117,9 +116,9 @@ namespace FakeItEasy.IntegrationTests.Assertions
 @"
 
   Assertion failed for the following call:
-    FakeItEasy.Tests.IFoo.Baz(argument: <Ignored>, argument2: <Starts with ""lorem"">)
+    FakeItEasy.IntegrationTests.IFoo.Baz(argument: <Ignored>, argument2: <Starts with ""lorem"">)
   Expected to find it twice or more but found it once among the calls:
-    1: FakeItEasy.Tests.IFoo.Baz(argument: System.Object, argument2: ""lorem ipsum"")
+    1: FakeItEasy.IntegrationTests.IFoo.Baz(argument: System.Object, argument2: ""lorem ipsum"")
 
 ";
             exception.Should().BeAnExceptionOfType<ExpectationException>()
