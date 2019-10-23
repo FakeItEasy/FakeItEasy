@@ -5,6 +5,7 @@
     <AssemblyName>FakeItEasy</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <SignAssembly>true</SignAssembly>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
   </PropertyGroup>
 
   <PropertyGroup Label="Package properties">
@@ -22,17 +23,8 @@
     <PackageReference Include="Castle.Core" Version="4.3.1" />
   </ItemGroup>
 
-  <!-- Debug -->
-
-  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
-    <DebugType>full</DebugType>
-  </PropertyGroup>
-
-  <!-- Release -->
-
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <DebugType>pdbonly</DebugType>
   </PropertyGroup>
 
   <!-- .NET Standard 2.1 -->
@@ -70,12 +62,6 @@
   <PropertyGroup Condition="'$(TargetFramework)' == 'net40'">
     <DefineConstants>$(DefineConstants);FEATURE_REFLECTION_GETASSEMBLIES;FEATURE_REFLECTIONONLYLOAD;FEATURE_EVENT_ARGS_MUST_EXTEND_EVENTARGS</DefineConstants>
   </PropertyGroup>
-
-  <!-- Include PDB in package -->
-
-  <ItemGroup>
-    <None Include="$(OutputPath)/**/$(AssemblyName).pdb" Pack="true" PackagePath="lib" Visible="false" />
-  </ItemGroup>
 
   <ItemGroup>
     <!-- T4 template support -->

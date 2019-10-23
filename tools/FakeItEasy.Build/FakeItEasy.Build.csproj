@@ -3,15 +3,11 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.0</TargetFramework>
-    <PdbGitEnabled>false</PdbGitEnabled>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Bullseye" Version="3.0.0" />
     <PackageReference Include="SimpleExec" Version="$(SimpleExecVersion)" />
-    <PackageReference Include="PdbGit" Version="3.0.41" ToolName="PdbGit" ToolExe="PdbGit.exe" />
   </ItemGroup>
-
-  <Import Project="../FakeItEasy.ToolPaths.targets" />
 
 </Project>

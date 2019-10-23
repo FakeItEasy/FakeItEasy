@@ -17,20 +17,6 @@ namespace FakeItEasy.Build
             "src/FakeItEasy.Analyzer.VisualBasic/FakeItEasy.Analyzer.VisualBasic.csproj"
         };
 
-        private static readonly Pdb[] Pdbs =
-        {
-            "src/FakeItEasy/bin/Release/net40/FakeItEasy.pdb",
-            "src/FakeItEasy/bin/Release/net45/FakeItEasy.pdb",
-            "src/FakeItEasy/bin/Release/netstandard1.6/FakeItEasy.pdb",
-            "src/FakeItEasy/bin/Release/netstandard2.0/FakeItEasy.pdb",
-            "src/FakeItEasy/bin/Release/netstandard2.1/FakeItEasy.pdb",
-            "src/FakeItEasy.Extensions.ValueTask/bin/Release/net45/FakeItEasy.Extensions.ValueTask.pdb",
-            "src/FakeItEasy.Extensions.ValueTask/bin/Release/netstandard1.6/FakeItEasy.Extensions.ValueTask.pdb",
-            "src/FakeItEasy.Extensions.ValueTask/bin/Release/netstandard2.0/FakeItEasy.Extensions.ValueTask.pdb",
-            "src/FakeItEasy.Analyzer.CSharp/bin/Release/FakeItEasy.Analyzer.Csharp.pdb",
-            "src/FakeItEasy.Analyzer.VisualBasic/bin/Release/FakeItEasy.Analyzer.VisualBasic.pdb"
-        };
-
         private static readonly IReadOnlyDictionary<string, string[]> TestSuites = new Dictionary<string, string[]>
         {
             ["unit"] = new[]
@@ -73,26 +59,11 @@ namespace FakeItEasy.Build
 
             Target(
                 "pack",
-                DependsOn("build", "pdbgit"),
+                DependsOn("build"),
                 forEach: ProjectsToPack,
                 action: project => Run("dotnet", $"pack {project.Path} --configuration Release --no-build --output {Path.GetFullPath("artifacts/output")}"));
 
-            Target(
-                "pdbgit",
-                DependsOn("build"),
-                forEach: Pdbs.Where(pdb => File.Exists(pdb.Path)),
-                action: pdb => Run(ToolPaths.PdbGit, $"-u https://github.com/FakeItEasy/FakeItEasy -s {pdb.Path}"));
-
             RunTargetsAndExit(args, messageOnly: ex => ex is NonZeroExitCodeException);
-        }
-
-        private class Pdb
-        {
-            public string Path { get; set; }
-
-            public static implicit operator Pdb(string path) => new Pdb { Path = path };
-
-            public override string ToString() => this.Path.Split("Release/")[1];
         }
 
         private class Project
