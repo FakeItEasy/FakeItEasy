@@ -180,6 +180,11 @@ namespace FakeItEasy.Creation
 
         private class ResolveByCreatingLazyStrategy : ResolveStrategy
         {
+            private static readonly MethodInfo CreateLazyDummyGenericDefinition =
+                typeof(ResolveByCreatingLazyStrategy).GetMethod(
+                    nameof(CreateLazyDummy),
+                    BindingFlags.Static | BindingFlags.NonPublic);
+
             public override CreationResult TryCreateDummyValue(
                 Type typeOfDummy,
                 IDummyValueResolver resolver,
@@ -188,32 +193,25 @@ namespace FakeItEasy.Creation
                 if (typeOfDummy.GetTypeInfo().IsGenericType && typeOfDummy.GetGenericTypeDefinition() == typeof(Lazy<>))
                 {
                     var typeOfLazyResult = typeOfDummy.GetGenericArguments()[0];
-                    var creationResult = resolver.TryResolveDummyValue(typeOfLazyResult, resolutionContext);
-                    object lazyResult = creationResult.WasSuccessful
-                        ? creationResult.Result
-                        : typeOfLazyResult.GetDefaultValue();
-
                     var funcType = typeof(Func<>).MakeGenericType(typeOfLazyResult);
 
-                    var method = CreateGenericFromResultMethodDefinition().MakeGenericMethod(typeOfLazyResult);
-                    var func = method.Invoke(null, new[] { lazyResult });
-                    var dummy = typeOfDummy.GetConstructor(new[] { funcType, typeof(bool) }).Invoke(new[] { func, true });
+                    var method = CreateLazyDummyGenericDefinition.MakeGenericMethod(typeOfLazyResult);
+                    var dummy = method.Invoke(null, new object[] { resolver });
                     return CreationResult.SuccessfullyCreated(dummy);
                 }
 
                 return CreationResult.FailedToCreateDummy(typeOfDummy, "It is not a Lazy.");
             }
 
-            private static MethodInfo CreateGenericFromResultMethodDefinition()
+            private static Lazy<T> CreateLazyDummy<T>(IDummyValueResolver resolver)
             {
-                Expression<Action> templateExpression = () => CreateFunc<object>(null);
-                var templateMethod = ((MethodCallExpression)templateExpression.Body).Method;
-                return templateMethod.GetGenericMethodDefinition();
-            }
-
-            private static Func<T> CreateFunc<T>(T value)
-            {
-                return () => value;
+                return new Lazy<T>(() =>
+                {
+                    var creationResult = resolver.TryResolveDummyValue(typeof(T), new LoopDetectingResolutionContext());
+                    return creationResult.WasSuccessful
+                        ? (T)creationResult.Result
+                        : default;
+                });
             }
         }
 
