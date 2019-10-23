@@ -30,7 +30,7 @@ namespace FakeItEasy.Tests
         public void Built_in_options_builders_should_have_lower_than_default_priority()
         {
             // Arrange
-            var allOptionsBuilders = typeof(A).GetTypeInformation().Assembly.GetTypes()
+            var allOptionsBuilders = typeof(A).GetTypeInfo().Assembly.GetTypes()
                 .Where(t => t.CanBeInstantiatedAs(typeof(IFakeOptionsBuilder)))
                 .Select(Activator.CreateInstance)
                 .Cast<IFakeOptionsBuilder>();
