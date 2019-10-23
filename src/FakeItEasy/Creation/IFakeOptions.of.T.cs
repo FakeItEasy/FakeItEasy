@@ -9,7 +9,7 @@ namespace FakeItEasy.Creation
     /// Provides options for generating fake object.
     /// </summary>
     /// <typeparam name="T">The type of fake object generated.</typeparam>
-    public interface IFakeOptions<T> : IHideObjectMembers
+    public interface IFakeOptions<T> : IHideObjectMembers where T : class
     {
         /// <summary>
         /// Specifies arguments for the constructor of the faked class.

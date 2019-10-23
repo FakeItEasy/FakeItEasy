@@ -8,7 +8,7 @@ namespace FakeItEasy
     /// A base implementation for classes that can build options for fakes of type <typeparamref name="TFake"/>.
     /// </summary>
     /// <typeparam name="TFake">The type of fake.</typeparam>
-    public abstract class FakeOptionsBuilder<TFake> : IFakeOptionsBuilder
+    public abstract class FakeOptionsBuilder<TFake> : IFakeOptionsBuilder where TFake : class
     {
         /// <summary>
         /// Gets the priority of the options builder. When multiple builders that apply to

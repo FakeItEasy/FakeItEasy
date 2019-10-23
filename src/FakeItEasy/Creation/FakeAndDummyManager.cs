@@ -59,7 +59,7 @@ namespace FakeItEasy.Creation
             return false;
         }
 
-        private static IFakeOptions CreateFakeOptions<T>(ProxyOptions proxyOptions) => new FakeOptions<T>(proxyOptions);
+        private static IFakeOptions CreateFakeOptions<T>(ProxyOptions proxyOptions) where T : class => new FakeOptions<T>(proxyOptions);
 
         private static Func<ProxyOptions, IFakeOptions> GetFakeOptionsFactory(Type typeOfFake)
         {

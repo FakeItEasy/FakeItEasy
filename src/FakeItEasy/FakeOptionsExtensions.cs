@@ -15,7 +15,7 @@ namespace FakeItEasy
         /// <typeparam name="T">The type of fake object.</typeparam>
         /// <param name="options">Options used to create the fake object.</param>
         /// <returns>An options object.</returns>
-        public static IFakeOptions<T> Strict<T>(this IFakeOptions<T> options)
+        public static IFakeOptions<T> Strict<T>(this IFakeOptions<T> options) where T : class
         {
             Guard.AgainstNull(options, nameof(options));
 
@@ -49,7 +49,7 @@ namespace FakeItEasy
         /// <typeparam name="T">The type of fake object.</typeparam>
         /// <param name="options">Options used to create the fake object.</param>
         /// <returns>An options object.</returns>
-        public static IFakeOptions<T> CallsBaseMethods<T>(this IFakeOptions<T> options)
+        public static IFakeOptions<T> CallsBaseMethods<T>(this IFakeOptions<T> options) where T : class
         {
             Guard.AgainstNull(options, nameof(options));
 
