@@ -29,7 +29,7 @@ namespace TheNamespace
     }}
 }}";
 
-        [Theory]
+        [Theory(Skip = "The Repeated API has been removed")]
         [MemberData(nameof(AssertionsThatDoNotUseRepeated))]
         public void Diagnostic_Should_Not_Be_Triggered_For_Assertion_That_Does_Not_Use_Repeated(string assertion)
         {
@@ -37,7 +37,7 @@ namespace TheNamespace
             this.VerifyCSharpDiagnostic(code);
         }
 
-        [Theory]
+        [Theory(Skip = "The Repeated API has been removed")]
         [MemberData(nameof(AssertionsThatUseRepeated))]
         public void Diagnostic_Should_Be_Triggered_For_MustHaveHappened_With_Repeated_Argument(string assertion)
         {
@@ -53,7 +53,7 @@ namespace TheNamespace
                  });
         }
 
-        [Fact]
+        [Fact(Skip = "The Repeated API has been removed")]
         public void Analyzer_Should_Not_Throw_When_Expression_Has_No_Type()
         {
             string code = @"#pragma warning disable CS0618
@@ -79,7 +79,7 @@ namespace TheNamespace
             this.VerifyCSharpDiagnostic(code);
         }
 
-        [Theory]
+        [Theory(Skip = "The Repeated API has been removed")]
         [MemberData(nameof(AssertionsAndTheirReplacements))]
         public void ChangeAssertion_CodeFix_Should_Replace_Assertion_With_Repeatedless_Assertion(string assertion, string fixedAssertion)
         {
