@@ -13,6 +13,7 @@ namespace FakeItEasy.Specs
     using Xbehave;
     using Xunit;
 
+    [Collection("DummyCreationSpecs")]
     public abstract class DummyCreationSpecsBase
     {
         [Scenario]
@@ -511,6 +512,22 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
+        public void LazyCreationIsLazy(Lazy<LazilyCreated> dummy)
+        {
+            "Given a type that tracks instance creation"
+                .x(() => LazilyCreated.IsInstanceCreated = false);
+
+            "When a dummy lazy of this type is requested"
+                .x(() => dummy = this.CreateDummy<Lazy<LazilyCreated>>());
+
+            "Then the dummy value isn't created yet"
+                .x(() => LazilyCreated.IsInstanceCreated.Should().BeFalse());
+
+            "And the value is created on first access"
+                .x(() => dummy.Value.Should().BeAssignableTo<LazilyCreated>());
+        }
+
+        [Scenario]
         public void TaskCreation(Task dummy)
         {
             "Given the Task type"
@@ -776,6 +793,18 @@ namespace FakeItEasy.Specs
                 throw new Exception("dummy factory threw");
             }
         }
+
+        #pragma warning disable CA1052
+        public class LazilyCreated
+        {
+            public static bool IsInstanceCreated { get; set; }
+
+            public LazilyCreated()
+            {
+                IsInstanceCreated = true;
+            }
+        }
+        #pragma warning restore CA1052
     }
 
     public class GenericDummyCreationSpecs : DummyCreationSpecsBase
