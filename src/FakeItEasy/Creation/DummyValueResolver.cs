@@ -193,8 +193,6 @@ namespace FakeItEasy.Creation
                 if (typeOfDummy.GetTypeInfo().IsGenericType && typeOfDummy.GetGenericTypeDefinition() == typeof(Lazy<>))
                 {
                     var typeOfLazyResult = typeOfDummy.GetGenericArguments()[0];
-                    var funcType = typeof(Func<>).MakeGenericType(typeOfLazyResult);
-
                     var method = CreateLazyDummyGenericDefinition.MakeGenericMethod(typeOfLazyResult);
                     var dummy = method.Invoke(null, new object[] { resolver });
                     return CreationResult.SuccessfullyCreated(dummy);
