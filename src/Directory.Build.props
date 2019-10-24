@@ -9,7 +9,6 @@
     <PackageIcon>images/FakeItEasy.png</PackageIcon>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReleaseNotes>https://github.com/FakeItEasy/FakeItEasy/releases</PackageReleaseNotes>
-    <NoPackageAnalysis>true</NoPackageAnalysis>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
   </PropertyGroup>
 
