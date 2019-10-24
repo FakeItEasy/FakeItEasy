@@ -12,6 +12,7 @@
     <PackageTags>FakeItEasy;analyzer</PackageTags>
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)FakeItEasy.Analyzer.ruleset</CodeAnalysisRuleSet>
+    <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)..\*.cs" />
