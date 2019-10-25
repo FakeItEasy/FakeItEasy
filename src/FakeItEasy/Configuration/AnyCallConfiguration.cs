@@ -56,10 +56,6 @@ namespace FakeItEasy.Configuration
         public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily(Func<IFakeObjectCall, ICollection<object>> valueProducer) =>
             this.VoidConfiguration.AssignsOutAndRefParametersLazily(valueProducer);
 
-        [Obsolete("Assertions using the Repeated class will be removed in version 6.0.0. Use other variants of MustHaveHappened instead.")]
-        public UnorderedCallAssertion MustHaveHappened(Repeated repeatConstraint) =>
-            this.VoidConfiguration.MustHaveHappened(repeatConstraint);
-
         public UnorderedCallAssertion MustHaveHappened(int numberOfTimes, Times timesOption)
         {
             Guard.AgainstNull(timesOption, nameof(timesOption));

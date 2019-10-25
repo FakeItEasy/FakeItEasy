@@ -9,18 +9,6 @@ namespace FakeItEasy.Configuration
     public interface IAssertConfiguration : IHideObjectMembers
     {
         /// <summary>
-        /// Asserts that the configured call has happened the number of times
-        /// specified by <paramref name="repeatConstraint"/>.
-        /// </summary>
-        /// <param name="repeatConstraint">A constraint for how many times the call
-        /// must have happened.</param>
-        /// <exception cref="ExpectationException">The call has not been called a number of times
-        /// that passes the repeat constraint.</exception>
-        /// <returns>An object to assert the call order.</returns>
-        [Obsolete("Assertions using the Repeated class will be removed in version 6.0.0. Use other variants of MustHaveHappened instead.")]
-        UnorderedCallAssertion MustHaveHappened(Repeated repeatConstraint);
-
-        /// <summary>
         /// Asserts that the specified call must have happened the specified number of times exactly, or more, or less,
         /// depending on the <paramref name="timesOption"/>.
         /// </summary>

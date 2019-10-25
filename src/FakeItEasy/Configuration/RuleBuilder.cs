@@ -122,14 +122,6 @@ namespace FakeItEasy.Configuration
             return this;
         }
 
-        [Obsolete("Assertions using the Repeated class will be removed in version 6.0.0. Use other variants of MustHaveHappened instead.")]
-        public UnorderedCallAssertion MustHaveHappened(Repeated repeatConstraint)
-        {
-            Guard.AgainstNull(repeatConstraint, nameof(repeatConstraint));
-
-            return this.MustHaveHappened(repeatConstraint.ToCallCountConstraint());
-        }
-
         public UnorderedCallAssertion MustHaveHappened(int numberOfTimes, Times timesOption)
         {
             Guard.AgainstNull(timesOption, nameof(timesOption));
@@ -229,10 +221,6 @@ namespace FakeItEasy.Configuration
                 this.ParentConfiguration.WhenArgumentsMatch(argumentsPredicate);
                 return this;
             }
-
-            [Obsolete("Assertions using the Repeated class will be removed in version 6.0.0. Use other variants of MustHaveHappened instead.")]
-            public UnorderedCallAssertion MustHaveHappened(Repeated repeatConstraint) =>
-                this.ParentConfiguration.MustHaveHappened(repeatConstraint);
 
             public UnorderedCallAssertion MustHaveHappened(int numberOfTimes, Times timesOption)
             {

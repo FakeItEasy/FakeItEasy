@@ -121,16 +121,4 @@
   <data name="ChangeConstraintTypeCodeFixTitle">
     <value>Change constraint type to match parameter</value>
   </data>
-    <data name="RepeatedAssertionDescription" xml:space="preserve">
-    <value>Call assertion is made using legacy Repeated class.</value>
-  </data>
-    <data name="RepeatedAssertionMessageFormat" xml:space="preserve">
-    <value>The MustHaveHappened(Repeated) assertion is obsolete, and will be removed in version 6.0.0.</value>
-  </data>
-  <data name="RepeatedAssertionTitle" xml:space="preserve">
-    <value>Assertion uses legacy Repeated class.</value>
-  </data>
-  <data name="ChangeAssertionToNotUseRepeatedCodeFixTitle" xml:space="preserve">
-    <value>Change assertion to not use the Repeated class</value>
-  </data>
 </root>

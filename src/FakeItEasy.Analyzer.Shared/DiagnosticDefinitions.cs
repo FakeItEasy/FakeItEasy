@@ -53,13 +53,9 @@ namespace FakeItEasy.Analyzer
                 DiagnosticSeverity.Error,
                 true);
 
-        public static DiagnosticDescriptor RepeatedAssertion { get; } =
-            CreateDiagnosticDescriptor(
-                nameof(RepeatedAssertion),
-                "FakeItEasy0006",
-                "FakeItEasy.Usage",
-                DiagnosticSeverity.Warning,
-                true);
+        /* Note:
+         * The FakeItEasy0006 identifier was used for the retired RepeatedAssertion diagnostic, and shouldn't be reused.
+         */
 
         private static DiagnosticDescriptor CreateDiagnosticDescriptor(
             string name, string id, string category, DiagnosticSeverity defaultSeverity, bool isEnabledByDefault)

@@ -33,21 +33,6 @@ namespace FakeItEasy.Tests.Configuration
 
         [Theory]
         [MemberData(nameof(AllKindsOfConfigurations))]
-        #pragma warning disable CS0618
-        public void MustHaveHappenedWithRepeated_should_be_null_guarded(IAssertConfiguration assertConfiguration)
-        {
-            // Arrange
-
-            // Act
-
-            // Assert
-            Expression<System.Action> call = () => assertConfiguration.MustHaveHappened(A.Dummy<Repeated>());
-            call.Should().BeNullGuarded();
-        }
-        #pragma warning restore CS0618
-
-        [Theory]
-        [MemberData(nameof(AllKindsOfConfigurations))]
         public void MustHaveHappenedWithIntAndTimes_should_be_null_guarded(IAssertConfiguration assertConfiguration)
         {
             // Arrange
