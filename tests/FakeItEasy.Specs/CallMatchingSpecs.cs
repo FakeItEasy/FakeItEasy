@@ -131,7 +131,7 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>());
 
             "And the exception message should tell us that the call was not matched"
-                .x(() => exception.Message.Should().Be(@"
+                .x(() => exception.Message.Should().BeModuloLineEndings(@"
 
   Assertion failed for the following call:
     FakeItEasy.Specs.CallMatchingSpecs+IHaveNoGenericParameters.Bar(baz: 3)
@@ -163,7 +163,7 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>());
 
             "And the exception message should tell us that the call was not matched"
-                .x(() => exception.Message.Should().Be(@"
+                .x(() => exception.Message.Should().BeModuloLineEndings(@"
 
   Assertion failed for the following call:
     FakeItEasy.Specs.CallMatchingSpecs+IHaveTwoGenericParameters.Bar`2[System.String,System.String](baz1: <Ignored>, baz2: <Ignored>)
@@ -198,7 +198,7 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>());
 
             "And the exception message should tell us that the call was not matched, and include the values of the actual collection elements"
-                .x(() => exception.Message.Should().Be(@"
+                .x(() => exception.Message.Should().BeModuloLineEndings(@"
 
   Assertion failed for the following call:
     FakeItEasy.Specs.CallMatchingSpecs+IIHaveACollectionParameter.Bar(args: <NULL, 42, ""hello"">)
@@ -227,7 +227,7 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>());
 
             "And the exception message should tell us that the call was not matched"
-                .x(() => exception.Message.Should().Be(@"
+                .x(() => exception.Message.Should().BeModuloLineEndings(@"
 
   Assertion failed for the following call:
     FakeItEasy.Specs.CallMatchingSpecs+IHaveNoGenericParameters.Bar(baz: <Ignored>)
@@ -254,7 +254,7 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>());
 
             "And the exception message should tell us that the call was not matched"
-                .x(() => exception.Message.Should().Be(@"
+                .x(() => exception.Message.Should().BeModuloLineEndings(@"
 
   Assertion failed for the following call:
     FakeItEasy.Specs.CallMatchingSpecs+IHaveOneGenericParameter.Bar`1[FakeItEasy.Specs.CallMatchingSpecs+Generic`1[System.String]](baz: <Ignored>)
@@ -308,7 +308,7 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>());
 
             "And the exception message should tell us that the call was not matched"
-                .x(() => exception.Message.Should().Match(@"
+                .x(() => exception.Message.Should().MatchModuloLineEndings(@"
 
   Assertion failed for the following call:
     System.Collections.Generic.IDictionary`2[System.String,System.String].TryGetValue(key: ""any key"", value: <out parameter>)

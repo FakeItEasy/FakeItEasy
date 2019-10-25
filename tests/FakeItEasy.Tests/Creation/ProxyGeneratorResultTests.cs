@@ -79,7 +79,7 @@ namespace FakeItEasy.Tests.Creation
                 "exception message"
             }.AsTextBlock();
 
-            result.ReasonForFailure.Should().StartWith(expectedReason);
+            result.ReasonForFailure.Should().StartWithModuloLineEndings(expectedReason);
         }
 
         [Fact]
@@ -100,7 +100,7 @@ namespace FakeItEasy.Tests.Creation
                 "target invocation inner exception message"
             }.AsTextBlock();
 
-            result.ReasonForFailure.Should().StartWith(expectedReason);
+            result.ReasonForFailure.Should().StartWithModuloLineEndings(expectedReason);
         }
 
         [Fact]
@@ -121,7 +121,7 @@ namespace FakeItEasy.Tests.Creation
                 "target invocation exception message"
             }.AsTextBlock();
 
-            result.ReasonForFailure.Should().StartWith(expectedReason);
+            result.ReasonForFailure.Should().StartWithModuloLineEndings(expectedReason);
         }
 
         [Fact]

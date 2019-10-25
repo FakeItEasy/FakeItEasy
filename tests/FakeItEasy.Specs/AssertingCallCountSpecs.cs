@@ -123,7 +123,7 @@ namespace FakeItEasy.Specs
 
             "Then the assertion fails"
                 .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>()
-                    .WithMessage($"*\r\nExpected to find it {callCountAsserter.AssertionError}*"));
+                    .WithMessageModuloLineEndings($"*\r\nExpected to find it {callCountAsserter.AssertionError}*"));
         }
 
         private static IEnumerable<object[]> MatchingTestCases()

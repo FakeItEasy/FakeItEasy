@@ -5,6 +5,7 @@ namespace FakeItEasy.Tests.Core
     using System.Reflection;
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
+    using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using Xunit;
 
@@ -92,7 +93,7 @@ namespace FakeItEasy.Tests.Core
     two: two,
     three: three)";
 
-            description.Should().EndWith(expectedDescription);
+            description.Should().EndWithModuloLineEndings(expectedDescription);
         }
 
         [Fact]

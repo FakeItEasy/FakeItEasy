@@ -1,5 +1,6 @@
 namespace FakeItEasy.Tests.TestHelpers
 {
+    using System;
     using System.Collections.Generic;
 
     /// <summary>
@@ -8,14 +9,13 @@ namespace FakeItEasy.Tests.TestHelpers
     public static class StringEnumerableExtensions
     {
         /// <summary>
-        /// Joins a number of individual lines with Windows-style newline characters
-        /// to make a text block.
+        /// Joins a number of individual lines with native line endings to make a text block.
         /// </summary>
         /// <param name="lines">The lines to join into a text block.</param>
         /// <returns>The formatted string.</returns>
         public static string AsTextBlock(this IEnumerable<string> lines)
         {
-            return string.Join("\r\n", lines);
+            return string.Join(Environment.NewLine, lines);
         }
     }
 }

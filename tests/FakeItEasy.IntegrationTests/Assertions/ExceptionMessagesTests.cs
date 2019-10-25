@@ -39,7 +39,7 @@ namespace FakeItEasy.IntegrationTests.Assertions
 
 ";
             exception.Should().BeAnExceptionOfType<ExpectationException>()
-                     .WithMessage(expectedMessage);
+                     .WithMessageModuloLineEndings(expectedMessage);
         }
 
         [Fact]
@@ -71,7 +71,7 @@ namespace FakeItEasy.IntegrationTests.Assertions
 ";
 
             exception.Should().BeAnExceptionOfType<ExpectationException>()
-                .WithMessage(expectedMessage);
+                .WithMessageModuloLineEndings(expectedMessage);
         }
 
         [Fact]
@@ -97,7 +97,7 @@ namespace FakeItEasy.IntegrationTests.Assertions
 
 ";
 
-            exception.Should().BeAnExceptionOfType<ExpectationException>().WithMessage(expectedMessage);
+            exception.Should().BeAnExceptionOfType<ExpectationException>().WithMessageModuloLineEndings(expectedMessage);
         }
 
         [Fact]
@@ -122,7 +122,7 @@ namespace FakeItEasy.IntegrationTests.Assertions
 
 ";
             exception.Should().BeAnExceptionOfType<ExpectationException>()
-                .WithMessage(expectedMessage);
+                .WithMessageModuloLineEndings(expectedMessage);
         }
     }
 }

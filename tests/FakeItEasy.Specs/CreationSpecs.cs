@@ -72,7 +72,7 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Should().BeOfType<FakeCreationException>());
 
             "And the exception message indicates why construction failed"
-                .x(() => exception.Message.Should().StartWith(@"
+                .x(() => exception.Message.Should().StartWithModuloLineEndings(@"
   Failed to create fake of type FakeItEasy.Specs.CreationSpecsBase+ClassWhoseConstructorThrows:
 
   Below is a list of reasons for failure per attempted constructor:
@@ -109,7 +109,7 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Should().BeOfType<FakeCreationException>());
 
             "And the exception message indicates why construction failed"
-                .x(() => exception.Message.Should().Match(@"
+                .x(() => exception.Message.Should().MatchModuloLineEndings(@"
   Failed to create fake of type FakeItEasy.Specs.CreationSpecsBase+ClassWithMultipleConstructors:
 
   Below is a list of reasons for failure per attempted constructor:
@@ -313,7 +313,7 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Should().BeOfType<FakeCreationException>());
 
             "And the exception message indicates the reason for failure"
-                .x(() => exception.Message.Should().Match(@"
+                .x(() => exception.Message.Should().MatchModuloLineEndings(@"
   Failed to create fake of type FakeItEasy.Specs.CreationSpecsBase+PrivateClass:
 
   Below is a list of reasons for failure per attempted constructor:
@@ -337,7 +337,7 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Should().BeOfType<FakeCreationException>());
 
             "And the exception message indicates the reason for failure"
-                .x(() => exception.Message.Should().Match(@"
+                .x(() => exception.Message.Should().MatchModuloLineEndings(@"
   Failed to create fake of type FakeItEasy.Specs.CreationSpecsBase+PrivateDelegate:
     Can not create proxy for type FakeItEasy.Specs.CreationSpecsBase+PrivateDelegate because it is not accessible. Make it public, or internal and mark your assembly with [assembly: InternalsVisibleTo(*DynamicProxyGenAssembly2*)] attribute*
 "));
@@ -356,7 +356,7 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Should().BeOfType<FakeCreationException>());
 
             "And the exception message indicates the reason for failure"
-                .x(() => exception.Message.Should().Match(@"
+                .x(() => exception.Message.Should().MatchModuloLineEndings(@"
   Failed to create fake of type System.Func`1[FakeItEasy.Specs.CreationSpecsBase+PrivateClass]:
     Can not create proxy for type System.Func`1[[FakeItEasy.Specs.CreationSpecsBase+PrivateClass, FakeItEasy.Specs, Version=1.0.0.0, Culture=neutral, PublicKeyToken=eff28e2146d5fd2c]] because type FakeItEasy.Specs.CreationSpecsBase+PrivateClass is not accessible. Make it public, or internal and mark your assembly with [assembly: InternalsVisibleTo(*DynamicProxyGenAssembly2*)] attribute*
 "));
@@ -375,7 +375,7 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Should().BeOfType<FakeCreationException>());
 
             "And the exception message indicates the reason for failure"
-                .x(() => exception.Message.Should().StartWith(@"
+                .x(() => exception.Message.Should().StartWithModuloLineEndings(@"
   Failed to create fake of type FakeItEasy.Specs.CreationSpecsBase+ClassWithPrivateConstructor:
 
   Below is a list of reasons for failure per attempted constructor:
@@ -400,7 +400,7 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Should().BeOfType<FakeCreationException>());
 
             "And the exception message indicates the reason for failure"
-                .x(() => exception.Message.Should().Be(@"
+                .x(() => exception.Message.Should().BeModuloLineEndings(@"
   Failed to create fake of type FakeItEasy.Specs.CreationSpecsBase+SealedClass:
     The type of proxy FakeItEasy.Specs.CreationSpecsBase+SealedClass is sealed.
 "));
@@ -451,7 +451,7 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Should().BeOfType<FakeCreationException>());
 
             "And the exception message indicates the reason for failure"
-                .x(() => exception.Message.Should().StartWith(@"
+                .x(() => exception.Message.Should().StartWithModuloLineEndings(@"
   Failed to create fake of type FakeItEasy.Specs.CreationSpecsBase+AClassThatCouldBeFakedWithTheRightConstructorArguments:
     No constructor matches the passed arguments for constructor.
     An exception of type Castle.DynamicProxy.InvalidProxyConstructorArgumentsException was caught during this call. Its message was:
@@ -487,7 +487,7 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Should().BeOfType<FakeCreationException>());
 
             "And the exception message indicates the reason for failure"
-                .x(() => exception.Message.Should().Be(@"
+                .x(() => exception.Message.Should().BeModuloLineEndings(@"
   Failed to create fake of type System.Func`1[System.Int32]:
     Faked delegates cannot have custom attributes applied to them.
 "));
@@ -506,7 +506,7 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Should().BeOfType<FakeCreationException>());
 
             "And the exception message indicates the reason for failure"
-                .x(() => exception.Message.Should().Be(@"
+                .x(() => exception.Message.Should().BeModuloLineEndings(@"
   Failed to create fake of type System.Func`1[System.Int32]:
     Faked delegates cannot be made using explicit constructor arguments.
 "));
@@ -525,7 +525,7 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Should().BeOfType<FakeCreationException>());
 
             "And the exception message indicates the reason for failure"
-                .x(() => exception.Message.Should().Be(@"
+                .x(() => exception.Message.Should().BeModuloLineEndings(@"
   Failed to create fake of type System.Func`1[System.Int32]:
     Faked delegates cannot be made to implement additional interfaces.
 "));
@@ -710,7 +710,7 @@ namespace FakeItEasy.Specs
             public ClassWithMultipleConstructors() => throw new Exception("parameterless constructor failed");
 
             [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "s", Justification = "Required for testing.")]
-            public ClassWithMultipleConstructors(string s) => throw new Exception("string constructor failed\r\nwith reason on two lines");
+            public ClassWithMultipleConstructors(string s) => throw new Exception("string constructor failed" + Environment.NewLine + "with reason on two lines");
 
             [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "u", Justification = "Required for testing.")]
             [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "s", Justification = "Required for testing.")]
@@ -805,7 +805,7 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Should().BeOfType<FakeCreationException>());
 
             "And the exception message indicates the reason for failure"
-                .x(() => exception.Message.Should().StartWith(@"
+                .x(() => exception.Message.Should().StartWithModuloLineEndings(@"
   Failed to create fake of type FakeItEasy.Specs.CreationSpecsBase+Struct:
     The type of proxy must be an interface or a class but it was FakeItEasy.Specs.CreationSpecsBase+Struct.
 "));

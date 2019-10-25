@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.IntegrationTests
+namespace FakeItEasy.IntegrationTests
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
@@ -8,6 +8,7 @@
     using System.Reflection;
 #endif
     using FakeItEasy.Core;
+    using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using Xunit;
 
@@ -142,8 +143,8 @@
                 () => catalogue.Load(new[] { this.externalAssemblyGenerator.AssemblyOriginalPath }));
 
             // Assert
-            output.Should().Match(@"*Warning: FakeItEasy failed to get some types from assembly 'FakeItEasy.ExtensionPoints.External, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' while scanning for extension points. Some IArgumentValueFormatters, IDummyFactories, and IFakeOptionsBuilders in that assembly might not be available.
-  System.Reflection.ReflectionTypeLoadException: *.
+            output.Should().MatchModuloLineEndings(@"*Warning: FakeItEasy failed to get some types from assembly 'FakeItEasy.ExtensionPoints.External, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' while scanning for extension points. Some IArgumentValueFormatters, IDummyFactories, and IFakeOptionsBuilders in that assembly might not be available.
+  System.Reflection.ReflectionTypeLoadException: *
   1 type(s) were not loaded for the following reasons:
    - System.IO.FileNotFoundException: *");
         }

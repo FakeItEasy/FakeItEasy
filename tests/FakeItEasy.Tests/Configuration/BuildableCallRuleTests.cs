@@ -263,7 +263,7 @@ namespace FakeItEasy.Tests.Configuration
   where description of first where
   and description of second where";
 
-            descriptionWriter.Builder.ToString().Should().Be(expectedDescription);
+            descriptionWriter.Builder.ToString().Should().BeModuloLineEndings(expectedDescription);
         }
 
         [Fact]
