@@ -75,7 +75,7 @@ namespace FakeItEasy
 <#
         }
 #>
-/// <param name="configuration">The configuration to extend.</param>
+        /// <param name="configuration">The configuration to extend.</param>
         /// <param name="valueProducer">A function that produces the <see cref="Task{T}.Result"/> of the <see cref="Task{T}"/>.</param>
         /// <returns>The configuration object.</returns>
         /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="valueProducer"/> do not match.</exception>
