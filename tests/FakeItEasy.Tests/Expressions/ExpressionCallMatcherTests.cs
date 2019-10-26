@@ -31,9 +31,7 @@ namespace FakeItEasy.Tests.Expressions
             this.outputWriterFactory =
                 () =>
                     new StringBuilderOutputWriter(
-                        new ArgumentValueFormatter(
-                            Enumerable.Empty<IArgumentValueFormatter>(),
-                            this.outputWriterFactory));
+                        new ArgumentValueFormatter(Enumerable.Empty<IArgumentValueFormatter>()));
         }
 
         [Fact]

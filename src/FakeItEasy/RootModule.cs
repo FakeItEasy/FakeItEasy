@@ -51,9 +51,7 @@ namespace FakeItEasy
 
             var interceptionAsserter = new DefaultInterceptionAsserter(fakeObjectCreator);
 
-            ArgumentValueFormatter argumentValueFormatter = null;
-            var stringBuilderOutputWriterFactory = new StringBuilderOutputWriterFactory(new Lazy<ArgumentValueFormatter>(() => argumentValueFormatter));
-            argumentValueFormatter = new ArgumentValueFormatter(argumentValueFormatters, stringBuilderOutputWriterFactory.Create);
+            var argumentValueFormatter = new ArgumentValueFormatter(argumentValueFormatters);
 
             var fakeObjectCallFormatter = new DefaultFakeObjectCallFormatter(argumentValueFormatter, fakeManagerAccessor);
 
@@ -87,9 +85,12 @@ namespace FakeItEasy
 
             registrar.Register<ICallExpressionParser>(callExpressionParser);
 
-            registrar.Register<StringBuilderOutputWriter.Factory>(stringBuilderOutputWriterFactory.Create);
+            registrar.Register((StringBuilderOutputWriter.Factory)StringBuilderOutputWriterFactory);
 
             registrar.Register<IFakeObjectCallFormatter>(fakeObjectCallFormatter);
+
+            StringBuilderOutputWriter StringBuilderOutputWriterFactory() =>
+                new StringBuilderOutputWriter(argumentValueFormatter);
 
             FakeManager FakeManagerFactory(Type fakeObjectType, object proxy, string name) =>
                 new FakeManager(fakeObjectType, proxy, name);
@@ -101,28 +102,13 @@ namespace FakeItEasy
                 new ExpressionCallRule(new ExpressionCallMatcher(callSpecification, expressionArgumentConstraintFactory, methodInfoManager));
 
             IFakeAsserter FakeAsserterFactory(IEnumerable<CompletedFakeObjectCall> calls, int lastSequenceNumber) =>
-                new FakeAsserter(calls, lastSequenceNumber, callWriter, stringBuilderOutputWriterFactory.Create);
+                new FakeAsserter(calls, lastSequenceNumber, callWriter, StringBuilderOutputWriterFactory);
 
             SequentialCallContext SequentialCallContextFactory() =>
-                new SequentialCallContext(callWriter, stringBuilderOutputWriterFactory.Create);
+                new SequentialCallContext(callWriter, StringBuilderOutputWriterFactory);
 
             RuleBuilder RuleBuilderFactory(BuildableCallRule rule, FakeManager fake) =>
                 new RuleBuilder(rule, fake, FakeAsserterFactory);
-        }
-
-        private class StringBuilderOutputWriterFactory
-        {
-            private Lazy<ArgumentValueFormatter> argumentValueFormatter;
-
-            public StringBuilderOutputWriterFactory(Lazy<ArgumentValueFormatter> argumentValueFormatterService)
-            {
-                this.argumentValueFormatter = argumentValueFormatterService;
-            }
-
-            public StringBuilderOutputWriter Create()
-            {
-                return new StringBuilderOutputWriter(this.argumentValueFormatter.Value);
-            }
         }
 
         private class ExpressionCallMatcherFactory
