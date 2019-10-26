@@ -6,7 +6,12 @@ namespace FakeItEasy
     internal class StringBuilderOutputWriter
         : DefaultOutputWriter
     {
-        public StringBuilderOutputWriter(StringBuilder builder, ArgumentValueFormatter argumentValueFormatter)
+        public StringBuilderOutputWriter(ArgumentValueFormatter argumentValueFormatter)
+            : this(new StringBuilder(), argumentValueFormatter)
+        {
+        }
+
+        private StringBuilderOutputWriter(StringBuilder builder, ArgumentValueFormatter argumentValueFormatter)
             : base(c => builder.Append(c), argumentValueFormatter)
         {
             this.Builder = builder;

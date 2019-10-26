@@ -121,7 +121,7 @@ namespace FakeItEasy
 
             public StringBuilderOutputWriter Create()
             {
-                return new StringBuilderOutputWriter(new StringBuilder(), this.argumentValueFormatter.Value);
+                return new StringBuilderOutputWriter(this.argumentValueFormatter.Value);
             }
         }
 
