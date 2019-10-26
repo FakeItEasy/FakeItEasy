@@ -203,14 +203,8 @@ namespace FakeItEasy.Creation
                 }
             }
 
-            private static IEnumerable<object> GetArgumentsForConstructor(ResolvedConstructor constructor)
-            {
-                // Interface proxy creation requires a null argumentsForConstructor, and null also works
-                // for parameterless class constructors, so reduce an empty argument list to null.
-                return constructor.Arguments.Any()
-                    ? constructor.Arguments.Select(x => x.ResolvedValue)
-                    : null;
-            }
+            private static IEnumerable<object> GetArgumentsForConstructor(ResolvedConstructor constructor) =>
+                constructor.Arguments.Select(x => x.ResolvedValue);
 
             private CreationResult TryCreateFakeWithDummyArgumentsForConstructor(
                 Type typeOfFake,

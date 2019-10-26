@@ -47,7 +47,7 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
             }
             catch (Exception e)
             {
-                return GetResultForFailedProxyGeneration(typeOfProxy, null, e);
+                return GetProxyResultForNoDefaultConstructor(typeOfProxy, e);
             }
 
             fakeCallProcessorProvider.EnsureInitialized(proxy);
@@ -64,6 +64,7 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
             Guard.AgainstNull(typeOfProxy, nameof(typeOfProxy));
             Guard.AgainstNull(additionalInterfacesToImplement, nameof(additionalInterfacesToImplement));
             Guard.AgainstNull(attributes, nameof(attributes));
+            Guard.AgainstNull(argumentsForConstructor, nameof(argumentsForConstructor));
             Guard.AgainstNull(fakeCallProcessorProvider, nameof(fakeCallProcessorProvider));
 
             if (!CanGenerateProxy(typeOfProxy, out string failReason))
@@ -88,7 +89,7 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
                 additionalInterfacesToImplement.CopyTo(allInterfacesToImplement, 0);
             }
 
-            var argumentsArray = argumentsForConstructor?.ToArray();
+            var argumentsArray = argumentsForConstructor.ToArray();
 
             object proxy;
             try
@@ -132,15 +133,10 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
             return new ProxyGenerationOptions(ProxyGenerationHook);
         }
 
-        private static ProxyGeneratorResult GetResultForFailedProxyGeneration(Type typeOfProxy, IEnumerable<object> argumentsForConstructor, Exception e)
-        {
-            if (argumentsForConstructor is object)
-            {
-                return new ProxyGeneratorResult(DynamicProxyMessages.ArgumentsForConstructorDoesNotMatchAnyConstructor, e);
-            }
-
-            return GetProxyResultForNoDefaultConstructor(typeOfProxy, e);
-        }
+        private static ProxyGeneratorResult GetResultForFailedProxyGeneration(Type typeOfProxy, IEnumerable<object> argumentsForConstructor, Exception e) =>
+            argumentsForConstructor.Any()
+                ? new ProxyGeneratorResult(DynamicProxyMessages.ArgumentsForConstructorDoesNotMatchAnyConstructor, e)
+                : GetProxyResultForNoDefaultConstructor(typeOfProxy, e);
 
         private static ProxyGeneratorResult GetProxyResultForNoDefaultConstructor(Type typeOfProxy, Exception e)
         {

@@ -45,7 +45,7 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
             var fakeCallProcessorProvider = A.Fake<IFakeCallProcessorProvider>();
 
             // Act
-            CastleDynamicProxyGenerator.GenerateClassProxy(typeToProxy, this.noAdditionalInterfaces, null, Enumerable.Empty<Expression<Func<Attribute>>>(), fakeCallProcessorProvider);
+            CastleDynamicProxyGenerator.GenerateClassProxy(typeToProxy, this.noAdditionalInterfaces, Enumerable.Empty<object>(), Enumerable.Empty<Expression<Func<Attribute>>>(), fakeCallProcessorProvider);
 
             // Assert
             A.CallTo(() => fakeCallProcessorProvider.Fetch(A<object>._)).MustNotHaveHappened();
@@ -72,7 +72,12 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
             // Act
 
             // Assert
-            Expression<Action> call = () => CastleDynamicProxyGenerator.GenerateClassProxy(typeof(AbstractClass), this.noAdditionalInterfaces, null, Enumerable.Empty<Expression<Func<Attribute>>>(), A.Dummy<IFakeCallProcessorProvider>());
+            Expression<Action> call = () => CastleDynamicProxyGenerator.GenerateClassProxy(
+                typeof(AbstractClass),
+                this.noAdditionalInterfaces,
+                Enumerable.Empty<object>(),
+                Enumerable.Empty<Expression<Func<Attribute>>>(),
+                A.Dummy<IFakeCallProcessorProvider>());
             call.Should().BeNullGuarded();
         }
 
