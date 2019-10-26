@@ -29,7 +29,7 @@
             }
 
             var containingNamespace = type.ContainingNamespace;
-            while (!string.IsNullOrEmpty(containingNamespace?.Name))
+            while (containingNamespace is object && !string.IsNullOrEmpty(containingNamespace.Name))
             {
                 nameParts.Push(containingNamespace.Name);
                 containingNamespace = containingNamespace.ContainingNamespace;
