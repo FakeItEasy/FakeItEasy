@@ -85,7 +85,7 @@ namespace FakeItEasy.Expressions
                 }
             }
 
-            return values is null ? (Func<IFakeObjectCall, ICollection<object>>)null : call => values;
+            return values is null ? BuildableCallRule.DefaultOutAndRefParametersValueProducer : call => values;
         }
 
         private bool InvokesSameMethodOnTarget(Type type, MethodInfo first, MethodInfo second)
