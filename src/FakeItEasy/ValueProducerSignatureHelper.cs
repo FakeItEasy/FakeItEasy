@@ -31,8 +31,8 @@ namespace FakeItEasy
                 return;
             }
 
-            var fakeSignature = BuildSignatureDescription(callMethod.GetParameters().Select(p => p.ParameterType));
-            var actionSignature = BuildSignatureDescription(values.Select(v => v?.GetType()));
+            var fakeSignature = BuildSignatureDescription(callMethod);
+            var actionSignature = BuildSignatureDescription(values);
 
             throw new FakeConfigurationException(
                 $"The event has the signature ({fakeSignature}), but the provided arguments have types ({actionSignature}).");
@@ -88,14 +88,10 @@ namespace FakeItEasy
             return true;
         }
 
-        private static string BuildSignatureDescription(MethodInfo method)
-        {
-            return BuildSignatureDescription(method.GetParameters().Select(p => p.ParameterType));
-        }
+        private static string BuildSignatureDescription(MethodInfo method) =>
+            method.GetParameters().ToCollectionString(p => p.ParameterType.ToString(), ", ");
 
-        private static string BuildSignatureDescription(IEnumerable<Type> types)
-        {
-            return types.ToCollectionString(t => t?.ToString() ?? "NULL", ", ");
-        }
+        private static string BuildSignatureDescription(object[] values) =>
+            values.ToCollectionString(v => v?.GetType()?.ToString() ?? "NULL", ", ");
     }
 }
