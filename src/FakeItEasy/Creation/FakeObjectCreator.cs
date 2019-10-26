@@ -67,7 +67,7 @@ namespace FakeItEasy.Creation
 
         [SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "2#", Justification = "Seems appropriate here.")]
         public bool MethodCanBeInterceptedOnInstance(MethodInfo method, object callTarget, out string failReason) =>
-            DelegateCreationStrategy.IsResponsibleForCreating(callTarget?.GetType())
+            callTarget is object && DelegateCreationStrategy.IsResponsibleForCreating(callTarget.GetType())
                 ? this.delegateCreationStrategy.MethodCanBeInterceptedOnInstance(method, callTarget, out failReason)
                 : this.defaultCreationStrategy.MethodCanBeInterceptedOnInstance(method, callTarget, out failReason);
 
