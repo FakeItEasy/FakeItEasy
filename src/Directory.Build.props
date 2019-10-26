@@ -14,6 +14,7 @@
 
   <PropertyGroup>
     <DebugType>portable</DebugType>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
