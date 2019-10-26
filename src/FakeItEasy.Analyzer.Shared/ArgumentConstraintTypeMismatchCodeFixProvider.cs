@@ -152,33 +152,26 @@ namespace FakeItEasy.Analyzer
 
             // The T type
             var constraintType = GetConstraintType(diagnostic, root);
-            if (constraintType is object)
-            {
-                var parameterTypeName = diagnostic.Properties[ArgumentConstraintTypeMismatchAnalyzer.ParameterTypeKey];
-                var parameterType = SyntaxFactory.ParseName(parameterTypeName);
-                var newRoot = root.ReplaceNode(constraintType, parameterType);
-                return context.Document.WithSyntaxRoot(newRoot);
-            }
-
-            return context.Document;
+            var parameterTypeName = diagnostic.Properties[ArgumentConstraintTypeMismatchAnalyzer.ParameterTypeKey];
+            var parameterType = SyntaxFactory.ParseName(parameterTypeName);
+            var newRoot = root.ReplaceNode(constraintType, parameterType);
+            return context.Document.WithSyntaxRoot(newRoot);
         }
 
         private static TypeSyntax GetConstraintType(Diagnostic diagnostic, SyntaxNode root)
         {
             var constraintNode = GetConstraintNode(diagnostic, root);
-            switch (constraintNode)
+            if (constraintNode is MemberAccessExpressionSyntax memberAccessNode)
             {
-                case MemberAccessExpressionSyntax memberAccessNode:
-                    var expressionNode = memberAccessNode.Expression as GenericNameSyntax;
-                    return expressionNode?.TypeArgumentList.Arguments.FirstOrDefault();
-                case InvocationExpressionSyntax invocationNode:
-                    var aTThatMatches = invocationNode.Expression as MemberAccessExpressionSyntax;
-                    var aTthat = aTThatMatches?.Expression as MemberAccessExpressionSyntax;
-                    var aT = aTthat?.Expression as GenericNameSyntax;
-                    return aT?.TypeArgumentList.Arguments.FirstOrDefault();
+                var expressionNode = (GenericNameSyntax)memberAccessNode.Expression;
+                return expressionNode.TypeArgumentList.Arguments.First();
             }
 
-            return null;
+            InvocationExpressionSyntax invocationNode = (InvocationExpressionSyntax)constraintNode;
+            var aTThatMatches = (MemberAccessExpressionSyntax)invocationNode.Expression;
+            var aTthat = (MemberAccessExpressionSyntax)aTThatMatches.Expression;
+            var aT = (GenericNameSyntax)aTthat.Expression;
+            return aT.TypeArgumentList.Arguments.First();
         }
     }
 }

@@ -3,6 +3,7 @@ namespace FakeItEasy.Configuration
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using FakeItEasy.Compatibility;
     using FakeItEasy.Core;
 
     /// <summary>
@@ -11,6 +12,12 @@ namespace FakeItEasy.Configuration
     internal abstract class BuildableCallRule
         : IFakeObjectCallRule
     {
+        public static readonly Func<IFakeObjectCall, ICollection<object>> DefaultOutAndRefParametersValueProducer = call =>
+            ArrayHelper.Empty<object>();
+
+        private static readonly Action<IInterceptedFakeObjectCall> DefaultApplicator = call =>
+            call.SetReturnValue(call.GetDefaultReturnValue());
+
         private readonly List<WherePredicate> wherePredicates;
         private Action<IInterceptedFakeObjectCall> applicator;
         private bool wasApplicatorSet;
@@ -19,8 +26,8 @@ namespace FakeItEasy.Configuration
         protected BuildableCallRule()
         {
             this.Actions = new LinkedList<Action<IFakeObjectCall>>();
-            this.UseDefaultApplicator();
-            this.wasApplicatorSet = false;
+            this.applicator = DefaultApplicator;
+            this.OutAndRefParametersValueProducer = DefaultOutAndRefParametersValueProducer;
             this.canSetOutAndRefParametersValueProducer = true;
             this.wherePredicates = new List<WherePredicate>();
         }
@@ -76,10 +83,7 @@ namespace FakeItEasy.Configuration
         /// Sets (or resets) the applicator (see <see cref="UseApplicator"/>) to the default action:
         /// the same as a newly-created rule would have.
         /// </summary>
-        public void UseDefaultApplicator()
-        {
-            this.UseApplicator(call => call.SetReturnValue(call.GetDefaultReturnValue()));
-        }
+        public void UseDefaultApplicator() => this.UseApplicator(DefaultApplicator);
 
         public virtual void Apply(IInterceptedFakeObjectCall fakeObjectCall)
         {
@@ -203,7 +207,7 @@ namespace FakeItEasy.Configuration
 
         private void ApplyOutAndRefParametersValueProducer(IInterceptedFakeObjectCall fakeObjectCall)
         {
-            if (this.OutAndRefParametersValueProducer is null)
+            if (this.OutAndRefParametersValueProducer == DefaultOutAndRefParametersValueProducer)
             {
                 return;
             }

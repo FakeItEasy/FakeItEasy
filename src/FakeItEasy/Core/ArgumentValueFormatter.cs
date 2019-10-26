@@ -15,7 +15,7 @@ namespace FakeItEasy.Core
         private readonly ConcurrentDictionary<Type, IArgumentValueFormatter> cachedFormatters;
         private readonly IEnumerable<IArgumentValueFormatter> typeFormatters;
 
-        public ArgumentValueFormatter(IEnumerable<IArgumentValueFormatter> typeFormatters, StringBuilderOutputWriter.Factory outputWriterFactory)
+        public ArgumentValueFormatter(IEnumerable<IArgumentValueFormatter> typeFormatters)
         {
             this.cachedFormatters = new ConcurrentDictionary<Type, IArgumentValueFormatter>();
 
@@ -23,7 +23,7 @@ namespace FakeItEasy.Core
                 new IArgumentValueFormatter[]
                     {
                         new DefaultStringFormatter(),
-                        new DefaultEnumerableValueFormatter(outputWriterFactory),
+                        new DefaultEnumerableValueFormatter(this),
                         new DefaultFormatter()
                     });
         }
@@ -105,11 +105,11 @@ namespace FakeItEasy.Core
         private class DefaultEnumerableValueFormatter
             : ArgumentValueFormatter<IEnumerable>
         {
-            private readonly StringBuilderOutputWriter.Factory outputWriterFactory;
+            private readonly ArgumentValueFormatter formatter;
 
-            public DefaultEnumerableValueFormatter(StringBuilderOutputWriter.Factory outputWriterFactory)
+            public DefaultEnumerableValueFormatter(ArgumentValueFormatter formatter)
             {
-                this.outputWriterFactory = outputWriterFactory;
+                this.formatter = formatter;
             }
 
             public override Priority Priority => Priority.Internal;
@@ -118,7 +118,7 @@ namespace FakeItEasy.Core
             {
                 Guard.AgainstNull(argumentValue, nameof(argumentValue));
 
-                var writer = this.outputWriterFactory.Invoke();
+                var writer = new StringBuilderOutputWriter(this.formatter);
                 writer.Write("[");
                 writer.WriteArgumentValues(argumentValue);
                 writer.Write("]");

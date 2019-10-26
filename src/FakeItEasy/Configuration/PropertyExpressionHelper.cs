@@ -12,13 +12,6 @@ namespace FakeItEasy.Configuration
             ParsedCallExpression parsedCallExpression)
         {
             var propertyName = GetPropertyName(parsedCallExpression);
-            if (propertyName is null)
-            {
-                var expressionDescription = GetExpressionDescription(parsedCallExpression);
-                throw new ArgumentException("Expression '" + expressionDescription +
-                                            "' must refer to a property or indexer getter, but doesn't.");
-            }
-
             var parameterTypes = new Type[parsedCallExpression.ArgumentsExpressions.Length + 1];
             for (int i = 0; i < parsedCallExpression.ArgumentsExpressions.Length; ++i)
             {
@@ -82,7 +75,9 @@ namespace FakeItEasy.Configuration
                 }
             }
 
-            return null;
+            var expressionDescription = GetExpressionDescription(parsedCallExpression);
+            throw new ArgumentException("Expression '" + expressionDescription +
+                                        "' must refer to a property or indexer getter, but doesn't.");
         }
 
         private static bool HasThis(MethodInfo methodCall)

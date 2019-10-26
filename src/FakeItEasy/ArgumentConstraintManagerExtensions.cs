@@ -227,7 +227,7 @@ namespace FakeItEasy
         /// <returns>A dummy value.</returns>
         public static T IsInstanceOf<T>(this IArgumentConstraintManager<T> manager, Type type)
         {
-            return manager.NullCheckedMatches(x => type.IsAssignableFrom(x.GetType()), x => x.Write("Instance of ").Write(type.ToString()));
+            return manager.Matches(x => x is object && type.IsAssignableFrom(x.GetType()), description => description.Write("Instance of ").Write(type.ToString()));
         }
 
         /// <summary>

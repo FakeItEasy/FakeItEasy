@@ -67,7 +67,7 @@ namespace FakeItEasy.Creation
 
         [SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "2#", Justification = "Seems appropriate here.")]
         public bool MethodCanBeInterceptedOnInstance(MethodInfo method, object callTarget, out string failReason) =>
-            DelegateCreationStrategy.IsResponsibleForCreating(callTarget?.GetType())
+            callTarget is object && DelegateCreationStrategy.IsResponsibleForCreating(callTarget.GetType())
                 ? this.delegateCreationStrategy.MethodCanBeInterceptedOnInstance(method, callTarget, out failReason)
                 : this.defaultCreationStrategy.MethodCanBeInterceptedOnInstance(method, callTarget, out failReason);
 
@@ -203,14 +203,8 @@ namespace FakeItEasy.Creation
                 }
             }
 
-            private static IEnumerable<object> GetArgumentsForConstructor(ResolvedConstructor constructor)
-            {
-                // Interface proxy creation requires a null argumentsForConstructor, and null also works
-                // for parameterless class constructors, so reduce an empty argument list to null.
-                return constructor.Arguments.Any()
-                    ? constructor.Arguments.Select(x => x.ResolvedValue)
-                    : null;
-            }
+            private static IEnumerable<object> GetArgumentsForConstructor(ResolvedConstructor constructor) =>
+                constructor.Arguments.Select(x => x.ResolvedValue);
 
             private CreationResult TryCreateFakeWithDummyArgumentsForConstructor(
                 Type typeOfFake,
