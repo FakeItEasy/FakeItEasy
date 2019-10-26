@@ -8,62 +8,69 @@
 [assembly: System.Runtime.Versioning.TargetFrameworkAttribute(".NETFramework,Version=v4.5", FrameworkDisplayName=".NET Framework 4.5")]
 namespace FakeItEasy
 {
+    [System.Runtime.CompilerServices.NullableAttribute(0)]
     public class static A
     {
         public static FakeItEasy.Configuration.IVoidArgumentValidationConfiguration CallTo(System.Linq.Expressions.Expression<System.Action> callSpecification) { }
         public static FakeItEasy.Configuration.IAnyCallConfigurationWithNoReturnTypeSpecified CallTo(object fake) { }
-        public static FakeItEasy.Configuration.IReturnValueArgumentValidationConfiguration<T> CallTo<T>(System.Linq.Expressions.Expression<System.Func<T>> callSpecification) { }
-        public static FakeItEasy.Configuration.IPropertySetterAnyValueConfiguration<TValue> CallToSet<TValue>(System.Linq.Expressions.Expression<System.Func<TValue>> propertySpecification) { }
-        public static System.Collections.Generic.IList<T> CollectionOfDummy<T>(int numberOfDummies) { }
+        public static FakeItEasy.Configuration.IReturnValueArgumentValidationConfiguration<T> CallTo<[System.Runtime.CompilerServices.NullableAttribute(2)]  T>(System.Linq.Expressions.Expression<System.Func<T>> callSpecification) { }
+        public static FakeItEasy.Configuration.IPropertySetterAnyValueConfiguration<TValue> CallToSet<[System.Runtime.CompilerServices.NullableAttribute(2)]  TValue>(System.Linq.Expressions.Expression<System.Func<TValue>> propertySpecification) { }
+        public static System.Collections.Generic.IList<T> CollectionOfDummy<[System.Runtime.CompilerServices.NullableAttribute(2)]  T>(int numberOfDummies) { }
         public static System.Collections.Generic.IList<T> CollectionOfFake<T>(int numberOfFakes)
             where T :  class { }
         public static System.Collections.Generic.IList<T> CollectionOfFake<T>(int numberOfFakes, System.Action<FakeItEasy.Creation.IFakeOptions<T>> optionsBuilder)
             where T :  class { }
-        public static T Dummy<T>() { }
+        public static T Dummy<[System.Runtime.CompilerServices.NullableAttribute(2)]  T>() { }
         public static T Fake<T>()
             where T :  class { }
         public static T Fake<T>(System.Action<FakeItEasy.Creation.IFakeOptions<T>> optionsBuilder)
             where T :  class { }
     }
-    public class static A<T>
+    [System.Runtime.CompilerServices.NullableAttribute(0)]
+    public class static A<[System.Runtime.CompilerServices.NullableAttribute(2)]  T>
     {
         public static T Ignored { get; }
         public static FakeItEasy.INegatableArgumentConstraintManager<T> That { get; }
         [System.CLSCompliantAttribute(false)]
         public static T _ { get; }
     }
+    [System.Runtime.CompilerServices.NullableAttribute(0)]
     public class static ArgumentConstraintManagerExtensions
     {
         public static string Contains(this FakeItEasy.IArgumentConstraintManager<string> manager, string value) { }
-        public static T Contains<T>(this FakeItEasy.IArgumentConstraintManager<T> manager, object value)
+        public static T Contains<[System.Runtime.CompilerServices.NullableAttribute(0)]  T>(this FakeItEasy.IArgumentConstraintManager<T> manager, object value)
             where T : System.Collections.IEnumerable { }
         public static string EndsWith(this FakeItEasy.IArgumentConstraintManager<string> manager, string value) { }
         public static System.Threading.CancellationToken IsCanceled(this FakeItEasy.IArgumentConstraintManager<System.Threading.CancellationToken> manager) { }
-        public static T IsEmpty<T>(this FakeItEasy.IArgumentConstraintManager<T> manager)
+        public static T IsEmpty<[System.Runtime.CompilerServices.NullableAttribute(0)]  T>(this FakeItEasy.IArgumentConstraintManager<T> manager)
             where T : System.Collections.IEnumerable { }
-        public static T IsEqualTo<T>(this FakeItEasy.IArgumentConstraintManager<T> manager, T value) { }
-        public static T IsGreaterThan<T>(this FakeItEasy.IArgumentConstraintManager<T> manager, T value)
+        public static T IsEqualTo<[System.Runtime.CompilerServices.NullableAttribute(2)]  T>(this FakeItEasy.IArgumentConstraintManager<T> manager, T value) { }
+        public static T IsGreaterThan<[System.Runtime.CompilerServices.NullableAttribute(0)]  T>(this FakeItEasy.IArgumentConstraintManager<T> manager, T value)
             where T : System.IComparable { }
-        public static T IsInstanceOf<T>(this FakeItEasy.IArgumentConstraintManager<T> manager, System.Type type) { }
+        public static T IsInstanceOf<[System.Runtime.CompilerServices.NullableAttribute(2)]  T>(this FakeItEasy.IArgumentConstraintManager<T> manager, System.Type type) { }
         public static System.Threading.CancellationToken IsNotCanceled(this FakeItEasy.INegatableArgumentConstraintManager<System.Threading.CancellationToken> manager) { }
         public static T IsNotNull<T>(this FakeItEasy.INegatableArgumentConstraintManager<T> manager)
             where T :  class { }
-        public static System.Nullable<T> IsNotNull<T>(this FakeItEasy.INegatableArgumentConstraintManager<System.Nullable<T>> manager)
+        public static System.Nullable<T> IsNotNull<T>([System.Runtime.CompilerServices.NullableAttribute(new byte[] {
+                1,
+                0})] this FakeItEasy.INegatableArgumentConstraintManager<System.Nullable<T>> manager)
             where T :  struct { }
         public static T IsNull<T>(this FakeItEasy.IArgumentConstraintManager<T> manager)
             where T :  class { }
-        public static System.Nullable<T> IsNull<T>(this FakeItEasy.IArgumentConstraintManager<System.Nullable<T>> manager)
+        public static System.Nullable<T> IsNull<T>([System.Runtime.CompilerServices.NullableAttribute(new byte[] {
+                1,
+                0})] this FakeItEasy.IArgumentConstraintManager<System.Nullable<T>> manager)
             where T :  struct { }
         public static string IsNullOrEmpty(this FakeItEasy.IArgumentConstraintManager<string> manager) { }
-        public static T IsSameAs<T>(this FakeItEasy.IArgumentConstraintManager<T> manager, T value) { }
-        public static T IsSameSequenceAs<T>(this FakeItEasy.IArgumentConstraintManager<T> manager, System.Collections.IEnumerable values)
+        public static T IsSameAs<[System.Runtime.CompilerServices.NullableAttribute(2)]  T>(this FakeItEasy.IArgumentConstraintManager<T> manager, T value) { }
+        public static T IsSameSequenceAs<[System.Runtime.CompilerServices.NullableAttribute(0)]  T>(this FakeItEasy.IArgumentConstraintManager<T> manager, System.Collections.IEnumerable values)
             where T : System.Collections.IEnumerable { }
-        public static T IsSameSequenceAs<T>(this FakeItEasy.IArgumentConstraintManager<T> manager, params object[] values)
+        public static T IsSameSequenceAs<[System.Runtime.CompilerServices.NullableAttribute(0)]  T>(this FakeItEasy.IArgumentConstraintManager<T> manager, params object[] values)
             where T : System.Collections.IEnumerable { }
-        public static T Matches<T>(this FakeItEasy.IArgumentConstraintManager<T> manager, System.Func<T, bool> predicate, string description) { }
-        public static T Matches<T>(this FakeItEasy.IArgumentConstraintManager<T> manager, System.Func<T, bool> predicate, string descriptionFormat, params object[] args) { }
-        public static T Matches<T>(this FakeItEasy.IArgumentConstraintManager<T> manager, System.Linq.Expressions.Expression<System.Func<T, bool>> predicate) { }
-        public static T NullCheckedMatches<T>(this FakeItEasy.IArgumentConstraintManager<T> manager, System.Func<T, bool> predicate, System.Action<FakeItEasy.IOutputWriter> descriptionWriter) { }
+        public static T Matches<[System.Runtime.CompilerServices.NullableAttribute(2)]  T>(this FakeItEasy.IArgumentConstraintManager<T> manager, System.Func<T, bool> predicate, string description) { }
+        public static T Matches<[System.Runtime.CompilerServices.NullableAttribute(2)]  T>(this FakeItEasy.IArgumentConstraintManager<T> manager, System.Func<T, bool> predicate, string descriptionFormat, params object[] args) { }
+        public static T Matches<[System.Runtime.CompilerServices.NullableAttribute(2)]  T>(this FakeItEasy.IArgumentConstraintManager<T> manager, System.Linq.Expressions.Expression<System.Func<T, bool>> predicate) { }
+        public static T NullCheckedMatches<[System.Runtime.CompilerServices.NullableAttribute(2)]  T>(this FakeItEasy.IArgumentConstraintManager<T> manager, System.Func<T, bool> predicate, System.Action<FakeItEasy.IOutputWriter> descriptionWriter) { }
         public static string StartsWith(this FakeItEasy.IArgumentConstraintManager<string> manager, string value) { }
     }
     public class static ArgumentValidationConfigurationExtensions
@@ -76,9 +83,10 @@ namespace FakeItEasy
         public static TInterface WhenArgumentsMatch<TInterface, T1, T2, T3, T4, T5, T6>(this FakeItEasy.Configuration.IArgumentValidationConfiguration<TInterface> configuration, System.Func<T1, T2, T3, T4, T5, T6, bool> argumentsPredicate) { }
         public static TInterface WhenArgumentsMatch<TInterface, T1, T2, T3, T4, T5, T6, T7>(this FakeItEasy.Configuration.IArgumentValidationConfiguration<TInterface> configuration, System.Func<T1, T2, T3, T4, T5, T6, T7, bool> argumentsPredicate) { }
         public static TInterface WhenArgumentsMatch<TInterface, T1, T2, T3, T4, T5, T6, T7, T8>(this FakeItEasy.Configuration.IArgumentValidationConfiguration<TInterface> configuration, System.Func<T1, T2, T3, T4, T5, T6, T7, T8, bool> argumentsPredicate) { }
-        public static TInterface WithAnyArguments<TInterface>(this FakeItEasy.Configuration.IArgumentValidationConfiguration<TInterface> configuration) { }
+        public static TInterface WithAnyArguments<[System.Runtime.CompilerServices.NullableAttribute(2)]  TInterface>(this FakeItEasy.Configuration.IArgumentValidationConfiguration<TInterface> configuration) { }
     }
-    public abstract class ArgumentValueFormatter<T> : FakeItEasy.IArgumentValueFormatter
+    [System.Runtime.CompilerServices.NullableAttribute(0)]
+    public abstract class ArgumentValueFormatter<[System.Runtime.CompilerServices.NullableAttribute(2)]  T> : FakeItEasy.IArgumentValueFormatter
     {
         protected ArgumentValueFormatter() { }
         public System.Type ForType { get; }
@@ -86,6 +94,7 @@ namespace FakeItEasy
         public string GetArgumentValueAsString(object argumentValue) { }
         protected abstract string GetStringValue(T argumentValue);
     }
+    [System.Runtime.CompilerServices.NullableAttribute(0)]
     public class static AssertConfigurationExtensions
     {
         public static FakeItEasy.Configuration.UnorderedCallAssertion MustHaveHappened(this FakeItEasy.Configuration.IAssertConfiguration configuration) { }
@@ -102,9 +111,9 @@ namespace FakeItEasy
         public static FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task>> ThrowsAsync(this FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task> configuration, System.Exception exception) { }
         public static FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task>> ThrowsAsync(this FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task> configuration, System.Func<FakeItEasy.Core.IFakeObjectCall, System.Exception> exceptionFactory) { }
         public static FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task>> ThrowsAsync(this FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task> configuration, System.Func<System.Exception> exceptionFactory) { }
-        public static FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task<T>>> ThrowsAsync<T>(this FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task<T>> configuration, System.Exception exception) { }
-        public static FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task<T>>> ThrowsAsync<T>(this FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task<T>> configuration, System.Func<FakeItEasy.Core.IFakeObjectCall, System.Exception> exceptionFactory) { }
-        public static FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task<T>>> ThrowsAsync<T>(this FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task<T>> configuration, System.Func<System.Exception> exceptionFactory) { }
+        public static FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task<T>>> ThrowsAsync<[System.Runtime.CompilerServices.NullableAttribute(2)]  T>(this FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task<T>> configuration, System.Exception exception) { }
+        public static FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task<T>>> ThrowsAsync<[System.Runtime.CompilerServices.NullableAttribute(2)]  T>(this FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task<T>> configuration, System.Func<FakeItEasy.Core.IFakeObjectCall, System.Exception> exceptionFactory) { }
+        public static FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task<T>>> ThrowsAsync<[System.Runtime.CompilerServices.NullableAttribute(2)]  T>(this FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task<T>> configuration, System.Func<System.Exception> exceptionFactory) { }
         public static FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task>> ThrowsAsync<T1>(this FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task> configuration, System.Func<T1, System.Exception> exceptionFactory) { }
         public static FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task<T>>> ThrowsAsync<T, T1>(this FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task<T>> configuration, System.Func<T1, System.Exception> exceptionFactory) { }
         public static FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task>> ThrowsAsync<T1, T2>(this FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task> configuration, System.Func<T1, T2, System.Exception> exceptionFactory) { }
@@ -122,14 +131,15 @@ namespace FakeItEasy
         public static FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task>> ThrowsAsync<T1, T2, T3, T4, T5, T6, T7, T8>(this FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task> configuration, System.Func<T1, T2, T3, T4, T5, T6, T7, T8, System.Exception> exceptionFactory) { }
         public static FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task<T>>> ThrowsAsync<T, T1, T2, T3, T4, T5, T6, T7, T8>(this FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task<T>> configuration, System.Func<T1, T2, T3, T4, T5, T6, T7, T8, System.Exception> exceptionFactory) { }
     }
+    [System.Runtime.CompilerServices.NullableAttribute(0)]
     public class static BehaviorLifetimeConfigurationExtensions
     {
-        public static FakeItEasy.Configuration.IThenConfiguration<TInterface> Once<TInterface>(this FakeItEasy.Configuration.IBehaviorLifetimeConfiguration<TInterface> configuration) { }
-        public static FakeItEasy.Configuration.IThenConfiguration<TInterface> Twice<TInterface>(this FakeItEasy.Configuration.IBehaviorLifetimeConfiguration<TInterface> configuration) { }
+        public static FakeItEasy.Configuration.IThenConfiguration<TInterface> Once<[System.Runtime.CompilerServices.NullableAttribute(2)]  TInterface>(this FakeItEasy.Configuration.IBehaviorLifetimeConfiguration<TInterface> configuration) { }
+        public static FakeItEasy.Configuration.IThenConfiguration<TInterface> Twice<[System.Runtime.CompilerServices.NullableAttribute(2)]  TInterface>(this FakeItEasy.Configuration.IBehaviorLifetimeConfiguration<TInterface> configuration) { }
     }
     public class static CallbackConfigurationExtensions
     {
-        public static TInterface Invokes<TInterface>(this FakeItEasy.Configuration.ICallbackConfiguration<TInterface> configuration, System.Action actionToInvoke) { }
+        public static TInterface Invokes<[System.Runtime.CompilerServices.NullableAttribute(2)]  TInterface>(this FakeItEasy.Configuration.ICallbackConfiguration<TInterface> configuration, System.Action actionToInvoke) { }
         public static TInterface Invokes<TInterface, T1>(this FakeItEasy.Configuration.ICallbackConfiguration<TInterface> configuration, System.Action<T1> actionToInvoke) { }
         public static TInterface Invokes<TInterface, T1, T2>(this FakeItEasy.Configuration.ICallbackConfiguration<TInterface> configuration, System.Action<T1, T2> actionToInvoke) { }
         public static TInterface Invokes<TInterface, T1, T2, T3>(this FakeItEasy.Configuration.ICallbackConfiguration<TInterface> configuration, System.Action<T1, T2, T3> actionToInvoke) { }
@@ -141,14 +151,15 @@ namespace FakeItEasy
     }
     public class static CompletedFakeObjectCallExtensions
     {
-        public static System.Collections.Generic.IEnumerable<FakeItEasy.Core.ICompletedFakeObjectCall> Matching<TFake>(this System.Collections.Generic.IEnumerable<FakeItEasy.Core.ICompletedFakeObjectCall> calls, System.Linq.Expressions.Expression<System.Action<TFake>> callSpecification) { }
+        public static System.Collections.Generic.IEnumerable<FakeItEasy.Core.ICompletedFakeObjectCall> Matching<[System.Runtime.CompilerServices.NullableAttribute(2)]  TFake>(this System.Collections.Generic.IEnumerable<FakeItEasy.Core.ICompletedFakeObjectCall> calls, System.Linq.Expressions.Expression<System.Action<TFake>> callSpecification) { }
     }
     public class DefaultBootstrapper : FakeItEasy.IBootstrapper
     {
         public DefaultBootstrapper() { }
         public virtual System.Collections.Generic.IEnumerable<string> GetAssemblyFileNamesToScanForExtensions() { }
     }
-    public abstract class DummyFactory<T> : FakeItEasy.IDummyFactory
+    [System.Runtime.CompilerServices.NullableAttribute(0)]
+    public abstract class DummyFactory<[System.Runtime.CompilerServices.NullableAttribute(2)]  T> : FakeItEasy.IDummyFactory
     {
         protected DummyFactory() { }
         public virtual FakeItEasy.Priority Priority { get; }
@@ -156,17 +167,20 @@ namespace FakeItEasy
         public object Create(System.Type type) { }
         protected abstract T Create();
     }
+    [System.Runtime.CompilerServices.NullableAttribute(0)]
     public class static ExceptionThrowerConfigurationExtensions
     {
-        public static FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface> Throws<TInterface>(this FakeItEasy.Configuration.IExceptionThrowerConfiguration<TInterface> configuration, System.Exception exception) { }
-        public static FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface> Throws<TInterface>(this FakeItEasy.Configuration.IExceptionThrowerConfiguration<TInterface> configuration, System.Func<System.Exception> exceptionFactory) { }
+        public static FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface> Throws<[System.Runtime.CompilerServices.NullableAttribute(2)]  TInterface>(this FakeItEasy.Configuration.IExceptionThrowerConfiguration<TInterface> configuration, System.Exception exception) { }
+        public static FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface> Throws<[System.Runtime.CompilerServices.NullableAttribute(2)]  TInterface>(this FakeItEasy.Configuration.IExceptionThrowerConfiguration<TInterface> configuration, System.Func<System.Exception> exceptionFactory) { }
     }
+    [System.Runtime.CompilerServices.NullableAttribute(0)]
     public class ExpectationException : System.Exception
     {
         public ExpectationException() { }
         public ExpectationException(string message) { }
         public ExpectationException(string message, System.Exception innerException) { }
     }
+    [System.Runtime.CompilerServices.NullableAttribute(0)]
     public class static Fake
     {
         public static void ClearConfiguration(object fakedObject) { }
@@ -174,11 +188,13 @@ namespace FakeItEasy
         public static System.Collections.Generic.IEnumerable<FakeItEasy.Core.ICompletedFakeObjectCall> GetCalls(object fakedObject) { }
         public static FakeItEasy.Core.FakeManager GetFakeManager(object fakedObject) { }
     }
+    [System.Runtime.CompilerServices.NullableAttribute(0)]
     public class static FakeObjectCallExtensions
     {
-        public static T GetArgument<T>(this FakeItEasy.Core.IFakeObjectCall call, int argumentIndex) { }
-        public static T GetArgument<T>(this FakeItEasy.Core.IFakeObjectCall call, string argumentName) { }
+        public static T GetArgument<[System.Runtime.CompilerServices.NullableAttribute(2)]  T>(this FakeItEasy.Core.IFakeObjectCall call, int argumentIndex) { }
+        public static T GetArgument<[System.Runtime.CompilerServices.NullableAttribute(2)]  T>(this FakeItEasy.Core.IFakeObjectCall call, string argumentName) { }
     }
+    [System.Runtime.CompilerServices.NullableAttribute(0)]
     public abstract class FakeOptionsBuilder<TFake> : FakeItEasy.IFakeOptionsBuilder
         where TFake :  class
     {
@@ -186,6 +202,7 @@ namespace FakeItEasy
         public virtual FakeItEasy.Priority Priority { get; }
         protected abstract void BuildOptions(FakeItEasy.Creation.IFakeOptions<TFake> options);
     }
+    [System.Runtime.CompilerServices.NullableAttribute(0)]
     public class static FakeOptionsExtensions
     {
         public static FakeItEasy.Creation.IFakeOptions<T> CallsBaseMethods<T>(this FakeItEasy.Creation.IFakeOptions<T> options)
@@ -195,6 +212,7 @@ namespace FakeItEasy
             where T :  class { }
         public static FakeItEasy.Creation.IFakeOptions Strict(this FakeItEasy.Creation.IFakeOptions options) { }
     }
+    [System.Runtime.CompilerServices.NullableAttribute(0)]
     public class Fake<T> : FakeItEasy.IHideObjectMembers
         where T :  class
     {
@@ -204,10 +222,10 @@ namespace FakeItEasy
         public System.Collections.Generic.IEnumerable<FakeItEasy.Core.ICompletedFakeObjectCall> RecordedCalls { get; }
         public FakeItEasy.Configuration.IAnyCallConfigurationWithNoReturnTypeSpecified AnyCall() { }
         public FakeItEasy.Configuration.IVoidArgumentValidationConfiguration CallsTo(System.Linq.Expressions.Expression<System.Action<T>> callSpecification) { }
-        public FakeItEasy.Configuration.IReturnValueArgumentValidationConfiguration<TMember> CallsTo<TMember>(System.Linq.Expressions.Expression<System.Func<T, TMember>> callSpecification) { }
-        public FakeItEasy.Configuration.IPropertySetterAnyValueConfiguration<TValue> CallsToSet<TValue>(System.Linq.Expressions.Expression<System.Func<T, TValue>> propertySpecification) { }
+        public FakeItEasy.Configuration.IReturnValueArgumentValidationConfiguration<TMember> CallsTo<[System.Runtime.CompilerServices.NullableAttribute(2)]  TMember>(System.Linq.Expressions.Expression<System.Func<T, TMember>> callSpecification) { }
+        public FakeItEasy.Configuration.IPropertySetterAnyValueConfiguration<TValue> CallsToSet<[System.Runtime.CompilerServices.NullableAttribute(2)]  TValue>(System.Linq.Expressions.Expression<System.Func<T, TValue>> propertySpecification) { }
     }
-    public interface IArgumentConstraintManager<T> : FakeItEasy.IHideObjectMembers
+    public interface IArgumentConstraintManager<[System.Runtime.CompilerServices.NullableAttribute(2)]  T> : FakeItEasy.IHideObjectMembers
     {
         T Matches(System.Func<T, bool> predicate, System.Action<FakeItEasy.IOutputWriter> descriptionWriter);
     }
@@ -240,7 +258,7 @@ namespace FakeItEasy
         System.Type GetType();
         string ToString();
     }
-    public interface INegatableArgumentConstraintManager<T> : FakeItEasy.IArgumentConstraintManager<T>, FakeItEasy.IHideObjectMembers
+    public interface INegatableArgumentConstraintManager<[System.Runtime.CompilerServices.NullableAttribute(2)]  T> : FakeItEasy.IArgumentConstraintManager<T>, FakeItEasy.IHideObjectMembers
     {
         FakeItEasy.IArgumentConstraintManager<T> Not { get; }
     }
@@ -252,8 +270,9 @@ namespace FakeItEasy
     }
     public class static OutAndRefParametersConfigurationExtensions
     {
-        public static FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParameters<TInterface>(this FakeItEasy.Configuration.IOutAndRefParametersConfiguration<TInterface> configuration, params object[] values) { }
+        public static FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParameters<[System.Runtime.CompilerServices.NullableAttribute(2)]  TInterface>(this FakeItEasy.Configuration.IOutAndRefParametersConfiguration<TInterface> configuration, params object[] values) { }
     }
+    [System.Runtime.CompilerServices.NullableAttribute(0)]
     public class static OutputWriterExtensions
     {
         public static FakeItEasy.IOutputWriter Write(this FakeItEasy.IOutputWriter writer, string format, params object[] args) { }
@@ -276,10 +295,11 @@ namespace FakeItEasy
         public static bool <(FakeItEasy.Priority left, FakeItEasy.Priority right) { }
         public static bool <=(FakeItEasy.Priority left, FakeItEasy.Priority right) { }
     }
+    [System.Runtime.CompilerServices.NullableAttribute(0)]
     public class static Raise
     {
-        public static FakeItEasy.Core.Raise<TEventArgs> With<TEventArgs>(object sender, TEventArgs e) { }
-        public static FakeItEasy.Core.Raise<TEventArgs> With<TEventArgs>(TEventArgs e) { }
+        public static FakeItEasy.Core.Raise<TEventArgs> With<[System.Runtime.CompilerServices.NullableAttribute(2)]  TEventArgs>(object sender, TEventArgs e) { }
+        public static FakeItEasy.Core.Raise<TEventArgs> With<[System.Runtime.CompilerServices.NullableAttribute(2)]  TEventArgs>(TEventArgs e) { }
         public static FakeItEasy.Core.Raise<System.EventArgs> WithEmpty() { }
         public class static FreeForm
         {
@@ -294,10 +314,10 @@ namespace FakeItEasy
     }
     public class static ReturnValueConfigurationExtensions
     {
-        public static FakeItEasy.Configuration.IAfterCallConfiguredWithOutAndRefParametersConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<T>> Returns<T>(this FakeItEasy.Configuration.IReturnValueConfiguration<T> configuration, T value) { }
-        public static FakeItEasy.Configuration.IAfterCallConfiguredWithOutAndRefParametersConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task<T>>> Returns<T>(this FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task<T>> configuration, T value) { }
-        public static FakeItEasy.Configuration.IAfterCallConfiguredWithOutAndRefParametersConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<T>> ReturnsLazily<T>(this FakeItEasy.Configuration.IReturnValueConfiguration<T> configuration, System.Func<T> valueProducer) { }
-        public static FakeItEasy.Configuration.IAfterCallConfiguredWithOutAndRefParametersConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task<T>>> ReturnsLazily<T>(this FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task<T>> configuration, System.Func<T> valueProducer) { }
+        public static FakeItEasy.Configuration.IAfterCallConfiguredWithOutAndRefParametersConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<T>> Returns<[System.Runtime.CompilerServices.NullableAttribute(2)]  T>(this FakeItEasy.Configuration.IReturnValueConfiguration<T> configuration, T value) { }
+        public static FakeItEasy.Configuration.IAfterCallConfiguredWithOutAndRefParametersConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task<T>>> Returns<[System.Runtime.CompilerServices.NullableAttribute(2)]  T>(this FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task<T>> configuration, T value) { }
+        public static FakeItEasy.Configuration.IAfterCallConfiguredWithOutAndRefParametersConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<T>> ReturnsLazily<[System.Runtime.CompilerServices.NullableAttribute(2)]  T>(this FakeItEasy.Configuration.IReturnValueConfiguration<T> configuration, System.Func<T> valueProducer) { }
+        public static FakeItEasy.Configuration.IAfterCallConfiguredWithOutAndRefParametersConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task<T>>> ReturnsLazily<[System.Runtime.CompilerServices.NullableAttribute(2)]  T>(this FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task<T>> configuration, System.Func<T> valueProducer) { }
         public static FakeItEasy.Configuration.IAfterCallConfiguredWithOutAndRefParametersConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<TReturnType>> ReturnsLazily<TReturnType, T1>(this FakeItEasy.Configuration.IReturnValueConfiguration<TReturnType> configuration, System.Func<T1, TReturnType> valueProducer) { }
         public static FakeItEasy.Configuration.IAfterCallConfiguredWithOutAndRefParametersConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task<TReturnType>>> ReturnsLazily<TReturnType, T1>(this FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task<TReturnType>> configuration, System.Func<T1, TReturnType> valueProducer) { }
         public static FakeItEasy.Configuration.IAfterCallConfiguredWithOutAndRefParametersConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<TReturnType>> ReturnsLazily<TReturnType, T1, T2>(this FakeItEasy.Configuration.IReturnValueConfiguration<TReturnType> configuration, System.Func<T1, T2, TReturnType> valueProducer) { }
@@ -314,15 +334,17 @@ namespace FakeItEasy
         public static FakeItEasy.Configuration.IAfterCallConfiguredWithOutAndRefParametersConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task<TReturnType>>> ReturnsLazily<TReturnType, T1, T2, T3, T4, T5, T6, T7>(this FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task<TReturnType>> configuration, System.Func<T1, T2, T3, T4, T5, T6, T7, TReturnType> valueProducer) { }
         public static FakeItEasy.Configuration.IAfterCallConfiguredWithOutAndRefParametersConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<TReturnType>> ReturnsLazily<TReturnType, T1, T2, T3, T4, T5, T6, T7, T8>(this FakeItEasy.Configuration.IReturnValueConfiguration<TReturnType> configuration, System.Func<T1, T2, T3, T4, T5, T6, T7, T8, TReturnType> valueProducer) { }
         public static FakeItEasy.Configuration.IAfterCallConfiguredWithOutAndRefParametersConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task<TReturnType>>> ReturnsLazily<TReturnType, T1, T2, T3, T4, T5, T6, T7, T8>(this FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task<TReturnType>> configuration, System.Func<T1, T2, T3, T4, T5, T6, T7, T8, TReturnType> valueProducer) { }
-        public static void ReturnsNextFromSequence<T>(this FakeItEasy.Configuration.IReturnValueConfiguration<T> configuration, params T[] values) { }
-        public static void ReturnsNextFromSequence<T>(this FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task<T>> configuration, params T[] values) { }
+        public static void ReturnsNextFromSequence<[System.Runtime.CompilerServices.NullableAttribute(2)]  T>(this FakeItEasy.Configuration.IReturnValueConfiguration<T> configuration, params T[] values) { }
+        public static void ReturnsNextFromSequence<[System.Runtime.CompilerServices.NullableAttribute(2)]  T>(this FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task<T>> configuration, params T[] values) { }
     }
+    [System.Runtime.CompilerServices.NullableAttribute(0)]
     public abstract class Times
     {
         public static FakeItEasy.Times Exactly { get; }
         public static FakeItEasy.Times OrLess { get; }
         public static FakeItEasy.Times OrMore { get; }
     }
+    [System.Runtime.CompilerServices.NullableAttribute(0)]
     public class UserCallbackException : System.Exception
     {
         public UserCallbackException() { }
@@ -331,37 +353,39 @@ namespace FakeItEasy
     }
     public class static WhereConfigurationExtensions
     {
-        public static T Where<T>(this FakeItEasy.Configuration.IWhereConfiguration<T> configuration, System.Linq.Expressions.Expression<System.Func<FakeItEasy.Core.IFakeObjectCall, bool>> predicate) { }
+        public static T Where<[System.Runtime.CompilerServices.NullableAttribute(2)]  T>(this FakeItEasy.Configuration.IWhereConfiguration<T> configuration, System.Linq.Expressions.Expression<System.Func<FakeItEasy.Core.IFakeObjectCall, bool>> predicate) { }
     }
 }
 namespace FakeItEasy.Configuration
 {
+    [System.Runtime.CompilerServices.NullableAttribute(0)]
     public class ArgumentCollection : System.Collections.Generic.IEnumerable<object>, System.Collections.IEnumerable
     {
         public System.Collections.Generic.IEnumerable<string> ArgumentNames { get; }
         public int Count { get; }
         public object this[int argumentIndex] { get; }
-        public T Get<T>(int index) { }
-        public T Get<T>(string argumentName) { }
+        public T Get<[System.Runtime.CompilerServices.NullableAttribute(2)]  T>(int index) { }
+        public T Get<[System.Runtime.CompilerServices.NullableAttribute(2)]  T>(string argumentName) { }
         public System.Collections.Generic.IEnumerator<object> GetEnumerator() { }
     }
+    [System.Runtime.CompilerServices.NullableAttribute(0)]
     public class FakeConfigurationException : System.Exception
     {
         public FakeConfigurationException() { }
         public FakeConfigurationException(string message) { }
         public FakeConfigurationException(string message, System.Exception innerException) { }
     }
-    public interface IAfterCallConfiguredConfiguration<out TInterface> : FakeItEasy.Configuration.IBehaviorLifetimeConfiguration<TInterface>, FakeItEasy.IHideObjectMembers { }
-    public interface IAfterCallConfiguredWithOutAndRefParametersConfiguration<out TInterface> : FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface>, FakeItEasy.Configuration.IBehaviorLifetimeConfiguration<TInterface>, FakeItEasy.Configuration.IOutAndRefParametersConfiguration<TInterface>, FakeItEasy.IHideObjectMembers { }
+    public interface IAfterCallConfiguredConfiguration<[System.Runtime.CompilerServices.NullableAttribute(2)]  out TInterface> : FakeItEasy.Configuration.IBehaviorLifetimeConfiguration<TInterface>, FakeItEasy.IHideObjectMembers { }
+    public interface IAfterCallConfiguredWithOutAndRefParametersConfiguration<[System.Runtime.CompilerServices.NullableAttribute(2)]  out TInterface> : FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface>, FakeItEasy.Configuration.IBehaviorLifetimeConfiguration<TInterface>, FakeItEasy.Configuration.IOutAndRefParametersConfiguration<TInterface>, FakeItEasy.IHideObjectMembers { }
     public interface IAnyCallConfigurationWithNoReturnTypeSpecified : FakeItEasy.Configuration.IArgumentValidationConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.IAssertConfiguration, FakeItEasy.Configuration.ICallBaseConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.ICallbackConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.IDoNothingConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.IExceptionThrowerConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.IOutAndRefParametersConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.IVoidArgumentValidationConfiguration, FakeItEasy.Configuration.IVoidConfiguration, FakeItEasy.Configuration.IWhereConfiguration<FakeItEasy.Configuration.IAnyCallConfigurationWithNoReturnTypeSpecified>, FakeItEasy.IHideObjectMembers
     {
         FakeItEasy.Configuration.IAnyCallConfigurationWithReturnTypeSpecified<object> WithNonVoidReturnType();
-        FakeItEasy.Configuration.IAnyCallConfigurationWithReturnTypeSpecified<TMember> WithReturnType<TMember>();
+        FakeItEasy.Configuration.IAnyCallConfigurationWithReturnTypeSpecified<TMember> WithReturnType<[System.Runtime.CompilerServices.NullableAttribute(2)]  TMember>();
         FakeItEasy.Configuration.IAnyCallConfigurationWithVoidReturnType WithVoidReturnType();
     }
-    public interface IAnyCallConfigurationWithReturnTypeSpecified<T> : FakeItEasy.Configuration.IArgumentValidationConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<T>>, FakeItEasy.Configuration.IAssertConfiguration, FakeItEasy.Configuration.ICallBaseConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<T>>, FakeItEasy.Configuration.ICallbackConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<T>>, FakeItEasy.Configuration.IExceptionThrowerConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<T>>, FakeItEasy.Configuration.IOutAndRefParametersConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<T>>, FakeItEasy.Configuration.IReturnValueArgumentValidationConfiguration<T>, FakeItEasy.Configuration.IReturnValueConfiguration<T>, FakeItEasy.Configuration.IWhereConfiguration<FakeItEasy.Configuration.IAnyCallConfigurationWithReturnTypeSpecified<T>>, FakeItEasy.IHideObjectMembers { }
+    public interface IAnyCallConfigurationWithReturnTypeSpecified<[System.Runtime.CompilerServices.NullableAttribute(2)]  T> : FakeItEasy.Configuration.IArgumentValidationConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<T>>, FakeItEasy.Configuration.IAssertConfiguration, FakeItEasy.Configuration.ICallBaseConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<T>>, FakeItEasy.Configuration.ICallbackConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<T>>, FakeItEasy.Configuration.IExceptionThrowerConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<T>>, FakeItEasy.Configuration.IOutAndRefParametersConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<T>>, FakeItEasy.Configuration.IReturnValueArgumentValidationConfiguration<T>, FakeItEasy.Configuration.IReturnValueConfiguration<T>, FakeItEasy.Configuration.IWhereConfiguration<FakeItEasy.Configuration.IAnyCallConfigurationWithReturnTypeSpecified<T>>, FakeItEasy.IHideObjectMembers { }
     public interface IAnyCallConfigurationWithVoidReturnType : FakeItEasy.Configuration.IArgumentValidationConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.IAssertConfiguration, FakeItEasy.Configuration.ICallBaseConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.ICallbackConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.IDoNothingConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.IExceptionThrowerConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.IOutAndRefParametersConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.IVoidArgumentValidationConfiguration, FakeItEasy.Configuration.IVoidConfiguration, FakeItEasy.Configuration.IWhereConfiguration<FakeItEasy.Configuration.IAnyCallConfigurationWithVoidReturnType>, FakeItEasy.IHideObjectMembers { }
-    public interface IArgumentValidationConfiguration<out TInterface> : FakeItEasy.IHideObjectMembers
+    public interface IArgumentValidationConfiguration<[System.Runtime.CompilerServices.NullableAttribute(2)]  out TInterface> : FakeItEasy.IHideObjectMembers
     {
         TInterface WhenArgumentsMatch(System.Func<FakeItEasy.Configuration.ArgumentCollection, bool> argumentsPredicate);
     }
@@ -370,23 +394,23 @@ namespace FakeItEasy.Configuration
         FakeItEasy.Configuration.UnorderedCallAssertion MustHaveHappened(int numberOfTimes, FakeItEasy.Times timesOption);
         FakeItEasy.Configuration.UnorderedCallAssertion MustHaveHappenedANumberOfTimesMatching(System.Linq.Expressions.Expression<System.Func<int, bool>> predicate);
     }
-    public interface IBehaviorLifetimeConfiguration<out TInterface> : FakeItEasy.IHideObjectMembers
+    public interface IBehaviorLifetimeConfiguration<[System.Runtime.CompilerServices.NullableAttribute(2)]  out TInterface> : FakeItEasy.IHideObjectMembers
     {
         FakeItEasy.Configuration.IThenConfiguration<TInterface> NumberOfTimes(int numberOfTimes);
     }
-    public interface ICallBaseConfiguration<out TInterface> : FakeItEasy.IHideObjectMembers
+    public interface ICallBaseConfiguration<[System.Runtime.CompilerServices.NullableAttribute(2)]  out TInterface> : FakeItEasy.IHideObjectMembers
     {
         FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface> CallsBaseMethod();
     }
-    public interface ICallbackConfiguration<out TInterface> : FakeItEasy.IHideObjectMembers
+    public interface ICallbackConfiguration<[System.Runtime.CompilerServices.NullableAttribute(2)]  out TInterface> : FakeItEasy.IHideObjectMembers
     {
         TInterface Invokes(System.Action<FakeItEasy.Core.IFakeObjectCall> action);
     }
-    public interface IDoNothingConfiguration<out TInterface> : FakeItEasy.IHideObjectMembers
+    public interface IDoNothingConfiguration<[System.Runtime.CompilerServices.NullableAttribute(2)]  out TInterface> : FakeItEasy.IHideObjectMembers
     {
         FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface> DoesNothing();
     }
-    public interface IExceptionThrowerConfiguration<out TInterface> : FakeItEasy.IHideObjectMembers
+    public interface IExceptionThrowerConfiguration<[System.Runtime.CompilerServices.NullableAttribute(2)]  out TInterface> : FakeItEasy.IHideObjectMembers
     {
         FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface> Throws<T1>(System.Func<T1, System.Exception> exceptionFactory);
         FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface> Throws<T1, T2>(System.Func<T1, T2, System.Exception> exceptionFactory);
@@ -397,14 +421,14 @@ namespace FakeItEasy.Configuration
         FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface> Throws<T1, T2, T3, T4, T5, T6, T7>(System.Func<T1, T2, T3, T4, T5, T6, T7, System.Exception> exceptionFactory);
         FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface> Throws<T1, T2, T3, T4, T5, T6, T7, T8>(System.Func<T1, T2, T3, T4, T5, T6, T7, T8, System.Exception> exceptionFactory);
         FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface> Throws(System.Func<FakeItEasy.Core.IFakeObjectCall, System.Exception> exceptionFactory);
-        FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface> Throws<T>()
+        FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface> Throws<[System.Runtime.CompilerServices.NullableAttribute(0)]  T>()
             where T : System.Exception, new ();
     }
     public interface IOrderableCallAssertion : FakeItEasy.IHideObjectMembers
     {
         FakeItEasy.Configuration.IOrderableCallAssertion Then(FakeItEasy.Configuration.UnorderedCallAssertion nextAssertion);
     }
-    public interface IOutAndRefParametersConfiguration<out TInterface> : FakeItEasy.IHideObjectMembers
+    public interface IOutAndRefParametersConfiguration<[System.Runtime.CompilerServices.NullableAttribute(2)]  out TInterface> : FakeItEasy.IHideObjectMembers
     {
         FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily(System.Func<FakeItEasy.Core.IFakeObjectCall, System.Collections.Generic.ICollection<object>> valueProducer);
         FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily<T1>(System.Func<T1, object[]> valueProducer);
@@ -416,27 +440,28 @@ namespace FakeItEasy.Configuration
         FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5, T6, T7>(System.Func<T1, T2, T3, T4, T5, T6, T7, object[]> valueProducer);
         FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5, T6, T7, T8>(System.Func<T1, T2, T3, T4, T5, T6, T7, T8, object[]> valueProducer);
     }
-    public interface IPropertySetterAnyValueConfiguration<TValue> : FakeItEasy.Configuration.IArgumentValidationConfiguration<FakeItEasy.Configuration.IPropertySetterConfiguration>, FakeItEasy.Configuration.IAssertConfiguration, FakeItEasy.Configuration.ICallBaseConfiguration<FakeItEasy.Configuration.IPropertySetterConfiguration>, FakeItEasy.Configuration.ICallbackConfiguration<FakeItEasy.Configuration.IPropertySetterConfiguration>, FakeItEasy.Configuration.IDoNothingConfiguration<FakeItEasy.Configuration.IPropertySetterConfiguration>, FakeItEasy.Configuration.IExceptionThrowerConfiguration<FakeItEasy.Configuration.IPropertySetterConfiguration>, FakeItEasy.Configuration.IPropertySetterConfiguration, FakeItEasy.IHideObjectMembers
+    public interface IPropertySetterAnyValueConfiguration<[System.Runtime.CompilerServices.NullableAttribute(2)]  TValue> : FakeItEasy.Configuration.IArgumentValidationConfiguration<FakeItEasy.Configuration.IPropertySetterConfiguration>, FakeItEasy.Configuration.IAssertConfiguration, FakeItEasy.Configuration.ICallBaseConfiguration<FakeItEasy.Configuration.IPropertySetterConfiguration>, FakeItEasy.Configuration.ICallbackConfiguration<FakeItEasy.Configuration.IPropertySetterConfiguration>, FakeItEasy.Configuration.IDoNothingConfiguration<FakeItEasy.Configuration.IPropertySetterConfiguration>, FakeItEasy.Configuration.IExceptionThrowerConfiguration<FakeItEasy.Configuration.IPropertySetterConfiguration>, FakeItEasy.Configuration.IPropertySetterConfiguration, FakeItEasy.IHideObjectMembers
     {
         FakeItEasy.Configuration.IPropertySetterConfiguration To(TValue value);
         FakeItEasy.Configuration.IPropertySetterConfiguration To(System.Linq.Expressions.Expression<System.Func<TValue>> valueConstraint);
     }
     public interface IPropertySetterConfiguration : FakeItEasy.Configuration.IAssertConfiguration, FakeItEasy.Configuration.ICallBaseConfiguration<FakeItEasy.Configuration.IPropertySetterConfiguration>, FakeItEasy.Configuration.ICallbackConfiguration<FakeItEasy.Configuration.IPropertySetterConfiguration>, FakeItEasy.Configuration.IDoNothingConfiguration<FakeItEasy.Configuration.IPropertySetterConfiguration>, FakeItEasy.Configuration.IExceptionThrowerConfiguration<FakeItEasy.Configuration.IPropertySetterConfiguration>, FakeItEasy.IHideObjectMembers { }
-    public interface IReturnValueArgumentValidationConfiguration<TMember> : FakeItEasy.Configuration.IArgumentValidationConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<TMember>>, FakeItEasy.Configuration.IAssertConfiguration, FakeItEasy.Configuration.ICallBaseConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<TMember>>, FakeItEasy.Configuration.ICallbackConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<TMember>>, FakeItEasy.Configuration.IExceptionThrowerConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<TMember>>, FakeItEasy.Configuration.IOutAndRefParametersConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<TMember>>, FakeItEasy.Configuration.IReturnValueConfiguration<TMember>, FakeItEasy.IHideObjectMembers { }
-    public interface IReturnValueConfiguration<TMember> : FakeItEasy.Configuration.IAssertConfiguration, FakeItEasy.Configuration.ICallBaseConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<TMember>>, FakeItEasy.Configuration.ICallbackConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<TMember>>, FakeItEasy.Configuration.IExceptionThrowerConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<TMember>>, FakeItEasy.Configuration.IOutAndRefParametersConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<TMember>>, FakeItEasy.IHideObjectMembers
+    public interface IReturnValueArgumentValidationConfiguration<[System.Runtime.CompilerServices.NullableAttribute(2)]  TMember> : FakeItEasy.Configuration.IArgumentValidationConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<TMember>>, FakeItEasy.Configuration.IAssertConfiguration, FakeItEasy.Configuration.ICallBaseConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<TMember>>, FakeItEasy.Configuration.ICallbackConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<TMember>>, FakeItEasy.Configuration.IExceptionThrowerConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<TMember>>, FakeItEasy.Configuration.IOutAndRefParametersConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<TMember>>, FakeItEasy.Configuration.IReturnValueConfiguration<TMember>, FakeItEasy.IHideObjectMembers { }
+    public interface IReturnValueConfiguration<[System.Runtime.CompilerServices.NullableAttribute(2)]  TMember> : FakeItEasy.Configuration.IAssertConfiguration, FakeItEasy.Configuration.ICallBaseConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<TMember>>, FakeItEasy.Configuration.ICallbackConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<TMember>>, FakeItEasy.Configuration.IExceptionThrowerConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<TMember>>, FakeItEasy.Configuration.IOutAndRefParametersConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<TMember>>, FakeItEasy.IHideObjectMembers
     {
         FakeItEasy.Configuration.IAfterCallConfiguredWithOutAndRefParametersConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<TMember>> ReturnsLazily(System.Func<FakeItEasy.Core.IFakeObjectCall, TMember> valueProducer);
     }
-    public interface IThenConfiguration<out TInterface> : FakeItEasy.IHideObjectMembers
+    public interface IThenConfiguration<[System.Runtime.CompilerServices.NullableAttribute(2)]  out TInterface> : FakeItEasy.IHideObjectMembers
     {
         TInterface Then { get; }
     }
     public interface IVoidArgumentValidationConfiguration : FakeItEasy.Configuration.IArgumentValidationConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.IAssertConfiguration, FakeItEasy.Configuration.ICallBaseConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.ICallbackConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.IDoNothingConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.IExceptionThrowerConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.IOutAndRefParametersConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.IVoidConfiguration, FakeItEasy.IHideObjectMembers { }
     public interface IVoidConfiguration : FakeItEasy.Configuration.IAssertConfiguration, FakeItEasy.Configuration.ICallBaseConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.ICallbackConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.IDoNothingConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.IExceptionThrowerConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.IOutAndRefParametersConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.IHideObjectMembers { }
-    public interface IWhereConfiguration<out TInterface> : FakeItEasy.IHideObjectMembers
+    public interface IWhereConfiguration<[System.Runtime.CompilerServices.NullableAttribute(2)]  out TInterface> : FakeItEasy.IHideObjectMembers
     {
         TInterface Where(System.Func<FakeItEasy.Core.IFakeObjectCall, bool> predicate, System.Action<FakeItEasy.IOutputWriter> descriptionWriter);
     }
+    [System.Runtime.CompilerServices.NullableAttribute(0)]
     public sealed class UnorderedCallAssertion : FakeItEasy.Configuration.IOrderableCallAssertion, FakeItEasy.IHideObjectMembers
     {
         public FakeItEasy.Configuration.IOrderableCallAssertion Then(FakeItEasy.Configuration.UnorderedCallAssertion nextAssertion) { }
@@ -444,18 +469,21 @@ namespace FakeItEasy.Configuration
 }
 namespace FakeItEasy.Core
 {
+    [System.Runtime.CompilerServices.NullableAttribute(0)]
     public class DummyCreationException : System.Exception
     {
         public DummyCreationException() { }
         public DummyCreationException(string message) { }
         public DummyCreationException(string message, System.Exception innerException) { }
     }
+    [System.Runtime.CompilerServices.NullableAttribute(0)]
     public class FakeCreationException : System.Exception
     {
         public FakeCreationException() { }
         public FakeCreationException(string message) { }
         public FakeCreationException(string message, System.Exception innerException) { }
     }
+    [System.Runtime.CompilerServices.NullableAttribute(0)]
     public class FakeManager
     {
         public string FakeObjectName { get; }
@@ -495,7 +523,8 @@ namespace FakeItEasy.Core
         void OnAfterCallIntercepted(FakeItEasy.Core.ICompletedFakeObjectCall interceptedCall);
         void OnBeforeCallIntercepted(FakeItEasy.Core.IFakeObjectCall interceptedCall);
     }
-    public class Raise<TEventArgs>
+    [System.Runtime.CompilerServices.NullableAttribute(0)]
+    public class Raise<[System.Runtime.CompilerServices.NullableAttribute(2)]  TEventArgs>
     {
         public static System.EventHandler<TEventArgs> op_Implicit(FakeItEasy.Core.Raise<TEventArgs> raiser) { }
         public static System.EventHandler op_Implicit(FakeItEasy.Core.Raise<TEventArgs> raiser) { }
@@ -507,10 +536,10 @@ namespace FakeItEasy.Creation
     {
         FakeItEasy.Creation.IFakeOptions ConfigureFake(System.Action<object> action);
         FakeItEasy.Creation.IFakeOptions Implements(System.Type interfaceType);
-        FakeItEasy.Creation.IFakeOptions Implements<TInterface>();
+        FakeItEasy.Creation.IFakeOptions Implements<[System.Runtime.CompilerServices.NullableAttribute(2)]  TInterface>();
         FakeItEasy.Creation.IFakeOptions Named(string name);
         FakeItEasy.Creation.IFakeOptions WithArgumentsForConstructor(System.Collections.Generic.IEnumerable<object> argumentsForConstructor);
-        FakeItEasy.Creation.IFakeOptions WithArgumentsForConstructor<TConstructor>(System.Linq.Expressions.Expression<System.Func<TConstructor>> constructorCall);
+        FakeItEasy.Creation.IFakeOptions WithArgumentsForConstructor<[System.Runtime.CompilerServices.NullableAttribute(2)]  TConstructor>(System.Linq.Expressions.Expression<System.Func<TConstructor>> constructorCall);
         FakeItEasy.Creation.IFakeOptions WithAttributes(params System.Linq.Expressions.Expression<>[] attributes);
         FakeItEasy.Creation.IFakeOptions Wrapping(object wrappedInstance);
     }
@@ -519,7 +548,7 @@ namespace FakeItEasy.Creation
     {
         FakeItEasy.Creation.IFakeOptions<T> ConfigureFake(System.Action<T> action);
         FakeItEasy.Creation.IFakeOptions<T> Implements(System.Type interfaceType);
-        FakeItEasy.Creation.IFakeOptions<T> Implements<TInterface>();
+        FakeItEasy.Creation.IFakeOptions<T> Implements<[System.Runtime.CompilerServices.NullableAttribute(2)]  TInterface>();
         FakeItEasy.Creation.IFakeOptions<T> Named(string name);
         FakeItEasy.Creation.IFakeOptions<T> WithArgumentsForConstructor(System.Collections.Generic.IEnumerable<object> argumentsForConstructor);
         FakeItEasy.Creation.IFakeOptions<T> WithArgumentsForConstructor(System.Linq.Expressions.Expression<System.Func<T>> constructorCall);
@@ -529,6 +558,7 @@ namespace FakeItEasy.Creation
 }
 namespace FakeItEasy.Sdk
 {
+    [System.Runtime.CompilerServices.NullableAttribute(0)]
     public class static Create
     {
         public static System.Collections.Generic.IList<object> CollectionOfDummy(System.Type typeOfDummy, int numberOfDummies) { }
