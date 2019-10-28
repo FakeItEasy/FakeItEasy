@@ -72,14 +72,11 @@ namespace FakeItEasy.Tests.Creation
                 exception: new InvalidOperationException("exception message"));
 
             // Assert
-            var expectedReason = new[]
-            {
-                "reason",
-                "An exception of type System.InvalidOperationException was caught during this call. Its message was:",
-                "exception message"
-            }.AsTextBlock();
+            var expectedReason = @"reason
+An exception of type System.InvalidOperationException was caught during this call. Its message was:
+exception message";
 
-            result.ReasonForFailure.Should().StartWith(expectedReason);
+            result.ReasonForFailure.Should().StartWithModuloLineEndings(expectedReason);
         }
 
         [Fact]
@@ -93,14 +90,11 @@ namespace FakeItEasy.Tests.Creation
                 exception: new TargetInvocationException(new InvalidOperationException("target invocation inner exception message")));
 
             // Assert
-            var expectedReason = new[]
-            {
-                "reason",
-                "An exception of type System.InvalidOperationException was caught during this call. Its message was:",
-                "target invocation inner exception message"
-            }.AsTextBlock();
+            var expectedReason = @"reason
+An exception of type System.InvalidOperationException was caught during this call. Its message was:
+target invocation inner exception message";
 
-            result.ReasonForFailure.Should().StartWith(expectedReason);
+            result.ReasonForFailure.Should().StartWithModuloLineEndings(expectedReason);
         }
 
         [Fact]
@@ -114,14 +108,11 @@ namespace FakeItEasy.Tests.Creation
                 exception: new TargetInvocationException("target invocation exception message", null));
 
             // Assert
-            var expectedReason = new[]
-            {
-                "reason",
-                "An exception of type System.Reflection.TargetInvocationException was caught during this call. Its message was:",
-                "target invocation exception message"
-            }.AsTextBlock();
+            var expectedReason = @"reason
+An exception of type System.Reflection.TargetInvocationException was caught during this call. Its message was:
+target invocation exception message";
 
-            result.ReasonForFailure.Should().StartWith(expectedReason);
+            result.ReasonForFailure.Should().StartWithModuloLineEndings(expectedReason);
         }
 
         [Fact]

@@ -97,7 +97,7 @@ namespace FakeItEasy.IntegrationTests
 ";
             exception.Should()
                 .BeAnExceptionOfType<FakeCreationException>().And
-                .Message.Should().Contain(ExpectedMessage);
+                .Message.Should().ContainModuloLineEndings(ExpectedMessage);
         }
 
         [Fact]

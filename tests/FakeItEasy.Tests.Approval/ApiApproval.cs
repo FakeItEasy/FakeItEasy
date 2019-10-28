@@ -34,7 +34,7 @@ namespace FakeItEasy.Tests.Approval
             var assemblyFile = Path.GetFullPath(
                 Path.Combine(
                     GetSourceDirectory(),
-                    $@"..\..\src\{projectName}\bin\{configurationName}\{frameworkVersion}\{projectName}.dll"));
+                    $"../../src/{projectName}/bin/{configurationName}/{frameworkVersion}/{projectName}.dll"));
 
             Skip.IfNot(File.Exists(assemblyFile), "Assembly doesn't exist.");
 

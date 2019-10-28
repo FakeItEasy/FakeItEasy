@@ -5,26 +5,50 @@ It also replicates the build on the Continuous Integration build server and is t
 
 You can also build the solution using Visual Studio 2019 or later, but this doesn't provide the same assurances as the command line build.
 
-At the time of writing the build is only confirmed to work on Windows using the Microsoft .NET framework.
+At the time of writing the full build (including all target frameworks) can only run on Windows.
+
+[Partial builds](#building-only-a-subset-of-the-supported-target-frameworks) are supported on Linux (Ubuntu 18.04). This might also run on macOS, but hasn't been tested.
 
 ## Prerequisites
 
-The build requires that a few pieces of software be installed on the host computer. We're somewhat aggressive about adoptiong new language features and the like, so rather than specifying exactly which versions are required, we'll tend toward
-"latest" or "at least" forms of guidance. If it seems you have an incompatible version of the software, prefer to upgrade rather than downgrade.
+The build requires that a few pieces of software be installed on the host computer. We're somewhat aggressive about adoptiong new language features and the like, so rather than specifying exactly which versions are required, we'll tend toward "latest" or "at least" forms of guidance. If it seems you have an incompatible version of the software, prefer to upgrade rather than downgrade.
+
+### On Windows
 
 Ensure that the following are installed:
 
 1. a recent version of Visual Studio 2019 (currently this means 16.3 or later) or the Build Tools for Visual Studio 2019
 
-1. a recent version of the .NET Core 1.0 Runtime (currently this means 1.0.12 or later)
+2. The .NET Core 1.0 runtime
 
-1. a recent version of the .NET Core 3.0 SDK (currently this means 3.0.100 or later)
+3. The .NET Core 2.1 runtime
+
+4. The .NET Framework 4.6.1 or higher
+
+5. The targeting packs for .NET Framework 4.0 and 4.5
+
+6. A recent version of the .NET Core 3.0 SDK (currently this means 3.0.100 or later)
+
+You might not need everything to run a [partial build](#building-only-a-subset-of-the-supported-target-frameworks).
+
+### On Linux
+
+The default [build profile](#building-only-a-subset-of-the-supported-target-frameworks) on Linux is `netcore2+`, which builds FakeItEasy for .NET Standard 2.0 and 2.1, and runs the tests on .NET Core 2.1 and 3.0. The .NET Framework isn't supported on Linux, and .NET Core 1.0 is no longer supported, which makes it difficult (if not impossible) to install on Linux.
+
+Ensure the following are installed:
+
+1. The .NET Core 2.1 runtime
+
+2. A recent version of the .NET Core 3.0 SDK (currently this means 3.0.100 or later)
 
 ## Building
 
-Using a command prompt, navigate to your clone root folder and execute `build.cmd`.
+Using a command prompt, navigate to your clone root folder and execute:
 
-This executes the default build targets to produce both .NET Standard and .NET Framework artifacts.
+- `build.cmd` on Windows
+- `./build.sh` on Linux
+
+This executes the default build targets to produce .NET Standard and/or .NET Framework artifacts, depending on the selected [build profile](#building-only-a-subset-of-the-supported-target-frameworks).
 
 After the build has completed, the build artifacts will be located in `artifacts`.
 
@@ -55,6 +79,8 @@ After the build has completed, the build artifacts will be located in `artifacts
 
     `build.cmd -?`
 
+(On Linux, just replace `build.cmd` with `./build.sh`)
+
 ### Building only a subset of the supported target frameworks
 
 FakeItEasy targets multiple versions of .NET (.NET Framework 4.0 and 4.5, .NET
@@ -66,8 +92,9 @@ the concept of "build profiles", which makes it possible to build only a subset
 of all the target frameworks supported by FakeItEasy. The following profiles are
 available:
 
-* `full`: the default profile, builds all supported target frameworks
+* `full`: the default profile on Windows, builds all supported target frameworks
 * `net45`: builds only the .NET Framework 4.5 target framework
+* `netcore2+`: the default profile on non-Windows OSes, builds only .NET Core 2.1 and 3.0 / .NET Standard 2.0 and 2.1 target frameworks.
 * `netcore2.1`: builds only .NET Core 2.1 / .NET Standard 2.0 target frameworks
 * `netcore3.0`: builds only .NET Core 3.0 / .NET Standard 2.1 target frameworks
 * `netcoreall`: builds all supported .NET Core / .NET Standard target frameworks

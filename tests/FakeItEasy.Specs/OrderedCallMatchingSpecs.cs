@@ -82,7 +82,7 @@ namespace FakeItEasy.Specs
                         .Then(A.CallTo(() => fake.Bar(3)).MustHaveHappened())));
 
             "Then the assertion should fail"
-                .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>().WithMessage(@"
+                .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>().WithMessageModuloLineEndings(@"
 
   Assertion failed for the following calls:
     'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1)' twice exactly
@@ -148,7 +148,7 @@ namespace FakeItEasy.Specs
                         .Then(A.CallTo(() => fake1.Bar(2)).MustHaveHappened())));
 
             "Then the assertion should fail"
-                .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>().WithMessage(@"
+                .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>().WithMessageModuloLineEndings(@"
 
   Assertion failed for the following calls:
     'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1)' once or more
@@ -225,7 +225,7 @@ namespace FakeItEasy.Specs
                 .x(() => exception = Record.Exception(() => lastAssertion.Then(A.CallTo(() => fake.Bar(3)).MustHaveHappenedOnceExactly())));
 
             "Then the last assertion should fail"
-                .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>().WithMessage(@"
+                .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>().WithMessageModuloLineEndings(@"
 
   Assertion failed for the following calls:
     'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1)' twice exactly
@@ -269,7 +269,7 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>());
 
             "And the message should say that the call to Bar(1) was found too many times"
-                .x(() => exception.Message.Should().Be(@"
+                .x(() => exception.Message.Should().BeModuloLineEndings(@"
 
   Assertion failed for the following call:
     FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1)

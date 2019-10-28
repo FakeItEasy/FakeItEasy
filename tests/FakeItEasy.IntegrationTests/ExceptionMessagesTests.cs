@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.IntegrationTests
+namespace FakeItEasy.IntegrationTests
 {
     using System;
     using System.Collections.Generic;
@@ -25,7 +25,7 @@
 
 ";
 
-            exception.Should().BeAnExceptionOfType<FakeConfigurationException>().And.Message.Should().Be(expectedMessage);
+            exception.Should().BeAnExceptionOfType<FakeConfigurationException>().WithMessageModuloLineEndings(expectedMessage);
         }
 
         [Fact]
@@ -46,7 +46,7 @@
 
 ";
 
-            exception.Should().BeAnExceptionOfType<FakeConfigurationException>().And.Message.Should().Be(expectedMessage);
+            exception.Should().BeAnExceptionOfType<FakeConfigurationException>().WithMessageModuloLineEndings(expectedMessage);
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "astatic", Justification = "Refers to the two words 'a static'.")]
@@ -65,7 +65,7 @@
 
 ";
 
-            exception.Should().BeAnExceptionOfType<FakeConfigurationException>().And.Message.Should().Be(expectedMessage);
+            exception.Should().BeAnExceptionOfType<FakeConfigurationException>().WithMessageModuloLineEndings(expectedMessage);
         }
 
         [Fact]
@@ -86,7 +86,7 @@
 
 ";
 
-            exception.Should().BeAnExceptionOfType<FakeConfigurationException>().And.Message.Should().Be(expectedMessage);
+            exception.Should().BeAnExceptionOfType<FakeConfigurationException>().WithMessageModuloLineEndings(expectedMessage);
         }
     }
 }

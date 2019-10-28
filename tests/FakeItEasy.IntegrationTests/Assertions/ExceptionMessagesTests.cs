@@ -17,7 +17,7 @@ namespace FakeItEasy.IntegrationTests.Assertions
             foo.Bar();
 
             foo.Bar("test");
-            foo.Bar(new DateTime(1977, 4, 5), "birthday");
+            foo.Bar(42, "hello");
             foo.ToString();
             foo.Biz();
 
@@ -33,13 +33,13 @@ namespace FakeItEasy.IntegrationTests.Assertions
     1: FakeItEasy.IntegrationTests.IFoo.Bar() 2 times
     ...
     3: FakeItEasy.IntegrationTests.IFoo.Bar(argument: ""test"")
-    4: FakeItEasy.IntegrationTests.IFoo.Bar(argument: 4/5/1977 12:00:00 AM, argument2: ""birthday"")
+    4: FakeItEasy.IntegrationTests.IFoo.Bar(argument: 42, argument2: ""hello"")
     5: FakeItEasy.IntegrationTests.IFoo.ToString()
     6: FakeItEasy.IntegrationTests.IFoo.Biz()
 
 ";
             exception.Should().BeAnExceptionOfType<ExpectationException>()
-                     .WithMessage(expectedMessage);
+                     .WithMessageModuloLineEndings(expectedMessage);
         }
 
         [Fact]
@@ -71,7 +71,7 @@ namespace FakeItEasy.IntegrationTests.Assertions
 ";
 
             exception.Should().BeAnExceptionOfType<ExpectationException>()
-                .WithMessage(expectedMessage);
+                .WithMessageModuloLineEndings(expectedMessage);
         }
 
         [Fact]
@@ -97,7 +97,7 @@ namespace FakeItEasy.IntegrationTests.Assertions
 
 ";
 
-            exception.Should().BeAnExceptionOfType<ExpectationException>().WithMessage(expectedMessage);
+            exception.Should().BeAnExceptionOfType<ExpectationException>().WithMessageModuloLineEndings(expectedMessage);
         }
 
         [Fact]
@@ -122,7 +122,7 @@ namespace FakeItEasy.IntegrationTests.Assertions
 
 ";
             exception.Should().BeAnExceptionOfType<ExpectationException>()
-                .WithMessage(expectedMessage);
+                .WithMessageModuloLineEndings(expectedMessage);
         }
     }
 }

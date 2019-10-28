@@ -33,7 +33,7 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>());
 
             "And the exception should correctly describe the asserted call"
-                .x(() => exception.Message.Should().Match(
+                .x(() => exception.Message.Should().MatchModuloLineEndings(
                     "*\r\n    FakeItEasy.Specs.CallDescriptionsInAssertionSpecs+IFoo.Bar(i: 42)\r\n*"));
         }
 
@@ -53,7 +53,7 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>());
 
             "And the exception should correctly describe the actual call that was made"
-                .x(() => exception.Message.Should().Match(
+                .x(() => exception.Message.Should().MatchModuloLineEndings(
                     "*\r\n    1: FakeItEasy.Specs.CallDescriptionsInAssertionSpecs+IFoo.Bar(i: 42)\r\n*"));
         }
 
@@ -73,7 +73,7 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>());
 
             "And the exception should correctly describe the asserted call"
-                .x(() => exception.Message.Should().Match(
+                .x(() => exception.Message.Should().MatchModuloLineEndings(
                     "*\r\n    FakeItEasy.Specs.CallDescriptionsInAssertionSpecs+IFoo.Baz\r\n*"));
         }
 
@@ -93,7 +93,7 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>());
 
             "And the exception correctly describes the actual call that was made"
-                .x(() => exception.Message.Should().Match(
+                .x(() => exception.Message.Should().MatchModuloLineEndings(
                     "*\r\n    1: FakeItEasy.Specs.CallDescriptionsInAssertionSpecs+IFoo.Baz\r\n*"));
         }
 
@@ -113,7 +113,7 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>());
 
             "And the exception should correctly describe the asserted call"
-                .x(() => exception.Message.Should().Match(
+                .x(() => exception.Message.Should().MatchModuloLineEndings(
                     "*\r\n    FakeItEasy.Specs.CallDescriptionsInAssertionSpecs+IFoo.Baz = <Ignored>\r\n*"));
         }
 
@@ -133,7 +133,7 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>());
 
             "And the exception should correctly describe the asserted call"
-                .x(() => exception.Message.Should().Match(
+                .x(() => exception.Message.Should().MatchModuloLineEndings(
                     "*\r\n    FakeItEasy.Specs.CallDescriptionsInAssertionSpecs+IFoo.Baz = 42\r\n*"));
         }
 
@@ -153,7 +153,7 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>());
 
             "And the exception should correctly describe the asserted call"
-                .x(() => exception.Message.Should().Match(
+                .x(() => exception.Message.Should().MatchModuloLineEndings(
                     "*\r\n    FakeItEasy.Specs.CallDescriptionsInAssertionSpecs+IFoo.Baz = <an even number>\r\n*"));
         }
 
@@ -173,7 +173,7 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>());
 
             "And the exception correctly describes the actual call that was made"
-                .x(() => exception.Message.Should().Match(
+                .x(() => exception.Message.Should().MatchModuloLineEndings(
                     "*\r\n    1: FakeItEasy.Specs.CallDescriptionsInAssertionSpecs+IFoo.Baz = 42\r\n*"));
         }
 
@@ -196,7 +196,7 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>());
 
             "And the exception should correctly describe the asserted call, using the appropriate argument value formatter"
-                .x(() => exception.Message.Should().Match(
+                .x(() => exception.Message.Should().MatchModuloLineEndings(
                     "*\r\n    FakeItEasy.Specs.CallDescriptionsInAssertionSpecs+IFoo.Bar(x: hello world)\r\n*"));
         }
 

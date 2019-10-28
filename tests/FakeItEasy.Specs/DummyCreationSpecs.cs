@@ -239,7 +239,7 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Should().BeAnExceptionOfType<DummyCreationException>());
 
             "And its message indicates that a dummy couldn't be created due to the dependency"
-                .x(() => exception.Message.Should().Be(@"
+                .x(() => exception.Message.Should().BeModuloLineEndings(@"
   Failed to create dummy of type FakeItEasy.Specs.DummyCreationSpecsBase+ClassWithRecursiveDependency:
     No Dummy Factory produced a result.
     It is not a Task.
@@ -268,7 +268,7 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Should().BeAnExceptionOfType<DummyCreationException>());
 
             "And its message indicates that a dummy couldn't be created"
-                .x(() => exception.Message.Should().StartWith(@"
+                .x(() => exception.Message.Should().StartWithModuloLineEndings(@"
   Failed to create dummy of type FakeItEasy.Specs.DummyCreationSpecsBase+ClassWithNoPublicConstructors:
     No Dummy Factory produced a result.
     It is not a Task.
@@ -299,7 +299,7 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Should().BeAnExceptionOfType<DummyCreationException>());
 
             "And its message indicates that a dummy couldn't be created"
-                .x(() => exception.Message.Should().StartWith(@"
+                .x(() => exception.Message.Should().StartWithModuloLineEndings(@"
   Failed to create dummy of type FakeItEasy.Specs.DummyCreationSpecsBase+ClassWithThrowingConstructor:
     No Dummy Factory produced a result.
     It is not a Task.
@@ -327,7 +327,7 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Should().BeAnExceptionOfType<DummyCreationException>());
 
             "And its message indicates that a dummy couldn't be created"
-                .x(() => exception.Message.Should().Match(@"
+                .x(() => exception.Message.Should().MatchModuloLineEndings(@"
   Failed to create dummy of type FakeItEasy.Specs.DummyCreationSpecsBase+PrivateAbstractClass:
     No Dummy Factory produced a result.
     It is not a Task.
@@ -356,7 +356,7 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Should().BeAnExceptionOfType<DummyCreationException>());
 
             "And its message indicates that a dummy couldn't be created"
-                .x(() => exception.Message.Should().Be(@"
+                .x(() => exception.Message.Should().BeModuloLineEndings(@"
   Failed to create dummy of type FakeItEasy.Specs.DummyCreationSpecsBase+ClassWithNoResolvableConstructors:
     No Dummy Factory produced a result.
     It is not a Task.
@@ -385,7 +385,7 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Should().BeAnExceptionOfType<DummyCreationException>());
 
             "And its message indicates that a dummy couldn't be created"
-                .x(() => exception.Message.Should().StartWith(@"
+                .x(() => exception.Message.Should().StartWithModuloLineEndings(@"
   Failed to create dummy of type FakeItEasy.Specs.DummyCreationSpecsBase+ClassWithNoPublicConstructors:
     No Dummy Factory produced a result.
     It is not a Task.

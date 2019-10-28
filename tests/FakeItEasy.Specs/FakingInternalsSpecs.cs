@@ -42,7 +42,7 @@ namespace FakeItEasy.Specs
 
             "Then it throws an exception with a message indicating that the constructor could not be found"
                 .x(() => exception.Message.Should()
-                    .Contain("Can not instantiate proxy of class: FakeItEasy.Specs.ClassWithInternalConstructor.\r\n      Could not find a parameterless constructor."));
+                    .ContainModuloLineEndings("Can not instantiate proxy of class: FakeItEasy.Specs.ClassWithInternalConstructor.\r\n      Could not find a parameterless constructor."));
         }
 
         [Scenario]
@@ -82,7 +82,7 @@ namespace FakeItEasy.Specs
 
             "Then it throws an exception with a message containing a hint at using internals visible to attribute"
                 .x(() => exception.Should().BeAnExceptionOfType<FakeConfigurationException>()
-                             .And.Message.Should().Match(expectedMessage));
+                             .And.Message.Should().MatchModuloLineEndings(expectedMessage));
         }
     }
 

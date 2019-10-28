@@ -73,6 +73,16 @@ namespace FakeItEasy.Tests.TestHelpers
             return new MyExceptionAssertions<TExpectedException>(exception);
         }
 
+        public static ExceptionAssertions<TExpectedException> WithMessageModuloLineEndings<TExpectedException>(
+            this ExceptionAssertions<TExpectedException> assertion,
+            string expectedMessage,
+            string because = null,
+            params object[] becauseArgs)
+            where TExpectedException : Exception
+        {
+            return assertion.WithMessage(expectedMessage.NormalizeLineEndings(), because, becauseArgs);
+        }
+
         /// <summary>
         /// A convenient extension so we can access the <see cref="ExceptionAssertions{TException}"/> constructor.
         /// </summary>

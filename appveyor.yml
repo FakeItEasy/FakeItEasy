@@ -1,22 +1,33 @@
 version: '{build}'
-image: Visual Studio 2019
+
+image:
+  - Visual Studio 2019
+  - Ubuntu1804
 
 pull_requests:
   do_not_increment_build_number: true
 
-build_script:
-- cmd: build.cmd
+for:
+- matrix:
+    only:
+      - image: Visual Studio 2019
+  build_script:
+    - cmd: build.cmd
+  deploy_script:
+    - cmd: tools\deploy.cmd
+- matrix:
+    only:
+      - image: Ubuntu1804
+  build_script:
+    - sh: ./build.sh
 
 on_failure:
   - ps: $root = (Resolve-Path artifacts); [IO.Directory]::GetFiles($root.Path, '*.*', 'AllDirectories') | % { Push-AppveyorArtifact $_ -FileName $_.Substring($root.Path.Length + 1) -DeploymentName failed-build }
 
 nuget:
-    disable_publish_on_pr: true
+  disable_publish_on_pr: true
 
 test: off
 
 artifacts:
-    - path: .\artifacts\*\*
-
-deploy_script:
-    - cmd: tools\deploy.cmd
+- path: ./artifacts/*/*

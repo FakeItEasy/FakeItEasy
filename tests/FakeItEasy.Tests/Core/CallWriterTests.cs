@@ -4,6 +4,7 @@ namespace FakeItEasy.Tests.Core
     using System.Collections.Generic;
     using System.Linq;
     using FakeItEasy.Core;
+    using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using Xunit;
 
@@ -55,7 +56,7 @@ namespace FakeItEasy.Tests.Core
 9:  Fake call 9
 10: Fake call 10";
 
-            message.Should().Contain(expectedMessage);
+            message.Should().ContainModuloLineEndings(expectedMessage);
         }
 
         [Fact]
@@ -81,7 +82,7 @@ namespace FakeItEasy.Tests.Core
 ...
 10: Other call";
 
-            message.Should().Contain(expectedMessage);
+            message.Should().ContainModuloLineEndings(expectedMessage);
         }
 
         [Fact]
@@ -109,7 +110,7 @@ namespace FakeItEasy.Tests.Core
 3: odd
 4: even";
 
-            message.Should().Contain(expectedMessage);
+            message.Should().ContainModuloLineEndings(expectedMessage);
         }
 
         [Fact]
@@ -132,7 +133,7 @@ namespace FakeItEasy.Tests.Core
 @"19: Last call
 ... Found 11 more calls not displayed here.";
 
-            message.Should().Contain(expectedMessage);
+            message.Should().ContainModuloLineEndings(expectedMessage);
         }
 
         [Fact]
@@ -141,9 +142,7 @@ namespace FakeItEasy.Tests.Core
             // Arrange
             this.StubCalls(10);
 
-            var text =
-@"first line
-second line";
+            var text = string.Join(Environment.NewLine, "first line", "second line");
 
             var callIndex = 0;
             A.CallTo(() => this.callFormatter.GetDescription(A<IFakeObjectCall>._)).ReturnsLazily(() => text + ++callIndex);
@@ -167,7 +166,7 @@ second line";
 @"10: first line
     second line";
 
-            message.Should().Contain(expectedText1).And.Contain(expectedText2);
+            message.Should().ContainModuloLineEndings(expectedText1).And.ContainModuloLineEndings(expectedText2);
         }
 
         [Fact]

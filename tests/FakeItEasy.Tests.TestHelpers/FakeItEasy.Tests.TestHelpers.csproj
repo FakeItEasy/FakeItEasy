@@ -5,6 +5,10 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
+    <DefineConstants>$(DefineConstants);FEATURE_STRING_CONTAINS_COMPARISONTYPE</DefineConstants>
+  </PropertyGroup>
+
   <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard1.6'">
     <DefineConstants>$(DefineConstants);FEATURE_NETCORE_REFLECTION</DefineConstants>
   </PropertyGroup>
