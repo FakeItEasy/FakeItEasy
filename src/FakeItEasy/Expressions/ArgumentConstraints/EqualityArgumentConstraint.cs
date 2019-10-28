@@ -16,7 +16,7 @@ namespace FakeItEasy.Expressions.ArgumentConstraints
 
         public string ConstraintDescription => this.ToString();
 
-        public bool IsValid(object argument)
+        public bool IsValid(object? argument)
         {
             return object.Equals(this.ExpectedValue, argument);
         }

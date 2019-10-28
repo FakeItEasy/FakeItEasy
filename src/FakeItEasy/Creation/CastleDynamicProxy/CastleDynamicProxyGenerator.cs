@@ -57,7 +57,7 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
         public static ProxyGeneratorResult GenerateClassProxy(
             Type typeOfProxy,
             ReadOnlyCollection<Type> additionalInterfacesToImplement,
-            IEnumerable<object> argumentsForConstructor,
+            IEnumerable<object?> argumentsForConstructor,
             IEnumerable<Expression<Func<Attribute>>> attributes,
             IFakeCallProcessorProvider fakeCallProcessorProvider)
         {
@@ -133,7 +133,7 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
             return new ProxyGenerationOptions(ProxyGenerationHook);
         }
 
-        private static ProxyGeneratorResult GetResultForFailedProxyGeneration(Type typeOfProxy, IEnumerable<object> argumentsForConstructor, Exception e) =>
+        private static ProxyGeneratorResult GetResultForFailedProxyGeneration(Type typeOfProxy, IEnumerable<object?> argumentsForConstructor, Exception e) =>
             argumentsForConstructor.Any()
                 ? new ProxyGeneratorResult(DynamicProxyMessages.ArgumentsForConstructorDoesNotMatchAnyConstructor, e)
                 : GetProxyResultForNoDefaultConstructor(typeOfProxy, e);

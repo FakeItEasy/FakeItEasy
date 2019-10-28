@@ -22,9 +22,9 @@ namespace FakeItEasy.Core
                 this.propertyGetter = property.GetGetMethod(true);
             }
 
-            public object Value { get; set; }
+            public object? Value { get; set; }
 
-            public object[] Indices { get; set; } = ArrayHelper.Empty<object>();
+            public object?[] Indices { get; set; } = ArrayHelper.Empty<object?>();
 
             public int? NumberOfTimesToCall => null;
 

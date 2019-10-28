@@ -40,7 +40,7 @@ namespace FakeItEasy.Expressions.ArgumentConstraints
             writer.Write("]");
         }
 
-        public bool IsValid(object argument)
+        public bool IsValid(object? argument)
         {
             var enumerable = argument as IEnumerable;
 

@@ -166,7 +166,7 @@ namespace FakeItEasy.Core
                 {
                     var eventInfo = GetEvent(fakeObjectCall.Method);
 
-                    return new EventCall(eventInfo, fakeObjectCall.Method, (Delegate)fakeObjectCall.Arguments[0]);
+                    return new EventCall(eventInfo, fakeObjectCall.Method, (Delegate)fakeObjectCall.Arguments[0] !);
                 }
 
                 public static EventInfo GetEvent(MethodInfo eventAdderOrRemover)

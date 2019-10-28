@@ -17,7 +17,7 @@ namespace FakeItEasy.Core
         public T Matches(Func<T, bool> predicate, Action<IOutputWriter> descriptionWriter)
         {
             this.onConstraintCreated(new MatchesConstraint(predicate, descriptionWriter));
-            return default(T);
+            return default!;
         }
 
         private class NotArgumentConstraintManager
@@ -75,7 +75,7 @@ namespace FakeItEasy.Core
                 writer.Write(">");
             }
 
-            bool IArgumentConstraint.IsValid(object argument)
+            bool IArgumentConstraint.IsValid(object? argument)
             {
                 if (!IsValueValidForType(argument))
                 {
@@ -84,7 +84,7 @@ namespace FakeItEasy.Core
 
                 try
                 {
-                    return this.predicate.Invoke((T)argument);
+                    return this.predicate.Invoke((T)argument!);
                 }
                 catch (Exception ex)
                 {
@@ -92,7 +92,7 @@ namespace FakeItEasy.Core
                 }
             }
 
-            private static bool IsValueValidForType(object argument)
+            private static bool IsValueValidForType(object? argument)
             {
                 if (argument is null)
                 {

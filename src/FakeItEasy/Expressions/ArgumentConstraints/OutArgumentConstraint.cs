@@ -23,7 +23,7 @@ namespace FakeItEasy.Expressions.ArgumentConstraints
             writer.Write("<out parameter>");
         }
 
-        public bool IsValid(object argument)
+        public bool IsValid(object? argument)
         {
             return true;
         }

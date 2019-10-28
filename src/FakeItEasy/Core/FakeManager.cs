@@ -39,7 +39,7 @@ namespace FakeItEasy.Core
         /// <param name="fakeObjectType">The faked type.</param>
         /// <param name="proxy">The faked proxy object.</param>
         /// <param name="fakeObjectName">The name of the fake object.</param>
-        internal FakeManager(Type fakeObjectType, object proxy, string fakeObjectName)
+        internal FakeManager(Type fakeObjectType, object proxy, string? fakeObjectName)
         {
             Guard.AgainstNull(fakeObjectType, nameof(fakeObjectType));
             Guard.AgainstNull(proxy, nameof(proxy));
@@ -82,7 +82,7 @@ namespace FakeItEasy.Core
         /// <summary>
         /// Gets the name of the fake.
         /// </summary>
-        public string FakeObjectName { get; }
+        public string? FakeObjectName { get; }
 
         /// <summary>
         /// Gets the interceptions that are currently registered with the fake object.

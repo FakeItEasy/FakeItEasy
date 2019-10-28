@@ -635,6 +635,35 @@ namespace FakeItEasy.Specs
                 .x(() => dummy.Result.Should().BeNull());
         }
 
+        [Scenario]
+        public void CreateDummyThatIsNull(ClassWhoseDummyIsNull dummy)
+        {
+            "Given a type whose dummy factory returns null"
+                .See<ClassWhoseDummyIsNull>();
+
+            "When a dummy of that type is requested"
+                .x(() => dummy = this.CreateDummy<ClassWhoseDummyIsNull>());
+
+            "Then it returns null"
+                .x(() => dummy.Should().BeNull());
+        }
+
+        [Scenario]
+        public void CreateDummyThatNeedsNullConstructorParameter(ClassThatRequiresClassWhoseDummyIsNull dummy)
+        {
+            "Given a type whose dummy factory returns null"
+                .See<ClassWhoseDummyIsNull>();
+
+            "And a class whose constructor requires an argument of that type"
+                .See<ClassThatRequiresClassWhoseDummyIsNull>();
+
+            "When a dummy of the latter type is requested"
+                .x(() => dummy = this.CreateDummy<ClassThatRequiresClassWhoseDummyIsNull>());
+
+            "Then it returns a non-null dummy object"
+                .x(() => dummy.Should().NotBeNull());
+        }
+
         public class ClassWithNoPublicConstructors
         {
             private ClassWithNoPublicConstructors()
@@ -805,6 +834,23 @@ namespace FakeItEasy.Specs
             }
         }
         #pragma warning restore CA1052
+
+        public class ClassWhoseDummyIsNull
+        {
+        }
+
+        public class ClassWhoseDummyIsNullFactory : DummyFactory<ClassWhoseDummyIsNull>
+        {
+            protected override ClassWhoseDummyIsNull Create() => null;
+        }
+
+        public class ClassThatRequiresClassWhoseDummyIsNull
+        {
+            [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "unused", Justification = "This is just a dummy argument.")]
+            public ClassThatRequiresClassWhoseDummyIsNull(ClassWhoseDummyIsNull unused)
+            {
+            }
+        }
     }
 
     public class GenericDummyCreationSpecs : DummyCreationSpecsBase
