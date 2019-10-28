@@ -121,7 +121,7 @@ namespace FakeItEasy.Expressions
         private class PredicatedArgumentConstraint
             : IArgumentConstraint
         {
-            public bool IsValid(object argument)
+            public bool IsValid(object? argument)
             {
                 return true;
             }

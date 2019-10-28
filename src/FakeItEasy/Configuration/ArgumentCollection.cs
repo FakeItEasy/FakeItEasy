@@ -13,12 +13,12 @@ namespace FakeItEasy.Configuration
     /// </summary>
     [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "Best name to describe the type.")]
     public class ArgumentCollection
-        : IEnumerable<object>
+        : IEnumerable<object?>
     {
         /// <summary>
         ///   The arguments this collection contains.
         /// </summary>
-        private readonly object[] arguments;
+        private readonly object?[] arguments;
         private readonly Lazy<string[]> argumentNames;
 
         /// <summary>
@@ -27,7 +27,7 @@ namespace FakeItEasy.Configuration
         /// <param name = "arguments">The arguments.</param>
         /// <param name = "method">The method.</param>
         [DebuggerStepThrough]
-        internal ArgumentCollection(object[] arguments, MethodInfo method)
+        internal ArgumentCollection(object?[] arguments, MethodInfo method)
         {
             Guard.AgainstNull(arguments, nameof(arguments));
             Guard.AgainstNull(method, nameof(method));
@@ -63,7 +63,7 @@ namespace FakeItEasy.Configuration
         /// </summary>
         /// <param name = "argumentIndex">The index of the argument to get.</param>
         /// <returns>The argument at the specified index.</returns>
-        public object this[int argumentIndex]
+        public object? this[int argumentIndex]
         {
             [DebuggerStepThrough]
             get { return this.arguments[argumentIndex]; }
@@ -75,9 +75,9 @@ namespace FakeItEasy.Configuration
         /// <returns>
         ///   A <see cref = "T:System.Collections.Generic.IEnumerator`1" /> that can be used to iterate through the collection.
         /// </returns>
-        public IEnumerator<object> GetEnumerator()
+        public IEnumerator<object?> GetEnumerator()
         {
-            return ((IEnumerable<object>)this.arguments).GetEnumerator();
+            return ((IEnumerable<object?>)this.arguments).GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -90,11 +90,15 @@ namespace FakeItEasy.Configuration
         /// </summary>
         /// <typeparam name = "T">The type of the argument to get.</typeparam>
         /// <param name = "index">The index of the argument.</param>
-        /// <returns>The argument at the specified index.</returns>
+        /// <returns>
+        /// The argument at the specified index. Note that the value is taken from method's arguments and so may be <c>null</c>,
+        /// even if <typeparamref name="T"/> is non-nullable.
+        /// </returns>
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "Used to cast the argument to the specified type.")]
+        [return: MaybeNull]
         public T Get<T>(int index)
         {
-            return (T)this.arguments[index];
+            return (T)this.arguments[index] !;
         }
 
         /// <summary>
@@ -102,17 +106,21 @@ namespace FakeItEasy.Configuration
         /// </summary>
         /// <typeparam name = "T">The type of the argument to get.</typeparam>
         /// <param name = "argumentName">The name of the argument.</param>
-        /// <returns>The argument with the specified name.</returns>
+        /// <returns>
+        /// The argument with the specified name. Note that the value is taken from method's arguments and so may be <c>null</c>,
+        /// even if <typeparamref name="T"/> is non-nullable.
+        /// </returns>
+        [return: MaybeNull]
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "Used to cast the argument to the specified type.")]
         public T Get<T>(string argumentName)
         {
             Guard.AgainstNull(argumentName, nameof(argumentName));
 
             var index = this.GetArgumentIndex(argumentName);
-            return (T)this.arguments[index];
+            return this.Get<T>(index);
         }
 
-        internal object[] GetUnderlyingArgumentsArray()
+        internal object?[] GetUnderlyingArgumentsArray()
         {
             return this.arguments;
         }

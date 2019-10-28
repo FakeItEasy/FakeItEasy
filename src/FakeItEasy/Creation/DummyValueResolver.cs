@@ -140,7 +140,7 @@ namespace FakeItEasy.Creation
                 {
                     var typeOfTaskResult = typeOfDummy.GetGenericArguments()[0];
                     var creationResult = resolver.TryResolveDummyValue(typeOfTaskResult, resolutionContext);
-                    object taskResult = creationResult.WasSuccessful
+                    object? taskResult = creationResult.WasSuccessful
                         ? creationResult.Result
                         : typeOfTaskResult.GetDefaultValue();
 
@@ -159,7 +159,7 @@ namespace FakeItEasy.Creation
                 {
                     var typeOfTaskResult = typeOfDummy.GetGenericArguments()[0];
                     var creationResult = resolver.TryResolveDummyValue(typeOfTaskResult, resolutionContext);
-                    object taskResult = creationResult.WasSuccessful
+                    object? taskResult = creationResult.WasSuccessful
                         ? creationResult.Result
                         : typeOfTaskResult.GetDefaultValue();
 
@@ -207,7 +207,7 @@ namespace FakeItEasy.Creation
                 {
                     var creationResult = resolver.TryResolveDummyValue(typeof(T), new LoopDetectingResolutionContext());
                     return creationResult.WasSuccessful
-                        ? (T)creationResult.Result
+                        ? (T)creationResult.Result!
                         : default;
                 });
             }
@@ -220,7 +220,7 @@ namespace FakeItEasy.Creation
                 if (IsTuple(typeOfDummy))
                 {
                     var argTypes = typeOfDummy.GetTypeInfo().GetGenericArguments();
-                    var args = new object[argTypes.Length];
+                    var args = new object?[argTypes.Length];
                     for (int i = 0; i < argTypes.Length; i++)
                     {
                         var argType = argTypes[i];
@@ -276,7 +276,7 @@ namespace FakeItEasy.Creation
                         resolutionContext);
                     if (resolvedConstructor.WasSuccessfullyResolved)
                     {
-                        if (TryCreateDummyValueUsingConstructor(cachedConstructor, resolvedConstructor, out object result))
+                        if (TryCreateDummyValueUsingConstructor(cachedConstructor, resolvedConstructor, out object? result))
                         {
                             return CreationResult.SuccessfullyCreated(result);
                         }
@@ -293,7 +293,8 @@ namespace FakeItEasy.Creation
                             resolver,
                             resolutionContext);
 
-                        if (resolvedConstructor.WasSuccessfullyResolved && TryCreateDummyValueUsingConstructor(constructor, resolvedConstructor, out object result))
+                        if (resolvedConstructor.WasSuccessfullyResolved &&
+                            TryCreateDummyValueUsingConstructor(constructor, resolvedConstructor, out object? result))
                         {
                             this.cachedConstructors.TryAdd(typeOfDummy, constructor);
                             return CreationResult.SuccessfullyCreated(result);
@@ -316,7 +317,7 @@ namespace FakeItEasy.Creation
                 return type.GetConstructors().OrderBy(x => x.GetParameters().Length).Reverse();
             }
 
-            private static bool TryCreateDummyValueUsingConstructor(ConstructorInfo constructor, ResolvedConstructor resolvedConstructor, out object result)
+            private static bool TryCreateDummyValueUsingConstructor(ConstructorInfo constructor, ResolvedConstructor resolvedConstructor, out object? result)
             {
                 try
                 {
@@ -346,7 +347,7 @@ namespace FakeItEasy.Creation
                 IDummyValueResolver resolver,
                 LoopDetectingResolutionContext resolutionContext)
             {
-                var success = this.DummyFactory.TryCreateDummyObject(typeOfDummy, out object result);
+                var success = this.DummyFactory.TryCreateDummyObject(typeOfDummy, out object? result);
                 return success
                     ? CreationResult.SuccessfullyCreated(result)
                     : CreationResult.FailedToCreateDummy(typeOfDummy, "No Dummy Factory produced a result.");

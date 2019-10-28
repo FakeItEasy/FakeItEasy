@@ -14,7 +14,7 @@ namespace FakeItEasy.Core
             this.SequenceNumber = SequenceNumberManager.GetNextSequenceNumber();
         }
 
-        public object ReturnValue { get; set; }
+        public object? ReturnValue { get; set; }
 
         public MethodInfo Method { get; }
 

@@ -65,7 +65,7 @@ namespace FakeItEasy.Core
                 {
                     if (parameters[i].ParameterType == typeof(CancellationToken))
                     {
-                        var token = (CancellationToken)call.Arguments[i];
+                        var token = (CancellationToken)call.Arguments[i] !;
                         if (token.IsCancellationRequested)
                         {
                             return token;

@@ -184,7 +184,7 @@ namespace FakeItEasy.Creation.DelegateProxies
 
             public Delegate Instance { get; }
 
-            public object Raise(object[] arguments)
+            public object? Raise(object[] arguments)
             {
                 var call = new DelegateFakeObjectCall(this.Instance, this.method, arguments);
                 this.fakeCallProcessorProvider.Fetch(this.Instance).Process(call);
@@ -204,7 +204,7 @@ namespace FakeItEasy.Creation.DelegateProxies
                 this.Method = method;
             }
 
-            public override object ReturnValue { get; set; }
+            public override object? ReturnValue { get; set; }
 
             public override MethodInfo Method { get; }
 
@@ -217,7 +217,7 @@ namespace FakeItEasy.Creation.DelegateProxies
                 throw new FakeConfigurationException(ExceptionMessages.DelegateCannotCallBaseMethod);
             }
 
-            public override void SetArgumentValue(int index, object value)
+            public override void SetArgumentValue(int index, object? value)
             {
                 this.Arguments.GetUnderlyingArgumentsArray()[index] = value;
             }

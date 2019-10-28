@@ -203,7 +203,7 @@ namespace FakeItEasy.Creation
                 }
             }
 
-            private static IEnumerable<object> GetArgumentsForConstructor(ResolvedConstructor constructor) =>
+            private static IEnumerable<object?> GetArgumentsForConstructor(ResolvedConstructor constructor) =>
                 constructor.Arguments.Select(x => x.ResolvedValue);
 
             private CreationResult TryCreateFakeWithDummyArgumentsForConstructor(
@@ -260,7 +260,7 @@ namespace FakeItEasy.Creation
                 return CreationResult.FailedToCreateFake(typeOfFake, consideredConstructors);
             }
 
-            private ProxyGeneratorResult GenerateProxy(Type typeOfFake, IProxyOptions proxyOptions, IEnumerable<object> argumentsForConstructor)
+            private ProxyGeneratorResult GenerateProxy(Type typeOfFake, IProxyOptions proxyOptions, IEnumerable<object?> argumentsForConstructor)
             {
                 var fakeCallProcessorProvider = this.fakeCallProcessorProviderFactory(typeOfFake, proxyOptions);
 

@@ -70,10 +70,13 @@ namespace FakeItEasy.Sdk
         /// should be irrelevant. Dummy objects should not be configured.
         /// </summary>
         /// <param name="typeOfDummy">The type of dummy to return.</param>
-        /// <returns>A dummy object of the specified type.</returns>
+        /// <returns>
+        /// A dummy object of the specified type.
+        /// May be null if a user-defined dummy factory exists that returns null for dummies of type <paramref name="typeOfDummy"/>.
+        /// </returns>
         /// <exception cref="ArgumentException">Dummies of the specified type can not be created.</exception>
         [EditorBrowsable(EditorBrowsableState.Advanced)]
-        public static object Dummy(Type typeOfDummy)
+        public static object? Dummy(Type typeOfDummy)
         {
             Guard.AgainstNull(typeOfDummy, nameof(typeOfDummy));
 
@@ -85,10 +88,13 @@ namespace FakeItEasy.Sdk
         /// </summary>
         /// <param name="typeOfDummy">The type of dummy to return.</param>
         /// <param name="numberOfDummies">The number of dummies in the collection.</param>
-        /// <returns>A collection of dummy objects of the specified type.</returns>
+        /// <returns>
+        /// A collection of dummy objects of the specified type.
+        /// Individual dummies may be null if a user-defined dummy factory exists that returns null for dummies of type <paramref name="typeOfDummy"/>.
+        /// </returns>
         /// <exception cref="ArgumentException">Dummies of the specified type can not be created.</exception>
         [EditorBrowsable(EditorBrowsableState.Advanced)]
-        public static IList<object> CollectionOfDummy(Type typeOfDummy, int numberOfDummies)
+        public static IList<object?> CollectionOfDummy(Type typeOfDummy, int numberOfDummies)
         {
             return Enumerable.Range(0, numberOfDummies).Select(_ => Dummy(typeOfDummy)).ToList();
         }
