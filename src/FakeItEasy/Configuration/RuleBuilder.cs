@@ -115,7 +115,7 @@ namespace FakeItEasy.Configuration
             return this;
         }
 
-        public virtual IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily(Func<IFakeObjectCall, ICollection<object>> valueProducer)
+        public virtual IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily(Func<IFakeObjectCall, ICollection<object?>> valueProducer)
         {
             Guard.AgainstNull(valueProducer, nameof(valueProducer));
 
@@ -244,7 +244,7 @@ namespace FakeItEasy.Configuration
                 return this;
             }
 
-            public IAfterCallConfiguredConfiguration<IReturnValueConfiguration<TMember>> AssignsOutAndRefParametersLazily(Func<IFakeObjectCall, ICollection<object>> valueProducer)
+            public IAfterCallConfiguredConfiguration<IReturnValueConfiguration<TMember>> AssignsOutAndRefParametersLazily(Func<IFakeObjectCall, ICollection<object?>> valueProducer)
             {
                 this.ParentConfiguration.AssignsOutAndRefParametersLazily(valueProducer);
                 return this;

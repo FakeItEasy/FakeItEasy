@@ -164,6 +164,7 @@ namespace FakeItEasy
         protected DummyFactory() { }
         public virtual FakeItEasy.Priority Priority { get; }
         public bool CanCreate(System.Type type) { }
+        [return: System.Runtime.CompilerServices.NullableAttribute(2)]
         public object Create(System.Type type) { }
         protected abstract T Create();
     }
@@ -243,6 +244,7 @@ namespace FakeItEasy
     {
         FakeItEasy.Priority Priority { get; }
         bool CanCreate(System.Type type);
+        [return: System.Runtime.CompilerServices.NullableAttribute(2)]
         object Create(System.Type type);
     }
     public interface IFakeOptionsBuilder
@@ -266,16 +268,20 @@ namespace FakeItEasy
     {
         System.IDisposable Indent();
         FakeItEasy.IOutputWriter Write(string value);
-        FakeItEasy.IOutputWriter WriteArgumentValue(object value);
+        FakeItEasy.IOutputWriter WriteArgumentValue([System.Runtime.CompilerServices.NullableAttribute(2)] object value);
     }
     public class static OutAndRefParametersConfigurationExtensions
     {
-        public static FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParameters<[System.Runtime.CompilerServices.NullableAttribute(2)]  TInterface>(this FakeItEasy.Configuration.IOutAndRefParametersConfiguration<TInterface> configuration, params object[] values) { }
+        public static FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParameters<[System.Runtime.CompilerServices.NullableAttribute(2)]  TInterface>(this FakeItEasy.Configuration.IOutAndRefParametersConfiguration<TInterface> configuration, [System.Runtime.CompilerServices.NullableAttribute(new byte[] {
+                1,
+                2})] params object[] values) { }
     }
     [System.Runtime.CompilerServices.NullableAttribute(0)]
     public class static OutputWriterExtensions
     {
-        public static FakeItEasy.IOutputWriter Write(this FakeItEasy.IOutputWriter writer, string format, params object[] args) { }
+        public static FakeItEasy.IOutputWriter Write(this FakeItEasy.IOutputWriter writer, string format, [System.Runtime.CompilerServices.NullableAttribute(new byte[] {
+                1,
+                2})] params object[] args) { }
         public static FakeItEasy.IOutputWriter Write(this FakeItEasy.IOutputWriter writer, object value) { }
         public static FakeItEasy.IOutputWriter WriteLine(this FakeItEasy.IOutputWriter writer) { }
     }
@@ -298,7 +304,7 @@ namespace FakeItEasy
     [System.Runtime.CompilerServices.NullableAttribute(0)]
     public class static Raise
     {
-        public static FakeItEasy.Core.Raise<TEventArgs> With<[System.Runtime.CompilerServices.NullableAttribute(0)]  TEventArgs>(object sender, TEventArgs e)
+        public static FakeItEasy.Core.Raise<TEventArgs> With<[System.Runtime.CompilerServices.NullableAttribute(0)]  TEventArgs>([System.Runtime.CompilerServices.NullableAttribute(2)] object sender, TEventArgs e)
             where TEventArgs : System.EventArgs { }
         public static FakeItEasy.Core.Raise<TEventArgs> With<[System.Runtime.CompilerServices.NullableAttribute(0)]  TEventArgs>(TEventArgs e)
             where TEventArgs : System.EventArgs { }
@@ -306,12 +312,16 @@ namespace FakeItEasy
         public class static FreeForm
         {
             [return: System.Runtime.CompilerServices.DynamicAttribute()]
-            public static object With(params object[] arguments) { }
+            public static object With([System.Runtime.CompilerServices.NullableAttribute(new byte[] {
+                    1,
+                    2})] params object[] arguments) { }
         }
         public class static FreeForm<TEventHandler>
             where TEventHandler : System.Delegate
         {
-            public static TEventHandler With(params object[] arguments) { }
+            public static TEventHandler With([System.Runtime.CompilerServices.NullableAttribute(new byte[] {
+                    1,
+                    2})] params object[] arguments) { }
         }
     }
     public class static ReturnValueConfigurationExtensions
@@ -365,9 +375,15 @@ namespace FakeItEasy.Configuration
     {
         public System.Collections.Generic.IEnumerable<string> ArgumentNames { get; }
         public int Count { get; }
+        [System.Runtime.CompilerServices.NullableAttribute(2)]
         public object this[int argumentIndex] { get; }
+        [return: System.Diagnostics.CodeAnalysis.MaybeNullAttribute()]
         public T Get<[System.Runtime.CompilerServices.NullableAttribute(2)]  T>(int index) { }
+        [return: System.Diagnostics.CodeAnalysis.MaybeNullAttribute()]
         public T Get<[System.Runtime.CompilerServices.NullableAttribute(2)]  T>(string argumentName) { }
+        [return: System.Runtime.CompilerServices.NullableAttribute(new byte[] {
+                1,
+                2})]
         public System.Collections.Generic.IEnumerator<object> GetEnumerator() { }
     }
     [System.Runtime.CompilerServices.NullableAttribute(0)]
@@ -430,17 +446,88 @@ namespace FakeItEasy.Configuration
     {
         FakeItEasy.Configuration.IOrderableCallAssertion Then(FakeItEasy.Configuration.UnorderedCallAssertion nextAssertion);
     }
-    public interface IOutAndRefParametersConfiguration<[System.Runtime.CompilerServices.NullableAttribute(2)]  out TInterface> : FakeItEasy.IHideObjectMembers
+    public interface IOutAndRefParametersConfiguration<out TInterface> : FakeItEasy.IHideObjectMembers
     {
-        FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily(System.Func<FakeItEasy.Core.IFakeObjectCall, System.Collections.Generic.ICollection<object>> valueProducer);
-        FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily<T1>(System.Func<T1, object[]> valueProducer);
-        FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily<T1, T2>(System.Func<T1, T2, object[]> valueProducer);
-        FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily<T1, T2, T3>(System.Func<T1, T2, T3, object[]> valueProducer);
-        FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily<T1, T2, T3, T4>(System.Func<T1, T2, T3, T4, object[]> valueProducer);
-        FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5>(System.Func<T1, T2, T3, T4, T5, object[]> valueProducer);
-        FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5, T6>(System.Func<T1, T2, T3, T4, T5, T6, object[]> valueProducer);
-        FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5, T6, T7>(System.Func<T1, T2, T3, T4, T5, T6, T7, object[]> valueProducer);
-        FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5, T6, T7, T8>(System.Func<T1, T2, T3, T4, T5, T6, T7, T8, object[]> valueProducer);
+        FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily([System.Runtime.CompilerServices.NullableAttribute(new byte[] {
+                1,
+                1,
+                1,
+                2})] System.Func<FakeItEasy.Core.IFakeObjectCall, System.Collections.Generic.ICollection<object>> valueProducer);
+        FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily<[System.Runtime.CompilerServices.NullableAttribute(2)]  T1>([System.Runtime.CompilerServices.NullableAttribute(new byte[] {
+                1,
+                1,
+                1,
+                2})] System.Func<T1, object[]> valueProducer);
+        [return: System.Runtime.CompilerServices.NullableAttribute(1)]
+        FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily<T1, T2>([System.Runtime.CompilerServices.NullableAttribute(new byte[] {
+                1,
+                1,
+                1,
+                1,
+                2})] System.Func<T1, T2, object[]> valueProducer);
+        [return: System.Runtime.CompilerServices.NullableAttribute(1)]
+        FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily<T1, T2, T3>([System.Runtime.CompilerServices.NullableAttribute(new byte[] {
+                1,
+                1,
+                1,
+                1,
+                1,
+                2})] System.Func<T1, T2, T3, object[]> valueProducer);
+        [return: System.Runtime.CompilerServices.NullableAttribute(1)]
+        FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily<T1, T2, T3, T4>([System.Runtime.CompilerServices.NullableAttribute(new byte[] {
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                2})] System.Func<T1, T2, T3, T4, object[]> valueProducer);
+        [return: System.Runtime.CompilerServices.NullableAttribute(1)]
+        FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5>([System.Runtime.CompilerServices.NullableAttribute(new byte[] {
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                2})] System.Func<T1, T2, T3, T4, T5, object[]> valueProducer);
+        [return: System.Runtime.CompilerServices.NullableAttribute(1)]
+        FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5, T6>([System.Runtime.CompilerServices.NullableAttribute(new byte[] {
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                2})] System.Func<T1, T2, T3, T4, T5, T6, object[]> valueProducer);
+        [return: System.Runtime.CompilerServices.NullableAttribute(1)]
+        FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5, T6, T7>([System.Runtime.CompilerServices.NullableAttribute(new byte[] {
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                2})] System.Func<T1, T2, T3, T4, T5, T6, T7, object[]> valueProducer);
+        [return: System.Runtime.CompilerServices.NullableAttribute(1)]
+        FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5, T6, T7, T8>([System.Runtime.CompilerServices.NullableAttribute(new byte[] {
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                2})] System.Func<T1, T2, T3, T4, T5, T6, T7, T8, object[]> valueProducer);
     }
     public interface IPropertySetterAnyValueConfiguration<[System.Runtime.CompilerServices.NullableAttribute(2)]  TValue> : FakeItEasy.Configuration.IArgumentValidationConfiguration<FakeItEasy.Configuration.IPropertySetterConfiguration>, FakeItEasy.Configuration.IAssertConfiguration, FakeItEasy.Configuration.ICallBaseConfiguration<FakeItEasy.Configuration.IPropertySetterConfiguration>, FakeItEasy.Configuration.ICallbackConfiguration<FakeItEasy.Configuration.IPropertySetterConfiguration>, FakeItEasy.Configuration.IDoNothingConfiguration<FakeItEasy.Configuration.IPropertySetterConfiguration>, FakeItEasy.Configuration.IExceptionThrowerConfiguration<FakeItEasy.Configuration.IPropertySetterConfiguration>, FakeItEasy.Configuration.IPropertySetterConfiguration, FakeItEasy.IHideObjectMembers
     {
@@ -488,6 +575,7 @@ namespace FakeItEasy.Core
     [System.Runtime.CompilerServices.NullableAttribute(0)]
     public class FakeManager
     {
+        [System.Runtime.CompilerServices.NullableAttribute(2)]
         public string FakeObjectName { get; }
         public virtual System.Type FakeObjectType { get; }
         public virtual object Object { get; }
@@ -500,6 +588,7 @@ namespace FakeItEasy.Core
     public interface ICompletedFakeObjectCall : FakeItEasy.Core.IFakeObjectCall
     {
         FakeItEasy.Configuration.ArgumentCollection ArgumentsAfterCall { get; }
+        [System.Runtime.CompilerServices.NullableAttribute(2)]
         object ReturnValue { get; }
     }
     public interface IFakeObjectCall
@@ -541,7 +630,9 @@ namespace FakeItEasy.Creation
         FakeItEasy.Creation.IFakeOptions Implements(System.Type interfaceType);
         FakeItEasy.Creation.IFakeOptions Implements<[System.Runtime.CompilerServices.NullableAttribute(2)]  TInterface>();
         FakeItEasy.Creation.IFakeOptions Named(string name);
-        FakeItEasy.Creation.IFakeOptions WithArgumentsForConstructor(System.Collections.Generic.IEnumerable<object> argumentsForConstructor);
+        FakeItEasy.Creation.IFakeOptions WithArgumentsForConstructor([System.Runtime.CompilerServices.NullableAttribute(new byte[] {
+                1,
+                2})] System.Collections.Generic.IEnumerable<object> argumentsForConstructor);
         FakeItEasy.Creation.IFakeOptions WithArgumentsForConstructor<[System.Runtime.CompilerServices.NullableAttribute(2)]  TConstructor>(System.Linq.Expressions.Expression<System.Func<TConstructor>> constructorCall);
         FakeItEasy.Creation.IFakeOptions WithAttributes(params System.Linq.Expressions.Expression<>[] attributes);
         FakeItEasy.Creation.IFakeOptions Wrapping(object wrappedInstance);
@@ -553,7 +644,9 @@ namespace FakeItEasy.Creation
         FakeItEasy.Creation.IFakeOptions<T> Implements(System.Type interfaceType);
         FakeItEasy.Creation.IFakeOptions<T> Implements<[System.Runtime.CompilerServices.NullableAttribute(2)]  TInterface>();
         FakeItEasy.Creation.IFakeOptions<T> Named(string name);
-        FakeItEasy.Creation.IFakeOptions<T> WithArgumentsForConstructor(System.Collections.Generic.IEnumerable<object> argumentsForConstructor);
+        FakeItEasy.Creation.IFakeOptions<T> WithArgumentsForConstructor([System.Runtime.CompilerServices.NullableAttribute(new byte[] {
+                1,
+                2})] System.Collections.Generic.IEnumerable<object> argumentsForConstructor);
         FakeItEasy.Creation.IFakeOptions<T> WithArgumentsForConstructor(System.Linq.Expressions.Expression<System.Func<T>> constructorCall);
         FakeItEasy.Creation.IFakeOptions<T> WithAttributes(params System.Linq.Expressions.Expression<>[] attributes);
         FakeItEasy.Creation.IFakeOptions<T> Wrapping(T wrappedInstance);
@@ -564,11 +657,20 @@ namespace FakeItEasy.Sdk
     [System.Runtime.CompilerServices.NullableAttribute(0)]
     public class static Create
     {
+        [return: System.Runtime.CompilerServices.NullableAttribute(new byte[] {
+                1,
+                2})]
         public static System.Collections.Generic.IList<object> CollectionOfDummy(System.Type typeOfDummy, int numberOfDummies) { }
         public static System.Collections.Generic.IList<object> CollectionOfFake(System.Type typeOfFake, int numberOfFakes) { }
         public static System.Collections.Generic.IList<object> CollectionOfFake(System.Type typeOfFake, int numberOfFakes, System.Action<FakeItEasy.Creation.IFakeOptions> optionsBuilder) { }
+        [return: System.Runtime.CompilerServices.NullableAttribute(2)]
         public static object Dummy(System.Type typeOfDummy) { }
         public static object Fake(System.Type typeOfFake) { }
         public static object Fake(System.Type typeOfFake, System.Action<FakeItEasy.Creation.IFakeOptions> optionsBuilder) { }
     }
+}
+namespace System.Diagnostics.CodeAnalysis
+{
+    [System.AttributeUsageAttribute(System.AttributeTargets.Property | System.AttributeTargets.Field | System.AttributeTargets.Parameter | System.AttributeTargets.ReturnValue | System.AttributeTargets.All, Inherited=false)]
+    public sealed class MaybeNullAttribute : System.Attribute { }
 }

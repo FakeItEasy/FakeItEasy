@@ -28,7 +28,7 @@ namespace FakeItEasy.Core
                     });
         }
 
-        public virtual string GetArgumentValueAsString(object argumentValue)
+        public virtual string GetArgumentValueAsString(object? argumentValue)
         {
             if (argumentValue is null)
             {

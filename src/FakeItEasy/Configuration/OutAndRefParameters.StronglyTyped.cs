@@ -6,6 +6,7 @@
 //     the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
+#nullable enable
 namespace FakeItEasy.Configuration
 {
     using System;
@@ -27,7 +28,7 @@ namespace FakeItEasy.Configuration
         /// <exception cref="FakeConfigurationException">
         /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
         /// </exception>
-        IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily<T1>(Func<T1, object[]> valueProducer);
+        IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily<T1>(Func<T1, object?[]> valueProducer);
 
         /// <summary>
         /// Specifies a function used to produce output values for out and ref parameters.
@@ -42,7 +43,7 @@ namespace FakeItEasy.Configuration
         /// <exception cref="FakeConfigurationException">
         /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
         /// </exception>
-        IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily<T1, T2>(Func<T1, T2, object[]> valueProducer);
+        IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily<T1, T2>(Func<T1, T2, object?[]> valueProducer);
 
         /// <summary>
         /// Specifies a function used to produce output values for out and ref parameters.
@@ -58,7 +59,7 @@ namespace FakeItEasy.Configuration
         /// <exception cref="FakeConfigurationException">
         /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
         /// </exception>
-        IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily<T1, T2, T3>(Func<T1, T2, T3, object[]> valueProducer);
+        IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily<T1, T2, T3>(Func<T1, T2, T3, object?[]> valueProducer);
 
         /// <summary>
         /// Specifies a function used to produce output values for out and ref parameters.
@@ -75,7 +76,7 @@ namespace FakeItEasy.Configuration
         /// <exception cref="FakeConfigurationException">
         /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
         /// </exception>
-        IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily<T1, T2, T3, T4>(Func<T1, T2, T3, T4, object[]> valueProducer);
+        IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily<T1, T2, T3, T4>(Func<T1, T2, T3, T4, object?[]> valueProducer);
 
         /// <summary>
         /// Specifies a function used to produce output values for out and ref parameters.
@@ -93,7 +94,7 @@ namespace FakeItEasy.Configuration
         /// <exception cref="FakeConfigurationException">
         /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
         /// </exception>
-        IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5>(Func<T1, T2, T3, T4, T5, object[]> valueProducer);
+        IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5>(Func<T1, T2, T3, T4, T5, object?[]> valueProducer);
 
         /// <summary>
         /// Specifies a function used to produce output values for out and ref parameters.
@@ -112,7 +113,7 @@ namespace FakeItEasy.Configuration
         /// <exception cref="FakeConfigurationException">
         /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
         /// </exception>
-        IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5, T6>(Func<T1, T2, T3, T4, T5, T6, object[]> valueProducer);
+        IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5, T6>(Func<T1, T2, T3, T4, T5, T6, object?[]> valueProducer);
 
         /// <summary>
         /// Specifies a function used to produce output values for out and ref parameters.
@@ -132,7 +133,7 @@ namespace FakeItEasy.Configuration
         /// <exception cref="FakeConfigurationException">
         /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
         /// </exception>
-        IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5, T6, T7>(Func<T1, T2, T3, T4, T5, T6, T7, object[]> valueProducer);
+        IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5, T6, T7>(Func<T1, T2, T3, T4, T5, T6, T7, object?[]> valueProducer);
 
         /// <summary>
         /// Specifies a function used to produce output values for out and ref parameters.
@@ -153,7 +154,7 @@ namespace FakeItEasy.Configuration
         /// <exception cref="FakeConfigurationException">
         /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
         /// </exception>
-        IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5, T6, T7, T8>(Func<T1, T2, T3, T4, T5, T6, T7, T8, object[]> valueProducer);
+        IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5, T6, T7, T8>(Func<T1, T2, T3, T4, T5, T6, T7, T8, object?[]> valueProducer);
 
     }
 
@@ -173,7 +174,7 @@ namespace FakeItEasy.Configuration
         /// <exception cref="FakeConfigurationException">
         /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
         /// </exception>
-        public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1>(Func<T1, object[]> valueProducer)
+        public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1>(Func<T1, object?[]> valueProducer)
         {
             Guard.AgainstNull(valueProducer, nameof(valueProducer));
 
@@ -199,7 +200,7 @@ namespace FakeItEasy.Configuration
         /// <exception cref="FakeConfigurationException">
         /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
         /// </exception>
-        public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2>(Func<T1, T2, object[]> valueProducer)
+        public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2>(Func<T1, T2, object?[]> valueProducer)
         {
             Guard.AgainstNull(valueProducer, nameof(valueProducer));
 
@@ -226,7 +227,7 @@ namespace FakeItEasy.Configuration
         /// <exception cref="FakeConfigurationException">
         /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
         /// </exception>
-        public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3>(Func<T1, T2, T3, object[]> valueProducer)
+        public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3>(Func<T1, T2, T3, object?[]> valueProducer)
         {
             Guard.AgainstNull(valueProducer, nameof(valueProducer));
 
@@ -254,7 +255,7 @@ namespace FakeItEasy.Configuration
         /// <exception cref="FakeConfigurationException">
         /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
         /// </exception>
-        public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3, T4>(Func<T1, T2, T3, T4, object[]> valueProducer)
+        public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3, T4>(Func<T1, T2, T3, T4, object?[]> valueProducer)
         {
             Guard.AgainstNull(valueProducer, nameof(valueProducer));
 
@@ -283,7 +284,7 @@ namespace FakeItEasy.Configuration
         /// <exception cref="FakeConfigurationException">
         /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
         /// </exception>
-        public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5>(Func<T1, T2, T3, T4, T5, object[]> valueProducer)
+        public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5>(Func<T1, T2, T3, T4, T5, object?[]> valueProducer)
         {
             Guard.AgainstNull(valueProducer, nameof(valueProducer));
 
@@ -313,7 +314,7 @@ namespace FakeItEasy.Configuration
         /// <exception cref="FakeConfigurationException">
         /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
         /// </exception>
-        public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5, T6>(Func<T1, T2, T3, T4, T5, T6, object[]> valueProducer)
+        public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5, T6>(Func<T1, T2, T3, T4, T5, T6, object?[]> valueProducer)
         {
             Guard.AgainstNull(valueProducer, nameof(valueProducer));
 
@@ -344,7 +345,7 @@ namespace FakeItEasy.Configuration
         /// <exception cref="FakeConfigurationException">
         /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
         /// </exception>
-        public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5, T6, T7>(Func<T1, T2, T3, T4, T5, T6, T7, object[]> valueProducer)
+        public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5, T6, T7>(Func<T1, T2, T3, T4, T5, T6, T7, object?[]> valueProducer)
         {
             Guard.AgainstNull(valueProducer, nameof(valueProducer));
 
@@ -376,7 +377,7 @@ namespace FakeItEasy.Configuration
         /// <exception cref="FakeConfigurationException">
         /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
         /// </exception>
-        public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5, T6, T7, T8>(Func<T1, T2, T3, T4, T5, T6, T7, T8, object[]> valueProducer)
+        public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5, T6, T7, T8>(Func<T1, T2, T3, T4, T5, T6, T7, T8, object?[]> valueProducer)
         {
             Guard.AgainstNull(valueProducer, nameof(valueProducer));
 
@@ -404,7 +405,7 @@ namespace FakeItEasy.Configuration
             /// <exception cref="FakeConfigurationException">
             /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
             /// </exception>
-            public IAfterCallConfiguredConfiguration<IReturnValueConfiguration<TMember>> AssignsOutAndRefParametersLazily<T1>(Func<T1, object[]> valueProducer)
+            public IAfterCallConfiguredConfiguration<IReturnValueConfiguration<TMember>> AssignsOutAndRefParametersLazily<T1>(Func<T1, object?[]> valueProducer)
             {
                 Guard.AgainstNull(valueProducer, nameof(valueProducer));
     
@@ -430,7 +431,7 @@ namespace FakeItEasy.Configuration
             /// <exception cref="FakeConfigurationException">
             /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
             /// </exception>
-            public IAfterCallConfiguredConfiguration<IReturnValueConfiguration<TMember>> AssignsOutAndRefParametersLazily<T1, T2>(Func<T1, T2, object[]> valueProducer)
+            public IAfterCallConfiguredConfiguration<IReturnValueConfiguration<TMember>> AssignsOutAndRefParametersLazily<T1, T2>(Func<T1, T2, object?[]> valueProducer)
             {
                 Guard.AgainstNull(valueProducer, nameof(valueProducer));
     
@@ -457,7 +458,7 @@ namespace FakeItEasy.Configuration
             /// <exception cref="FakeConfigurationException">
             /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
             /// </exception>
-            public IAfterCallConfiguredConfiguration<IReturnValueConfiguration<TMember>> AssignsOutAndRefParametersLazily<T1, T2, T3>(Func<T1, T2, T3, object[]> valueProducer)
+            public IAfterCallConfiguredConfiguration<IReturnValueConfiguration<TMember>> AssignsOutAndRefParametersLazily<T1, T2, T3>(Func<T1, T2, T3, object?[]> valueProducer)
             {
                 Guard.AgainstNull(valueProducer, nameof(valueProducer));
     
@@ -485,7 +486,7 @@ namespace FakeItEasy.Configuration
             /// <exception cref="FakeConfigurationException">
             /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
             /// </exception>
-            public IAfterCallConfiguredConfiguration<IReturnValueConfiguration<TMember>> AssignsOutAndRefParametersLazily<T1, T2, T3, T4>(Func<T1, T2, T3, T4, object[]> valueProducer)
+            public IAfterCallConfiguredConfiguration<IReturnValueConfiguration<TMember>> AssignsOutAndRefParametersLazily<T1, T2, T3, T4>(Func<T1, T2, T3, T4, object?[]> valueProducer)
             {
                 Guard.AgainstNull(valueProducer, nameof(valueProducer));
     
@@ -514,7 +515,7 @@ namespace FakeItEasy.Configuration
             /// <exception cref="FakeConfigurationException">
             /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
             /// </exception>
-            public IAfterCallConfiguredConfiguration<IReturnValueConfiguration<TMember>> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5>(Func<T1, T2, T3, T4, T5, object[]> valueProducer)
+            public IAfterCallConfiguredConfiguration<IReturnValueConfiguration<TMember>> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5>(Func<T1, T2, T3, T4, T5, object?[]> valueProducer)
             {
                 Guard.AgainstNull(valueProducer, nameof(valueProducer));
     
@@ -544,7 +545,7 @@ namespace FakeItEasy.Configuration
             /// <exception cref="FakeConfigurationException">
             /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
             /// </exception>
-            public IAfterCallConfiguredConfiguration<IReturnValueConfiguration<TMember>> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5, T6>(Func<T1, T2, T3, T4, T5, T6, object[]> valueProducer)
+            public IAfterCallConfiguredConfiguration<IReturnValueConfiguration<TMember>> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5, T6>(Func<T1, T2, T3, T4, T5, T6, object?[]> valueProducer)
             {
                 Guard.AgainstNull(valueProducer, nameof(valueProducer));
     
@@ -575,7 +576,7 @@ namespace FakeItEasy.Configuration
             /// <exception cref="FakeConfigurationException">
             /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
             /// </exception>
-            public IAfterCallConfiguredConfiguration<IReturnValueConfiguration<TMember>> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5, T6, T7>(Func<T1, T2, T3, T4, T5, T6, T7, object[]> valueProducer)
+            public IAfterCallConfiguredConfiguration<IReturnValueConfiguration<TMember>> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5, T6, T7>(Func<T1, T2, T3, T4, T5, T6, T7, object?[]> valueProducer)
             {
                 Guard.AgainstNull(valueProducer, nameof(valueProducer));
     
@@ -607,7 +608,7 @@ namespace FakeItEasy.Configuration
             /// <exception cref="FakeConfigurationException">
             /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
             /// </exception>
-            public IAfterCallConfiguredConfiguration<IReturnValueConfiguration<TMember>> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5, T6, T7, T8>(Func<T1, T2, T3, T4, T5, T6, T7, T8, object[]> valueProducer)
+            public IAfterCallConfiguredConfiguration<IReturnValueConfiguration<TMember>> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5, T6, T7, T8>(Func<T1, T2, T3, T4, T5, T6, T7, T8, object?[]> valueProducer)
             {
                 Guard.AgainstNull(valueProducer, nameof(valueProducer));
     
@@ -639,7 +640,7 @@ namespace FakeItEasy.Configuration
         /// <exception cref="FakeConfigurationException">
         /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
         /// </exception>
-        public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1>(Func<T1, object[]> valueProducer)
+        public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1>(Func<T1, object?[]> valueProducer)
         {
             Guard.AgainstNull(valueProducer, nameof(valueProducer));
 
@@ -665,7 +666,7 @@ namespace FakeItEasy.Configuration
         /// <exception cref="FakeConfigurationException">
         /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
         /// </exception>
-        public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2>(Func<T1, T2, object[]> valueProducer)
+        public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2>(Func<T1, T2, object?[]> valueProducer)
         {
             Guard.AgainstNull(valueProducer, nameof(valueProducer));
 
@@ -692,7 +693,7 @@ namespace FakeItEasy.Configuration
         /// <exception cref="FakeConfigurationException">
         /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
         /// </exception>
-        public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3>(Func<T1, T2, T3, object[]> valueProducer)
+        public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3>(Func<T1, T2, T3, object?[]> valueProducer)
         {
             Guard.AgainstNull(valueProducer, nameof(valueProducer));
 
@@ -720,7 +721,7 @@ namespace FakeItEasy.Configuration
         /// <exception cref="FakeConfigurationException">
         /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
         /// </exception>
-        public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3, T4>(Func<T1, T2, T3, T4, object[]> valueProducer)
+        public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3, T4>(Func<T1, T2, T3, T4, object?[]> valueProducer)
         {
             Guard.AgainstNull(valueProducer, nameof(valueProducer));
 
@@ -749,7 +750,7 @@ namespace FakeItEasy.Configuration
         /// <exception cref="FakeConfigurationException">
         /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
         /// </exception>
-        public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5>(Func<T1, T2, T3, T4, T5, object[]> valueProducer)
+        public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5>(Func<T1, T2, T3, T4, T5, object?[]> valueProducer)
         {
             Guard.AgainstNull(valueProducer, nameof(valueProducer));
 
@@ -779,7 +780,7 @@ namespace FakeItEasy.Configuration
         /// <exception cref="FakeConfigurationException">
         /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
         /// </exception>
-        public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5, T6>(Func<T1, T2, T3, T4, T5, T6, object[]> valueProducer)
+        public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5, T6>(Func<T1, T2, T3, T4, T5, T6, object?[]> valueProducer)
         {
             Guard.AgainstNull(valueProducer, nameof(valueProducer));
 
@@ -810,7 +811,7 @@ namespace FakeItEasy.Configuration
         /// <exception cref="FakeConfigurationException">
         /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
         /// </exception>
-        public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5, T6, T7>(Func<T1, T2, T3, T4, T5, T6, T7, object[]> valueProducer)
+        public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5, T6, T7>(Func<T1, T2, T3, T4, T5, T6, T7, object?[]> valueProducer)
         {
             Guard.AgainstNull(valueProducer, nameof(valueProducer));
 
@@ -842,7 +843,7 @@ namespace FakeItEasy.Configuration
         /// <exception cref="FakeConfigurationException">
         /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
         /// </exception>
-        public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5, T6, T7, T8>(Func<T1, T2, T3, T4, T5, T6, T7, T8, object[]> valueProducer)
+        public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5, T6, T7, T8>(Func<T1, T2, T3, T4, T5, T6, T7, T8, object?[]> valueProducer)
         {
             Guard.AgainstNull(valueProducer, nameof(valueProducer));
 

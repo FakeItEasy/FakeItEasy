@@ -11,6 +11,7 @@
 //     the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
+#nullable enable
 namespace FakeItEasy.Configuration
 {
     using System;
@@ -69,7 +70,7 @@ void GenerateMethodDeclarations()
         /// <exception cref="FakeConfigurationException">
         /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
         /// </exception>
-        IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily<<#= typeParamList #>>(Func<<#= typeParamList #>, object[]> valueProducer);
+        IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily<<#= typeParamList #>>(Func<<#= typeParamList #>, object?[]> valueProducer);
 
 <#+
     }
@@ -106,7 +107,7 @@ void GenerateMethodImplementations(string configurationInterface, string indent 
         /// <exception cref="FakeConfigurationException">
         /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
         /// </exception>
-        public IAfterCallConfiguredConfiguration<<#= configurationInterface #>> AssignsOutAndRefParametersLazily<<#= typeParamList #>>(Func<<#= typeParamList #>, object[]> valueProducer)
+        public IAfterCallConfiguredConfiguration<<#= configurationInterface #>> AssignsOutAndRefParametersLazily<<#= typeParamList #>>(Func<<#= typeParamList #>, object?[]> valueProducer)
         {
             Guard.AgainstNull(valueProducer, nameof(valueProducer));
 

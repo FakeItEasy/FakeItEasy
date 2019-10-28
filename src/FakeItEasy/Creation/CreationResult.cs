@@ -12,9 +12,9 @@ namespace FakeItEasy.Creation
 
         public abstract bool WasSuccessful { get; }
 
-        public abstract object Result { get; }
+        public abstract object? Result { get; }
 
-        public static CreationResult SuccessfullyCreated(object result) =>
+        public static CreationResult SuccessfullyCreated(object? result) =>
              new SuccessfulCreationResult(result);
 
         public static CreationResult FailedToCreateDummy(Type type, string reasonForFailure) =>
@@ -48,11 +48,11 @@ namespace FakeItEasy.Creation
 
         private class SuccessfulCreationResult : CreationResult
         {
-            public SuccessfulCreationResult(object result) => this.Result = result;
+            public SuccessfulCreationResult(object? result) => this.Result = result;
 
             public override bool WasSuccessful => true;
 
-            public override object Result { get; }
+            public override object? Result { get; }
 
             public override CreationResult MergeIntoDummyResult(CreationResult other) => this;
         }
@@ -78,7 +78,7 @@ namespace FakeItEasy.Creation
 
             public override bool WasSuccessful => false;
 
-            public override object Result =>
+            public override object? Result =>
                     throw this.creationMode.CreateException(this.GetFailedToCreateResultMessage());
 
             public override CreationResult MergeIntoDummyResult(CreationResult other)

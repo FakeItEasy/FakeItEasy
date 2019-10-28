@@ -29,7 +29,7 @@ namespace FakeItEasy
         /// <param name="format">The format string to write.</param>
         /// <param name="args">Replacements for the format string.</param>
         /// <returns>The writer.</returns>
-        public static IOutputWriter Write(this IOutputWriter writer, string format, params object[] args)
+        public static IOutputWriter Write(this IOutputWriter writer, string format, params object?[] args)
         {
             Guard.AgainstNull(writer, nameof(writer));
             Guard.AgainstNull(format, nameof(format));
