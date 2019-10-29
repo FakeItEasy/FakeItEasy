@@ -63,6 +63,16 @@ namespace FakeItEasy.Build
                 forEach: ProjectsToPack,
                 action: project => Run("dotnet", $"pack {project.Path} --configuration Release --no-build --output {Path.GetFullPath("artifacts/output")}"));
 
+            Target(
+                "force-approve",
+                () =>
+                    {
+                        foreach (var received in Directory.EnumerateFiles("tests/FakeItEasy.Tests.Approval/ApprovedApi", "*.received.txt", SearchOption.AllDirectories))
+                        {
+                            File.Copy(received, received.Replace(".received.txt", ".approved.txt"), overwrite: true);
+                        }
+                    });
+
             RunTargetsAndExit(args, messageOnly: ex => ex is NonZeroExitCodeException);
         }
 
