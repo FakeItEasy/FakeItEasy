@@ -32,6 +32,8 @@ namespace FakeItEasy
         public static IOutputWriter Write(this IOutputWriter writer, string format, params object[] args)
         {
             Guard.AgainstNull(writer, nameof(writer));
+            Guard.AgainstNull(format, nameof(format));
+            Guard.AgainstNull(args, nameof(args));
 
             writer.Write(string.Format(format, args));
             return writer;

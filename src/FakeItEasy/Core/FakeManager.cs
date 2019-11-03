@@ -109,6 +109,8 @@ namespace FakeItEasy.Core
         /// <param name="rule">The rule to add.</param>
         public virtual void AddRuleFirst(IFakeObjectCallRule rule)
         {
+            Guard.AgainstNull(rule, nameof(rule));
+
             lock (this.allUserRules)
             {
                 this.allUserRules.AddFirst(CallRuleMetadata.NeverCalled(rule));
@@ -121,6 +123,8 @@ namespace FakeItEasy.Core
         /// <param name="rule">The rule to add.</param>
         public virtual void AddRuleLast(IFakeObjectCallRule rule)
         {
+            Guard.AgainstNull(rule, nameof(rule));
+
             lock (this.allUserRules)
             {
                 this.allUserRules.AddLast(CallRuleMetadata.NeverCalled(rule));
@@ -148,6 +152,8 @@ namespace FakeItEasy.Core
         /// <param name="listener">The listener to add.</param>
         public void AddInterceptionListener(IInterceptionListener listener)
         {
+            Guard.AgainstNull(listener, nameof(listener));
+
             this.interceptionListeners.AddFirst(listener);
         }
 

@@ -68,6 +68,8 @@ namespace FakeItEasy.Configuration
 
         public virtual IAfterCallConfiguredConfiguration<IVoidConfiguration> Throws(Func<IFakeObjectCall, Exception> exceptionFactory)
         {
+            Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+
             this.AddRuleIfNeeded();
             this.RuleBeingBuilt.UseApplicator(call => throw exceptionFactory(call));
             return this;
@@ -94,6 +96,7 @@ namespace FakeItEasy.Configuration
         public virtual IVoidConfiguration Invokes(Action<IFakeObjectCall> action)
         {
             Guard.AgainstNull(action, nameof(action));
+
             this.AddRuleIfNeeded();
             this.RuleBeingBuilt.Actions.Add(action);
             return this;
@@ -138,6 +141,9 @@ namespace FakeItEasy.Configuration
 
         public IAnyCallConfigurationWithVoidReturnType Where(Func<IFakeObjectCall, bool> predicate, Action<IOutputWriter> descriptionWriter)
         {
+            Guard.AgainstNull(predicate, nameof(predicate));
+            Guard.AgainstNull(descriptionWriter, nameof(descriptionWriter));
+
             this.RuleBeingBuilt.ApplyWherePredicate(predicate, descriptionWriter);
             return this;
         }
@@ -199,6 +205,7 @@ namespace FakeItEasy.Configuration
             public IAfterCallConfiguredWithOutAndRefParametersConfiguration<IReturnValueConfiguration<TMember>> ReturnsLazily(Func<IFakeObjectCall, TMember> valueProducer)
             {
                 Guard.AgainstNull(valueProducer, nameof(valueProducer));
+
                 this.ParentConfiguration.AddRuleIfNeeded();
                 this.ParentConfiguration.RuleBeingBuilt.UseApplicator(call => call.SetReturnValue(valueProducer(call)));
                 return this;
@@ -222,22 +229,17 @@ namespace FakeItEasy.Configuration
                 return this;
             }
 
-            public UnorderedCallAssertion MustHaveHappened(int numberOfTimes, Times timesOption)
-            {
-                Guard.AgainstNull(timesOption, nameof(timesOption));
+            public UnorderedCallAssertion MustHaveHappened(int numberOfTimes, Times timesOption) =>
+                this.ParentConfiguration.MustHaveHappened(numberOfTimes, timesOption);
 
-                return this.ParentConfiguration.MustHaveHappened(numberOfTimes, timesOption);
-            }
-
-            public UnorderedCallAssertion MustHaveHappenedANumberOfTimesMatching(Expression<Func<int, bool>> predicate)
-            {
-                Guard.AgainstNull(predicate, nameof(predicate));
-
-                return this.ParentConfiguration.MustHaveHappenedANumberOfTimesMatching(predicate);
-            }
+            public UnorderedCallAssertion MustHaveHappenedANumberOfTimesMatching(Expression<Func<int, bool>> predicate) =>
+                this.ParentConfiguration.MustHaveHappenedANumberOfTimesMatching(predicate);
 
             public IAnyCallConfigurationWithReturnTypeSpecified<TMember> Where(Func<IFakeObjectCall, bool> predicate, Action<IOutputWriter> descriptionWriter)
             {
+                Guard.AgainstNull(predicate, nameof(predicate));
+                Guard.AgainstNull(descriptionWriter, nameof(descriptionWriter));
+
                 this.ParentConfiguration.RuleBeingBuilt.ApplyWherePredicate(predicate, descriptionWriter);
                 return this;
             }

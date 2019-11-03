@@ -106,8 +106,9 @@ namespace FakeItEasy.Configuration
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "Used to cast the argument to the specified type.")]
         public T Get<T>(string argumentName)
         {
-            var index = this.GetArgumentIndex(argumentName);
+            Guard.AgainstNull(argumentName, nameof(argumentName));
 
+            var index = this.GetArgumentIndex(argumentName);
             return (T)this.arguments[index];
         }
 

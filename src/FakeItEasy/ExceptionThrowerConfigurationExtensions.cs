@@ -24,6 +24,7 @@ namespace FakeItEasy
         public static IAfterCallConfiguredConfiguration<TInterface> Throws<TInterface>(this IExceptionThrowerConfiguration<TInterface> configuration, Exception exception)
         {
             Guard.AgainstNull(configuration, nameof(configuration));
+            Guard.AgainstNull(exception, nameof(exception));
 
             return configuration.Throws(_ => exception);
         }
@@ -39,6 +40,7 @@ namespace FakeItEasy
         public static IAfterCallConfiguredConfiguration<TInterface> Throws<TInterface>(this IExceptionThrowerConfiguration<TInterface> configuration, Func<Exception> exceptionFactory)
         {
             Guard.AgainstNull(configuration, nameof(configuration));
+            Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
 
             return configuration.Throws(_ => exceptionFactory());
         }

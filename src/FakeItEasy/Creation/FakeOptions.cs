@@ -17,6 +17,8 @@ namespace FakeItEasy.Creation
 
         IFakeOptions IFakeOptions.ConfigureFake(Action<object> action)
         {
+            Guard.AgainstNull(action, nameof(action));
+
             return (IFakeOptions)this.ConfigureFake(fake => action(fake));
         }
 
@@ -47,11 +49,15 @@ namespace FakeItEasy.Creation
 
         public IFakeOptions<T> WithArgumentsForConstructor(Expression<Func<T>> constructorCall)
         {
+            Guard.AgainstNull(constructorCall, nameof(constructorCall));
+
             return this.WithArgumentsForConstructor(GetConstructorArgumentsFromExpression(constructorCall));
         }
 
         IFakeOptions IFakeOptions.WithArgumentsForConstructor<TConstructor>(Expression<Func<TConstructor>> constructorCall)
         {
+            Guard.AgainstNull(constructorCall, nameof(constructorCall));
+
             return (IFakeOptions)this.WithArgumentsForConstructor(GetConstructorArgumentsFromExpression(constructorCall));
         }
 
@@ -62,6 +68,8 @@ namespace FakeItEasy.Creation
 
         public IFakeOptions<T> WithArgumentsForConstructor(IEnumerable<object> argumentsForConstructor)
         {
+            Guard.AgainstNull(argumentsForConstructor, nameof(argumentsForConstructor));
+
             this.proxyOptions.ArgumentsForConstructor = argumentsForConstructor;
             return this;
         }
@@ -82,24 +90,31 @@ namespace FakeItEasy.Creation
         public IFakeOptions<T> Wrapping(T wrappedInstance)
         {
             Guard.AgainstNull(wrappedInstance, nameof(wrappedInstance));
+
             this.ConfigureFake(fake => ConfigureFakeToWrap(fake, wrappedInstance));
             return this;
         }
 
         public IFakeOptions<T> Implements(Type interfaceType)
         {
+            Guard.AgainstNull(interfaceType, nameof(interfaceType));
+
             this.proxyOptions.AddInterfaceToImplement(interfaceType);
             return this;
         }
 
         public IFakeOptions<T> ConfigureFake(Action<T> action)
         {
+            Guard.AgainstNull(action, nameof(action));
+
             this.proxyOptions.AddProxyConfigurationAction(proxy => action((T)proxy));
             return this;
         }
 
         public IFakeOptions<T> Named(string name)
         {
+            Guard.AgainstNull(name, nameof(name));
+
             this.proxyOptions.Name = name;
             return this;
         }

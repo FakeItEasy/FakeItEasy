@@ -26,6 +26,8 @@ namespace FakeItEasy.Configuration
 
         public IPropertySetterConfiguration To(Expression<Func<TValue>> valueConstraint)
         {
+            Guard.AgainstNull(valueConstraint, nameof(valueConstraint));
+
             var newSetterExpression = this.CreateSetterExpressionWithNewValue(valueConstraint);
             var voidArgumentValidationConfiguration = this.CreateArgumentValidationConfiguration(newSetterExpression);
             return AsPropertySetterConfiguration(voidArgumentValidationConfiguration);
