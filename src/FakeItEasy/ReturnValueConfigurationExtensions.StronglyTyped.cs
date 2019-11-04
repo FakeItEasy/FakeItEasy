@@ -34,6 +34,7 @@ namespace FakeItEasy
             ReturnsLazily<TReturnType, T1>(this IReturnValueConfiguration<TReturnType> configuration, Func<T1, TReturnType> valueProducer)
         {
             Guard.AgainstNull(configuration, nameof(configuration));
+            Guard.AgainstNull(valueProducer, nameof(valueProducer));
 
             return configuration.ReturnsLazily(call =>
                 {
@@ -86,6 +87,7 @@ namespace FakeItEasy
             ReturnsLazily<TReturnType, T1, T2>(this IReturnValueConfiguration<TReturnType> configuration, Func<T1, T2, TReturnType> valueProducer)
         {
             Guard.AgainstNull(configuration, nameof(configuration));
+            Guard.AgainstNull(valueProducer, nameof(valueProducer));
 
             return configuration.ReturnsLazily(call =>
                 {
@@ -140,6 +142,7 @@ namespace FakeItEasy
             ReturnsLazily<TReturnType, T1, T2, T3>(this IReturnValueConfiguration<TReturnType> configuration, Func<T1, T2, T3, TReturnType> valueProducer)
         {
             Guard.AgainstNull(configuration, nameof(configuration));
+            Guard.AgainstNull(valueProducer, nameof(valueProducer));
 
             return configuration.ReturnsLazily(call =>
                 {
@@ -196,6 +199,7 @@ namespace FakeItEasy
             ReturnsLazily<TReturnType, T1, T2, T3, T4>(this IReturnValueConfiguration<TReturnType> configuration, Func<T1, T2, T3, T4, TReturnType> valueProducer)
         {
             Guard.AgainstNull(configuration, nameof(configuration));
+            Guard.AgainstNull(valueProducer, nameof(valueProducer));
 
             return configuration.ReturnsLazily(call =>
                 {
@@ -254,6 +258,7 @@ namespace FakeItEasy
             ReturnsLazily<TReturnType, T1, T2, T3, T4, T5>(this IReturnValueConfiguration<TReturnType> configuration, Func<T1, T2, T3, T4, T5, TReturnType> valueProducer)
         {
             Guard.AgainstNull(configuration, nameof(configuration));
+            Guard.AgainstNull(valueProducer, nameof(valueProducer));
 
             return configuration.ReturnsLazily(call =>
                 {
@@ -314,6 +319,7 @@ namespace FakeItEasy
             ReturnsLazily<TReturnType, T1, T2, T3, T4, T5, T6>(this IReturnValueConfiguration<TReturnType> configuration, Func<T1, T2, T3, T4, T5, T6, TReturnType> valueProducer)
         {
             Guard.AgainstNull(configuration, nameof(configuration));
+            Guard.AgainstNull(valueProducer, nameof(valueProducer));
 
             return configuration.ReturnsLazily(call =>
                 {
@@ -376,6 +382,7 @@ namespace FakeItEasy
             ReturnsLazily<TReturnType, T1, T2, T3, T4, T5, T6, T7>(this IReturnValueConfiguration<TReturnType> configuration, Func<T1, T2, T3, T4, T5, T6, T7, TReturnType> valueProducer)
         {
             Guard.AgainstNull(configuration, nameof(configuration));
+            Guard.AgainstNull(valueProducer, nameof(valueProducer));
 
             return configuration.ReturnsLazily(call =>
                 {
@@ -440,6 +447,7 @@ namespace FakeItEasy
             ReturnsLazily<TReturnType, T1, T2, T3, T4, T5, T6, T7, T8>(this IReturnValueConfiguration<TReturnType> configuration, Func<T1, T2, T3, T4, T5, T6, T7, T8, TReturnType> valueProducer)
         {
             Guard.AgainstNull(configuration, nameof(configuration));
+            Guard.AgainstNull(valueProducer, nameof(valueProducer));
 
             return configuration.ReturnsLazily(call =>
                 {

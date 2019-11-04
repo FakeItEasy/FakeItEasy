@@ -52,6 +52,7 @@ namespace FakeItEasy
             ReturnsLazily<TReturnType, <#= typeParamList #>>(this IReturnValueConfiguration<TReturnType> configuration, Func<<#= typeParamList #>, TReturnType> valueProducer)
         {
             Guard.AgainstNull(configuration, nameof(configuration));
+            Guard.AgainstNull(valueProducer, nameof(valueProducer));
 
             return configuration.ReturnsLazily(call =>
                 {

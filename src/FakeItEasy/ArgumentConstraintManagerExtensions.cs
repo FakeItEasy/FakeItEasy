@@ -77,6 +77,9 @@ namespace FakeItEasy
         /// <returns>A dummy argument value.</returns>
         public static string Contains(this IArgumentConstraintManager<string> manager, string value)
         {
+            Guard.AgainstNull(manager, nameof(manager));
+            Guard.AgainstNull(value, nameof(value));
+
 #if FEATURE_STRING_CONTAINS_COMPARISONTYPE
             return manager.NullCheckedMatches(x => x.Contains(value, StringComparison.CurrentCulture), x => x.Write("string that contains ").WriteArgumentValue(value));
 #else
@@ -93,6 +96,9 @@ namespace FakeItEasy
         /// <returns>A dummy argument value.</returns>
         public static T Contains<T>(this IArgumentConstraintManager<T> manager, object value) where T : IEnumerable
         {
+            Guard.AgainstNull(manager, nameof(manager));
+            Guard.AgainstNull(value, nameof(value));
+
             return manager.NullCheckedMatches(
                 x => x.Cast<object>().Contains(value),
                 x => x.Write("sequence that contains the value ").WriteArgumentValue(value));
@@ -106,6 +112,9 @@ namespace FakeItEasy
         /// <returns>A dummy argument value.</returns>
         public static string StartsWith(this IArgumentConstraintManager<string> manager, string value)
         {
+            Guard.AgainstNull(manager, nameof(manager));
+            Guard.AgainstNull(value, nameof(value));
+
             return manager.NullCheckedMatches(x => x.StartsWith(value, StringComparison.Ordinal), x => x.Write("string that starts with ").WriteArgumentValue(value));
         }
 
@@ -117,6 +126,9 @@ namespace FakeItEasy
         /// <returns>A dummy argument value.</returns>
         public static string EndsWith(this IArgumentConstraintManager<string> manager, string value)
         {
+            Guard.AgainstNull(manager, nameof(manager));
+            Guard.AgainstNull(value, nameof(value));
+
             return manager.NullCheckedMatches(x => x.EndsWith(value, StringComparison.Ordinal), x => x.Write("string that ends with ").WriteArgumentValue(value));
         }
 
@@ -127,6 +139,8 @@ namespace FakeItEasy
         /// <returns>A dummy argument value.</returns>
         public static string IsNullOrEmpty(this IArgumentConstraintManager<string> manager)
         {
+            Guard.AgainstNull(manager, nameof(manager));
+
             return manager.Matches(x => string.IsNullOrEmpty(x), "NULL or string.Empty");
         }
 
@@ -154,6 +168,9 @@ namespace FakeItEasy
         /// <returns>A dummy argument value.</returns>
         public static T IsSameSequenceAs<T>(this IArgumentConstraintManager<T> manager, IEnumerable values) where T : IEnumerable
         {
+            Guard.AgainstNull(manager, nameof(manager));
+            Guard.AgainstNull(values, nameof(values));
+
             var list = values.AsList();
             return manager.NullCheckedMatches(
                 x => x.Cast<object>().SequenceEqual(list),
@@ -170,6 +187,9 @@ namespace FakeItEasy
         /// <returns>A dummy argument value.</returns>
         public static T IsSameSequenceAs<T>(this IArgumentConstraintManager<T> manager, params object[] values) where T : IEnumerable
         {
+            Guard.AgainstNull(manager, nameof(manager));
+            Guard.AgainstNull(values, nameof(values));
+
             return manager.IsSameSequenceAs((IEnumerable)values);
         }
 
@@ -181,6 +201,8 @@ namespace FakeItEasy
         /// <returns>A dummy argument value.</returns>
         public static T IsEmpty<T>(this IArgumentConstraintManager<T> manager) where T : IEnumerable
         {
+            Guard.AgainstNull(manager, nameof(manager));
+
             return manager.NullCheckedMatches(
                 x => !x.Cast<object>().Any(),
                 x => x.Write("empty collection"));
@@ -227,6 +249,9 @@ namespace FakeItEasy
         /// <returns>A dummy value.</returns>
         public static T IsInstanceOf<T>(this IArgumentConstraintManager<T> manager, Type type)
         {
+            Guard.AgainstNull(manager, nameof(manager));
+            Guard.AgainstNull(type, nameof(type));
+
             return manager.Matches(x => x is object && type.IsAssignableFrom(x.GetType()), description => description.Write("Instance of ").Write(type.ToString()));
         }
 
@@ -251,6 +276,8 @@ namespace FakeItEasy
         public static T Matches<T>(this IArgumentConstraintManager<T> scope, Func<T, bool> predicate, string description)
         {
             Guard.AgainstNull(scope, nameof(scope));
+            Guard.AgainstNull(predicate, nameof(predicate));
+            Guard.AgainstNull(description, nameof(description));
 
             return scope.Matches(predicate, x => x.Write(description));
         }
@@ -279,6 +306,9 @@ namespace FakeItEasy
         public static T Matches<T>(this IArgumentConstraintManager<T> manager, Func<T, bool> predicate, string descriptionFormat, params object[] args)
         {
             Guard.AgainstNull(manager, nameof(manager));
+            Guard.AgainstNull(predicate, nameof(predicate));
+            Guard.AgainstNull(descriptionFormat, nameof(descriptionFormat));
+            Guard.AgainstNull(args, nameof(args));
 
             return manager.Matches(predicate, x => x.Write(descriptionFormat, args));
         }
@@ -301,6 +331,7 @@ namespace FakeItEasy
         [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Appropriate for Linq expressions.")]
         public static T Matches<T>(this IArgumentConstraintManager<T> scope, Expression<Func<T, bool>> predicate)
         {
+            Guard.AgainstNull(scope, nameof(scope));
             Guard.AgainstNull(predicate, nameof(predicate));
 
             return scope.Matches(predicate.Compile(), predicate.ToString());
@@ -319,6 +350,8 @@ namespace FakeItEasy
         public static T NullCheckedMatches<T>(this IArgumentConstraintManager<T> manager, Func<T, bool> predicate, Action<IOutputWriter> descriptionWriter)
         {
             Guard.AgainstNull(manager, nameof(manager));
+            Guard.AgainstNull(predicate, nameof(predicate));
+            Guard.AgainstNull(descriptionWriter, nameof(descriptionWriter));
 
             return manager.Matches(
                 x => x is object && predicate(x),
