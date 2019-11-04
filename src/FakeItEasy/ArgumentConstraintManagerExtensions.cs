@@ -258,7 +258,7 @@ namespace FakeItEasy
         /// <summary>
         /// Constrains the argument with a predicate.
         /// </summary>
-        /// <param name="scope">
+        /// <param name="manager">
         /// The constraint manager.
         /// </param>
         /// <param name="predicate">
@@ -273,13 +273,13 @@ namespace FakeItEasy
         /// <returns>
         /// A dummy argument value.
         /// </returns>
-        public static T Matches<T>(this IArgumentConstraintManager<T> scope, Func<T, bool> predicate, string description)
+        public static T Matches<T>(this IArgumentConstraintManager<T> manager, Func<T, bool> predicate, string description)
         {
-            Guard.AgainstNull(scope, nameof(scope));
+            Guard.AgainstNull(manager, nameof(manager));
             Guard.AgainstNull(predicate, nameof(predicate));
             Guard.AgainstNull(description, nameof(description));
 
-            return scope.Matches(predicate, x => x.Write(description));
+            return manager.Matches(predicate, x => x.Write(description));
         }
 
         /// <summary>
@@ -316,7 +316,7 @@ namespace FakeItEasy
         /// <summary>
         /// Constrains the argument with a predicate.
         /// </summary>
-        /// <param name="scope">
+        /// <param name="manager">
         /// The constraint manager.
         /// </param>
         /// <param name="predicate">
@@ -329,12 +329,12 @@ namespace FakeItEasy
         /// A dummy argument value.
         /// </returns>
         [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Appropriate for Linq expressions.")]
-        public static T Matches<T>(this IArgumentConstraintManager<T> scope, Expression<Func<T, bool>> predicate)
+        public static T Matches<T>(this IArgumentConstraintManager<T> manager, Expression<Func<T, bool>> predicate)
         {
-            Guard.AgainstNull(scope, nameof(scope));
+            Guard.AgainstNull(manager, nameof(manager));
             Guard.AgainstNull(predicate, nameof(predicate));
 
-            return scope.Matches(predicate.Compile(), predicate.ToString());
+            return manager.Matches(predicate.Compile(), predicate.ToString());
         }
 
         /// <summary>
