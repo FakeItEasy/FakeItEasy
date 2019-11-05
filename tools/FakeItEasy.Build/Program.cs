@@ -3,6 +3,9 @@ namespace FakeItEasy.Build
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Text;
+    using System.Text.RegularExpressions;
+    using System.Xml.Linq;
     using SimpleExec;
     using static Bullseye.Targets;
     using static SimpleExec.Command;
@@ -72,6 +75,53 @@ namespace FakeItEasy.Build
                             File.Copy(received, received.Replace(".received.txt", ".approved.txt"), overwrite: true);
                         }
                     });
+
+            Target(
+                "initialize-user-properties",
+                () =>
+                    {
+                        if (!File.Exists("FakeItEasy.user.props"))
+                        {
+                            var defaultUserProps = @"
+<Project>
+  <PropertyGroup>
+    <BuildProfile></BuildProfile>
+  </PropertyGroup>
+</Project>".Trim();
+                            File.WriteAllText("FakeItEasy.user.props", defaultUserProps, Encoding.UTF8);
+                        }
+                    });
+
+            foreach (var profile in Directory.EnumerateFiles("profiles", "*.props").Select(Path.GetFileNameWithoutExtension))
+            {
+                Target(
+                    "use-profile-" + profile,
+                    DependsOn("initialize-user-properties"),
+                    () =>
+                        {
+                            var xmlDoc = XDocument.Load("FakeItEasy.user.props");
+
+                            var buildProfileElement = xmlDoc.Root.Elements("PropertyGroup").Elements("BuildProfile").FirstOrDefault();
+                            if (buildProfileElement is null)
+                            {
+                                var propertyGroupElement = xmlDoc.Root.Element("PropertyGroup");
+                                if (propertyGroupElement is null)
+                                {
+                                    propertyGroupElement = new XElement("PropertyGroup");
+                                    xmlDoc.Root.Add(propertyGroupElement);
+                                }
+
+                                buildProfileElement = new XElement("BuildProfile");
+                                propertyGroupElement.Add(buildProfileElement);
+                            }
+
+                            if (buildProfileElement.Value != profile)
+                            {
+                                buildProfileElement.Value = profile;
+                                xmlDoc.Save("FakeItEasy.user.props");
+                            }
+                        });
+            }
 
             RunTargetsAndExit(args, messageOnly: ex => ex is NonZeroExitCodeException);
         }

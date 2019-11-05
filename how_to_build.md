@@ -100,14 +100,19 @@ available:
 * `netcoreall`: builds all supported .NET Core / .NET Standard target frameworks
 
 In order to select a profile, create a `FakeItEasy.user.props` file at the root
-of the repository, and set the `BuildProfile` MSBuild property like this:
+of the repository by running
 
-```xml
-<Project>
-  <PropertyGroup>
-    <BuildProfile>netcore3.0</BuildProfile>
-  </PropertyGroup>
-</Project>
+```
+build.cmd initialize-user-properties
+```
+
+Thereafter
+you can switch profiles by replacing the contents of the `BuildProfile` element
+either by editing the file by hand or via a build target (which will actually 
+create the file if it doesn't already exist). For example:
+
+```
+build.cmd use-profile-netcore3.0
 ```
 
 Note that Visual Studio will not reflect a change of build profile until you
