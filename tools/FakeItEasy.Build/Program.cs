@@ -57,14 +57,14 @@ namespace FakeItEasy.Build
                     testSuite.Key,
                     DependsOn("build"),
                     forEach: testSuite.Value,
-                    action: testDirectory => Run("dotnet", "test --configuration Release --no-build -- RunConfiguration.NoAutoReporters=true", testDirectory));
+                    action: testDirectory => Run("dotnet", "test --configuration Release --no-build --nologo -- RunConfiguration.NoAutoReporters=true", testDirectory));
             }
 
             Target(
                 "pack",
                 DependsOn("build"),
                 forEach: ProjectsToPack,
-                action: project => Run("dotnet", $"pack {project.Path} --configuration Release --no-build --output {Path.GetFullPath("artifacts/output")}"));
+                action: project => Run("dotnet", $"pack {project.Path} --configuration Release --no-build --nologo --output {Path.GetFullPath("artifacts/output")}"));
 
             Target(
                 "force-approve",
