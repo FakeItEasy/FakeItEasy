@@ -11,6 +11,6 @@
         /// </summary>
         /// <param name="fake">The fake that is raising the event.</param>
         /// <returns>The event arguments.</returns>
-        object[] GetEventArguments(object fake);
+        object?[] GetEventArguments(object fake);
     }
 }
