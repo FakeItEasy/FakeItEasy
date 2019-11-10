@@ -101,7 +101,7 @@ namespace FakeItEasy.Core
         internal string FakeObjectDisplayName =>
             string.IsNullOrEmpty(this.FakeObjectName)
                 ? "Faked " + this.FakeObjectType
-                : this.FakeObjectName;
+                : this.FakeObjectName!;
 
         /// <summary>
         /// Adds a call rule to the fake object.
@@ -243,7 +243,7 @@ namespace FakeItEasy.Core
                 }
             }
 
-            CallRuleMetadata bestUserRule = null;
+            CallRuleMetadata? bestUserRule = null;
             lock (this.allUserRules)
             {
                 foreach (var rule in this.allUserRules)
