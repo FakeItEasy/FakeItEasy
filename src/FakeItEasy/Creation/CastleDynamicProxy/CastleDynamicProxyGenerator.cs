@@ -3,6 +3,7 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
@@ -42,7 +43,7 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
                     typeof(object),
                     allInterfacesToImplement,
                     options,
-                    (object[])null,
+                    constructorArguments: null,
                     new ProxyInterceptor(fakeCallProcessorProvider));
             }
             catch (Exception e)
@@ -67,7 +68,7 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
             Guard.AgainstNull(argumentsForConstructor, nameof(argumentsForConstructor));
             Guard.AgainstNull(fakeCallProcessorProvider, nameof(fakeCallProcessorProvider));
 
-            if (!CanGenerateProxy(typeOfProxy, out string failReason))
+            if (!CanGenerateProxy(typeOfProxy, out string? failReason))
             {
                 return new ProxyGeneratorResult(failReason);
             }
@@ -110,7 +111,7 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
             return new ProxyGeneratorResult(generatedProxy: proxy);
         }
 
-        public static bool CanGenerateProxy(Type typeOfProxy, out string failReason)
+        public static bool CanGenerateProxy(Type typeOfProxy, [NotNullWhen(false)] out string? failReason)
         {
             if (typeOfProxy.GetTypeInfo().IsValueType)
             {
