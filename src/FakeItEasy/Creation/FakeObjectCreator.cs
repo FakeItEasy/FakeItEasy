@@ -154,7 +154,7 @@ namespace FakeItEasy.Creation
                 IDummyValueResolver resolver,
                 LoopDetectingResolutionContext resolutionContext)
             {
-                if (!CastleDynamicProxyGenerator.CanGenerateProxy(typeOfFake, out string reasonCannotGenerate))
+                if (!CastleDynamicProxyGenerator.CanGenerateProxy(typeOfFake, out string? reasonCannotGenerate))
                 {
                     return CreationResult.FailedToCreateFake(typeOfFake, reasonCannotGenerate);
                 }
