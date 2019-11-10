@@ -2,6 +2,7 @@ namespace FakeItEasy.Configuration
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq.Expressions;
 #if FEATURE_NETCORE_REFLECTION
     using System.Reflection;
@@ -50,7 +51,8 @@ namespace FakeItEasy.Configuration
             }
         }
 
-        private BuildableCallRule PreviousRule { get; set; }
+        [DisallowNull]
+        private BuildableCallRule? PreviousRule { get; set; }
 
         public IThenConfiguration<IVoidConfiguration> NumberOfTimes(int numberOfTimes)
         {
