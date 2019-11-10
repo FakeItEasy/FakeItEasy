@@ -36,12 +36,12 @@ namespace FakeItEasy.Core
         /// </summary>
         /// <param name="index">The index of the argument to set the value to.</param>
         /// <param name="value">The value to set to the argument.</param>
-        public abstract void SetArgumentValue(int index, object value);
+        public abstract void SetArgumentValue(int index, object? value);
 
         /// <summary>
         /// Sets the return value of the call.
         /// </summary>
         /// <param name="returnValue">The return value.</param>
-        public abstract void SetReturnValue(object returnValue);
+        public abstract void SetReturnValue(object? returnValue);
     }
 }
