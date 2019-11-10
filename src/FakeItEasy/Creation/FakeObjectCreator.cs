@@ -66,7 +66,7 @@ namespace FakeItEasy.Creation
         }
 
         [SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "2#", Justification = "Seems appropriate here.")]
-        public bool MethodCanBeInterceptedOnInstance(MethodInfo method, object callTarget, out string failReason) =>
+        public bool MethodCanBeInterceptedOnInstance(MethodInfo method, object? callTarget, [NotNullWhen(false)]out string? failReason) =>
             callTarget is object && DelegateCreationStrategy.IsResponsibleForCreating(callTarget.GetType())
                 ? this.delegateCreationStrategy.MethodCanBeInterceptedOnInstance(method, callTarget, out failReason)
                 : this.defaultCreationStrategy.MethodCanBeInterceptedOnInstance(method, callTarget, out failReason);
@@ -108,10 +108,10 @@ namespace FakeItEasy.Creation
 
                 return proxyGeneratorResult.ProxyWasSuccessfullyGenerated
                     ? CreationResult.SuccessfullyCreated(proxyGeneratorResult.GeneratedProxy)
-                    : CreationResult.FailedToCreateFake(typeOfFake, proxyGeneratorResult.ReasonForFailure);
+                    : CreationResult.FailedToCreateFake(typeOfFake, proxyGeneratorResult.ReasonForFailure!);
             }
 
-            public bool MethodCanBeInterceptedOnInstance(MethodInfo method, object callTarget, out string failReason) =>
+            public bool MethodCanBeInterceptedOnInstance(MethodInfo method, object callTarget, [NotNullWhen(false)]out string? failReason) =>
                 this.methodInterceptionValidator.MethodCanBeInterceptedOnInstance(method, callTarget, out failReason);
         }
 
@@ -145,7 +145,7 @@ namespace FakeItEasy.Creation
                     fakeCallProcessorProvider);
                 return proxyGeneratorResult.ProxyWasSuccessfullyGenerated
                     ? CreationResult.SuccessfullyCreated(proxyGeneratorResult.GeneratedProxy)
-                    : CreationResult.FailedToCreateFake(typeOfFake, proxyGeneratorResult.ReasonForFailure);
+                    : CreationResult.FailedToCreateFake(typeOfFake, proxyGeneratorResult.ReasonForFailure!);
             }
 
             public CreationResult CreateFake(
@@ -154,7 +154,7 @@ namespace FakeItEasy.Creation
                 IDummyValueResolver resolver,
                 LoopDetectingResolutionContext resolutionContext)
             {
-                if (!CastleDynamicProxyGenerator.CanGenerateProxy(typeOfFake, out string reasonCannotGenerate))
+                if (!CastleDynamicProxyGenerator.CanGenerateProxy(typeOfFake, out string? reasonCannotGenerate))
                 {
                     return CreationResult.FailedToCreateFake(typeOfFake, reasonCannotGenerate);
                 }
@@ -165,7 +165,7 @@ namespace FakeItEasy.Creation
 
                     return proxyGeneratorResult.ProxyWasSuccessfullyGenerated
                         ? CreationResult.SuccessfullyCreated(proxyGeneratorResult.GeneratedProxy)
-                        : CreationResult.FailedToCreateFake(typeOfFake, proxyGeneratorResult.ReasonForFailure);
+                        : CreationResult.FailedToCreateFake(typeOfFake, proxyGeneratorResult.ReasonForFailure!);
                 }
 
                 return this.TryCreateFakeWithDummyArgumentsForConstructor(
@@ -175,7 +175,7 @@ namespace FakeItEasy.Creation
                     resolutionContext);
             }
 
-            public bool MethodCanBeInterceptedOnInstance(MethodInfo method, object callTarget, out string failReason) =>
+            public bool MethodCanBeInterceptedOnInstance(MethodInfo method, object? callTarget, [NotNullWhen(false)]out string? failReason) =>
                 this.methodInterceptionValidator.MethodCanBeInterceptedOnInstance(method, callTarget, out failReason);
 
             private static IEnumerable<Type[]> GetUsableParameterTypeListsInOrder(Type type)
@@ -229,7 +229,7 @@ namespace FakeItEasy.Creation
                             return CreationResult.SuccessfullyCreated(result.GeneratedProxy);
                         }
 
-                        constructor.ReasonForFailure = result.ReasonForFailure;
+                        constructor.ReasonForFailure = result.ReasonForFailure!;
                     }
 
                     consideredConstructors.Add(constructor);
@@ -250,7 +250,7 @@ namespace FakeItEasy.Creation
                                 return CreationResult.SuccessfullyCreated(result.GeneratedProxy);
                             }
 
-                            constructor.ReasonForFailure = result.ReasonForFailure;
+                            constructor.ReasonForFailure = result.ReasonForFailure!;
                         }
 
                         consideredConstructors.Add(constructor);

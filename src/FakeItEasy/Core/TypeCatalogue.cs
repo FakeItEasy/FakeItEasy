@@ -215,7 +215,7 @@ namespace FakeItEasy.Core
         {
             // We can pass null as the ArgumentValueFormatter, because we never call
             // WriteArgumentValue on this writer.
-            return new DefaultOutputWriter(Console.Write, null);
+            return new DefaultOutputWriter(Console.Write, null!);
         }
     }
 }

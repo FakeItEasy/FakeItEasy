@@ -8,8 +8,16 @@ namespace FakeItEasy.Configuration
 
     internal static class PropertyExpressionHelper
     {
-        public static ParsedCallExpression BuildSetterFromGetter<TValue>(
-            ParsedCallExpression parsedCallExpression)
+        /// <summary>
+        /// Builds a parsed call expression for a property setter from the matching getter. The property must be interceptable as a faked method.
+        /// </summary>
+        /// <typeparam name="TValue">The return type of the getter.</typeparam>
+        /// <param name="parsedCallExpression">
+        /// The parsed call expression describing the getter.
+        /// Must have a non-null <see cref="ParsedCallExpression.CallTarget"/>.
+        /// </param>
+        /// <returns>A parsed call expression describing the setter that matches the supplied getter.</returns>
+        public static ParsedCallExpression BuildSetterFromGetter<TValue>(ParsedCallExpression parsedCallExpression)
         {
             var propertyName = GetPropertyName(parsedCallExpression);
             var parameterTypes = new Type[parsedCallExpression.ArgumentsExpressions.Length + 1];
@@ -25,7 +33,7 @@ namespace FakeItEasy.Configuration
             // constructed expression to ACallToSet; perhaps a dynamically generated method created
             // via lightweight code generation.)
             var callTargetType = parsedCallExpression.CalledMethod.DeclaringType
-                                 ?? Fake.GetFakeManager(parsedCallExpression.CallTarget).FakeObjectType;
+                                 ?? Fake.GetFakeManager(parsedCallExpression.CallTarget!).FakeObjectType;
             var setPropertyName = "set_" + propertyName;
             var indexerSetterInfo = callTargetType.GetMethod(setPropertyName, parameterTypes);
 

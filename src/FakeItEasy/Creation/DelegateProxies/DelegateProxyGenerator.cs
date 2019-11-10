@@ -147,7 +147,7 @@ namespace FakeItEasy.Creation.DelegateProxies
             // Return the result if the return type is non-void
             if (!isVoid)
             {
-                bodyExpressions.Add(result);
+                bodyExpressions.Add(result!);
             }
 
             var variables = isVoid ? new[] { arguments } : new[] { arguments, result };

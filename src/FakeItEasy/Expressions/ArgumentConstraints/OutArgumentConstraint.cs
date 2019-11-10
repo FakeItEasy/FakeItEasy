@@ -4,7 +4,7 @@ namespace FakeItEasy.Expressions.ArgumentConstraints
 
     internal class OutArgumentConstraint : IArgumentConstraint, IArgumentValueProvider
     {
-        public OutArgumentConstraint(object value)
+        public OutArgumentConstraint(object? value)
         {
             this.Value = value;
         }
@@ -16,7 +16,7 @@ namespace FakeItEasy.Expressions.ArgumentConstraints
         /// there's no use in accepting or rejecting calls based on the
         /// incoming parameter value.
         /// </summary>
-        public object Value { get; }
+        public object? Value { get; }
 
         public void WriteDescription(IOutputWriter writer)
         {

@@ -65,7 +65,7 @@ namespace FakeItEasy.Core
         /// <param name="proxy">The faked proxy object.</param>
         /// <param name="fakeObjectName">The name of the fake object.</param>
         /// <returns>An instance of <see cref="FakeManager"/>.</returns>
-        internal delegate FakeManager Factory(Type fakeObjectType, object proxy, string fakeObjectName);
+        internal delegate FakeManager Factory(Type fakeObjectType, object proxy, string? fakeObjectName);
 
         /// <summary>
         /// Gets the faked proxy object.
@@ -101,7 +101,7 @@ namespace FakeItEasy.Core
         internal string FakeObjectDisplayName =>
             string.IsNullOrEmpty(this.FakeObjectName)
                 ? "Faked " + this.FakeObjectType
-                : this.FakeObjectName;
+                : this.FakeObjectName!;
 
         /// <summary>
         /// Adds a call rule to the fake object.
@@ -243,7 +243,7 @@ namespace FakeItEasy.Core
                 }
             }
 
-            CallRuleMetadata bestUserRule = null;
+            CallRuleMetadata? bestUserRule = null;
             lock (this.allUserRules)
             {
                 foreach (var rule in this.allUserRules)

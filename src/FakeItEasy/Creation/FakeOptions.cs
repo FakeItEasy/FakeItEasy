@@ -131,7 +131,7 @@ namespace FakeItEasy.Creation
             manager.AddRuleFirst(rule);
         }
 
-        private static IEnumerable<object> GetConstructorArgumentsFromExpression<TConstructor>(Expression<Func<TConstructor>> constructorCall)
+        private static IEnumerable<object?> GetConstructorArgumentsFromExpression<TConstructor>(Expression<Func<TConstructor>> constructorCall)
         {
             AssertThatExpressionRepresentConstructorCall(constructorCall);
             return ((NewExpression)constructorCall.Body).Arguments.Select(argument => argument.Evaluate());
