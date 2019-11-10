@@ -14,7 +14,7 @@ namespace FakeItEasy.Core
 #endif
     {
         private readonly TEventArgs eventArguments;
-        private readonly object eventSender;
+        private readonly object? eventSender;
         private readonly bool hasSender;
 
         /// <summary>
@@ -23,7 +23,7 @@ namespace FakeItEasy.Core
         /// <param name="sender">The sender of the event.</param>
         /// <param name="e">The event data.</param>
         /// <param name="argumentProviderMap">A map from event handlers to supplied arguments to use when raising.</param>
-        internal Raise(object sender, TEventArgs e, EventHandlerArgumentProviderMap argumentProviderMap)
+        internal Raise(object? sender, TEventArgs e, EventHandlerArgumentProviderMap argumentProviderMap)
         {
             this.eventSender = sender;
             this.hasSender = true;
@@ -70,7 +70,7 @@ namespace FakeItEasy.Core
             return raiser.Now;
         }
 
-        object[] IEventRaiserArgumentProvider.GetEventArguments(object fake)
+        object?[] IEventRaiserArgumentProvider.GetEventArguments(object fake)
         {
             return new[] { this.hasSender ? this.eventSender : fake, this.eventArguments };
         }
