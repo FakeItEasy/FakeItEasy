@@ -76,7 +76,7 @@ namespace FakeItEasy.Core
                 return null;
             }
 
-            private static bool IsValueTask(Type type, out Type valueType)
+            private static bool IsValueTask(Type type, out Type? valueType)
             {
                 if (type.FullName == "System.Threading.Tasks.ValueTask")
                 {
