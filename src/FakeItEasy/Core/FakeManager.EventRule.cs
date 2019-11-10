@@ -18,7 +18,7 @@ namespace FakeItEasy.Core
 
             private readonly FakeManager fakeManager;
 
-            private Dictionary<object, Delegate> registeredEventHandlersField;
+            private Dictionary<object, Delegate>? registeredEventHandlersField;
 
             public EventRule(FakeManager fakeManager)
             {
@@ -164,12 +164,13 @@ namespace FakeItEasy.Core
                 public static EventCall GetEventCall(
                     IFakeObjectCall fakeObjectCall)
                 {
-                    var eventInfo = GetEvent(fakeObjectCall.Method);
+                    // This method is only called when IsApplicableTo is true, so eventInfo will not be null.
+                    var eventInfo = GetEvent(fakeObjectCall.Method) !;
 
                     return new EventCall(eventInfo, fakeObjectCall.Method, (Delegate)fakeObjectCall.Arguments[0] !);
                 }
 
-                public static EventInfo GetEvent(MethodInfo eventAdderOrRemover)
+                public static EventInfo? GetEvent(MethodInfo eventAdderOrRemover)
                 {
                     if (!eventAdderOrRemover.IsSpecialName)
                     {
