@@ -23,7 +23,7 @@ namespace FakeItEasy.Core
         /// <summary>
         /// Gets or sets the return value of the call.
         /// </summary>
-        public abstract object ReturnValue { get; set; }
+        public abstract object? ReturnValue { get; set; }
 
         /// <summary>
         /// Returns a completed call suitable for being recorded.
@@ -41,8 +41,8 @@ namespace FakeItEasy.Core
         /// </summary>
         /// <param name="index">The index of the argument to set the value to.</param>
         /// <param name="value">The value to set to the argument.</param>
-        public abstract void SetArgumentValue(int index, object value);
+        public abstract void SetArgumentValue(int index, object? value);
 
-        void IInterceptedFakeObjectCall.SetReturnValue(object returnValue) => this.ReturnValue = returnValue;
+        void IInterceptedFakeObjectCall.SetReturnValue(object? returnValue) => this.ReturnValue = returnValue;
     }
 }

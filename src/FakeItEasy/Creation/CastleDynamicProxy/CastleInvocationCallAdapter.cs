@@ -46,7 +46,7 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
         /// </summary>
         public override object FakedObject => this.invocation.Proxy;
 
-        public override object ReturnValue
+        public override object? ReturnValue
         {
             get => this.invocation.ReturnValue;
             set => this.invocation.ReturnValue = value;
