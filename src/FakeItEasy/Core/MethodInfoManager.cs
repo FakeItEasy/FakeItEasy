@@ -11,7 +11,7 @@ namespace FakeItEasy.Core
     /// </summary>
     internal class MethodInfoManager
     {
-        private static readonly ConcurrentDictionary<TypeMethodInfoPair, MethodInfo> MethodCache = new ConcurrentDictionary<TypeMethodInfoPair, MethodInfo>();
+        private static readonly ConcurrentDictionary<TypeMethodInfoPair, MethodInfo?> MethodCache = new ConcurrentDictionary<TypeMethodInfoPair, MethodInfo?>();
 
         /// <summary>
         /// Gets a value indicating whether the two instances of <see cref="MethodInfo"/> would invoke the same method
@@ -34,7 +34,7 @@ namespace FakeItEasy.Core
             return methodInvokedByFirst is object && methodInvokedBySecond is object && methodInvokedByFirst.Equals(methodInvokedBySecond);
         }
 
-        public virtual MethodInfo GetMethodOnTypeThatWillBeInvokedByMethodInfo(Type type, MethodInfo method)
+        public virtual MethodInfo? GetMethodOnTypeThatWillBeInvokedByMethodInfo(Type type, MethodInfo method)
         {
             var key = new TypeMethodInfoPair(type, method);
 
@@ -59,29 +59,17 @@ namespace FakeItEasy.Core
             return method.GetBaseDefinition();
         }
 
-        private static MethodInfo FindMethodOnTypeThatWillBeInvokedByMethodInfo(Type type, FakeItEasy.Compatibility.MethodInfoWrapper methodWrapper)
+        private static MethodInfo? FindMethodOnTypeThatWillBeInvokedByMethodInfo(Type type, FakeItEasy.Compatibility.MethodInfoWrapper methodWrapper)
         {
-            var result =
+            return
                 (from typeMethod in type.GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
                  where HasSameBaseMethod(typeMethod, methodWrapper.Method)
-                 select MakeGeneric(typeMethod, methodWrapper.Method)).FirstOrDefault();
-
-            if (result is object)
-            {
-                return result;
-            }
-
-            result = GetMethodOnTypeThatImplementsInterfaceMethod(type, methodWrapper.Method);
-
-            if (result is object)
-            {
-                return result;
-            }
-
-            return GetMethodOnInterfaceTypeImplementedByMethod(type, methodWrapper);
+                 select MakeGeneric(typeMethod, methodWrapper.Method)).FirstOrDefault()
+                ?? GetMethodOnTypeThatImplementsInterfaceMethod(type, methodWrapper.Method)
+                ?? GetMethodOnInterfaceTypeImplementedByMethod(type, methodWrapper);
         }
 
-        private static MethodInfo GetMethodOnInterfaceTypeImplementedByMethod(Type type, FakeItEasy.Compatibility.MethodInfoWrapper methodWrapper)
+        private static MethodInfo? GetMethodOnInterfaceTypeImplementedByMethod(Type type, FakeItEasy.Compatibility.MethodInfoWrapper methodWrapper)
         {
             var reflectedType = methodWrapper.ReflectedType;
 
@@ -114,7 +102,7 @@ namespace FakeItEasy.Core
             return null;
         }
 
-        private static MethodInfo GetMethodOnTypeThatImplementsInterfaceMethod(Type type, MethodInfo method)
+        private static MethodInfo? GetMethodOnTypeThatImplementsInterfaceMethod(Type type, MethodInfo method)
         {
             var baseDefinition = method.GetBaseDefinition();
 
