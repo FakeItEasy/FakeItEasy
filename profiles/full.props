@@ -9,6 +9,6 @@
     <UnitTestsTargetFrameworks>net461;netcoreapp1.0;netcoreapp2.1;netcoreapp3.0</UnitTestsTargetFrameworks>
     <AnalyzerTestsTargetFrameworks>net461;netcoreapp2.1;netcoreapp3.0</AnalyzerTestsTargetFrameworks>
     <TestHelpersTargetFrameworks>net461;netstandard1.6;netstandard2.0;netstandard2.1</TestHelpersTargetFrameworks>
-    <ApprovalTestsTargetFrameworks>net461</ApprovalTestsTargetFrameworks>
+    <ApprovalTestsTargetFrameworks>netcoreapp3.0</ApprovalTestsTargetFrameworks>
   </PropertyGroup>
 </Project>
