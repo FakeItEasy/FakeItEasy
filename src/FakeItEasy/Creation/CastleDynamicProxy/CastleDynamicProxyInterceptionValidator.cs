@@ -69,15 +69,12 @@
 
         private MethodInfo GetInvokedMethod(MethodInfo method, object callTarget)
         {
-            var invokedMethod = method;
-
             if (callTarget is object)
             {
-                invokedMethod = this.methodInfoManager.GetMethodOnTypeThatWillBeInvokedByMethodInfo(
-                    callTarget.GetType(), method);
+                return this.methodInfoManager.GetMethodOnTypeThatWillBeInvokedByMethodInfo(callTarget.GetType(), method) !;
             }
 
-            return invokedMethod;
+            return method;
         }
     }
 }
