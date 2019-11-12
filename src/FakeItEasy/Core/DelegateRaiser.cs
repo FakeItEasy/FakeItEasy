@@ -18,7 +18,7 @@ namespace FakeItEasy.Core
         /// </summary>
         /// <param name="arguments">The arguments to be sent to the event handler.</param>
         /// <param name="argumentProviderMap">A map from event handlers to supplied arguments to use when raising.</param>
-        public DelegateRaiser(object[] arguments, EventHandlerArgumentProviderMap argumentProviderMap)
+        public DelegateRaiser(object?[] arguments, EventHandlerArgumentProviderMap argumentProviderMap)
         {
             var delegateMethod = typeof(TEventHandler).GetMethod("Invoke");
 
@@ -32,7 +32,7 @@ namespace FakeItEasy.Core
 
         private TEventHandler EventHandler { get; }
 
-        private object[] EventArguments { get; }
+        private object?[] EventArguments { get; }
 
         /// <summary>
         /// Converts the <c>DelegateRaiser</c> to a <c>TEventHandler</c>.
@@ -47,7 +47,7 @@ namespace FakeItEasy.Core
             return raiser.EventHandler;
         }
 
-        object[] IEventRaiserArgumentProvider.GetEventArguments(object fake)
+        object?[] IEventRaiserArgumentProvider.GetEventArguments(object fake)
         {
             return this.EventArguments;
         }
