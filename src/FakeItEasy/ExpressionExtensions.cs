@@ -18,9 +18,9 @@ namespace FakeItEasy
         /// </notes>
         /// <param name="expression">The expression to be evaluated.</param>
         /// <returns>The value returned from the delegate compiled from the expression.</returns>
-        public static object Evaluate(this Expression expression)
+        public static object? Evaluate(this Expression expression)
         {
-            if (TryFastEvaluate(expression, out object result))
+            if (TryFastEvaluate(expression, out object? result))
             {
                 return result;
             }
@@ -44,7 +44,7 @@ namespace FakeItEasy
         // - method calls
         // - array creation (including params arrays)
         // - quoted expressions
-        private static bool TryFastEvaluate(Expression expression, out object result)
+        private static bool TryFastEvaluate(Expression expression, out object? result)
         {
             result = null;
 
@@ -65,7 +65,7 @@ namespace FakeItEasy
                     var fieldInfo = memberExpression.Member as FieldInfo;
                     if (fieldInfo is object)
                     {
-                        if (TryFastEvaluate(memberExpression.Expression, out object memberResult))
+                        if (TryFastEvaluate(memberExpression.Expression, out object? memberResult))
                         {
                             result = fieldInfo.GetValue(memberResult);
                             return true;
@@ -78,7 +78,7 @@ namespace FakeItEasy
                     if (propertyInfo is object)
                     {
                         // index = null: this is always fine since it's a MemberAccess expression, not an IndexExpression
-                        if (TryFastEvaluate(memberExpression.Expression, out object memberResult))
+                        if (TryFastEvaluate(memberExpression.Expression, out object? memberResult))
                         {
                             result = propertyInfo.GetValue(memberResult, null);
                             return true;
@@ -92,12 +92,12 @@ namespace FakeItEasy
                 case ExpressionType.Call:
                     var callExpression = (MethodCallExpression)expression;
 
-                    if (!TryFastEvaluate(callExpression.Object, out object target))
+                    if (!TryFastEvaluate(callExpression.Object, out object? target))
                     {
                         return false;
                     }
 
-                    object[] argumentValues = new object[callExpression.Arguments.Count];
+                    var argumentValues = new object?[callExpression.Arguments.Count];
                     for (int i = 0; i < callExpression.Arguments.Count; i++)
                     {
                         if (!TryFastEvaluate(callExpression.Arguments[i], out argumentValues[i]))
@@ -128,7 +128,7 @@ namespace FakeItEasy
 
                     for (int i = 0; i < newArrayExpression.Expressions.Count; i++)
                     {
-                        if (!TryFastEvaluate(newArrayExpression.Expressions[i], out object item))
+                        if (!TryFastEvaluate(newArrayExpression.Expressions[i], out object? item))
                         {
                             return false;
                         }

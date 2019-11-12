@@ -68,9 +68,9 @@ namespace FakeItEasy.Expressions
             this.useExplicitArgumentsPredicate = true;
         }
 
-        public Func<IFakeObjectCall, ICollection<object>> GetOutAndRefParametersValueProducer()
+        public Func<IFakeObjectCall, ICollection<object?>> GetOutAndRefParametersValueProducer()
         {
-            IList<object> values = null;
+            IList<object?> values = null;
 
             foreach (var argumentConstraint in this.argumentConstraints)
             {
@@ -78,7 +78,7 @@ namespace FakeItEasy.Expressions
                 {
                     if (values is null)
                     {
-                        values = new List<object>();
+                        values = new List<object?>();
                     }
 
                     values.Add(valueProvidingConstraint.Value);
