@@ -2,6 +2,7 @@ namespace FakeItEasy.Creation
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 
     internal class ResolvedConstructor
@@ -18,7 +19,8 @@ namespace FakeItEasy.Creation
 
         public IEnumerable<ResolvedArgument> Arguments { get; }
 
-        public string ReasonForFailure { get; set; }
+        [DisallowNull]
+        public string? ReasonForFailure { get; set; }
 
         private static IEnumerable<ResolvedArgument> ResolveArguments(
             IEnumerable<Type> parameterTypes,
