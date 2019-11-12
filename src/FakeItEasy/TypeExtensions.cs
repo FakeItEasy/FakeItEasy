@@ -12,7 +12,7 @@ namespace FakeItEasy
     internal static class TypeExtensions
     {
         [DebuggerStepThrough]
-        public static object GetDefaultValue(this Type type)
+        public static object? GetDefaultValue(this Type type)
         {
             return type.GetTypeInfo().IsValueType && !type.Equals(typeof(void)) ? Activator.CreateInstance(type) : null;
         }
