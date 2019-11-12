@@ -31,7 +31,7 @@ namespace FakeItEasy.Configuration
             this.AssertThatMemberCanBeIntercepted(parsedCallExpression);
 
             var rule = this.ruleFactory.Invoke(parsedCallExpression);
-            var fake = Fake.GetFakeManager(parsedCallExpression.CallTarget);
+            var fake = Fake.GetFakeManager(parsedCallExpression.CallTarget!);
 
             return this.configurationFactory.CreateConfiguration(fake, rule);
         }
@@ -46,7 +46,7 @@ namespace FakeItEasy.Configuration
             this.AssertThatMemberCanBeIntercepted(parsedCallExpression);
 
             var rule = this.ruleFactory.Invoke(parsedCallExpression);
-            var fake = Fake.GetFakeManager(parsedCallExpression.CallTarget);
+            var fake = Fake.GetFakeManager(parsedCallExpression.CallTarget!);
 
             return this.configurationFactory.CreateConfiguration<T>(fake, rule);
         }
@@ -67,7 +67,7 @@ namespace FakeItEasy.Configuration
             GuardAgainstNonFake(parsedCallExpression.CallTarget);
             this.AssertThatMemberCanBeIntercepted(parsedCallExpression);
 
-            var fake = Fake.GetFakeManager(parsedCallExpression.CallTarget);
+            var fake = Fake.GetFakeManager(parsedCallExpression.CallTarget!);
             var parsedSetterCallExpression = PropertyExpressionHelper.BuildSetterFromGetter<TValue>(parsedCallExpression);
 
             return new PropertySetterConfiguration<TValue>(
@@ -76,7 +76,7 @@ namespace FakeItEasy.Configuration
                     this.CreateVoidArgumentValidationConfiguration(fake, newParsedSetterCallExpression));
         }
 
-        private static void GuardAgainstNonFake(object target)
+        private static void GuardAgainstNonFake(object? target)
         {
             if (target is object)
             {

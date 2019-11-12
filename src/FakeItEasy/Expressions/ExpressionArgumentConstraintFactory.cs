@@ -60,7 +60,7 @@ namespace FakeItEasy.Expressions
             return argument.ArgumentInformation.IsOut;
         }
 
-        private static IArgumentConstraint CreateEqualityConstraint(object expressionValue)
+        private static IArgumentConstraint CreateEqualityConstraint(object? expressionValue)
         {
             return new EqualityArgumentConstraint(expressionValue);
         }
@@ -155,11 +155,11 @@ namespace FakeItEasy.Expressions
             }
         }
 
-        private IArgumentConstraint GetArgumentConstraintFromExpression(Expression expression, Type parameterType, out object value)
+        private IArgumentConstraint GetArgumentConstraintFromExpression(Expression expression, Type parameterType, out object? value)
         {
             CheckArgumentExpressionIsValid(expression);
 
-            object expressionValue = null;
+            object? expressionValue = null;
 
             IArgumentConstraint constraint;
             try

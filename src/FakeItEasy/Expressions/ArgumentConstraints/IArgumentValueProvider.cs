@@ -6,6 +6,6 @@ namespace FakeItEasy.Expressions.ArgumentConstraints
     /// </summary>
     internal interface IArgumentValueProvider
     {
-        object Value { get; }
+        object? Value { get; }
     }
 }
