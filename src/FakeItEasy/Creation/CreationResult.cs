@@ -170,7 +170,7 @@ namespace FakeItEasy.Creation
                             .AppendIndented("    ", "Constructor with signature (")
                             .Append(constructor.Arguments.ToCollectionString(x => x.ArgumentType.ToString(), ", "))
                             .AppendLine(") failed:")
-                            .AppendIndented("      ", constructor.ReasonForFailure)
+                            .AppendIndented("      ", constructor.ReasonForFailure!)
                             .AppendLine();
                     }
                 }
