@@ -66,23 +66,22 @@ namespace FakeItEasy.Creation
         {
             Guard.AgainstNull(generatedProxy, nameof(generatedProxy));
 
-            this.ProxyWasSuccessfullyGenerated = true;
             this.GeneratedProxy = generatedProxy;
         }
 
         /// <summary>
         /// Gets a value indicating whether the proxy was successfully created.
         /// </summary>
-        public bool ProxyWasSuccessfullyGenerated { get; }
+        public bool ProxyWasSuccessfullyGenerated => this.GeneratedProxy is object;
 
         /// <summary>
         /// Gets the generated proxy when it was successfully created.
         /// </summary>
-        public object GeneratedProxy { get; }
+        public object? GeneratedProxy { get; }
 
         /// <summary>
         /// Gets the reason for failure when the generation was not successful.
         /// </summary>
-        public string ReasonForFailure { get; }
+        public string? ReasonForFailure { get; }
     }
 }
