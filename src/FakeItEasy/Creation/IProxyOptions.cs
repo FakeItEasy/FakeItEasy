@@ -15,6 +15,6 @@ namespace FakeItEasy.Creation
 
         IEnumerable<Expression<Func<Attribute>>> Attributes { get; }
 
-        string Name { get; }
+        string? Name { get; }
     }
 }

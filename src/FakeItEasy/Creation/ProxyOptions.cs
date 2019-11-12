@@ -3,6 +3,7 @@ namespace FakeItEasy.Creation
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Linq.Expressions;
 #if FEATURE_NETCORE_REFLECTION
@@ -25,7 +26,7 @@ namespace FakeItEasy.Creation
 
         public IEnumerable<Expression<Func<Attribute>>> Attributes => this.attributes;
 
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         public void AddInterfaceToImplement(Type interfaceType)
         {
@@ -59,7 +60,7 @@ namespace FakeItEasy.Creation
 
             public IEnumerable<Expression<Func<Attribute>>> Attributes { get; } = Enumerable.Empty<Expression<Func<Attribute>>>();
 
-            public string Name => null;
+            public string? Name => null;
         }
     }
 }

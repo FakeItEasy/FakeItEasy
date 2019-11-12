@@ -92,7 +92,7 @@ namespace FakeItEasy
             StringBuilderOutputWriter StringBuilderOutputWriterFactory() =>
                 new StringBuilderOutputWriter(argumentValueFormatter);
 
-            FakeManager FakeManagerFactory(Type fakeObjectType, object proxy, string name) =>
+            FakeManager FakeManagerFactory(Type fakeObjectType, object proxy, string? name) =>
                 new FakeManager(fakeObjectType, proxy, name);
 
             IFakeCallProcessorProvider FakeCallProcessorProviderFactory(Type typeOfFake, IProxyOptions proxyOptions) =>
