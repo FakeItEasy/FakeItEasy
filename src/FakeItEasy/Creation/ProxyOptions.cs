@@ -17,7 +17,7 @@ namespace FakeItEasy.Creation
 
         public static IProxyOptions Default { get; } = new DefaultProxyOptions();
 
-        public IEnumerable<object> ArgumentsForConstructor { get; set; }
+        public IEnumerable<object?>? ArgumentsForConstructor { get; set; }
 
         public ReadOnlyCollection<Type> AdditionalInterfacesToImplement => this.additionalInterfacesToImplement.AsReadOnly();
 
@@ -51,7 +51,7 @@ namespace FakeItEasy.Creation
 
         private class DefaultProxyOptions : IProxyOptions
         {
-            public IEnumerable<object> ArgumentsForConstructor { get; } = null;
+            public IEnumerable<object?>? ArgumentsForConstructor { get; } = null;
 
             public ReadOnlyCollection<Type> AdditionalInterfacesToImplement { get; } = new ReadOnlyCollection<Type>(new List<Type>());
 

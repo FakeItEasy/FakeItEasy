@@ -7,7 +7,7 @@ namespace FakeItEasy.Creation
 
     internal interface IProxyOptions
     {
-        IEnumerable<object> ArgumentsForConstructor { get; }
+        IEnumerable<object?>? ArgumentsForConstructor { get; }
 
         ReadOnlyCollection<Type> AdditionalInterfacesToImplement { get; }
 
