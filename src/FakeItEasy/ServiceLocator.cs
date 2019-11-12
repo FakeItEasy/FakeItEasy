@@ -18,20 +18,20 @@ namespace FakeItEasy
         [DebuggerStepThrough]
         internal static T Resolve<T>() where T : class
         {
-            var service = Service<T>.Instance;
+            var service = Service<T>.Instance!;
             return service is null
                 ? throw new KeyNotFoundException($"The specified service {typeof(T)} was not registered.")
                 : service;
         }
 
-        private static class Service<T>
+        private static class Service<T> where T : class
         {
-            public static T Instance { get; set; }
+            public static T? Instance { get; set; }
         }
 
         private class ServiceRegistrar : RootModule.IServiceRegistrar
         {
-            public void Register<T>(T service)
+            public void Register<T>(T service) where T : class
             {
                 Service<T>.Instance = service;
             }
