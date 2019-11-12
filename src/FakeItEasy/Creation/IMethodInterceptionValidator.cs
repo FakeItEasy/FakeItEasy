@@ -12,6 +12,6 @@ namespace FakeItEasy.Creation
         /// <param name="callTarget">The instance the method will be called on.</param>
         /// <param name="failReason">The reason the method can not be intercepted.</param>
         /// <returns>True if the member can be intercepted.</returns>
-        bool MethodCanBeInterceptedOnInstance(MethodInfo method, object callTarget, [NotNullWhen(false)]out string? failReason);
+        bool MethodCanBeInterceptedOnInstance(MethodInfo method, object? callTarget, [NotNullWhen(false)]out string? failReason);
     }
 }

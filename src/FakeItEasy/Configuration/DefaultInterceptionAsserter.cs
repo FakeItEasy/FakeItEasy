@@ -14,7 +14,7 @@ namespace FakeItEasy.Configuration
             this.methodInterceptionValidator = methodInterceptionValidator;
         }
 
-        public void AssertThatMethodCanBeInterceptedOnInstance(MethodInfo method, object callTarget)
+        public void AssertThatMethodCanBeInterceptedOnInstance(MethodInfo method, object? callTarget)
         {
             if (!this.methodInterceptionValidator.MethodCanBeInterceptedOnInstance(method, callTarget, out string? failReason))
             {

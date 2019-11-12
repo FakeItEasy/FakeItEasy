@@ -72,7 +72,7 @@ namespace FakeItEasy.Configuration
             this.interceptionAsserter.AssertThatMethodCanBeInterceptedOnInstance(parsedCall.CalledMethod, this.manager.Object);
         }
 
-        private void GuardAgainstWrongFake(object callTarget)
+        private void GuardAgainstWrongFake(object? callTarget)
         {
             if (callTarget != this.manager.Object)
             {

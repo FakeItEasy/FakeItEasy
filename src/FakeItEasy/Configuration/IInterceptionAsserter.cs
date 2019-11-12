@@ -4,6 +4,6 @@ namespace FakeItEasy.Configuration
 
     internal interface IInterceptionAsserter
     {
-        void AssertThatMethodCanBeInterceptedOnInstance(MethodInfo method, object callTarget);
+        void AssertThatMethodCanBeInterceptedOnInstance(MethodInfo method, object? callTarget);
     }
 }

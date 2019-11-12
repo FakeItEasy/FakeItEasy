@@ -12,7 +12,7 @@ namespace FakeItEasy.Expressions.ArgumentConstraints
         /// </summary>
         /// <param name="baseConstraint">The original constraint, which will be used for argument validation.</param>
         /// <param name="value">The value to be used when implicitly assigning values to a call's ref parameter.</param>
-        public RefArgumentConstraint(IArgumentConstraint baseConstraint, object value)
+        public RefArgumentConstraint(IArgumentConstraint baseConstraint, object? value)
         {
             Guard.AgainstNull(baseConstraint, nameof(baseConstraint));
 
@@ -24,7 +24,7 @@ namespace FakeItEasy.Expressions.ArgumentConstraints
         /// Gets the value that was used when specifying the constraint.
         /// Used for implicit assignment of ref parameter values.
         /// </summary>
-        public object Value { get; }
+        public object? Value { get; }
 
         public void WriteDescription(IOutputWriter writer)
         {

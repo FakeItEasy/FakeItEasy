@@ -7,12 +7,12 @@ namespace FakeItEasy.Expressions.ArgumentConstraints
     internal class EqualityArgumentConstraint
         : IArgumentConstraint
     {
-        public EqualityArgumentConstraint(object expectedValue)
+        public EqualityArgumentConstraint(object? expectedValue)
         {
             this.ExpectedValue = expectedValue;
         }
 
-        public object ExpectedValue { get; }
+        public object? ExpectedValue { get; }
 
         public string ConstraintDescription => this.ToString();
 
@@ -32,10 +32,11 @@ namespace FakeItEasy.Expressions.ArgumentConstraints
             }
             catch (Exception ex) when (!(ex is UserCallbackException))
             {
-                FakeManager manager = Fake.TryGetFakeManager(this.ExpectedValue);
+                // if ExpectedValue were null, WriteArgumentValue wouldn't have thrown
+                FakeManager manager = Fake.TryGetFakeManager(this.ExpectedValue!);
                 return manager is object
                     ? manager.FakeObjectDisplayName
-                    : this.ExpectedValue.GetType().ToString();
+                    : this.ExpectedValue!.GetType().ToString();
             }
         }
 

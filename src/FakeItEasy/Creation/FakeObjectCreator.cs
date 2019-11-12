@@ -66,7 +66,7 @@ namespace FakeItEasy.Creation
         }
 
         [SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "2#", Justification = "Seems appropriate here.")]
-        public bool MethodCanBeInterceptedOnInstance(MethodInfo method, object callTarget, [NotNullWhen(false)]out string? failReason) =>
+        public bool MethodCanBeInterceptedOnInstance(MethodInfo method, object? callTarget, [NotNullWhen(false)]out string? failReason) =>
             callTarget is object && DelegateCreationStrategy.IsResponsibleForCreating(callTarget.GetType())
                 ? this.delegateCreationStrategy.MethodCanBeInterceptedOnInstance(method, callTarget, out failReason)
                 : this.defaultCreationStrategy.MethodCanBeInterceptedOnInstance(method, callTarget, out failReason);
@@ -175,7 +175,7 @@ namespace FakeItEasy.Creation
                     resolutionContext);
             }
 
-            public bool MethodCanBeInterceptedOnInstance(MethodInfo method, object callTarget, [NotNullWhen(false)]out string? failReason) =>
+            public bool MethodCanBeInterceptedOnInstance(MethodInfo method, object? callTarget, [NotNullWhen(false)]out string? failReason) =>
                 this.methodInterceptionValidator.MethodCanBeInterceptedOnInstance(method, callTarget, out failReason);
 
             private static IEnumerable<Type[]> GetUsableParameterTypeListsInOrder(Type type)

@@ -15,7 +15,7 @@
             this.methodInfoManager = methodInfoManager;
         }
 
-        public bool MethodCanBeInterceptedOnInstance(MethodInfo method, object callTarget, [NotNullWhen(false)]out string? failReason)
+        public bool MethodCanBeInterceptedOnInstance(MethodInfo method, object? callTarget, [NotNullWhen(false)]out string? failReason)
         {
             var invokedMethod = this.GetInvokedMethod(method, callTarget);
 
@@ -68,7 +68,7 @@
             return null;
         }
 
-        private MethodInfo GetInvokedMethod(MethodInfo method, object callTarget)
+        private MethodInfo GetInvokedMethod(MethodInfo method, object? callTarget)
         {
             if (callTarget is object)
             {
