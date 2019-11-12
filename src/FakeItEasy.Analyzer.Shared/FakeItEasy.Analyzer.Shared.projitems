@@ -32,6 +32,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)UnusedReturnValueAnalyzer.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)..\FakeItEasy\Compatibility\NotNullWhenAttribute.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="$(MSBuildThisFileDirectory)tools\install.ps1" Pack="true" PackagePath="tools/%(Filename)%(Extension)" />
     <Content Include="$(MSBuildThisFileDirectory)tools\uninstall.ps1" Pack="true" PackagePath="tools/%(Filename)%(Extension)" />
   </ItemGroup>

@@ -2,6 +2,7 @@ namespace FakeItEasy.Analyzer
 {
     using System.Collections.Generic;
     using System.Collections.Immutable;
+    using System.Diagnostics.CodeAnalysis;
     using Microsoft.CodeAnalysis;
 #if CSHARP
     using Microsoft.CodeAnalysis.CSharp;
@@ -55,7 +56,7 @@ namespace FakeItEasy.Analyzer
                 return;
             }
 
-            if (!TryGetNameAndParameters(context, argumentList.Parent, out string methodOrIndexerName, out var parameters))
+            if (!TryGetNameAndParameters(context, argumentList.Parent, out var methodOrIndexerName, out var parameters))
             {
                 return;
             }
@@ -124,8 +125,10 @@ namespace FakeItEasy.Analyzer
         private static bool TryGetNameAndParameters(
             SyntaxNodeAnalysisContext context,
             SyntaxNode node,
-            out string methodOrIndexerName,
-            out IReadOnlyList<IParameterSymbol> parameters)
+            [NotNullWhen(true)]
+            out string? methodOrIndexerName,
+            [NotNullWhen(true)]
+            out IReadOnlyList<IParameterSymbol>? parameters)
         {
             methodOrIndexerName = null;
             parameters = null;
