@@ -65,7 +65,7 @@ namespace FakeItEasy.Core
         /// <param name="proxy">The faked proxy object.</param>
         /// <param name="fakeObjectName">The name of the fake object.</param>
         /// <returns>An instance of <see cref="FakeManager"/>.</returns>
-        internal delegate FakeManager Factory(Type fakeObjectType, object proxy, string fakeObjectName);
+        internal delegate FakeManager Factory(Type fakeObjectType, object proxy, string? fakeObjectName);
 
         /// <summary>
         /// Gets the faked proxy object.
