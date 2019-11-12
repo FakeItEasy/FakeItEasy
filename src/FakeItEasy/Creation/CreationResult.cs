@@ -60,15 +60,15 @@ namespace FakeItEasy.Creation
         private class FailedCreationResult : CreationResult
         {
             private readonly Type type;
-            private readonly IList<string> reasonsForFailure;
-            private readonly IList<ResolvedConstructor> consideredConstructors;
+            private readonly IList<string>? reasonsForFailure;
+            private readonly IList<ResolvedConstructor>? consideredConstructors;
             private CreationMode creationMode;
 
             public FailedCreationResult(
                 Type type,
                 CreationMode creationMode,
-                IList<string> reasonsForFailure = null,
-                IList<ResolvedConstructor> consideredConstructors = null)
+                IList<string>? reasonsForFailure = null,
+                IList<ResolvedConstructor>? consideredConstructors = null)
             {
                 this.type = type;
                 this.creationMode = creationMode;
@@ -98,9 +98,9 @@ namespace FakeItEasy.Creation
                     MergeConsideredConstructors(this.consideredConstructors, failedOther.consideredConstructors));
             }
 
-            private static IList<string> MergeReasonsForFailure(
-                IList<string> reasonsFromResult1,
-                IList<string> reasonsFromResult2)
+            private static IList<string>? MergeReasonsForFailure(
+                IList<string>? reasonsFromResult1,
+                IList<string>? reasonsFromResult2)
             {
                 if (reasonsFromResult1 is null)
                 {
@@ -117,9 +117,9 @@ namespace FakeItEasy.Creation
                 return mergedList;
             }
 
-            private static IList<ResolvedConstructor> MergeConsideredConstructors(
-                IList<ResolvedConstructor> constructorsFromResult1,
-                IList<ResolvedConstructor> constructorsFromResult2)
+            private static IList<ResolvedConstructor>? MergeConsideredConstructors(
+                IList<ResolvedConstructor>? constructorsFromResult1,
+                IList<ResolvedConstructor>? constructorsFromResult2)
             {
                 if (constructorsFromResult1 is null)
                 {
