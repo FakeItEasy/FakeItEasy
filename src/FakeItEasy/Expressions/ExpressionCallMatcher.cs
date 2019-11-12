@@ -70,7 +70,7 @@ namespace FakeItEasy.Expressions
 
         public Func<IFakeObjectCall, ICollection<object?>> GetOutAndRefParametersValueProducer()
         {
-            IList<object?> values = null;
+            IList<object?>? values = null;
 
             foreach (var argumentConstraint in this.argumentConstraints)
             {
@@ -85,7 +85,7 @@ namespace FakeItEasy.Expressions
                 }
             }
 
-            return values is null ? BuildableCallRule.DefaultOutAndRefParametersValueProducer : call => values;
+            return values is null ? BuildableCallRule.DefaultOutAndRefParametersValueProducer : call => values!;
         }
 
         private bool InvokesSameMethodOnTarget(Type type, MethodInfo first, MethodInfo second)
