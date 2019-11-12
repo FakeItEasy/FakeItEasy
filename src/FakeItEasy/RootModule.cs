@@ -19,7 +19,7 @@ namespace FakeItEasy
     {
         public interface IServiceRegistrar
         {
-            void Register<T>(T service);
+            void Register<T>(T service) where T : class;
         }
 
         public static void RegisterDependencies(IServiceRegistrar registrar)
