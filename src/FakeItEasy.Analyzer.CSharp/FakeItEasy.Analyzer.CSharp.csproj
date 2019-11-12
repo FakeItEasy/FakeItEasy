@@ -6,7 +6,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <FileAlignment>512</FileAlignment>
     <SignAssembly>true</SignAssembly>
-    <DefineConstants>$(DefineConstants);CSHARP</DefineConstants>
+    <DefineConstants>$(DefineConstants);CSHARP;LACKS_NULLABLE_ATTRIBUTES</DefineConstants>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>
 
