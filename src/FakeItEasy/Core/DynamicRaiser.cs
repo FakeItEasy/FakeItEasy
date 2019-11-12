@@ -9,16 +9,16 @@ namespace FakeItEasy.Core
 
     internal class DynamicRaiser : DynamicObject, IEventRaiserArgumentProvider
     {
-        private readonly object[] arguments;
+        private readonly object?[] arguments;
         private readonly EventHandlerArgumentProviderMap argumentProviderMap;
 
-        public DynamicRaiser(object[] arguments, EventHandlerArgumentProviderMap argumentProviderMap)
+        public DynamicRaiser(object?[] arguments, EventHandlerArgumentProviderMap argumentProviderMap)
         {
             this.arguments = arguments;
             this.argumentProviderMap = argumentProviderMap;
         }
 
-        object[] IEventRaiserArgumentProvider.GetEventArguments(object fake)
+        object?[] IEventRaiserArgumentProvider.GetEventArguments(object fake)
         {
             return this.arguments;
         }
