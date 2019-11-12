@@ -171,9 +171,9 @@ namespace FakeItEasy.Analyzer
             return symbolInfo.Symbol?.ContainingType?.TypeKind == TypeKind.Interface;
         }
 
-        private static InvocationExpressionSyntax FindInvocationInHierarchy(SyntaxNode node)
+        private static InvocationExpressionSyntax? FindInvocationInHierarchy(SyntaxNode node)
         {
-            SyntaxNode parent = null;
+            SyntaxNode? parent = null;
             foreach (var ancestor in ExpectedNodeHierarchy)
             {
                 parent = node.Parent;

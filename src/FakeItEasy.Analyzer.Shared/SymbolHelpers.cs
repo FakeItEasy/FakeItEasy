@@ -21,7 +21,7 @@ namespace FakeItEasy.Analyzer
         /// <param name="context">Current context.</param>
         /// <param name="useFirstCandidateIfNotResolved">Use the first candidate if symbol is not resolved.</param>
         /// <returns>The symbol for the invocation call.</returns>
-        internal static IMethodSymbol GetCalledMethodSymbol(InvocationExpressionSyntax call, SyntaxNodeAnalysisContext context, bool useFirstCandidateIfNotResolved = false)
+        internal static IMethodSymbol? GetCalledMethodSymbol(InvocationExpressionSyntax call, SyntaxNodeAnalysisContext context, bool useFirstCandidateIfNotResolved = false)
         {
             var symbolInfo = context.SemanticModel.GetSymbolInfo(call);
             var symbol = symbolInfo.Symbol;
@@ -45,7 +45,7 @@ namespace FakeItEasy.Analyzer
         /// <param name="elementAccess">The element access expression that the symbol is required.</param>
         /// <param name="context">Current context.</param>
         /// <returns>The symbol for the invocation call.</returns>
-        internal static IPropertySymbol GetAccessedIndexerSymbol(ElementAccessExpressionSyntax elementAccess, SyntaxNodeAnalysisContext context)
+        internal static IPropertySymbol? GetAccessedIndexerSymbol(ElementAccessExpressionSyntax elementAccess, SyntaxNodeAnalysisContext context)
         {
             return context.SemanticModel.GetSymbolInfo(elementAccess).Symbol as IPropertySymbol;
         }
@@ -56,7 +56,7 @@ namespace FakeItEasy.Analyzer
         /// <param name="invocation">The invocation expression that the symbol is required.</param>
         /// <param name="context">Current context.</param>
         /// <returns>The symbol for the invocation call.</returns>
-        internal static IPropertySymbol GetAccessedIndexerSymbol(InvocationExpressionSyntax invocation, SyntaxNodeAnalysisContext context)
+        internal static IPropertySymbol? GetAccessedIndexerSymbol(InvocationExpressionSyntax invocation, SyntaxNodeAnalysisContext context)
         {
             return context.SemanticModel.GetSymbolInfo(invocation).Symbol as IPropertySymbol;
         }
@@ -68,7 +68,7 @@ namespace FakeItEasy.Analyzer
         /// <param name="access">The member access expression from which to get the property symbol.</param>
         /// <param name="context">The current analysis context.</param>
         /// <returns>The symbol for the accessed property.</returns>
-        internal static IPropertySymbol GetAccessedPropertySymbol(MemberAccessExpressionSyntax access, SyntaxNodeAnalysisContext context)
+        internal static IPropertySymbol? GetAccessedPropertySymbol(MemberAccessExpressionSyntax access, SyntaxNodeAnalysisContext context)
         {
             return context.SemanticModel.GetSymbolInfo(access).Symbol as IPropertySymbol;
         }
