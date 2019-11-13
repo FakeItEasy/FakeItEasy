@@ -28,14 +28,13 @@ namespace FakeItEasy.PrepareRelease
             var existingReleaseName = args[2];
 
             var gitHubClient = GetAuthenticatedGitHubClient();
+            var existingMilestone = await gitHubClient.GetExistingMilestone(existingReleaseName);
+            var issuesInExistingMilestone = await gitHubClient.GetIssuesInMilestone(existingMilestone);
+            var existingReleaseIssue = GetExistingReleaseIssue(issuesInExistingMilestone, existingReleaseName);
 
             if (action == "next")
             {
                 var nextReleaseName = existingReleaseName;
-                var existingMilestone = await gitHubClient.GetExistingMilestone(existingReleaseName);
-
-                var issuesInExistingMilestone = await gitHubClient.GetIssuesInMilestone(existingMilestone);
-                var existingReleaseIssue = GetExistingReleaseIssue(issuesInExistingMilestone, existingReleaseName);
 
                 var allReleases = await gitHubClient.GetAllReleases();
                 var existingRelease = allReleases.Single(release => release.Name == existingReleaseName && release.Draft);
@@ -69,7 +68,11 @@ namespace FakeItEasy.PrepareRelease
             }
             else
             {
-                Console.WriteLine($"Action {action} is not yet implemented.");
+                var nextReleaseName = version;
+
+                var nextMilestone = await gitHubClient.CreateNextMilestone(nextReleaseName);
+                await gitHubClient.CreateNextRelease(nextReleaseName);
+                await gitHubClient.CreateNextIssue(existingReleaseIssue, nextMilestone, nextReleaseName);
             }
         }
 
