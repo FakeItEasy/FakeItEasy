@@ -168,6 +168,7 @@ namespace FakeItEasy.Core
             }
             finally
             {
+                callToRecord.ReturnValue = fakeObjectCall.ReturnValue;
                 for (var listenerNode = this.interceptionListeners.Last; listenerNode is object; listenerNode = listenerNode.Previous)
                 {
                     listenerNode.Value.OnAfterCallIntercepted(callToRecord);
