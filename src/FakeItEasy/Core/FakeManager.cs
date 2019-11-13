@@ -159,8 +159,8 @@ namespace FakeItEasy.Core
                 listenerNode.Value.OnBeforeCallIntercepted(fakeObjectCall);
             }
 
-            var readonlyCall = fakeObjectCall.AsReadOnly();
-            this.RecordCall(readonlyCall);
+            var callToRecord = fakeObjectCall.ToCompletedCall();
+            this.RecordCall(callToRecord);
 
             try
             {
@@ -170,7 +170,7 @@ namespace FakeItEasy.Core
             {
                 for (var listenerNode = this.interceptionListeners.Last; listenerNode is object; listenerNode = listenerNode.Previous)
                 {
-                    listenerNode.Value.OnAfterCallIntercepted(readonlyCall);
+                    listenerNode.Value.OnAfterCallIntercepted(callToRecord);
                 }
             }
         }

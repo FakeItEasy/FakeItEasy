@@ -46,16 +46,21 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
         /// </summary>
         public override object FakedObject => this.invocation.Proxy;
 
+        public override object ReturnValue
+        {
+            get => this.invocation.ReturnValue;
+            set => this.invocation.ReturnValue = value;
+        }
+
         /// <summary>
-        /// Freezes the call so that it can no longer be modified.
+        /// Returns a completed call suitable for being recorded.
         /// </summary>
         /// <returns>A completed fake object call.</returns>
-        public override CompletedFakeObjectCall AsReadOnly()
+        public override CompletedFakeObjectCall ToCompletedCall()
         {
             return new CompletedFakeObjectCall(
                 this,
-                this.originalArguments,
-                this.invocation.ReturnValue);
+                this.originalArguments);
         }
 
         /// <summary>
@@ -74,16 +79,6 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
         public override void SetArgumentValue(int index, object value)
         {
             this.invocation.SetArgumentValue(index, value);
-        }
-
-        /// <summary>
-        /// Sets the return value of the call.
-        /// </summary>
-        /// <param name="returnValue">The return value.</param>
-        [DebuggerStepThrough]
-        public override void SetReturnValue(object returnValue)
-        {
-            this.invocation.ReturnValue = returnValue;
         }
 
         /// <summary>
