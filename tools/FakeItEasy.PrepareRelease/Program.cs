@@ -3,6 +3,7 @@ namespace FakeItEasy.PrepareRelease
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text.RegularExpressions;
     using System.Threading.Tasks;
     using FakeItEasy.Tools;
     using Octokit;
@@ -244,10 +245,11 @@ namespace FakeItEasy.PrepareRelease
 
         private static async Task CreateNextIssue(this IGitHubClient gitHubClient, Issue existingIssue, Milestone nextMilestone, string nextReleaseName)
         {
+            var existingReleaseName = existingIssue.Title.Replace("Release ", string.Empty);
             var newIssue = new NewIssue($"Release {nextReleaseName}")
             {
                 Milestone = nextMilestone.Number,
-                Body = existingIssue.Body.Replace("[x]", "[ ]"),
+                Body = Regex.Replace(existingIssue.Body, $@"\b{existingReleaseName}\b", nextReleaseName).Replace("[x]", "[ ]"),
                 Labels = { "build", "documentation" }
             };
 
