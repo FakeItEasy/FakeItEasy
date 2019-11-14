@@ -204,18 +204,13 @@ namespace FakeItEasy.Creation.DelegateProxies
                 this.Method = method;
             }
 
-            public object ReturnValue { get; private set; }
+            public override object ReturnValue { get; set; }
 
             public override MethodInfo Method { get; }
 
             public override ArgumentCollection Arguments { get; }
 
             public override object FakedObject { get; }
-
-            public override void SetReturnValue(object value)
-            {
-                this.ReturnValue = value;
-            }
 
             public override void CallBaseMethod()
             {
@@ -227,12 +222,11 @@ namespace FakeItEasy.Creation.DelegateProxies
                 this.Arguments.GetUnderlyingArgumentsArray()[index] = value;
             }
 
-            public override CompletedFakeObjectCall AsReadOnly()
+            public override CompletedFakeObjectCall ToCompletedCall()
             {
                 return new CompletedFakeObjectCall(
                     this,
-                    this.originalArguments,
-                    this.ReturnValue);
+                    this.originalArguments);
             }
         }
     }

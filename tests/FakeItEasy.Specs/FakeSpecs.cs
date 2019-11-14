@@ -1,5 +1,6 @@
 namespace FakeItEasy.Specs
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using FakeItEasy.Core;
@@ -15,6 +16,8 @@ namespace FakeItEasy.Specs
             void AnotherMethod();
 
             void AnotherMethod(string text);
+
+            object AMethodReturningAnObject();
         }
 
         [Scenario]
@@ -134,6 +137,44 @@ namespace FakeItEasy.Specs
 
             "Then previously-configured behavior is not executed"
                 .x(() => configuredBehaviorWasUsed.Should().BeFalse());
+        }
+
+        [Scenario]
+        public static void RecordedCallHasReturnValue(
+            IFoo fake,
+            object returnValue,
+            ICompletedFakeObjectCall recordedCall)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IFoo>());
+
+            "When I call a method on the fake"
+                .x(() => returnValue = fake.AMethodReturningAnObject());
+
+            "And I retrieve the call from the recorded calls"
+                .x(() => recordedCall = Fake.GetCalls(fake).Single());
+
+            "Then the recorded call's return value should be the value that was actually returned"
+                .x(() => recordedCall.ReturnValue.Should().Be(returnValue));
+        }
+
+        [Scenario]
+        public static void RecordedDelegateCallHasReturnValue(
+            Func<object> fake,
+            object returnValue,
+            ICompletedFakeObjectCall recordedCall)
+        {
+            "Given a fake delegate"
+                .x(() => fake = A.Fake<Func<object>>());
+
+            "When I invoke the fake delegate"
+                .x(() => returnValue = fake());
+
+            "And I retrieve the call from the recorded calls"
+                .x(() => recordedCall = Fake.GetCalls(fake).Single());
+
+            "Then the recorded call's return value should be the value that was actually returned"
+                .x(() => recordedCall.ReturnValue.Should().Be(returnValue));
         }
     }
 }
