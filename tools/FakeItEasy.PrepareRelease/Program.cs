@@ -12,53 +12,68 @@ namespace FakeItEasy.PrepareRelease
     {
         private const string RepoOwner = "FakeItEasy";
         private const string RepoName = "FakeItEasy";
-        private const string ExistingReleaseName = "vNext";
-        private const string NextReleaseName = ExistingReleaseName;
 
         public static async Task Main(string[] args)
         {
-            var version = args.FirstOrDefault();
-            if (version is null)
+            if (args.Length != 3 || (args[0] != "next" && args[0] != "fork"))
             {
-                throw new Exception("No version supplied");
-            }
-
-            var gitHubClient = GetAuthenticatedGitHubClient();
-
-            var existingMilestone = await gitHubClient.GetExistingMilestone();
-
-            var issuesInExistingMilestone = await gitHubClient.GetIssuesInMilestone(existingMilestone);
-            var existingReleaseIssue = GetExistingReleaseIssue(issuesInExistingMilestone);
-
-            var allReleases = await gitHubClient.GetAllReleases();
-            var existingRelease = allReleases.Single(release => release.Name == ExistingReleaseName && release.Draft);
-
-            var releasesForExistingMilestone = GetReleasesForExistingMilestone(allReleases, existingRelease, version);
-
-            var nonReleaseIssuesInMilestone = ExcludeReleaseIssues(issuesInExistingMilestone, releasesForExistingMilestone);
-
-            var issueNumbersReferencedFromReleases = GetIssueNumbersReferencedFromReleases(releasesForExistingMilestone);
-
-            if (!CrossReferenceIssues(nonReleaseIssuesInMilestone, issueNumbersReferencedFromReleases))
-            {
+                Console.WriteLine("Illegal arguments. Must be one of the following:");
+                Console.WriteLine("  next <new release> <existing release>");
+                Console.WriteLine("  fork <new release> <existing release>");
                 return;
             }
 
-            Milestone nextMilestone;
-            if (IsPreRelease(version))
+            var action = args[0];
+            var version = args[1];
+            var existingReleaseName = args[2];
+
+            var gitHubClient = GetAuthenticatedGitHubClient();
+            var existingMilestone = await gitHubClient.GetExistingMilestone(existingReleaseName);
+            var issuesInExistingMilestone = await gitHubClient.GetIssuesInMilestone(existingMilestone);
+            var existingReleaseIssue = GetExistingReleaseIssue(issuesInExistingMilestone, existingReleaseName);
+
+            if (action == "next")
             {
-                nextMilestone = existingMilestone;
+                var nextReleaseName = existingReleaseName;
+
+                var allReleases = await gitHubClient.GetAllReleases();
+                var existingRelease = allReleases.Single(release => release.Name == existingReleaseName && release.Draft);
+
+                var releasesForExistingMilestone = GetReleasesForExistingMilestone(allReleases, existingRelease, version);
+
+                var nonReleaseIssuesInMilestone = ExcludeReleaseIssues(issuesInExistingMilestone, releasesForExistingMilestone);
+
+                var issueNumbersReferencedFromReleases = GetIssueNumbersReferencedFromReleases(releasesForExistingMilestone);
+
+                if (!CrossReferenceIssues(nonReleaseIssuesInMilestone, issueNumbersReferencedFromReleases))
+                {
+                    return;
+                }
+
+                Milestone nextMilestone;
+                if (IsPreRelease(version))
+                {
+                    nextMilestone = existingMilestone;
+                }
+                else
+                {
+                    await gitHubClient.RenameMilestone(existingMilestone, version);
+                    nextMilestone = await gitHubClient.CreateNextMilestone(nextReleaseName);
+                }
+
+                await gitHubClient.UpdateRelease(existingRelease, version);
+                await gitHubClient.CreateNextRelease(nextReleaseName);
+                await gitHubClient.UpdateIssue(existingReleaseIssue, existingMilestone, version);
+                await gitHubClient.CreateNextIssue(existingReleaseIssue, nextMilestone, nextReleaseName);
             }
             else
             {
-                await gitHubClient.RenameMilestone(existingMilestone, version);
-                nextMilestone = await gitHubClient.CreateNextMilestone();
-            }
+                var nextReleaseName = version;
 
-            await gitHubClient.UpdateRelease(existingRelease, version);
-            await gitHubClient.CreateNextRelease();
-            await gitHubClient.UpdateIssue(existingReleaseIssue, existingMilestone, version);
-            await gitHubClient.CreateNextIssue(existingReleaseIssue, nextMilestone);
+                var nextMilestone = await gitHubClient.CreateNextMilestone(nextReleaseName);
+                await gitHubClient.CreateNextRelease(nextReleaseName);
+                await gitHubClient.CreateNextIssue(existingReleaseIssue, nextMilestone, nextReleaseName);
+            }
         }
 
         private static List<Release> GetReleasesForExistingMilestone(IReadOnlyCollection<Release> allReleases, Release existingRelease, string version)
@@ -76,12 +91,12 @@ namespace FakeItEasy.PrepareRelease
             return new GitHubClient(new ProductHeaderValue("FakeItEasy-build-scripts")) { Credentials = credentials };
         }
 
-        private static async Task<Milestone> GetExistingMilestone(this IGitHubClient gitHubClient)
+        private static async Task<Milestone> GetExistingMilestone(this IGitHubClient gitHubClient, string existingMilestoneTitle)
         {
-            Console.WriteLine($"Fetching milestone '{ExistingReleaseName}'...");
+            Console.WriteLine($"Fetching milestone '{existingMilestoneTitle}'...");
             var milestoneRequest = new MilestoneRequest { State = ItemStateFilter.Open };
             var existingMilestone = (await gitHubClient.Issue.Milestone.GetAllForRepository(RepoOwner, RepoName, milestoneRequest))
-                .Single(milestone => milestone.Title == ExistingReleaseName);
+                .Single(milestone => milestone.Title == existingMilestoneTitle);
             Console.WriteLine($"Fetched milestone '{existingMilestone.Title}'");
             return existingMilestone;
         }
@@ -103,9 +118,9 @@ namespace FakeItEasy.PrepareRelease
             return issues;
         }
 
-        private static Issue GetExistingReleaseIssue(IList<Issue> issues)
+        private static Issue GetExistingReleaseIssue(IList<Issue> issues, string existingReleaseName)
         {
-            var issue = issues.Single(i => i.Title == $"Release {ExistingReleaseName}");
+            var issue = issues.Single(i => i.Title == $"Release {existingReleaseName}");
             Console.WriteLine($"Found release issue #{issue.Number}: '{issue.Title}'");
             return issue;
         }
@@ -180,9 +195,9 @@ namespace FakeItEasy.PrepareRelease
             Console.WriteLine($"Renamed milestone '{existingMilestone.Title}' to '{updatedMilestone.Title}'");
         }
 
-        private static async Task<Milestone> CreateNextMilestone(this IGitHubClient gitHubClient)
+        private static async Task<Milestone> CreateNextMilestone(this IGitHubClient gitHubClient, string nextReleaseName)
         {
-            var newMilestone = new NewMilestone(NextReleaseName);
+            var newMilestone = new NewMilestone(nextReleaseName);
             Console.WriteLine($"Creating new milestone '{newMilestone.Title}'...");
             var nextMilestone = await gitHubClient.Issue.Milestone.Create(RepoOwner, RepoName, newMilestone);
             Console.WriteLine($"Created new milestone '{nextMilestone.Title}'");
@@ -197,7 +212,7 @@ namespace FakeItEasy.PrepareRelease
             Console.WriteLine($"Renamed GitHub release '{existingRelease.Name}' to {updatedRelease.Name}");
         }
 
-        private static async Task CreateNextRelease(this IGitHubClient gitHubClient)
+        private static async Task CreateNextRelease(this IGitHubClient gitHubClient, string nextReleaseName)
         {
             const string newReleaseBody = @"
 ### Changed
@@ -213,7 +228,7 @@ namespace FakeItEasy.PrepareRelease
 * Real Name - @githubhandle
 ";
 
-            var newRelease = new NewRelease(NextReleaseName) { Draft = true, Name = NextReleaseName, Body = newReleaseBody.Trim() };
+            var newRelease = new NewRelease(nextReleaseName) { Draft = true, Name = nextReleaseName, Body = newReleaseBody.Trim() };
             Console.WriteLine($"Creating new GitHub release '{newRelease.Name}'...");
             var nextRelease = await gitHubClient.Repository.Release.Create(RepoOwner, RepoName, newRelease);
             Console.WriteLine($"Created new GitHub release '{nextRelease.Name}'");
@@ -227,9 +242,9 @@ namespace FakeItEasy.PrepareRelease
             Console.WriteLine($"Renamed release issue '{existingIssue.Title}' to '{updatedIssue.Title}'");
         }
 
-        private static async Task CreateNextIssue(this IGitHubClient gitHubClient, Issue existingIssue, Milestone nextMilestone)
+        private static async Task CreateNextIssue(this IGitHubClient gitHubClient, Issue existingIssue, Milestone nextMilestone, string nextReleaseName)
         {
-            var newIssue = new NewIssue($"Release {NextReleaseName}")
+            var newIssue = new NewIssue($"Release {nextReleaseName}")
             {
                 Milestone = nextMilestone.Number,
                 Body = existingIssue.Body.Replace("[x]", "[ ]"),
