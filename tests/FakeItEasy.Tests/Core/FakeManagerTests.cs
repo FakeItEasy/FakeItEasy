@@ -379,7 +379,7 @@ namespace FakeItEasy.Tests.Core
             // Arrange
             var completedCall = A.Dummy<CompletedFakeObjectCall>();
             var interceptedCall = A.Fake<InterceptedFakeObjectCall>();
-            A.CallTo(() => interceptedCall.AsReadOnly()).Returns(completedCall);
+            A.CallTo(() => interceptedCall.ToCompletedCall()).Returns(completedCall);
 
             var listener = A.Fake<IInterceptionListener>();
             var manager = new FakeManager(typeof(int), 0, null);
@@ -399,7 +399,7 @@ namespace FakeItEasy.Tests.Core
             // Arrange
             var completedCall = A.Dummy<CompletedFakeObjectCall>();
             var interceptedCall = A.Fake<InterceptedFakeObjectCall>();
-            A.CallTo(() => interceptedCall.AsReadOnly()).Returns(completedCall);
+            A.CallTo(() => interceptedCall.ToCompletedCall()).Returns(completedCall);
 
             var listener = A.Fake<IInterceptionListener>();
             var manager = new FakeManager(typeof(int), 0, null);

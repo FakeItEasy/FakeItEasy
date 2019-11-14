@@ -8,7 +8,7 @@ namespace FakeItEasy.Core
     public interface ICompletedFakeObjectCall : IFakeObjectCall
     {
         /// <summary>
-        /// Gets the value set to be returned from the call.
+        /// Gets the value that was returned from the call.
         /// </summary>
         object ReturnValue { get; }
 
