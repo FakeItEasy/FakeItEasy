@@ -5,17 +5,16 @@ namespace FakeItEasy.Core
 
     internal class CompletedFakeObjectCall : ICompletedFakeObjectCall
     {
-        public CompletedFakeObjectCall(IInterceptedFakeObjectCall interceptedCall, object[] arguments, object returnValue)
+        public CompletedFakeObjectCall(IInterceptedFakeObjectCall interceptedCall, object[] arguments)
         {
             this.FakedObject = interceptedCall.FakedObject;
             this.Method = interceptedCall.Method;
             this.Arguments = new ArgumentCollection(arguments, this.Method);
             this.ArgumentsAfterCall = interceptedCall.Arguments;
-            this.ReturnValue = returnValue;
             this.SequenceNumber = SequenceNumberManager.GetNextSequenceNumber();
         }
 
-        public object ReturnValue { get; }
+        public object ReturnValue { get; set; }
 
         public MethodInfo Method { get; }
 

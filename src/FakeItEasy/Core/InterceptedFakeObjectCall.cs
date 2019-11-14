@@ -21,10 +21,15 @@ namespace FakeItEasy.Core
         public abstract MethodInfo Method { get; }
 
         /// <summary>
-        /// Freezes the call so that it can no longer be modified.
+        /// Gets or sets the return value of the call.
+        /// </summary>
+        public abstract object ReturnValue { get; set; }
+
+        /// <summary>
+        /// Returns a completed call suitable for being recorded.
         /// </summary>
         /// <returns>A completed fake object call.</returns>
-        public abstract CompletedFakeObjectCall AsReadOnly();
+        public abstract CompletedFakeObjectCall ToCompletedCall();
 
         /// <summary>
         /// Calls the base method, should not be used with interface types.
@@ -38,10 +43,6 @@ namespace FakeItEasy.Core
         /// <param name="value">The value to set to the argument.</param>
         public abstract void SetArgumentValue(int index, object value);
 
-        /// <summary>
-        /// Sets the return value of the call.
-        /// </summary>
-        /// <param name="returnValue">The return value.</param>
-        public abstract void SetReturnValue(object returnValue);
+        void IInterceptedFakeObjectCall.SetReturnValue(object returnValue) => this.ReturnValue = returnValue;
     }
 }
