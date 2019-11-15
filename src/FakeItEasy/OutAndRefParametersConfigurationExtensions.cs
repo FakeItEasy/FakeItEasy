@@ -22,7 +22,7 @@ namespace FakeItEasy
         /// <param name="values">The values.</param>
         /// <returns>A configuration object.</returns>
         public static IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParameters<TInterface>(
-            this IOutAndRefParametersConfiguration<TInterface> configuration, params object[] values)
+            this IOutAndRefParametersConfiguration<TInterface> configuration, params object?[] values)
         {
             Guard.AgainstNull(configuration, nameof(configuration));
             Guard.AgainstNull(values, nameof(values));

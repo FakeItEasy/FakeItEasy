@@ -20,6 +20,6 @@ namespace FakeItEasy.Configuration
         /// <param name="valueProducer">A function that produces the output values.</param>
         /// <returns>A configuration object.</returns>
         [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design when using the Expression-, Action- and Func-types.")]
-        IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily(Func<IFakeObjectCall, ICollection<object>> valueProducer);
+        IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily(Func<IFakeObjectCall, ICollection<object?>> valueProducer);
     }
 }

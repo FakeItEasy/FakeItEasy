@@ -22,7 +22,7 @@ namespace FakeItEasy
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         /// <returns>A Raise(TEventArgs)-object that exposes the event handler to attach.</returns>
         [SuppressMessage("Microsoft.Security", "CA2109:ReviewVisibleEventHandlers", Justification = "Must be visible to provide the event raising syntax.")]
-        public static Raise<TEventArgs> With<TEventArgs>(object sender, TEventArgs e)
+        public static Raise<TEventArgs> With<TEventArgs>(object? sender, TEventArgs e)
 #if FEATURE_EVENT_ARGS_MUST_EXTEND_EVENTARGS
             where TEventArgs : EventArgs
 #endif
@@ -74,7 +74,7 @@ namespace FakeItEasy
             /// </summary>
             /// <param name="arguments">The arguments to send to the event handlers.</param>
             /// <returns>A new object that knows how to raise events.</returns>
-            public static dynamic With(params object[] arguments)
+            public static dynamic With(params object?[] arguments)
             {
                 return new DynamicRaiser(arguments, ArgumentProviderMap);
             }
@@ -97,7 +97,7 @@ namespace FakeItEasy
             /// <param name="arguments">The arguments to send to the event handlers.</param>
             /// <returns>A new object that knows how to raise events.</returns>
 #pragma warning disable CA1000 // Do not declare static members on generic types
-            public static TEventHandler With(params object[] arguments)
+            public static TEventHandler With(params object?[] arguments)
 #pragma warning restore CA1000 // Do not declare static members on generic types
             {
                 return new DelegateRaiser<TEventHandler>(arguments, ArgumentProviderMap);

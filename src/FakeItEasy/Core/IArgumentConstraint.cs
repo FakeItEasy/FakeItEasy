@@ -18,6 +18,6 @@ namespace FakeItEasy.Core
         /// </summary>
         /// <param name="argument">The argument to validate.</param>
         /// <returns>True if the argument is valid.</returns>
-        bool IsValid(object argument);
+        bool IsValid(object? argument);
     }
 }

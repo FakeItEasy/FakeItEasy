@@ -17,7 +17,7 @@ namespace FakeItEasy.Creation
         /// </summary>
         /// <param name="argumentsForConstructor">The arguments to pass to the constructor of the faked class.</param>
         /// <returns>Options object.</returns>
-        IFakeOptions WithArgumentsForConstructor(IEnumerable<object> argumentsForConstructor);
+        IFakeOptions WithArgumentsForConstructor(IEnumerable<object?> argumentsForConstructor);
 
         /// <summary>
         /// Specifies arguments for the constructor of the faked class by giving an expression with the call to

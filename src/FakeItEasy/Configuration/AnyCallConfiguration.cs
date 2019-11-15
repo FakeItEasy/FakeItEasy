@@ -53,7 +53,7 @@ namespace FakeItEasy.Configuration
         public IAfterCallConfiguredConfiguration<IVoidConfiguration> CallsBaseMethod() =>
             this.VoidConfiguration.CallsBaseMethod();
 
-        public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily(Func<IFakeObjectCall, ICollection<object>> valueProducer) =>
+        public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily(Func<IFakeObjectCall, ICollection<object?>> valueProducer) =>
             this.VoidConfiguration.AssignsOutAndRefParametersLazily(valueProducer);
 
         public UnorderedCallAssertion MustHaveHappened(int numberOfTimes, Times timesOption)

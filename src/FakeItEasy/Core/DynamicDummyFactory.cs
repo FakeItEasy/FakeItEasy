@@ -27,9 +27,9 @@ namespace FakeItEasy.Core
         /// Creates a Dummy object of the specified type if it's supported by the supplied factories.
         /// </summary>
         /// <param name="typeOfDummy">The type of Dummy object to create.</param>
-        /// <param name="fakeObject">The Dummy object that was created, if the method returns true.</param>
+        /// <param name="dummy">The Dummy object that was created, if the method returns true.</param>
         /// <returns>True if a Dummy object can be created.</returns>
-        public bool TryCreateDummyObject(Type typeOfDummy, out object fakeObject)
+        public bool TryCreateDummyObject(Type typeOfDummy, out object? dummy)
         {
             var dummyFactory = this.cachedDummyFactories.GetOrAdd(
                 typeOfDummy,
@@ -37,13 +37,13 @@ namespace FakeItEasy.Core
 
             if (dummyFactory is null)
             {
-                fakeObject = null;
+                dummy = null;
                 return false;
             }
 
             try
             {
-                fakeObject = dummyFactory.Create(typeOfDummy);
+                dummy = dummyFactory.Create(typeOfDummy);
             }
             catch (Exception ex)
             {

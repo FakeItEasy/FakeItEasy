@@ -26,7 +26,7 @@ namespace FakeItEasy
         /// Creates the dummy.
         /// </summary>
         /// <param name="type">The type of dummy to create.</param>
-        /// <returns>The dummy object.</returns>
-        object Create(Type type);
+        /// <returns>The dummy object. Unlike a dummy provided by built-in FakeItEasy mechanisms, may be <c>null</c>.</returns>
+        object? Create(Type type);
     }
 }

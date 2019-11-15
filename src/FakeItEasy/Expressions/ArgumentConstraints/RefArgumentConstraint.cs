@@ -31,7 +31,7 @@ namespace FakeItEasy.Expressions.ArgumentConstraints
             this.baseConstraint.WriteDescription(writer);
         }
 
-        public bool IsValid(object argument)
+        public bool IsValid(object? argument)
         {
             return this.baseConstraint.IsValid(argument);
         }
