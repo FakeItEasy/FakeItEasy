@@ -9,7 +9,7 @@ namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
     {
         protected override string ExpectedDescription => "string that ends with \"table\"";
 
-        public static IEnumerable<object[]> InvalidValues()
+        public static IEnumerable<object?[]> InvalidValues()
         {
             return TestCases.FromObject(
                 "rabbit",
@@ -20,7 +20,7 @@ namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
                 null);
         }
 
-        public static IEnumerable<object[]> ValidValues()
+        public static IEnumerable<object?[]> ValidValues()
         {
             return TestCases.FromObject(
                 "comfortable",

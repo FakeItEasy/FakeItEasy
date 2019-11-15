@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
+namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
 {
     using System;
     using System.Collections.Generic;
@@ -32,7 +32,7 @@
             this.validator = new CastleDynamicProxyInterceptionValidator(new MethodInfoManager());
         }
 
-        public static IEnumerable<object[]> NonInterceptableMembers()
+        public static IEnumerable<object?[]> NonInterceptableMembers()
         {
             return TestCases.FromObject(
                 NonInterceptableTestCase.Create(
@@ -49,7 +49,7 @@
                     "Non-virtual members can not be intercepted. Only interface members and virtual, overriding, and abstract members can be intercepted."));
         }
 
-        public static IEnumerable<object[]> InterceptableMethods()
+        public static IEnumerable<object?[]> InterceptableMethods()
         {
             return TestCases.FromObject(
                 InterceptionTestCase.Create(() => new object().ToString()),

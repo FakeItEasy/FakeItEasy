@@ -26,7 +26,7 @@ namespace FakeItEasy.Tests.Configuration
             this.configuration = new AnyCallConfiguration(this.fakeObject, this.callRule, this.configurationFactory);
         }
 
-        public static IEnumerable<object[]> CallSpecificationActions =>
+        public static IEnumerable<object?[]> CallSpecificationActions =>
             TestCases.FromObject<Action<IAnyCallConfigurationWithNoReturnTypeSpecified>>(
                 configuration => configuration.WithReturnType<int>(),
                 configuration => configuration.WithNonVoidReturnType(),

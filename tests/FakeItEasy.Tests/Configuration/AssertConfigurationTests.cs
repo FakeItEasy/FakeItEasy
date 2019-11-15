@@ -20,7 +20,7 @@ namespace FakeItEasy.Tests.Configuration
             int WriteableProperty { get;  set; }
         }
 
-        public static IEnumerable<object[]> AllKindsOfConfigurations()
+        public static IEnumerable<object?[]> AllKindsOfConfigurations()
         {
             var fake = A.Fake<IFoo>();
             return TestCases.FromObject(

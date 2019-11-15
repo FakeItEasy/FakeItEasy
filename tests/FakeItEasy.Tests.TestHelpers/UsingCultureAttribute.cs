@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Tests.TestHelpers
+namespace FakeItEasy.Tests.TestHelpers
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
@@ -13,8 +13,8 @@
     {
         private readonly string cultureName;
 
-        private CultureInfo originalCulture;
-        private CultureInfo originalUiCulture;
+        private CultureInfo? originalCulture;
+        private CultureInfo? originalUiCulture;
 
         public UsingCultureAttribute(string cultureName)
         {

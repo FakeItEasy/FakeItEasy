@@ -9,7 +9,7 @@ namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
     {
         protected override string ExpectedDescription => "equal to 10";
 
-        public static IEnumerable<object[]> InvalidValues()
+        public static IEnumerable<object?[]> InvalidValues()
         {
             return TestCases.FromObject(
                 9,
@@ -18,7 +18,7 @@ namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
                 "foo");
         }
 
-        public static IEnumerable<object[]> ValidValues()
+        public static IEnumerable<object?[]> ValidValues()
         {
             return TestCases.FromObject(
                 10);

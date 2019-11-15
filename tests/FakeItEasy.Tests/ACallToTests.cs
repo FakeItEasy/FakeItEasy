@@ -9,7 +9,7 @@ namespace FakeItEasy.Tests
 
     public class ACallToTests
     {
-        public static IEnumerable<object[]> CallSpecificationActions =>
+        public static IEnumerable<object?[]> CallSpecificationActions =>
             TestCases.FromObject<Action<IFoo>>(
                 foo => A.CallTo(() => foo.Bar()),
                 foo => A.CallTo(() => foo.Baz()),

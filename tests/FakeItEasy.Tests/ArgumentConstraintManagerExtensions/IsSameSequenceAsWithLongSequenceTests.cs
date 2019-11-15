@@ -11,7 +11,7 @@ namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
     {
         protected override string ExpectedDescription => "1, 2, … (6 more elements) …, 9, 10";
 
-        public static IEnumerable<object[]> InvalidValues()
+        public static IEnumerable<object?[]> InvalidValues()
         {
             return TestCases.FromObject(
                 new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 },
@@ -21,7 +21,7 @@ namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
                 new[] { 9, 8 });
         }
 
-        public static IEnumerable<object[]> ValidValues()
+        public static IEnumerable<object?[]> ValidValues()
         {
             return TestCases.FromObject(
                 new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 },
