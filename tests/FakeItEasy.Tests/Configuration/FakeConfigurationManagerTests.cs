@@ -25,7 +25,7 @@ namespace FakeItEasy.Tests.Configuration
             this.OnSetup();
         }
 
-        public static IEnumerable<object[]> CallSpecificationActions =>
+        public static IEnumerable<object?[]> CallSpecificationActions =>
             TestCases.FromObject<Action<FakeConfigurationManagerTests, IFoo>>(
                 (@this, foo) => @this.configurationManager.CallTo(() => foo.Bar()),
                 (@this, foo) => @this.configurationManager.CallTo(() => foo.Baz()),

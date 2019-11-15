@@ -21,7 +21,7 @@ namespace FakeItEasy.Tests.Expressions.ArgumentConstraints
 
         protected override string ExpectedDescription => "[\"foo\", \"bar\"]";
 
-        public static IEnumerable<object[]> InvalidValues()
+        public static IEnumerable<object?[]> InvalidValues()
         {
             return TestCases.FromObject(
                 new object(),
@@ -30,7 +30,7 @@ namespace FakeItEasy.Tests.Expressions.ArgumentConstraints
                 new[] { "foo", "bar", "biz" });
         }
 
-        public static IEnumerable<object[]> ValidValues()
+        public static IEnumerable<object?[]> ValidValues()
         {
             return TestCases.FromObject(
                 new[] { "foo", "bar" },

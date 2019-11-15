@@ -13,7 +13,7 @@ namespace FakeItEasy.IntegrationTests
 
     public class ConcurrentCallTests
     {
-        public static IEnumerable<object[]> UserRuleMutatingActions =>
+        public static IEnumerable<object?[]> UserRuleMutatingActions =>
             TestCases.FromObject(
                 new GetUnconfiguredProperty(),
                 new SetUnconfiguredProperty(),

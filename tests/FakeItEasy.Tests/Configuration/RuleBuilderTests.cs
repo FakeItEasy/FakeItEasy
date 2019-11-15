@@ -28,7 +28,7 @@ namespace FakeItEasy.Tests.Configuration
             this.builder = this.CreateBuilder();
         }
 
-        public static IEnumerable<object[]> BehaviorDefinitionActionsForVoid =>
+        public static IEnumerable<object?[]> BehaviorDefinitionActionsForVoid =>
             TestCases.FromObject<Action<IVoidArgumentValidationConfiguration>>(
                 configuration => configuration.CallsBaseMethod(),
                 configuration => configuration.DoesNothing(),
@@ -36,19 +36,19 @@ namespace FakeItEasy.Tests.Configuration
                 configuration => configuration.Invokes(DoNothing),
                 configuration => configuration.AssignsOutAndRefParametersLazily(_ => Array.Empty<object>()));
 
-        public static IEnumerable<object[]> BehaviorDefinitionActionsForNonVoid =>
+        public static IEnumerable<object?[]> BehaviorDefinitionActionsForNonVoid =>
             TestCases.FromObject<Action<IAnyCallConfigurationWithReturnTypeSpecified<int>>>(
                 configuration => configuration.CallsBaseMethod(),
                 configuration => configuration.Throws<Exception>(),
                 configuration => configuration.Invokes(DoNothing),
                 configuration => configuration.ReturnsLazily(_ => 0));
 
-        public static IEnumerable<object[]> CallSpecificationActionsForNonVoid =>
+        public static IEnumerable<object?[]> CallSpecificationActionsForNonVoid =>
             TestCases.FromObject<Action<IAnyCallConfigurationWithReturnTypeSpecified<int>>>(
                 configuration => configuration.WhenArgumentsMatch(args => true),
                 configuration => configuration.Where(call => true));
 
-        public static IEnumerable<object[]> CallSpecificationActionsForVoid =>
+        public static IEnumerable<object?[]> CallSpecificationActionsForVoid =>
             TestCases.FromObject<Action<IVoidArgumentValidationConfiguration>>(
                 configuration => configuration.WhenArgumentsMatch(args => true));
 

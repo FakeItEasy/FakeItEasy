@@ -737,7 +737,7 @@ namespace FakeItEasy.Specs
             }
         }
 
-        private static IEnumerable<object[]> SupportedTypes() => TestCases.FromObject(
+        private static IEnumerable<object?[]> SupportedTypes() => TestCases.FromObject(
             new FakeCreator<IInterface>(),
             new FakeCreator<AbstractClass>(),
             new FakeCreator<ClassWithProtectedConstructor>(),

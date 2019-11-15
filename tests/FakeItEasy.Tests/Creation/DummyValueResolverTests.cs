@@ -30,7 +30,7 @@ namespace FakeItEasy.Tests.Creation
                     CreationResult.FailedToCreateDummy(type, string.Empty));
         }
 
-        public static IEnumerable<object[]> DummiesInContainer()
+        public static IEnumerable<object?[]> DummiesInContainer()
         {
             return TestCases.FromObject(
                 "dummy value",
