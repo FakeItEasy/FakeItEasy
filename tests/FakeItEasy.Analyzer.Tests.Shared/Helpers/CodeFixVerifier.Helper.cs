@@ -25,7 +25,7 @@
         {
             var operations = codeAction.GetOperationsAsync(CancellationToken.None).Result;
             var solution = operations.OfType<ApplyChangesOperation>().Single().ChangedSolution;
-            return solution.GetDocument(document.Id);
+            return solution.GetDocument(document.Id) !;
         }
 
         /// <summary>
