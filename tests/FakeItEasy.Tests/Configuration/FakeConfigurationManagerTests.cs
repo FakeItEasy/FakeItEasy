@@ -16,13 +16,22 @@ namespace FakeItEasy.Tests.Configuration
     {
         private IConfigurationFactory configurationFactory;
         private FakeConfigurationManager configurationManager;
-        private ExpressionCallRule.Factory ruleFactory;
         private CallExpressionParser callExpressionParser;
         private IInterceptionAsserter interceptionAsserter;
 
         public FakeConfigurationManagerTests()
         {
-            this.OnSetup();
+            this.configurationFactory = A.Fake<IConfigurationFactory>();
+            this.callExpressionParser = new CallExpressionParser();
+            this.interceptionAsserter = A.Fake<IInterceptionAsserter>();
+
+            ExpressionCallRule.Factory ruleFactory = A.Dummy<ExpressionCallRule.Factory>();
+
+            this.configurationManager = new FakeConfigurationManager(
+                this.configurationFactory,
+                ruleFactory,
+                this.callExpressionParser,
+                this.interceptionAsserter);
         }
 
         public static IEnumerable<object?[]> CallSpecificationActions =>
@@ -141,26 +150,6 @@ namespace FakeItEasy.Tests.Configuration
 
             // Assert
             manager.Rules.Should().Equal(initialRules);
-        }
-
-        private void OnSetup()
-        {
-            this.configurationFactory = A.Fake<IConfigurationFactory>();
-            this.callExpressionParser = new CallExpressionParser();
-            this.interceptionAsserter = A.Fake<IInterceptionAsserter>();
-
-            this.ruleFactory = x => null;
-
-            this.configurationManager = this.CreateManager();
-        }
-
-        private FakeConfigurationManager CreateManager()
-        {
-            return new FakeConfigurationManager(
-                this.configurationFactory,
-                this.ruleFactory,
-                this.callExpressionParser,
-                this.interceptionAsserter);
         }
     }
 }

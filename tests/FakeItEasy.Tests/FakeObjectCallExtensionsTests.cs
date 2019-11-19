@@ -69,7 +69,7 @@ namespace FakeItEasy.Tests
         public void GetDescription_should_render_method_name_and_empty_arguments_list_when_call_has_no_arguments()
         {
             // Arrange
-            var call = FakeCall.Create<object>("GetType");
+            var call = FakeCall.Create<object>(x => x.GetType());
 
             // Act
             var description = call.GetDescription();
@@ -143,9 +143,7 @@ namespace FakeItEasy.Tests
             description.Should().Be("FakeItEasy.Tests.IFoo.Bar(1, [1, 2, … (2 more elements) …, 5, 6])");
         }
 
-        private static FakeCall CreateFakeCallToFooDotBar(object argument1, object argument2)
-        {
-            return FakeCall.Create<IFoo>("Bar", new[] { typeof(object), typeof(object) }, new[] { argument1, argument2 });
-        }
+        private static FakeCall CreateFakeCallToFooDotBar(object? argument1, object argument2) =>
+            FakeCall.Create<IFoo>(x => x.Bar(argument1, argument2));
     }
 }

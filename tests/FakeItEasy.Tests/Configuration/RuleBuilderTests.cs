@@ -196,7 +196,8 @@ namespace FakeItEasy.Tests.Configuration
         [Fact]
         public void AssignsOutAndRefParametersLazily_should_be_null_guarded()
         {
-            Expression<Action> call = () => this.builder.AssignsOutAndRefParametersLazily(null);
+            Expression<Action> call = () =>
+                this.builder.AssignsOutAndRefParametersLazily(A.Dummy<Func<object, object?[]>>());
             call.Should().BeNullGuarded();
         }
 

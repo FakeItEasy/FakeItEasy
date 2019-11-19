@@ -1,13 +1,11 @@
 namespace FakeItEasy.Tests.TestHelpers
 {
-    using System;
     using System.Reflection;
+    using static FakeItEasy.Tests.TestHelpers.ExpressionHelper;
 
     public class MethodInfoDummyFactory : DummyFactory<MethodInfo>
     {
-        protected override MethodInfo Create()
-        {
-            return typeof(object).GetMethod("ToString", Type.EmptyTypes);
-        }
+        protected override MethodInfo Create() =>
+            GetMethodInfo<object>(x => x.ToString());
     }
 }

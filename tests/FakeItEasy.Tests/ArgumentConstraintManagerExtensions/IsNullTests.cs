@@ -12,7 +12,7 @@ namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
         public static IEnumerable<object?[]> ValidValues()
         {
             return TestCases.FromObject(
-                (object)null);
+                (object?)null);
         }
 
         public static IEnumerable<object?[]> InvalidValues()

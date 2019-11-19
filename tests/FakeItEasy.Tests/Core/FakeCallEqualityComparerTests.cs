@@ -7,10 +7,12 @@ namespace FakeItEasy.Tests.Core
     using FluentAssertions;
     using Xunit;
 
+    using static FakeItEasy.Tests.TestHelpers.ExpressionHelper;
+
     public class FakeCallEqualityComparerTests
     {
-        private static readonly MethodInfo ToStringMethod = typeof(object).GetMethod("ToString", Type.EmptyTypes);
-        private static readonly MethodInfo EqualsMethod = typeof(object).GetMethod("Equals", new[] { typeof(object) });
+        private static readonly MethodInfo ToStringMethod = GetMethodInfo<object>(x => x.ToString());
+        private static readonly MethodInfo EqualsMethod = GetMethodInfo<object>(x => x.Equals(new object()));
 
         private readonly FakeCallEqualityComparer comparer;
         private readonly IFakeObjectCall firstCall;
@@ -90,7 +92,7 @@ namespace FakeItEasy.Tests.Core
         public void Should_not_fail_when_getting_hash_code_where_arguments_contains_null()
         {
             // Arrange
-            A.CallTo(() => this.firstCall.Arguments).Returns(new ArgumentCollection(new object[] { null }, EqualsMethod));
+            A.CallTo(() => this.firstCall.Arguments).Returns(new ArgumentCollection(new object?[] { null }, EqualsMethod));
 
             // Act
             var exception = Record.Exception(() => this.comparer.GetHashCode(this.firstCall));

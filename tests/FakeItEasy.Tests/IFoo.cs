@@ -22,7 +22,7 @@ namespace FakeItEasy.Tests
 
         void Bar(object argument);
 
-        void Bar(object argument, object argument2);
+        void Bar(object? argument, object argument2);
 
         void Bar(object argument1, object argument2, object argument3);
 

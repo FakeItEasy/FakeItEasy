@@ -19,7 +19,7 @@ namespace FakeItEasy
         /// <param name="stringConverter">A function that converts from an item to a string value.</param>
         /// <param name="separator">Separator to insert between each item.</param>
         /// <returns>A string representation of the collection.</returns>
-        public static string ToCollectionString<T>(this IEnumerable<T> items, Func<T, string> stringConverter, string separator)
+        public static string ToCollectionString<T>(this IEnumerable<T> items, Func<T, string?> stringConverter, string separator)
         {
             var result = new StringBuilder();
 

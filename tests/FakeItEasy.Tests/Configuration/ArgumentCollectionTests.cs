@@ -87,7 +87,7 @@ namespace FakeItEasy.Tests.Configuration
         public void GetEnumerator_through_non_generic_interface_returns_enumerator_that_enumerates_all_arguments()
         {
             var arguments = this.CreateFakeArgumentList(new[] { "foo", "bar" }, 1, 2);
-            var found = new List<object>();
+            var found = new List<object?>();
 
             var enumerator = ((IEnumerable)arguments).GetEnumerator();
             while (enumerator.MoveNext())

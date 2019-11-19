@@ -11,6 +11,8 @@ namespace FakeItEasy.Tests.Expressions
     using FluentAssertions;
     using Xunit;
 
+    using static FakeItEasy.Tests.TestHelpers.ExpressionHelper;
+
     public class CallExpressionParserTests
     {
         private readonly CallExpressionParser parser;
@@ -32,7 +34,7 @@ namespace FakeItEasy.Tests.Expressions
             var result = this.parser.Parse(call);
 
             // Assert
-            result.CalledMethod.Should().BeSameAs(GetMethod<string>("Equals", typeof(string), typeof(StringComparison)));
+            result.CalledMethod.Should().BeSameAs(GetMethodInfo<string>(x => x.Equals("some string", StringComparison.Ordinal)));
         }
 
         [Fact]
@@ -45,7 +47,7 @@ namespace FakeItEasy.Tests.Expressions
             var result = this.parser.Parse(call);
 
             // Assert
-            result.CalledMethod.Should().BeSameAs(GetPropertyGetter<string>("Length"));
+            result.CalledMethod.Should().BeSameAs(GetMethodInfo((string x) => x.Length));
         }
 
         [Fact]
@@ -59,7 +61,7 @@ namespace FakeItEasy.Tests.Expressions
             var result = this.parser.Parse(call);
 
             // Assert
-            result.CalledMethod.Should().BeSameAs(GetPropertyGetter<TypeWithInternalProperty>("InternalProperty"));
+            result.CalledMethod.Should().BeSameAs(GetMethodInfo((TypeWithInternalProperty x) => x.InternalProperty));
         }
 
         [Fact]
@@ -72,7 +74,7 @@ namespace FakeItEasy.Tests.Expressions
             var result = this.parser.Parse(call);
 
             // Assert
-            result.CalledMethod.Should().BeSameAs(GetMethod<object>("Equals", typeof(object), typeof(object)));
+            result.CalledMethod.Should().BeSameAs(GetMethodInfo<object>(_ => Equals(new object(), new object())));
         }
 
         [Fact]
@@ -165,20 +167,6 @@ namespace FakeItEasy.Tests.Expressions
             result.CalledMethod.Name.Should().Be("Invoke");
             result.ArgumentsExpressions.Select(x => x.ArgumentInformation.Name).Should().BeEquivalentTo("argument1", "argument2");
             result.CallTarget.Should().BeSameAs(d);
-        }
-
-        private static MethodInfo GetMethod<T>(string methodName, params Type[] argumentTypes)
-        {
-            return typeof(T).GetMethod(methodName, argumentTypes);
-        }
-
-        private static MethodInfo GetPropertyGetter<T>(string propertyName)
-        {
-            return typeof(T)
-                .GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-                .Where(x => x.Name == propertyName)
-                .Select(x => x.GetGetMethod(true))
-                .Single();
         }
 
         private static LambdaExpression Call(Expression<Action> callExpression)
