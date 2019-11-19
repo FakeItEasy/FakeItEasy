@@ -175,6 +175,27 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
+        public static void CollectionParameterContainsNull(
+            IIHaveACollectionParameter fake,
+            Exception exception)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IIHaveACollectionParameter>());
+
+            "And a call with argument [1, \"hello\", NULL, NULL, \"foo\", \"bar\"] made on this fake"
+                .x(() => fake.Bar(new object[] { 1, "hello", null, null, "foo", "bar" }));
+
+            "When I assert that a call with an argument that contains null has happened on this fake"
+                .x(() => exception = Record.Exception(
+                    () => A.CallTo(
+                            () => fake.Bar(A<object[]>.That.Contains(null)))
+                        .MustHaveHappened()));
+
+            "Then the assertion should pass"
+                .x(() => exception.Should().BeNull());
+        }
+
+        [Scenario]
         public static void FailingMatchOfCollectionParameter(
             IIHaveACollectionParameter fake,
             Exception exception)

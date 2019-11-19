@@ -97,7 +97,6 @@ namespace FakeItEasy
         public static T Contains<T>(this IArgumentConstraintManager<T> manager, object value) where T : IEnumerable
         {
             Guard.AgainstNull(manager, nameof(manager));
-            Guard.AgainstNull(value, nameof(value));
 
             return manager.NullCheckedMatches(
                 x => x.Cast<object>().Contains(value),
