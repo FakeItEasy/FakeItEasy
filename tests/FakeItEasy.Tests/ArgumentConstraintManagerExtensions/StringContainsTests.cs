@@ -16,7 +16,7 @@ namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
                 "baz",
                 "biz",
                 string.Empty,
-                null,
+                (object?)null,
                 "lorem ipsum");
         }
 

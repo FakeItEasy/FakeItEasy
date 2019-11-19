@@ -2,8 +2,8 @@ namespace FakeItEasy.Tests
 {
     using System;
     using System.Linq;
+    using System.Linq.Expressions;
     using FakeItEasy.Configuration;
-    using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using Xunit;
 
@@ -19,7 +19,7 @@ namespace FakeItEasy.Tests
             configuration.WithAnyArguments();
 
             // Assert
-            var predicate = Fake.GetCalls(configuration).Single().Arguments.Get<Func<ArgumentCollection, bool>>(0);
+            var predicate = Fake.GetCalls(configuration).Single().Arguments.Get<Func<ArgumentCollection?, bool>>(0) !;
 
             predicate.Invoke(null).Should().BeTrue();
         }
@@ -34,22 +34,21 @@ namespace FakeItEasy.Tests
             configuration.WithAnyArguments();
 
             // Assert
-            var predicate = Fake.GetCalls(configuration).Single().Arguments.Get<Func<ArgumentCollection, bool>>(0);
+            var predicate = Fake.GetCalls(configuration).Single().Arguments.Get<Func<ArgumentCollection?, bool>>(0) !;
 
             predicate.Invoke(null).Should().BeTrue();
         }
 
         [Fact]
-        public void WithAnyArguments_should_throw_when_configuration_is_null()
+        public void WithAnyArguments_should_be_null_guarded()
         {
             // Arrange
-            IArgumentValidationConfiguration<IVoidConfiguration> validationConfig = null;
 
             // Act
-            var exception = Record.Exception(() => validationConfig.WithAnyArguments());
 
             // Assert
-            exception.Should().BeAnExceptionOfType<ArgumentNullException>();
+            Expression<Action> call = () => A.Fake<IArgumentValidationConfiguration<IVoidConfiguration>>().WithAnyArguments();
+            call.Should().BeNullGuarded();
         }
     }
 }

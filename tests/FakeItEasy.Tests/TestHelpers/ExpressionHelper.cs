@@ -33,12 +33,14 @@ namespace FakeItEasy.Tests.TestHelpers
             GetMethodInfo((LambdaExpression)callSpecification);
 
         private static IInterceptedFakeObjectCall CreateFakeCall<TFake>(TFake fakedObject, LambdaExpression callSpecification)
+            where TFake : class
         {
+            var arguments = CreateArgumentCollection(callSpecification);
             var result = A.Fake<IInterceptedFakeObjectCall>();
 
-            A.CallTo(() => result.Method).Returns(GetMethodInfo(callSpecification));
+            A.CallTo(() => result.Method).Returns(arguments.Method);
             A.CallTo(() => result.FakedObject).Returns(fakedObject);
-            A.CallTo(() => result.Arguments).Returns(CreateArgumentCollection(callSpecification));
+            A.CallTo(() => result.Arguments).Returns(arguments);
 
             return result;
         }
@@ -58,28 +60,11 @@ namespace FakeItEasy.Tests.TestHelpers
 
         private static ArgumentCollection CreateArgumentCollection(LambdaExpression callSpecification)
         {
-            var methodCall = callSpecification.Body as MethodCallExpression;
+            var arguments = callSpecification.Body is MethodCallExpression methodCall
+                ? methodCall.Arguments.Select(argument => argument.Evaluate()).ToArray()
+                : Array.Empty<object>();
 
-            MethodInfo method;
-            object[] arguments;
-
-            if (methodCall is object)
-            {
-                method = methodCall.Method;
-                arguments =
-                    (from argument in methodCall.Arguments
-                     select argument.Evaluate()).ToArray();
-            }
-            else
-            {
-                var propertyCall = (MemberExpression)callSpecification.Body;
-                var property = (PropertyInfo)propertyCall.Member;
-
-                method = property.GetGetMethod(true);
-                arguments = Array.Empty<object>();
-            }
-
-            return new ArgumentCollection(arguments, method);
+            return new ArgumentCollection(arguments, GetMethodInfo(callSpecification));
         }
     }
 }

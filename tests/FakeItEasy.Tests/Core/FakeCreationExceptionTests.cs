@@ -20,10 +20,5 @@ namespace FakeItEasy.Tests.Core
             // Assert
             exception.Message.Should().Be("Unable to create fake object.");
         }
-
-        protected override FakeCreationException CreateException()
-        {
-            return new FakeCreationException();
-        }
     }
 }

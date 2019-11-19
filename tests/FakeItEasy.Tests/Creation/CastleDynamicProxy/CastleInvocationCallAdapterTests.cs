@@ -8,6 +8,8 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
     using FakeItEasy.Creation.CastleDynamicProxy;
     using Xunit;
 
+    using static FakeItEasy.Tests.TestHelpers.ExpressionHelper;
+
     public class CastleInvocationCallAdapterTests
     {
         [Fact]
@@ -16,7 +18,7 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
             var invocation = A.Fake<IInvocation>();
 
             A.CallTo(() => invocation.Arguments).Returns(Array.Empty<object>());
-            A.CallTo(() => invocation.Method).Returns(typeof(IFoo).GetMethod("Bar", Type.EmptyTypes));
+            A.CallTo(() => invocation.Method).Returns(GetMethodInfo<IFoo>(x => x.Bar()));
 
             var adapter = new CastleInvocationCallAdapter(invocation);
 
@@ -30,7 +32,7 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
         {
             var invocation = A.Fake<IInvocation>();
             A.CallTo(() => invocation.Arguments).Returns(Array.Empty<object>());
-            A.CallTo(() => invocation.Method).Returns(typeof(IFoo).GetMethod("Bar", Type.EmptyTypes));
+            A.CallTo(() => invocation.Method).Returns(GetMethodInfo<IFoo>(x => x.Bar()));
 
             var adapter = new CastleInvocationCallAdapter(invocation);
 

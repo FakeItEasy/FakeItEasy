@@ -21,7 +21,7 @@ namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
         {
             return TestCases.FromObject(
                 "foo",
-                null);
+                (object?)null);
         }
 
         [Theory]

@@ -11,7 +11,7 @@ namespace FakeItEasy.Tests.Expressions.ArgumentConstraints
     {
         public AggregateArgumentConstraintTests()
         {
-            this.ConstraintField = new AggregateArgumentConstraint(new[] { new EqualityArgumentConstraint("foo"), new EqualityArgumentConstraint("bar") });
+            this.Constraint = new AggregateArgumentConstraint(new[] { new EqualityArgumentConstraint("foo"), new EqualityArgumentConstraint("bar") });
         }
 
         public interface ITypeWithMethod
@@ -56,7 +56,7 @@ namespace FakeItEasy.Tests.Expressions.ArgumentConstraints
         {
             var writer = ServiceLocator.Resolve<StringBuilderOutputWriter.Factory>().Invoke();
 
-            this.ConstraintField.WriteDescription(writer);
+            this.Constraint.WriteDescription(writer);
 
             writer.Builder.ToString().Should().Be(this.ExpectedDescription);
         }

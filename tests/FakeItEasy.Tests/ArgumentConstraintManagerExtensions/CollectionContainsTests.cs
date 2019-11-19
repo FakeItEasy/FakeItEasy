@@ -13,9 +13,9 @@ namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
         public static IEnumerable<object?[]> InvalidValues()
         {
             return TestCases.FromObject(
-                null,
+                (object?)null,
                 Array.Empty<object>(),
-                new object[] { null },
+                new object?[] { null },
                 new object[] { 1, 2, 3, "foo", "bar" });
         }
 

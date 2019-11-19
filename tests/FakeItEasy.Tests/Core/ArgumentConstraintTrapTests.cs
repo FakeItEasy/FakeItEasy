@@ -31,11 +31,11 @@ namespace FakeItEasy.Tests.Core
 
             var earlyStartingConstraint = A.Fake<IArgumentConstraint>();
             A.CallTo(() => earlyStartingConstraint.ToString()).Returns("earlyStarter");
-            IArgumentConstraint earlyStartingResult = null;
+            IArgumentConstraint? earlyStartingResult = null;
 
             var lateStartingConstraint = A.Fake<IArgumentConstraint>();
             A.CallTo(() => lateStartingConstraint.ToString()).Returns("lateStarter");
-            IArgumentConstraint lateStartingResult = null;
+            IArgumentConstraint? lateStartingResult = null;
 
             // Act
             var earlyStartingTask = Task.Run(() =>

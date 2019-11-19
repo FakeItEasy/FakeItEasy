@@ -238,7 +238,7 @@ namespace FakeItEasy.Tests.Core
             // Act
 
             // Assert
-            foo.InternalVirtualFakeableProperty.Should().BeSameAs(foo.InternalVirtualFakeableProperty);
+            foo.InternalVirtualFakeableProperty.Should().NotBeNull().And.BeSameAs(foo.InternalVirtualFakeableProperty);
         }
 
         [Fact]
@@ -456,9 +456,14 @@ namespace FakeItEasy.Tests.Core
             return Fake.GetFakeManager(result);
         }
 
-        private void MakeSureThatWeakReferenceDoesNotGetCollected<T>(T result)
+        private void MakeSureThatWeakReferenceDoesNotGetCollected<T>(T result) where T : class
         {
             this.createdFakes.Add(result);
+        }
+
+        public class Foo
+        {
+            internal virtual IFoo? InternalVirtualFakeableProperty { get; set; }
         }
     }
 }

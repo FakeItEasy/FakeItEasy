@@ -9,8 +9,8 @@ namespace FakeItEasy.Tests
     public class RaiseTests
     {
         private readonly IFoo foo;
-        private object sender;
-        private EventArgs eventArguments;
+        private object? sender;
+        private EventArgs? eventArguments;
 
         public RaiseTests()
         {
@@ -130,13 +130,13 @@ namespace FakeItEasy.Tests
                 .Should().BeFalse();
         }
 
-        private void Foo_SomethingHappened(object newSender, EventArgs e)
+        private void Foo_SomethingHappened(object? newSender, EventArgs e)
         {
             this.sender = newSender;
             this.eventArguments = e;
         }
 
-        private void Foo_SomethingHappenedThrows(object newSender, EventArgs e)
+        private void Foo_SomethingHappenedThrows(object? newSender, EventArgs e)
         {
             throw new NotImplementedException();
         }

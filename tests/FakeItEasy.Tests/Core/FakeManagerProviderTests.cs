@@ -1,7 +1,6 @@
 namespace FakeItEasy.Tests.Core
 {
     using System;
-    using System.Reflection;
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
     using FluentAssertions;
@@ -12,11 +11,11 @@ namespace FakeItEasy.Tests.Core
         private readonly object proxy;
         private readonly FakeManager fakeManager;
 
-        private readonly FakeManager.Factory fakeManagerFactory = null;
-        private readonly IFakeManagerAccessor fakeManagerAccessor = null;
-        private readonly Type typeOfFake = null;
-        private readonly IProxyOptions proxyOptions = null;
-        private readonly FakeManagerProvider fakeManagerProvider = null;
+        private readonly FakeManager.Factory fakeManagerFactory;
+        private readonly IFakeManagerAccessor fakeManagerAccessor;
+        private readonly Type typeOfFake;
+        private readonly IProxyOptions proxyOptions;
+        private readonly FakeManagerProvider fakeManagerProvider;
 
         public FakeManagerProviderTests()
         {
@@ -107,12 +106,6 @@ namespace FakeItEasy.Tests.Core
 
             // Assert
             A.CallTo(() => this.fakeManagerFactory(this.typeOfFake, this.proxy, A<string>.Ignored)).MustHaveHappenedOnceExactly();
-        }
-
-        private static FakeManager GetInitializedFakeManager(FakeManagerProvider fakeManagerProvider)
-        {
-            var fieldInfo = fakeManagerProvider.GetType().GetField("initializedFakeManager", BindingFlags.NonPublic | BindingFlags.Instance);
-            return (FakeManager)fieldInfo.GetValue(fakeManagerProvider);
         }
     }
 }

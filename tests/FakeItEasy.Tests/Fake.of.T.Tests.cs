@@ -54,5 +54,9 @@ namespace FakeItEasy.Tests
             // Assert
             manager.Rules.Should().Equal(initialRules);
         }
+
+        public class Foo
+        {
+        }
     }
 }

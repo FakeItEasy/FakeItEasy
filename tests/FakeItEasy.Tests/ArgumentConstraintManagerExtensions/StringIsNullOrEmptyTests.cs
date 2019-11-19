@@ -22,7 +22,7 @@ namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
         {
             return TestCases.FromObject(
                 string.Empty,
-                null);
+                null!);
         }
 
         [Theory]

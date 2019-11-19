@@ -63,7 +63,7 @@ namespace FakeItEasy.Tests
             // Act
 
             // Assert
-            FakeManager manager;
+            FakeManager? manager;
             Expression<Action> call = () => Fake.TryGetFakeManager(A.Dummy<object>(), out manager);
             call.Should().BeNullGuarded();
         }

@@ -56,7 +56,7 @@ namespace FakeItEasy.Tests
         {
             // Arrange
             const string Argument = "Argument";
-            string collectedArgument = null;
+            string? collectedArgument = null;
             var exceptionToThrow = new InvalidOperationException();
 
             var fake = A.Fake<IInterface>();
@@ -139,8 +139,8 @@ namespace FakeItEasy.Tests
             // Arrange
             const string FirstArgument = "First Argument";
             const string SecondArgument = "Second Argument";
-            string firstCollectedArgument = null;
-            string secondCollectedArgument = null;
+            string? firstCollectedArgument = null;
+            string? secondCollectedArgument = null;
             var exceptionToThrow = new InvalidOperationException();
 
             var fake = A.Fake<IInterface>();
@@ -245,9 +245,9 @@ namespace FakeItEasy.Tests
             const string FirstArgument = "First Argument";
             const string SecondArgument = "Second Argument";
             const string ThirdArgument = "Third Argument";
-            string firstCollectedArgument = null;
-            string secondCollectedArgument = null;
-            string thirdCollectedArgument = null;
+            string? firstCollectedArgument = null;
+            string? secondCollectedArgument = null;
+            string? thirdCollectedArgument = null;
             var exceptionToThrow = new InvalidOperationException();
 
             var fake = A.Fake<IInterface>();
@@ -375,10 +375,10 @@ namespace FakeItEasy.Tests
             const string SecondArgument = "Second Argument";
             const string ThirdArgument = "Third Argument";
             const string FourthArgument = "Fourth Argument";
-            string firstCollectedArgument = null;
-            string secondCollectedArgument = null;
-            string thirdCollectedArgument = null;
-            string fourthCollectedArgument = null;
+            string? firstCollectedArgument = null;
+            string? secondCollectedArgument = null;
+            string? thirdCollectedArgument = null;
+            string? fourthCollectedArgument = null;
             var exceptionToThrow = new InvalidOperationException();
 
             var fake = A.Fake<IInterface>();
@@ -490,7 +490,7 @@ namespace FakeItEasy.Tests
             config.Throws(ex);
 
             // Assert
-            A.CallTo(() => config.Throws(A<Func<IFakeObjectCall, Exception>>.That.Returns(ex))).MustHaveHappened();
+            A.CallTo(() => config.Throws(A<Func<IFakeObjectCall, Exception>>.That.Returns(A.Dummy<IFakeObjectCall>(), ex))).MustHaveHappened();
         }
 
         [Fact]
@@ -518,13 +518,13 @@ namespace FakeItEasy.Tests
             config.Throws(factory);
 
             // Assert
-            A.CallTo(() => config.Throws(A<Func<IFakeObjectCall, Exception>>.That.Returns(exception))).MustHaveHappened();
+            A.CallTo(() => config.Throws(A<Func<IFakeObjectCall, Exception>>.That.Returns(A.Dummy<IFakeObjectCall>(), exception))).MustHaveHappened();
         }
 
         private static Func<IFakeObjectCall, Exception> FuncThatReturnsExceptionOfType<T>()
         {
             return A<Func<IFakeObjectCall, Exception>>.That.NullCheckedMatches(
-                x => x.Invoke(null) is T,
+                x => x.Invoke(A.Dummy<IFakeObjectCall>()) is T,
                 x => x.Write("function that returns exception of type ").WriteArgumentValue(typeof(T)));
         }
 

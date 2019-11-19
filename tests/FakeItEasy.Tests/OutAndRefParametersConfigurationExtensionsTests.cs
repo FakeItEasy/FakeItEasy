@@ -38,11 +38,12 @@ namespace FakeItEasy.Tests
             var expectedConfig = A.Fake<IAfterCallConfiguredWithOutAndRefParametersConfiguration<IVoidConfiguration>>();
             var config = A.Fake<IOutAndRefParametersConfiguration<IVoidConfiguration>>();
             A.CallTo(() => config.AssignsOutAndRefParametersLazily(
-                    A<Func<IFakeObjectCall, ICollection<object>>>.That.Matches(x => (int)x.Invoke(null).First() == 10)))
+                    A<Func<IFakeObjectCall, ICollection<object?>>>.That.Matches(x =>
+                        (string?)x.Invoke(A.Dummy<IFakeObjectCall>()).First() == "10")))
                 .Returns(expectedConfig);
 
             // Act
-            var returned = config.AssignsOutAndRefParameters(10);
+            var returned = config.AssignsOutAndRefParameters("10");
 
             // Assert
             returned.Should().BeSameAs(expectedConfig);
@@ -56,7 +57,7 @@ namespace FakeItEasy.Tests
             // Act
 
             // Assert
-            Expression<Action> call = () => A.Fake<IOutAndRefParametersConfiguration<IVoidConfiguration>>().AssignsOutAndRefParameters(null);
+            Expression<Action> call = () => A.Fake<IOutAndRefParametersConfiguration<IVoidConfiguration>>().AssignsOutAndRefParameters("a string");
             call.Should().BeNullGuarded();
         }
 
@@ -173,7 +174,7 @@ namespace FakeItEasy.Tests
             // Arrange
             const string Argument = "argument";
             const string OutValue = "Result";
-            string collectedArgument = null;
+            string? collectedArgument = null;
             string fakeOut;
             string result;
 
@@ -274,8 +275,8 @@ namespace FakeItEasy.Tests
             const string FirstArgument = "argument1";
             const string SecondArgument = "argument2";
             const string OutValue = "Result";
-            string firstCollectedArgument = null;
-            string secondCollectedArgument = null;
+            string? firstCollectedArgument = null;
+            string? secondCollectedArgument = null;
             string fakeOut;
             string result;
 
@@ -385,9 +386,9 @@ namespace FakeItEasy.Tests
             const string SecondArgument = "argument2";
             const string ThirdArgument = "argument3";
             const string OutValue = "Result";
-            string firstCollectedArgument = null;
-            string secondCollectedArgument = null;
-            string thirdCollectedArgument = null;
+            string? firstCollectedArgument = null;
+            string? secondCollectedArgument = null;
+            string? thirdCollectedArgument = null;
             string fakeOut;
             string result;
 
