@@ -929,6 +929,22 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Should().BeAnExceptionOfType<InvalidOperationException>());
         }
 
+        [Scenario]
+        public static void ArgumentConstraintExpressionInvokedOnce(IHaveNoGenericParameters fake, ConstraintFactory constraintFactory)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IHaveNoGenericParameters>());
+
+            "And an argument constraint factory"
+                .x(() => constraintFactory = new ConstraintFactory());
+
+            "When I configure a method of the fake with an argument constraint from the factory"
+                .x(() => A.CallTo(() => fake.Bar(constraintFactory.Create())).DoesNothing());
+
+            "Then the expression that invokes the constraint factory is called exactly once"
+                .x(() => constraintFactory.InvocationCount.Should().Be(1));
+        }
+
         public static IEnumerable<object[]> Fakes()
         {
             yield return new object[] { A.Fake<object>(), "Faked " + typeof(object) };
@@ -977,6 +993,17 @@ namespace FakeItEasy.Specs
             public Z(int value)
             {
                 this.Value = value;
+            }
+        }
+
+        public class ConstraintFactory
+        {
+            public int InvocationCount;
+
+            public int Create()
+            {
+                ++this.InvocationCount;
+                return A<int>._;
             }
         }
     }
