@@ -198,7 +198,9 @@ namespace FakeItEasy
     [System.Runtime.CompilerServices.NullableAttribute(0)]
     public class static FakeObjectCallExtensions
     {
+        [return: System.Diagnostics.CodeAnalysis.MaybeNullAttribute()]
         public static T GetArgument<[System.Runtime.CompilerServices.NullableAttribute(2)]  T>(this FakeItEasy.Core.IFakeObjectCall call, int argumentIndex) { }
+        [return: System.Diagnostics.CodeAnalysis.MaybeNullAttribute()]
         public static T GetArgument<[System.Runtime.CompilerServices.NullableAttribute(2)]  T>(this FakeItEasy.Core.IFakeObjectCall call, string argumentName) { }
     }
     [System.Runtime.CompilerServices.NullableAttribute(0)]
