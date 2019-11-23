@@ -32,8 +32,7 @@ namespace FakeItEasy.Expressions.ArgumentConstraints
             }
             catch (Exception ex) when (!(ex is UserCallbackException))
             {
-                FakeManager manager = Fake.TryGetFakeManager(this.ExpectedValue);
-                return manager is object
+                return Fake.TryGetFakeManager(this.ExpectedValue, out var manager)
                     ? manager.FakeObjectDisplayName
                     : this.ExpectedValue.GetType().ToString();
             }
