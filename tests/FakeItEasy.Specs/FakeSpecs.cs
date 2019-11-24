@@ -178,12 +178,12 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
-        public static void TryGetFakeManagerForFakeObject(object fake, bool result, FakeManager manager)
+        public static void TryGetFakeManagerWhenFakeObject(object fake, bool result, FakeManager manager)
         {
             "Given a fake object"
                 .x(() => fake = A.Fake<object>());
 
-            "And I try to get the FakeManager for that object"
+            "When I try to get the FakeManager for that object"
                 .x(() => result = Fake.TryGetFakeManager(fake, out manager));
 
             "Then the result should be true"
@@ -194,12 +194,12 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
-        public static void TryGetFakeManagerForNonFakeObject(object notFake, bool result, FakeManager manager)
+        public static void TryGetFakeManagerWhenNonFakeObject(object notFake, bool result, FakeManager manager)
         {
             "Given a non-fake object"
                 .x(() => notFake = new object());
 
-            "And I try to get the FakeManager for that object"
+            "When I try to get the FakeManager for that object"
                 .x(() => result = Fake.TryGetFakeManager(notFake, out manager));
 
             "Then the result should be false"
@@ -215,7 +215,7 @@ namespace FakeItEasy.Specs
             "Given a fake object"
                 .x(() => fake = A.Fake<object>());
 
-            "And I check if that object is fake"
+            "When I check if that object is fake"
                 .x(() => result = Fake.IsFake(fake));
 
             "Then the result should be true"
@@ -228,7 +228,7 @@ namespace FakeItEasy.Specs
             "Given a non-fake object"
                 .x(() => fake = new object());
 
-            "And I check if that object is fake"
+            "When I check if that object is fake"
                 .x(() => result = Fake.IsFake(fake));
 
             "Then the result should be true"

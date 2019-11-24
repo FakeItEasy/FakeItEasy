@@ -1,11 +1,9 @@
-using FakeItEasy.Core;
-using FluentAssertions;
-
 namespace FakeItEasy.Tests
 {
     using System;
     using System.Linq.Expressions;
     using Xunit;
+    using FakeItEasy.Core;
 
     public class FakeTests
     {
