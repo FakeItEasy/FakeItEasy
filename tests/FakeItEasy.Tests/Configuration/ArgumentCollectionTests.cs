@@ -14,12 +14,14 @@ namespace FakeItEasy.Tests.Configuration
     using FluentAssertions;
     using Xunit;
 
+    using static FakeItEasy.Tests.TestHelpers.ExpressionHelper;
+
     public class ArgumentCollectionTests
     {
         [Fact]
         public void Constructor_is_properly_guarded()
         {
-            var method = typeof(IFoo).GetMethod("Bar", new[] { typeof(object), typeof(object) });
+            var method = GetMethodInfo<IFoo>(x => x.Bar(new object(), new object()));
 #pragma warning disable CA1806 // Do not ignore method results
             Expression<Action> call = () => new ArgumentCollection(new object[] { "foo", 1 }, method);
 #pragma warning restore CA1806 // Do not ignore method results
@@ -29,7 +31,7 @@ namespace FakeItEasy.Tests.Configuration
         [Fact]
         public void Constructor_that_takes_method_should_set_argument_names()
         {
-            var method = typeof(IFoo).GetMethod("Bar", new[] { typeof(object), typeof(object) });
+            var method = GetMethodInfo<IFoo>(x => x.Bar(new object(), new object()));
 
             var arguments = new ArgumentCollection(new object[] { "foo", "bar" }, method);
 
