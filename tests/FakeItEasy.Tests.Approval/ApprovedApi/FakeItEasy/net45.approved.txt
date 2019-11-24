@@ -248,6 +248,8 @@ namespace FakeItEasy
         public static void ClearRecordedCalls(object fakedObject) { }
         public static System.Collections.Generic.IEnumerable<FakeItEasy.Core.ICompletedFakeObjectCall> GetCalls(object fakedObject) { }
         public static FakeItEasy.Core.FakeManager GetFakeManager(object fakedObject) { }
+        public static bool IsFake(object potentialFake) { }
+        public static bool TryGetFakeManager(object potentialFake, out FakeItEasy.Core.FakeManager fakeManager) { }
     }
     public class static FakeObjectCallExtensions
     {

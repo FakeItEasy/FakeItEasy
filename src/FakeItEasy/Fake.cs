@@ -71,15 +71,29 @@ namespace FakeItEasy
         /// <summary>
         /// Gets the fake manager associated with the proxy, if any.
         /// </summary>
-        /// <param name="fakedObject">The proxy to get the manager from.</param>
-        /// <returns>The fake manager, or <c>null</c> if <paramref name="fakedObject"/> is not actually a faked object.</returns>
+        /// <param name="potentialFake">The potential proxy to get the manager from.</param>
+        /// <param name="fakeManager">The fake manager, or <c>null</c> if <paramref name="potentialFake"/> is not actually a faked object.</param>
+        /// <returns><c>true</c> if <paramref name="potentialFake"/> is a faked object, else <c>false</c>.</returns>
         [DebuggerStepThrough]
-        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "object", Justification = "The term fake object does not refer to the type System.Object.")]
-        internal static FakeManager TryGetFakeManager(object fakedObject)
+        public static bool TryGetFakeManager(object potentialFake, out FakeManager fakeManager)
         {
-            Guard.AgainstNull(fakedObject, nameof(fakedObject));
+            Guard.AgainstNull(potentialFake, nameof(potentialFake));
 
-            return FakeManagerAccessor.TryGetFakeManager(fakedObject);
+            fakeManager = FakeManagerAccessor.TryGetFakeManager(potentialFake);
+            return fakeManager is object;
+        }
+
+        /// <summary>
+        /// Check if an object is a fake.
+        /// </summary>
+        /// <param name="potentialFake">The object to test.</param>
+        /// <returns><c>true</c> if <paramref name="potentialFake"/> is a faked object, else <c>false</c>.</returns>
+        [DebuggerStepThrough]
+        public static bool IsFake(object potentialFake)
+        {
+            Guard.AgainstNull(potentialFake, nameof(potentialFake));
+
+            return TryGetFakeManager(potentialFake, out _);
         }
     }
 }
