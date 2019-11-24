@@ -26,6 +26,12 @@ namespace FakeItEasy.Tests.TestHelpers
             return CreateFakeCall(A.Fake<TFake>(), callSpecification);
         }
 
+        public static MethodInfo GetMethodInfo<T>(Expression<Action<T>> callSpecification) =>
+            GetMethodInfo((LambdaExpression)callSpecification);
+
+        public static MethodInfo GetMethodInfo<T, TResult>(Expression<Func<T, TResult>> callSpecification) =>
+            GetMethodInfo((LambdaExpression)callSpecification);
+
         private static IInterceptedFakeObjectCall CreateFakeCall<TFake>(TFake fakedObject, LambdaExpression callSpecification)
         {
             var result = A.Fake<IInterceptedFakeObjectCall>();
@@ -39,15 +45,15 @@ namespace FakeItEasy.Tests.TestHelpers
 
         private static MethodInfo GetMethodInfo(LambdaExpression callSpecification)
         {
-            var methodExpression = callSpecification.Body as MethodCallExpression;
-            if (methodExpression is object)
+            if (callSpecification.Body is MethodCallExpression methodExpression)
             {
                 return methodExpression.Method;
             }
 
             var memberExpression = (MemberExpression)callSpecification.Body;
             var property = (PropertyInfo)memberExpression.Member;
-            return property.GetGetMethod(true);
+            return property.GetGetMethod(true)
+                ?? throw new ArgumentException("Expression does not represent a method call or propery getter.", nameof(callSpecification));
         }
 
         private static ArgumentCollection CreateArgumentCollection(LambdaExpression callSpecification)
