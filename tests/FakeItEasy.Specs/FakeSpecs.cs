@@ -231,7 +231,7 @@ namespace FakeItEasy.Specs
             "When I check if that object is fake"
                 .x(() => result = Fake.IsFake(fake));
 
-            "Then the result should be true"
+            "Then the result should be false"
                 .x(() => result.Should().BeFalse());
         }
     }
