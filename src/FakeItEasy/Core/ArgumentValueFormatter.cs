@@ -96,9 +96,9 @@ namespace FakeItEasy.Core
             {
                 Guard.AgainstNull(argumentValue, nameof(argumentValue));
 
-                var manager = Fake.TryGetFakeManager(argumentValue);
-
-                return manager?.FakeObjectDisplayName ?? argumentValue.ToString();
+                return Fake.TryGetFakeManager(argumentValue, out var manager)
+                    ? manager.FakeObjectDisplayName
+                    : argumentValue.ToString();
             }
         }
 

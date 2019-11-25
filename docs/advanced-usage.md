@@ -44,7 +44,11 @@ Assert.Equal("Baz", calls[1].Method.Name);
 
 ## The `FakeManager` object
 
-The `Fake.GetFakeManager` method returns a `FakeManager` object that can be used to get information on the fake and manipulate its call rules.
+The `Fake.GetFakeManager` method returns a `FakeManager` object that can be used to get information on the fake and manipulate its call rules. 
+
+`Fake.GetFakeManager` throws an exception if the provided object is not a fake. To test if an object is a fake you can call `Fake.IsFake`
+or try get the `FakeManager` with `Fake.TryGetFakeManager` which will return true if the provided object is a fake and also give you the `FakeManager`
+for that object via an out parameter.
 
 ### Getting the type of the fake
 
