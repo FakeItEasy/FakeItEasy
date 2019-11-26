@@ -291,10 +291,7 @@ namespace FakeItEasy.IntegrationTests
                 return 1;
             }
 
-            public T GenericNonVirtualFunction<T>()
-            {
-                return default(T);
-            }
+            public T GenericNonVirtualFunction<T>() where T : struct => default;
         }
     }
 }
