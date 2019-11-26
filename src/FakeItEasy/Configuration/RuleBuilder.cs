@@ -3,6 +3,7 @@ namespace FakeItEasy.Configuration
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Linq;
     using System.Linq.Expressions;
 #if FEATURE_NETCORE_REFLECTION
     using System.Reflection;
@@ -119,7 +120,15 @@ namespace FakeItEasy.Configuration
 
         public virtual IAfterCallConfiguredConfiguration<IVoidConfiguration> CallsWrappedMethod()
         {
-            throw new NotImplementedException();
+            var wrappedObjectRule = this.manager.Rules.OfType<WrappedObjectRule>().FirstOrDefault();
+            if (wrappedObjectRule is null)
+            {
+                throw new FakeConfigurationException(ExceptionMessages.NotAWrappingFake);
+            }
+
+            this.RuleBeingBuilt.UseApplicator(x => { });
+            this.RuleBeingBuilt.CallWrappedMethodOn = wrappedObjectRule.WrappedObject;
+            return this;
         }
 
         public virtual IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily(Func<IFakeObjectCall, ICollection<object?>> valueProducer)

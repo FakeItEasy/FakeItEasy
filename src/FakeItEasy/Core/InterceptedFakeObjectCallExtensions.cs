@@ -1,6 +1,8 @@
 namespace FakeItEasy.Core
 {
+    using System.Reflection;
     using FakeItEasy.Creation;
+    using static ObjectMembers;
 
     internal static class InterceptedFakeObjectCallExtensions
     {
@@ -10,5 +12,50 @@ namespace FakeItEasy.Core
             DummyManager.TryCreateDummy(call.Method.ReturnType, new LoopDetectingResolutionContext(), out object? result)
                 ? result
                 : call.Method.ReturnType.GetDefaultValue();
+
+        public static void CallWrappedMethod(this IInterceptedFakeObjectCall fakeObjectCall, object wrappedObject)
+        {
+            Guard.AgainstNull(fakeObjectCall, nameof(fakeObjectCall));
+            Guard.AgainstNull(wrappedObject, nameof(wrappedObject));
+
+            var parameters = fakeObjectCall.Arguments.GetUnderlyingArgumentsArray();
+            object returnValue;
+            try
+            {
+                if (fakeObjectCall.Method.IsSameMethodAs(EqualsMethod))
+                {
+                    var arg = parameters[0];
+                    if (ReferenceEquals(arg, fakeObjectCall.FakedObject))
+                    {
+                        // fake.Equals(fake) returns true
+                        returnValue = true;
+                    }
+                    else if (ReferenceEquals(arg, wrappedObject))
+                    {
+                        // fake.Equals(wrappedObject) returns wrappedObject.Equals(fake)
+                        // This will be false if Equals isn't overriden (reference equality)
+                        // and true if Equals is overriden to implement value semantics.
+                        // This approach has the benefit of keeping Equals symmetrical.
+                        returnValue = wrappedObject.Equals(fakeObjectCall.FakedObject);
+                    }
+                    else
+                    {
+                        // fake.Equals(somethingElse) is delegated to the wrapped object (no special case)
+                        returnValue = wrappedObject.Equals(arg);
+                    }
+                }
+                else
+                {
+                    returnValue = fakeObjectCall.Method.Invoke(wrappedObject, parameters);
+                }
+            }
+            catch (TargetInvocationException ex)
+            {
+                ex.InnerException?.Rethrow();
+                throw;
+            }
+
+            fakeObjectCall.SetReturnValue(returnValue);
+        }
     }
 }
