@@ -176,5 +176,63 @@ namespace FakeItEasy.Specs
             "Then the recorded call's return value should be the value that was actually returned"
                 .x(() => recordedCall.ReturnValue.Should().Be(returnValue));
         }
+
+        [Scenario]
+        public static void TryGetFakeManagerWhenFakeObject(object fake, bool result, FakeManager manager)
+        {
+            "Given a fake object"
+                .x(() => fake = A.Fake<object>());
+
+            "When I try to get the FakeManager for that object"
+                .x(() => result = Fake.TryGetFakeManager(fake, out manager));
+
+            "Then the result should be true"
+                .x(() => result.Should().BeTrue());
+
+            "And manager should be set"
+                .x(() => manager.Should().NotBeNull());
+        }
+
+        [Scenario]
+        public static void TryGetFakeManagerWhenNonFakeObject(object notFake, bool result, FakeManager manager)
+        {
+            "Given a non-fake object"
+                .x(() => notFake = new object());
+
+            "When I try to get the FakeManager for that object"
+                .x(() => result = Fake.TryGetFakeManager(notFake, out manager));
+
+            "Then the result should be false"
+                .x(() => result.Should().BeFalse());
+
+            "And manager should be null"
+                .x(() => manager.Should().BeNull());
+        }
+
+        [Scenario]
+        public static void FakeIsFake(object fake, bool result)
+        {
+            "Given a fake object"
+                .x(() => fake = A.Fake<object>());
+
+            "When I check if that object is fake"
+                .x(() => result = Fake.IsFake(fake));
+
+            "Then the result should be true"
+                .x(() => result.Should().BeTrue());
+        }
+
+        [Scenario]
+        public static void NonFakeIsIsNotFake(object fake, bool result)
+        {
+            "Given a non-fake object"
+                .x(() => fake = new object());
+
+            "When I check if that object is fake"
+                .x(() => result = Fake.IsFake(fake));
+
+            "Then the result should be false"
+                .x(() => result.Should().BeFalse());
+        }
     }
 }

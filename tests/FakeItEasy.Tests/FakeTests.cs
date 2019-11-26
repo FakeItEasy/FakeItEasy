@@ -2,6 +2,7 @@ namespace FakeItEasy.Tests
 {
     using System;
     using System.Linq.Expressions;
+    using FakeItEasy.Core;
     using Xunit;
 
     public class FakeTests
@@ -51,6 +52,19 @@ namespace FakeItEasy.Tests
 
             // Assert
             Expression<Action> call = () => Fake.ClearRecordedCalls(A.Dummy<object>());
+            call.Should().BeNullGuarded();
+        }
+
+        [Fact]
+        public void TryGetFakeManager_should_be_guarded()
+        {
+            // Arrange
+
+            // Act
+
+            // Assert
+            FakeManager manager;
+            Expression<Action> call = () => Fake.TryGetFakeManager(A.Dummy<object>(), out manager);
             call.Should().BeNullGuarded();
         }
     }
