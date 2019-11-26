@@ -117,6 +117,11 @@ namespace FakeItEasy.Configuration
             return this;
         }
 
+        public virtual IAfterCallConfiguredConfiguration<IVoidConfiguration> CallsWrappedMethod()
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily(Func<IFakeObjectCall, ICollection<object?>> valueProducer)
         {
             Guard.AgainstNull(valueProducer, nameof(valueProducer));
@@ -222,6 +227,12 @@ namespace FakeItEasy.Configuration
             public IAfterCallConfiguredConfiguration<IReturnValueConfiguration<TMember>> CallsBaseMethod()
             {
                 this.ParentConfiguration.CallsBaseMethod();
+                return this;
+            }
+
+            public IAfterCallConfiguredConfiguration<IReturnValueConfiguration<TMember>> CallsWrappedMethod()
+            {
+                this.ParentConfiguration.CallsWrappedMethod();
                 return this;
             }
 

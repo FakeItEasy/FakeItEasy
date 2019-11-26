@@ -52,6 +52,10 @@ namespace FakeItEasy.Configuration
             AsPropertySetterConfiguration(this.CreateArgumentValidationConfiguration(this.parsedSetterExpression))
                 .CallsBaseMethod();
 
+        public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> CallsWrappedMethod() =>
+            AsPropertySetterConfiguration(this.CreateArgumentValidationConfiguration(this.parsedSetterExpression))
+                .CallsWrappedMethod();
+
         public UnorderedCallAssertion MustHaveHappened(int numberOfTimes, Times timesOption)
         {
             Guard.AgainstNull(timesOption, nameof(timesOption));
@@ -120,6 +124,9 @@ namespace FakeItEasy.Configuration
 
             public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> CallsBaseMethod() =>
                 new PropertySetterAfterCallConfiguredAdapter(this.voidConfiguration.CallsBaseMethod());
+
+            public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> CallsWrappedMethod() =>
+                new PropertySetterAfterCallConfiguredAdapter(this.voidConfiguration.CallsWrappedMethod());
 
             public UnorderedCallAssertion MustHaveHappened(int numberOfTimes, Times timesOption)
             {

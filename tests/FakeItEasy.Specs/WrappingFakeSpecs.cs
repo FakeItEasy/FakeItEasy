@@ -1,6 +1,7 @@
 namespace FakeItEasy.Specs
 {
     using System;
+    using FakeItEasy.Configuration;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using Xbehave;
@@ -203,6 +204,72 @@ namespace FakeItEasy.Specs
 
             "Then it should return true"
                 .x(() => equals.Should().BeTrue());
+        }
+
+        [Scenario]
+        public static void VoidCallsWrappedMethod(Foo realObject, IFoo wrapper, bool callbackWasCalled)
+        {
+            "Given a real object"
+                .x(() => realObject = new Foo());
+
+            "And a fake wrapping this object"
+                .x(() => wrapper = A.Fake<IFoo>(o => o.Wrapping(realObject)));
+
+            "When a void method on the fake is configured to invoke a callback and call the wrapped method"
+                .x(() => A.CallTo(() => wrapper.VoidMethod("hello"))
+                    .Invokes(() => callbackWasCalled = true)
+                    .CallsWrappedMethod());
+
+            "And the configured method is called on the fake"
+                .x(() => wrapper.VoidMethod("hello"));
+
+            "Then the callback is invoked"
+                .x(() => callbackWasCalled.Should().BeTrue());
+
+            "And the real object's method is called"
+                .x(() => realObject.VoidMethodCalled.Should().BeTrue());
+        }
+
+        [Scenario]
+        public static void NonVoidCallsWrappedMethod(Foo realObject, IFoo wrapper, bool callbackWasCalled, int returnValue)
+        {
+            "Given a real object"
+                .x(() => realObject = new Foo());
+
+            "And a fake wrapping this object"
+                .x(() => wrapper = A.Fake<IFoo>(o => o.Wrapping(realObject)));
+
+            "When a non-void method on the fake is configured to invoke a callback and call the wrapped method"
+                .x(() => A.CallTo(() => wrapper.NonVoidMethod("hello"))
+                    .Invokes(() => callbackWasCalled = true)
+                    .CallsWrappedMethod());
+
+            "And the configured method is called on the fake"
+                .x(() => returnValue = wrapper.NonVoidMethod("hello"));
+
+            "Then the callback is invoked"
+                .x(() => callbackWasCalled.Should().BeTrue());
+
+            "And the real object's method is called"
+                .x(() => realObject.NonVoidMethodCalled.Should().BeTrue());
+
+            "And the wrapper returns the value returned by the real object's method"
+                .x(() => returnValue.Should().Be(5));
+        }
+
+        [Scenario]
+        public static void NotAWrappingFakeCallsWrappedMethod(IFoo fake, Exception exception)
+        {
+            "Given a non-wrapping fake"
+                .x(() => fake = A.Fake<IFoo>());
+
+            "When a method on the fake is configured to call the wrapped method"
+                .x(() => exception = Record.Exception(() => A.CallTo(() => fake.VoidMethod("hello")).CallsWrappedMethod()));
+
+            "Then it throws a FakeConfigurationException"
+                .x(() => exception.Should()
+                    .BeAnExceptionOfType<FakeConfigurationException>()
+                    .WithMessage("The configured fake is not a wrapping fake."));
         }
 
         public class Foo : IFoo

@@ -7,6 +7,7 @@ namespace FakeItEasy.Configuration
         IExceptionThrowerConfiguration<IVoidConfiguration>,
         ICallbackConfiguration<IVoidConfiguration>,
         ICallBaseConfiguration<IVoidConfiguration>,
+        ICallWrappedMethodConfiguration<IVoidConfiguration>,
         IOutAndRefParametersConfiguration<IVoidConfiguration>,
         IAssertConfiguration,
         IDoNothingConfiguration<IVoidConfiguration>

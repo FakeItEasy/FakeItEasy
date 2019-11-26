@@ -53,6 +53,9 @@ namespace FakeItEasy.Configuration
         public IAfterCallConfiguredConfiguration<IVoidConfiguration> CallsBaseMethod() =>
             this.VoidConfiguration.CallsBaseMethod();
 
+        public IAfterCallConfiguredConfiguration<IVoidConfiguration> CallsWrappedMethod() =>
+            this.VoidConfiguration.CallsWrappedMethod();
+
         public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily(Func<IFakeObjectCall, ICollection<object?>> valueProducer) =>
             this.VoidConfiguration.AssignsOutAndRefParametersLazily(valueProducer);
 
