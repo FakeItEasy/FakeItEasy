@@ -193,7 +193,7 @@ namespace FakeItEasy
         public static System.Collections.Generic.IEnumerable<FakeItEasy.Core.ICompletedFakeObjectCall> GetCalls(object fakedObject) { }
         public static FakeItEasy.Core.FakeManager GetFakeManager(object fakedObject) { }
         public static bool IsFake(object potentialFake) { }
-        public static bool TryGetFakeManager(object potentialFake, out FakeItEasy.Core.FakeManager fakeManager) { }
+        public static bool TryGetFakeManager(object potentialFake, [System.Runtime.CompilerServices.NullableAttribute(2)] out FakeItEasy.Core.FakeManager fakeManager) { }
     }
     [System.Runtime.CompilerServices.NullableAttribute(0)]
     public class static FakeObjectCallExtensions
