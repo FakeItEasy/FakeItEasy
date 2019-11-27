@@ -38,7 +38,7 @@ namespace FakeItEasy
     public class static ArgumentConstraintManagerExtensions
     {
         public static string Contains(this FakeItEasy.IArgumentConstraintManager<string> manager, string value) { }
-        public static T Contains<[System.Runtime.CompilerServices.NullableAttribute(0)]  T>(this FakeItEasy.IArgumentConstraintManager<T> manager, object value)
+        public static T Contains<[System.Runtime.CompilerServices.NullableAttribute(0)]  T>(this FakeItEasy.IArgumentConstraintManager<T> manager, [System.Runtime.CompilerServices.NullableAttribute(2)] object value)
             where T : System.Collections.IEnumerable { }
         public static string EndsWith(this FakeItEasy.IArgumentConstraintManager<string> manager, string value) { }
         public static System.Threading.CancellationToken IsCanceled(this FakeItEasy.IArgumentConstraintManager<System.Threading.CancellationToken> manager) { }
@@ -65,10 +65,14 @@ namespace FakeItEasy
         public static T IsSameAs<[System.Runtime.CompilerServices.NullableAttribute(2)]  T>(this FakeItEasy.IArgumentConstraintManager<T> manager, T value) { }
         public static T IsSameSequenceAs<[System.Runtime.CompilerServices.NullableAttribute(0)]  T>(this FakeItEasy.IArgumentConstraintManager<T> manager, System.Collections.IEnumerable values)
             where T : System.Collections.IEnumerable { }
-        public static T IsSameSequenceAs<[System.Runtime.CompilerServices.NullableAttribute(0)]  T>(this FakeItEasy.IArgumentConstraintManager<T> manager, params object[] values)
+        public static T IsSameSequenceAs<[System.Runtime.CompilerServices.NullableAttribute(0)]  T>(this FakeItEasy.IArgumentConstraintManager<T> manager, [System.Runtime.CompilerServices.NullableAttribute(new byte[] {
+                1,
+                2})] params object[] values)
             where T : System.Collections.IEnumerable { }
         public static T Matches<[System.Runtime.CompilerServices.NullableAttribute(2)]  T>(this FakeItEasy.IArgumentConstraintManager<T> manager, System.Func<T, bool> predicate, string description) { }
-        public static T Matches<[System.Runtime.CompilerServices.NullableAttribute(2)]  T>(this FakeItEasy.IArgumentConstraintManager<T> manager, System.Func<T, bool> predicate, string descriptionFormat, params object[] args) { }
+        public static T Matches<[System.Runtime.CompilerServices.NullableAttribute(2)]  T>(this FakeItEasy.IArgumentConstraintManager<T> manager, System.Func<T, bool> predicate, string descriptionFormat, [System.Runtime.CompilerServices.NullableAttribute(new byte[] {
+                1,
+                2})] params object[] args) { }
         public static T Matches<[System.Runtime.CompilerServices.NullableAttribute(2)]  T>(this FakeItEasy.IArgumentConstraintManager<T> manager, System.Linq.Expressions.Expression<System.Func<T, bool>> predicate) { }
         public static T NullCheckedMatches<[System.Runtime.CompilerServices.NullableAttribute(2)]  T>(this FakeItEasy.IArgumentConstraintManager<T> manager, System.Func<T, bool> predicate, System.Action<FakeItEasy.IOutputWriter> descriptionWriter) { }
         public static string StartsWith(this FakeItEasy.IArgumentConstraintManager<string> manager, string value) { }
@@ -189,12 +193,14 @@ namespace FakeItEasy
         public static System.Collections.Generic.IEnumerable<FakeItEasy.Core.ICompletedFakeObjectCall> GetCalls(object fakedObject) { }
         public static FakeItEasy.Core.FakeManager GetFakeManager(object fakedObject) { }
         public static bool IsFake(object potentialFake) { }
-        public static bool TryGetFakeManager(object potentialFake, out FakeItEasy.Core.FakeManager fakeManager) { }
+        public static bool TryGetFakeManager(object potentialFake, [System.Diagnostics.CodeAnalysis.NotNullWhenAttribute(true)] [System.Runtime.CompilerServices.NullableAttribute(2)] out FakeItEasy.Core.FakeManager fakeManager) { }
     }
     [System.Runtime.CompilerServices.NullableAttribute(0)]
     public class static FakeObjectCallExtensions
     {
+        [return: System.Diagnostics.CodeAnalysis.MaybeNullAttribute()]
         public static T GetArgument<[System.Runtime.CompilerServices.NullableAttribute(2)]  T>(this FakeItEasy.Core.IFakeObjectCall call, int argumentIndex) { }
+        [return: System.Diagnostics.CodeAnalysis.MaybeNullAttribute()]
         public static T GetArgument<[System.Runtime.CompilerServices.NullableAttribute(2)]  T>(this FakeItEasy.Core.IFakeObjectCall call, string argumentName) { }
     }
     [System.Runtime.CompilerServices.NullableAttribute(0)]
