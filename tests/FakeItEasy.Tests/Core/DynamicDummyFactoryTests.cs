@@ -21,9 +21,7 @@ namespace FakeItEasy.Tests.Core
 
             var container = this.CreateFactory();
 
-            object dummy;
-
-            container.TryCreateDummyObject(typeof(TypeWithDummyFactory), out dummy).Should().BeTrue();
+            container.TryCreateDummyObject(typeof(TypeWithDummyFactory), out object? dummy).Should().BeTrue();
             dummy.Should().BeOfType<TypeWithDummyFactory>();
         }
 
@@ -31,10 +29,7 @@ namespace FakeItEasy.Tests.Core
         public void TryCreateDummyObject_should_return_false_when_no_factory_exists()
         {
             var container = this.CreateFactory();
-
-            object dummy;
-
-            container.TryCreateDummyObject(typeof(TypeWithDummyFactory), out dummy).Should().BeFalse();
+            container.TryCreateDummyObject(typeof(TypeWithDummyFactory), out _).Should().BeFalse();
         }
 
         [Fact]
@@ -47,8 +42,7 @@ namespace FakeItEasy.Tests.Core
             var container = this.CreateFactory();
 
             // Act
-            object dummy;
-            var result = container.TryCreateDummyObject(typeof(TypeWithDummyFactory), out dummy);
+            var result = container.TryCreateDummyObject(typeof(TypeWithDummyFactory), out _);
 
             // Assert
             result.Should().BeTrue();

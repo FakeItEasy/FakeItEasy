@@ -26,7 +26,7 @@ namespace FakeItEasy.Tests
         [Fact]
         public void Assert_should_throw_when_call_is_null()
         {
-            var exception = Record.Exception(() => ((Expression<Action>)null).Should().BeNullGuarded());
+            var exception = Record.Exception(() => ((Expression<Action>)null!).Should().BeNullGuarded());
             exception.Should().BeAnExceptionOfType<ArgumentNullException>();
         }
 
@@ -193,7 +193,7 @@ namespace FakeItEasy.Tests
         }
 
         [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "nullIsValid", Justification = "Required for testing.")]
-        private void FirstArgumentMayBeNull(string nullIsValid, string nullIsNotValid)
+        private void FirstArgumentMayBeNull(string? nullIsValid, string nullIsNotValid)
         {
             if (nullIsNotValid is null)
             {

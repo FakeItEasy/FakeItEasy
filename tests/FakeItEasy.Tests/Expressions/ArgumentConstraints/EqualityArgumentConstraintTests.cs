@@ -12,12 +12,12 @@ namespace FakeItEasy.Tests.ExpressionsConstraints
     {
         public EqualityArgumentConstraintTests()
         {
-            this.ConstraintField = new EqualityArgumentConstraint(1);
+            this.Constraint = new EqualityArgumentConstraint(1);
         }
 
         protected override string ExpectedDescription => "1";
 
-        public static IEnumerable<object[]> InvalidValues()
+        public static IEnumerable<object?[]> InvalidValues()
         {
             return TestCases.FromObject(
                 null,
@@ -27,7 +27,7 @@ namespace FakeItEasy.Tests.ExpressionsConstraints
                 " foo ");
         }
 
-        public static IEnumerable<object[]> ValidValues()
+        public static IEnumerable<object?[]> ValidValues()
         {
             return TestCases.FromObject(
                 1);
@@ -50,7 +50,7 @@ namespace FakeItEasy.Tests.ExpressionsConstraints
         [Fact]
         public override void Constraint_should_provide_correct_description()
         {
-            this.ConstraintField.ToString().Should().Be("1");
+            this.Constraint.ToString().Should().Be("1");
         }
 
         [Fact]

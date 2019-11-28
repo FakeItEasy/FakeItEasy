@@ -9,7 +9,7 @@ namespace FakeItEasy.Analyzer.VisualBasic.Tests
 
     public class ArgumentConstraintOutsideCallSpecAnalyzerTests : DiagnosticVerifier
     {
-        public static IEnumerable<object[]> Constraints =>
+        public static IEnumerable<object?[]> Constraints =>
             TestCases.FromObject(
                 "A(Of Integer).Ignored",
                 "A(Of Integer).That.IsEqualTo(42)",

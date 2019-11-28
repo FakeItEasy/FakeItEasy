@@ -41,14 +41,14 @@ namespace FakeItEasy.Tests.TestHelpers
         /// </summary>
         /// <param name="cases">The input test objects.</param>
         /// <returns>A sequence of test cases.</returns>
-        public static IEnumerable<object[]> FromObject(params object[] cases)
+        public static IEnumerable<object?[]> FromObject(params object?[] cases)
         {
             return cases.Select(@case => new[] { @case });
         }
 
-        public static IEnumerable<object[]> FromObject<T>(params T[] cases)
+        public static IEnumerable<object?[]> FromObject<T>(params T[] cases)
         {
-            return cases.Select(@case => new object[] { @case });
+            return cases.Select(@case => new object?[] { @case });
         }
     }
 }

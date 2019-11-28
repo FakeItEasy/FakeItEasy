@@ -909,7 +909,7 @@ namespace FakeItEasy.Specs
 
         protected abstract T CreateFake<T>(Action<IFakeOptions<T>> optionsBuilder) where T : class;
 
-        private static IEnumerable<object[]> SupportedTypes()
+        private static IEnumerable<object?[]> SupportedTypes()
         {
             return TestCases.FromObject(
                 new FakeCreator<IInterfaceType>(),

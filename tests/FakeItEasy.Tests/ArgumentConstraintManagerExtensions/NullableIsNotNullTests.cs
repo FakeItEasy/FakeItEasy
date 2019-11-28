@@ -8,14 +8,14 @@ namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
     {
         protected override string ExpectedDescription => "NOT NULL";
 
-        public static IEnumerable<object[]> ValidValues()
+        public static IEnumerable<object?[]> ValidValues()
         {
             return TestCases.FromObject(0, -1, 42);
         }
 
-        public static IEnumerable<object[]> InvalidValues()
+        public static IEnumerable<object?[]> InvalidValues()
         {
-            return TestCases.FromObject((object)null);
+            return TestCases.FromObject((object?)null);
         }
 
         [Theory]

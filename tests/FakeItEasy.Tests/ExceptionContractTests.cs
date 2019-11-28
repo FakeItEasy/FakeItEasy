@@ -8,39 +8,15 @@ namespace FakeItEasy.Tests
     public abstract class ExceptionContractTests<T> where T : Exception
     {
         [Fact]
-        public void Exception_should_provide_message_only_constructor()
-        {
-            // Arrange
-
-            // Act
-            var constructor = this.GetMessageOnlyConstructor();
-
-            // Assert
-            constructor.Should().NotBeNull("Exception classes should provide a public message only constructor.");
-        }
-
-        [Fact]
         public void Constructor_that_takes_message_should_set_message()
         {
             // Arrange
 
             // Act
-            var result = (T)Activator.CreateInstance(typeof(T), "A message");
+            var result = (T)Activator.CreateInstance(typeof(T), "A message") !;
 
             // Assert
             result.Message.Should().StartWith("A message");
-        }
-
-        [Fact]
-        public void Exception_should_provide_message_and_inner_exception_constructor()
-        {
-            // Arrange
-            var constructor = this.GetMessageAndInnerExceptionConstructor();
-
-            // Act
-
-            // Assert
-            constructor.Should().NotBeNull("exception classes should provide a public constructor that takes message and inner exception.");
         }
 
         [Fact]
@@ -49,7 +25,7 @@ namespace FakeItEasy.Tests
             // Arrange
 
             // Act
-            var result = (T)Activator.CreateInstance(typeof(T), "A message", new InvalidOperationException());
+            var result = (T)Activator.CreateInstance(typeof(T), "A message", new InvalidOperationException()) !;
 
             // Assert
             result.Message.Should().Be("A message");
@@ -62,34 +38,22 @@ namespace FakeItEasy.Tests
             var innerException = new InvalidOperationException();
 
             // Act
-            var result = (T)Activator.CreateInstance(typeof(T), string.Empty, innerException);
+            var result = (T)Activator.CreateInstance(typeof(T), string.Empty, innerException) !;
 
             // Assert
             result.InnerException.Should().Be(innerException);
         }
 
         [Fact]
-        public void Exception_should_provide_default_constructor()
+        public void Constructor_without_parameters_should_work()
         {
             // Arrange
 
             // Act
-            var constructor = typeof(T).GetConstructor(Type.EmptyTypes);
+            var result = (T)Activator.CreateInstance(typeof(T)) !;
 
             // Assert
-            constructor.Should().NotBeNull("exception classes should provide a public default constructor.");
-        }
-
-        protected abstract T CreateException();
-
-        private ConstructorInfo GetMessageAndInnerExceptionConstructor()
-        {
-            return typeof(T).GetConstructor(new[] { typeof(string), typeof(Exception) });
-        }
-
-        private ConstructorInfo GetMessageOnlyConstructor()
-        {
-            return typeof(T).GetConstructor(new[] { typeof(string) });
+            result.Should().NotBeNull();
         }
     }
 }

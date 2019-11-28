@@ -137,7 +137,7 @@ namespace FakeItEasy.Tests
             // Arrange
             const string Argument = "argument";
             bool actionIsInvoked = false;
-            string collectedArgument = null;
+            string? collectedArgument = null;
 
             var fake = A.Fake<IInterface>();
 
@@ -246,8 +246,8 @@ namespace FakeItEasy.Tests
             const string SecondArgument = "second argument";
 
             bool actionIsInvoked = false;
-            string firstCollectedArgument = null;
-            string secondCollectedArgument = null;
+            string? firstCollectedArgument = null;
+            string? secondCollectedArgument = null;
 
             var fake = A.Fake<IInterface>();
 
@@ -378,9 +378,9 @@ namespace FakeItEasy.Tests
             const string ThirdArgument = "third argument";
 
             bool actionIsInvoked = false;
-            string firstCollectedArgument = null;
-            string secondCollectedArgument = null;
-            string thirdCollectedArgument = null;
+            string? firstCollectedArgument = null;
+            string? secondCollectedArgument = null;
+            string? thirdCollectedArgument = null;
 
             var fake = A.Fake<IInterface>();
 
@@ -534,10 +534,10 @@ namespace FakeItEasy.Tests
             const string FourthArgument = "fourth argument";
 
             bool actionIsInvoked = false;
-            string firstCollectedArgument = null;
-            string secondCollectedArgument = null;
-            string thirdCollectedArgument = null;
-            string fourthCollectedArgument = null;
+            string? firstCollectedArgument = null;
+            string? secondCollectedArgument = null;
+            string? thirdCollectedArgument = null;
+            string? fourthCollectedArgument = null;
 
             var fake = A.Fake<IInterface>();
 

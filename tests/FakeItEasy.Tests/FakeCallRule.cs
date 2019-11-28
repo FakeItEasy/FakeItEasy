@@ -5,9 +5,9 @@ namespace FakeItEasy.Tests
 
     public sealed class FakeCallRule : IFakeObjectCallRule
     {
-        public Func<IFakeObjectCall, bool> IsApplicableTo { get; set; }
+        public Func<IFakeObjectCall, bool> IsApplicableTo { get; set; } = call => true;
 
-        public Action<IInterceptedFakeObjectCall> Apply { get; set; }
+        public Action<IInterceptedFakeObjectCall> Apply { get; set; } = call => { };
 
         public bool ApplyWasCalled { get; set; }
 
@@ -22,17 +22,13 @@ namespace FakeItEasy.Tests
         bool IFakeObjectCallRule.IsApplicableTo(IFakeObjectCall invocation)
         {
             this.IsApplicableToWasCalled = true;
-            return this.IsApplicableTo is object ? this.IsApplicableTo(invocation) : false;
+            return this.IsApplicableTo(invocation);
         }
 
         void IFakeObjectCallRule.Apply(IInterceptedFakeObjectCall invocation)
         {
             this.ApplyWasCalled = true;
-
-            if (this.Apply is object)
-            {
-                this.Apply(invocation);
-            }
+            this.Apply(invocation);
         }
     }
 }

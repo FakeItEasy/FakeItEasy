@@ -26,7 +26,7 @@ namespace FakeItEasy.Tests.Configuration
             this.configuration = new AnyCallConfiguration(this.fakeObject, this.callRule, this.configurationFactory);
         }
 
-        public static IEnumerable<object[]> CallSpecificationActions =>
+        public static IEnumerable<object?[]> CallSpecificationActions =>
             TestCases.FromObject<Action<IAnyCallConfigurationWithNoReturnTypeSpecified>>(
                 configuration => configuration.WithReturnType<int>(),
                 configuration => configuration.WithNonVoidReturnType(),
@@ -171,7 +171,7 @@ namespace FakeItEasy.Tests.Configuration
         public void AssignsOutAndRefParametersLazily_delegates_to_configuration_produced_by_factory()
         {
             // Arrange
-            Func<IFakeObjectCall, ICollection<object>> valueProducer = x => new object[] { "a", "b" };
+            Func<IFakeObjectCall, ICollection<object?>> valueProducer = x => new object[] { "a", "b" };
 
             var factoryConfig = this.StubVoidConfig();
             var nextConfig = A.Fake<IAfterCallConfiguredConfiguration<IVoidConfiguration>>();
@@ -189,7 +189,7 @@ namespace FakeItEasy.Tests.Configuration
         public void AssignsOutAndRefParametersLazily_returns_configuration_produced_by_factory()
         {
             // Arrange
-            Func<IFakeObjectCall, ICollection<object>> valueProducer = x => new object[] { "a", "b" };
+            Func<IFakeObjectCall, ICollection<object?>> valueProducer = x => new object[] { "a", "b" };
 
             var factoryConfig = this.StubVoidConfig();
             var nextConfig = A.Fake<IAfterCallConfiguredConfiguration<IVoidConfiguration>>();

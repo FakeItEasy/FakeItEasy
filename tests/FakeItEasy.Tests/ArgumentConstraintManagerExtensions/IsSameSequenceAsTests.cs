@@ -6,25 +6,25 @@ namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
     using Xunit;
 
     public abstract class IsSameSequenceAsTestsBase
-        : ArgumentConstraintTestBase<IEnumerable<string>>
+        : ArgumentConstraintTestBase<IEnumerable<string?>>
     {
         protected override string ExpectedDescription => "\"a\", \"b\", NULL, \"y\", \"z\"";
 
-        public static IEnumerable<object[]> InvalidValues()
+        public static IEnumerable<object?[]> InvalidValues()
         {
             return TestCases.FromObject(
                 new[] { "1", "2", "x", "y" },
                 Array.Empty<string>(),
-                null,
+                (object?)null,
                 new[] { "a", "b", null, "z", "x" },
                 new[] { "a", "b" });
         }
 
-        public static IEnumerable<object[]> ValidValues()
+        public static IEnumerable<object?[]> ValidValues()
         {
             return TestCases.FromObject(
                 new[] { "a", "b", null, "y", "z" },
-                new List<string> { "a", "b", null, "y", "z" });
+                new List<string?> { "a", "b", null, "y", "z" });
         }
 
         [Theory]
@@ -44,15 +44,15 @@ namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
 
     public class IsSameSequenceAsTestsWithEnumerable : IsSameSequenceAsTestsBase
     {
-        protected override void CreateConstraint(INegatableArgumentConstraintManager<IEnumerable<string>> scope)
+        protected override void CreateConstraint(INegatableArgumentConstraintManager<IEnumerable<string?>> scope)
         {
-            scope.IsSameSequenceAs(new List<object> { "a", "b", null, "y", "z" });
+            scope.IsSameSequenceAs(new List<object?> { "a", "b", null, "y", "z" });
         }
     }
 
     public class IsSameSequenceAsTestsWithParams : IsSameSequenceAsTestsBase
     {
-        protected override void CreateConstraint(INegatableArgumentConstraintManager<IEnumerable<string>> scope)
+        protected override void CreateConstraint(INegatableArgumentConstraintManager<IEnumerable<string?>> scope)
         {
             scope.IsSameSequenceAs("a", "b", null, "y", "z");
         }

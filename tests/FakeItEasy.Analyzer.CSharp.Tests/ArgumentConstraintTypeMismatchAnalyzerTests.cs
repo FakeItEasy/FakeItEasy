@@ -55,18 +55,18 @@ namespace TheNamespace
     }}
 }}";
 
-        public static IEnumerable<object[]> FakeItEasy0004SupportedConstraints =>
+        public static IEnumerable<object?[]> FakeItEasy0004SupportedConstraints =>
             TestCases.FromObject(
                 "_",
                 "Ignored");
 
-        public static IEnumerable<object[]> FakeItEasy0005SupportedConstraints =>
+        public static IEnumerable<object?[]> FakeItEasy0005SupportedConstraints =>
             TestCases.FromObject(
                 "_",
                 "Ignored",
                 "That.Matches(_ => true)");
 
-        public static IEnumerable<object[]> AllSupportedConstraints => FakeItEasy0005SupportedConstraints;
+        public static IEnumerable<object?[]> AllSupportedConstraints => FakeItEasy0005SupportedConstraints;
 
         [Theory]
         [MemberData(nameof(AllSupportedConstraints))]

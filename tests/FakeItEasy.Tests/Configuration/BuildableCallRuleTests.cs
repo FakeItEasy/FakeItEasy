@@ -3,14 +3,14 @@ namespace FakeItEasy.Tests.Configuration
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-#if FEATURE_NETCORE_REFLECTION
     using System.Reflection;
-#endif
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using Xunit;
+
+    using static FakeItEasy.Tests.TestHelpers.ExpressionHelper;
 
     public class BuildableCallRuleTests
     {
@@ -40,17 +40,17 @@ namespace FakeItEasy.Tests.Configuration
             return TestCases.FromProperties(
                 new
                 {
-                    MethodName = nameof(IHaveDifferentReturnValues.IntReturn),
+                    Method = GetMethodInfo<IHaveDifferentReturnValues>(x => x.IntReturn()),
                     ExpectedReturnValue = (object)0
                 },
                 new
                 {
-                    MethodName = nameof(IHaveDifferentReturnValues.StringReturn),
+                    Method = GetMethodInfo<IHaveDifferentReturnValues>(x => x.StringReturn()),
                     ExpectedReturnValue = (object)string.Empty
                 },
                 new
                 {
-                    MethodName = nameof(IHaveDifferentReturnValues.DummyableReturn),
+                    Method = GetMethodInfo<IHaveDifferentReturnValues>(x => x.DummyableReturn()),
                     ExpectedReturnValue = (object)A.Dummy<DummyableClass>()
                 });
         }
@@ -78,7 +78,7 @@ namespace FakeItEasy.Tests.Configuration
         public void Apply_should_pass_the_call_to_specified_actions()
         {
             var call = A.Fake<IInterceptedFakeObjectCall>();
-            IFakeObjectCall passedCall = null;
+            IFakeObjectCall? passedCall = null;
 
             this.rule.UseApplicator(x => { });
             this.rule.Actions.Add(x => passedCall = x);
@@ -109,7 +109,7 @@ namespace FakeItEasy.Tests.Configuration
 
             var call = A.Fake<IInterceptedFakeObjectCall>();
 
-            A.CallTo(() => call.Method).Returns(typeof(IOutAndRef).GetMethod(nameof(IOutAndRef.OutAndRef)));
+            A.CallTo(() => call.Method).Returns(OutAndRefMethod);
 
             // Act
             this.rule.Apply(call);
@@ -126,7 +126,7 @@ namespace FakeItEasy.Tests.Configuration
             this.rule.UseApplicator(x => { });
 
             var call = A.Fake<IInterceptedFakeObjectCall>();
-            A.CallTo(() => call.Method).Returns(typeof(IOutAndRef).GetMethod(nameof(IOutAndRef.OutAndRef)));
+            A.CallTo(() => call.Method).Returns(OutAndRefMethod);
 
             var exception = Record.Exception(() =>
                 this.rule.Apply(call));
@@ -137,11 +137,11 @@ namespace FakeItEasy.Tests.Configuration
 
         [Theory]
         [MemberData(nameof(DefaultReturnValueCases))]
-        public void Apply_should_set_return_value_to_default_value_when_applicator_is_not_set(string methodName, object expectedResponse)
+        public void Apply_should_set_return_value_to_default_value_when_applicator_is_not_set(MethodInfo method, object expectedResponse)
         {
             // Arrange
             var call = A.Fake<IInterceptedFakeObjectCall>();
-            A.CallTo(() => call.Method).Returns(typeof(IHaveDifferentReturnValues).GetMethod(methodName));
+            A.CallTo(() => call.Method).Returns(method);
 
             // Act
             this.rule.Apply(call);
@@ -162,7 +162,7 @@ namespace FakeItEasy.Tests.Configuration
             this.rule.ReturnValueFromOnIsApplicableTo = resultFromOnIsApplicableTo;
 
             // Act
-            var result = this.rule.IsApplicableTo(null);
+            var result = this.rule.IsApplicableTo(null!);
 
             // Assert
             result.Should().Be(expectedResult);
@@ -286,6 +286,17 @@ namespace FakeItEasy.Tests.Configuration
 
         private class DummyableClass
         {
+        }
+
+        private static MethodInfo OutAndRefMethod
+        {
+            get
+            {
+                string s = string.Empty;
+                int i = 0;
+                var method = GetMethodInfo<IOutAndRef>(x => x.OutAndRef(new object(), out i, string.Empty, ref s, string.Empty));
+                return method;
+            }
         }
 
         [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "This class is loaded dynamically as an extension point")]

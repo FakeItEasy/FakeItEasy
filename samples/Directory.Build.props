@@ -4,7 +4,6 @@
 
   <PropertyGroup>
     <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)FakeItEasy.Examples.ruleset</CodeAnalysisRuleSet>
-    <Nullable>enable</Nullable>
   </PropertyGroup>
 
 </Project>

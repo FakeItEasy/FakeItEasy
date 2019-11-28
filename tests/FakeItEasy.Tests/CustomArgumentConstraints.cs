@@ -64,13 +64,6 @@ namespace FakeItEasy.Tests
 
         internal static Func<TInput, TExpected> Returns<TInput, TExpected>(
             this IArgumentConstraintManager<Func<TInput, TExpected>> manager,
-            TExpected expectedValue)
-        {
-            return manager.Returns(default(TInput), expectedValue);
-        }
-
-        internal static Func<TInput, TExpected> Returns<TInput, TExpected>(
-            this IArgumentConstraintManager<Func<TInput, TExpected>> manager,
             TInput inputValue,
             TExpected expectedValue)
         {

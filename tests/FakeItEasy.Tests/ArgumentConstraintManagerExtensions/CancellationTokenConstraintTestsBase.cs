@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
+namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
 {
     using System.Collections.Generic;
     using System.Threading;
@@ -9,7 +9,7 @@
         private static readonly CancellationTokenSource CanceledSource = CreateCancellationTokenSource(true);
         private static readonly CancellationTokenSource NonCanceledSource = CreateCancellationTokenSource(false);
 
-        public static IEnumerable<object[]> NonCanceledTokens()
+        public static IEnumerable<object?[]> NonCanceledTokens()
         {
             return TestCases.FromObject(
                 CancellationToken.None,
@@ -18,7 +18,7 @@
                 NonCanceledSource.Token);
         }
 
-        public static IEnumerable<object[]> CanceledTokens()
+        public static IEnumerable<object?[]> CanceledTokens()
         {
             return TestCases.FromObject(
                 new CancellationToken(true),

@@ -13,7 +13,7 @@ namespace FakeItEasy.IntegrationTests
 
     public class ConcurrentCallTests
     {
-        public static IEnumerable<object[]> UserRuleMutatingActions =>
+        public static IEnumerable<object?[]> UserRuleMutatingActions =>
             TestCases.FromObject(
                 new GetUnconfiguredProperty(),
                 new SetUnconfiguredProperty(),
@@ -108,7 +108,7 @@ namespace FakeItEasy.IntegrationTests
 
         private class RemoveRule : RuleMutatingAction
         {
-            private IFakeObjectCallRule ruleToRemove;
+            private IFakeObjectCallRule? ruleToRemove;
 
             public override void Setup(IFoo fake)
             {
@@ -121,7 +121,7 @@ namespace FakeItEasy.IntegrationTests
 
             public override void MutateRules(IFoo fake)
             {
-                Fake.GetFakeManager(fake).RemoveRule(this.ruleToRemove);
+                Fake.GetFakeManager(fake).RemoveRule(this.ruleToRemove!);
             }
         }
 
@@ -141,7 +141,7 @@ namespace FakeItEasy.IntegrationTests
             // A.CallTo(() => fake.IntProperty).Returns(1).Once().Then.Returns(2)
             // all at once, there's no way to tell which Returns is interfering with the
             // traversing of the user rule list, so configure the first Returns in the Setup.
-            private IThenConfiguration<IReturnValueConfiguration<int>> firstCallConfiguration;
+            private IThenConfiguration<IReturnValueConfiguration<int>>? firstCallConfiguration;
 
             public override void Setup(IFoo fake)
             {
@@ -150,7 +150,7 @@ namespace FakeItEasy.IntegrationTests
 
             public override void MutateRules(IFoo fake)
             {
-                this.firstCallConfiguration.Then.Returns(2);
+                this.firstCallConfiguration!.Then.Returns(2);
             }
         }
     }

@@ -57,7 +57,7 @@ namespace FakeItEasy.Tests
             // Arrange
             var expectedConfig = A.Fake<IAfterCallConfiguredWithOutAndRefParametersConfiguration<IReturnValueConfiguration<int>>>();
             var config = A.Fake<IReturnValueConfiguration<int>>();
-            A.CallTo(() => config.ReturnsLazily(A<Func<IFakeObjectCall, int>>.That.Matches(x => x.Invoke(null) == 10))).Returns(expectedConfig);
+            A.CallTo(() => config.ReturnsLazily(A<Func<IFakeObjectCall, int>>.That.Matches(x => x.Invoke(A.Dummy<IFakeObjectCall>()) == 10))).Returns(expectedConfig);
 
             // Act
             var returned = config.Returns(10);
@@ -72,7 +72,7 @@ namespace FakeItEasy.Tests
             // Arrange
             var expectedConfig = A.Fake<IAfterCallConfiguredWithOutAndRefParametersConfiguration<IReturnValueConfiguration<Task<int>>>>();
             var config = A.Fake<IReturnValueConfiguration<Task<int>>>();
-            A.CallTo(() => config.ReturnsLazily(A<Func<IFakeObjectCall, Task<int>>>.That.Matches(x => x.Invoke(null).Result == 10))).Returns(expectedConfig);
+            A.CallTo(() => config.ReturnsLazily(A<Func<IFakeObjectCall, Task<int>>>.That.Matches(x => x.Invoke(A.Dummy<IFakeObjectCall>()).Result == 10))).Returns(expectedConfig);
 
             // Act
             var returned = config.Returns(10);
@@ -89,7 +89,7 @@ namespace FakeItEasy.Tests
             // Act
 
             // Assert
-            Expression<Action> call = () => A.Fake<IReturnValueConfiguration<string>>().Returns(null);
+            Expression<Action> call = () => A.Fake<IReturnValueConfiguration<string?>>().Returns(null);
             call.Should().BeNullGuarded();
         }
 
@@ -138,7 +138,7 @@ namespace FakeItEasy.Tests
             // Arrange
             const string Argument = "argument";
             const string ReturnValue = "Result";
-            string collectedArgument = null;
+            string? collectedArgument = null;
 
             var fake = A.Fake<IInterface>();
             A.CallTo(() => fake.RequestOfOne(Argument)).ReturnsLazily((string s) =>
@@ -160,7 +160,7 @@ namespace FakeItEasy.Tests
             // Arrange
             const string ReturnValue = "Result";
             string argument = "argument";
-            string collectedArgument = null;
+            string? collectedArgument = null;
 
             var fake = A.Fake<IInterface>();
             A.CallTo(() => fake.RequestOfOneWithOutput(out argument)).ReturnsLazily((string s) =>
@@ -183,7 +183,7 @@ namespace FakeItEasy.Tests
             // Arrange
             const string ReturnValue = "Result";
             string argument = "argument";
-            string collectedArgument = null;
+            string? collectedArgument = null;
 
             var fake = A.Fake<IInterface>();
             A.CallTo(() => fake.RequestOfOneWithReference(ref argument)).ReturnsLazily((string s) =>
@@ -281,8 +281,8 @@ namespace FakeItEasy.Tests
             const string SecondArgument = "second argument";
             const string ReturnValue = "Result";
 
-            string firstCollectedArgument = null;
-            string secondCollectedArgument = null;
+            string? firstCollectedArgument = null;
+            string? secondCollectedArgument = null;
 
             var fake = A.Fake<IInterface>();
             A.CallTo(() => fake.RequestOfTwo(A<string>._, A<string>._))
@@ -311,8 +311,8 @@ namespace FakeItEasy.Tests
             string firstArgument = "first argument";
             string secondArgument = "second argument";
 
-            string firstCollectedArgument = null;
-            string secondCollectedArgument = null;
+            string? firstCollectedArgument = null;
+            string? secondCollectedArgument = null;
 
             var fake = A.Fake<IInterface>();
             A.CallTo(() => fake.RequestOfTwoWithOutputAndReference(out firstArgument, ref secondArgument))
@@ -433,9 +433,9 @@ namespace FakeItEasy.Tests
             const string ThirdArgument = "third argument";
             const string ReturnValue = "Result";
 
-            string firstCollectedArgument = null;
-            string secondCollectedArgument = null;
-            string thirdCollectedArgument = null;
+            string? firstCollectedArgument = null;
+            string? secondCollectedArgument = null;
+            string? thirdCollectedArgument = null;
 
             var fake = A.Fake<IInterface>();
             A.CallTo(() => fake.RequestOfThree(A<string>._, A<string>._, A<string>._))
@@ -467,9 +467,9 @@ namespace FakeItEasy.Tests
             const string ThirdArgument = "third argument";
             const string ReturnValue = "Result";
 
-            string firstCollectedArgument = null;
-            string secondCollectedArgument = null;
-            string thirdCollectedArgument = null;
+            string? firstCollectedArgument = null;
+            string? secondCollectedArgument = null;
+            string? thirdCollectedArgument = null;
 
             var fake = A.Fake<IInterface>();
             A.CallTo(() => fake.RequestOfThreeWithOutputAndReference(out firstArgument, ref secondArgument, A<string>._))
@@ -611,10 +611,10 @@ namespace FakeItEasy.Tests
             const string FourthArgument = "fourth argument";
             const string ReturnValue = "Result";
 
-            string firstCollectedArgument = null;
-            string secondCollectedArgument = null;
-            string thirdCollectedArgument = null;
-            string fourthCollectedArgument = null;
+            string? firstCollectedArgument = null;
+            string? secondCollectedArgument = null;
+            string? thirdCollectedArgument = null;
+            string? fourthCollectedArgument = null;
 
             var fake = A.Fake<IInterface>();
             A.CallTo(() => fake.RequestOfFour(A<string>._, A<string>._, A<string>._, A<string>._))
@@ -649,10 +649,10 @@ namespace FakeItEasy.Tests
             string fourthArgument = "fourth argument";
             const string ReturnValue = "Result";
 
-            string firstCollectedArgument = null;
-            string secondCollectedArgument = null;
-            string thirdCollectedArgument = null;
-            string fourthCollectedArgument = null;
+            string? firstCollectedArgument = null;
+            string? secondCollectedArgument = null;
+            string? thirdCollectedArgument = null;
+            string? fourthCollectedArgument = null;
 
             var fake = A.Fake<IInterface>();
             A.CallTo(() => fake.RequestOfFourWithOutputAndReference(A<string>._, A<string>._, ref thirdArgument, out fourthArgument))
@@ -775,7 +775,7 @@ namespace FakeItEasy.Tests
             // Assert
             var curriedFunction = Fake.GetCalls(config).Single().Arguments.Get<Func<IFakeObjectCall, int>>(0);
 
-            curriedFunction.Invoke(A.Dummy<IFakeObjectCall>()).Should().Be(currentValue);
+            curriedFunction!.Invoke(A.Dummy<IFakeObjectCall>()).Should().Be(currentValue);
             currentValue = 20;
             curriedFunction.Invoke(A.Dummy<IFakeObjectCall>()).Should().Be(currentValue);
         }

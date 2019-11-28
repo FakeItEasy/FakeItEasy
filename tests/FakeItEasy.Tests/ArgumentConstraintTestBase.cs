@@ -1,16 +1,21 @@
 namespace FakeItEasy.Tests
 {
+    using System;
     using FakeItEasy.Core;
     using FluentAssertions;
     using Xunit;
 
     public abstract class ArgumentConstraintTestBase
     {
-        internal IArgumentConstraint ConstraintField { get; set; }
+        private IArgumentConstraint? constraint;
+
+        internal IArgumentConstraint Constraint
+        {
+            get => this.constraint ?? throw new InvalidOperationException($"{nameof(this.Constraint)} isn't set");
+            set => this.constraint = value;
+        }
 
         protected abstract string ExpectedDescription { get; }
-
-        private IArgumentConstraint Constraint => this.ConstraintField;
 
         public virtual void IsValid_should_return_false_for_invalid_values(object invalidValue)
         {

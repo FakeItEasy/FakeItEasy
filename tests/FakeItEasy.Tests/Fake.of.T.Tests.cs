@@ -11,7 +11,7 @@ namespace FakeItEasy.Tests
 
     public class FakeTTests
     {
-        public static IEnumerable<object[]> CallSpecificationActions =>
+        public static IEnumerable<object?[]> CallSpecificationActions =>
             TestCases.FromObject<Action<Fake<IFoo>>>(
                 fake => fake.CallsTo(foo => foo.Bar()),
                 fake => fake.CallsTo(foo => foo.Baz()),
@@ -53,6 +53,10 @@ namespace FakeItEasy.Tests
 
             // Assert
             manager.Rules.Should().Equal(initialRules);
+        }
+
+        public class Foo
+        {
         }
     }
 }
