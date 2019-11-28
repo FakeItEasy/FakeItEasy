@@ -4,11 +4,11 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using System.Runtime.CompilerServices;
     using System.Threading.Tasks;
     using FakeItEasy.Tools;
     using Octokit;
     using static FakeItEasy.Tools.ReleaseHelpers;
+    using static FakeItEasy.Tools.ToolHelpers;
     using static SimpleExec.Command;
 
     public class Program
@@ -22,18 +22,8 @@
                 return;
             }
 
-            string nugetServerUrl = GetNuGetServerUrl();
-            string nugetApiKey = GetNuGetApiKey();
-            if (string.IsNullOrEmpty(nugetServerUrl))
-            {
-                throw new Exception("NuGet server URL is not set; please set it in the NUGET_SERVER_URL environment variable.");
-            }
-
-            if (string.IsNullOrEmpty(nugetApiKey))
-            {
-                throw new Exception("NuGet API key is not set; please set it in the NUGET_API_KEY environment variable.");
-            }
-
+            var nugetServerUrl = GetNuGetServerUrl();
+            var nugetApiKey = GetNuGetApiKey();
             var (repoOwner, repoName) = GetRepositoryName();
             var gitHubClient = GetAuthenticatedGitHubClient();
 
@@ -119,7 +109,7 @@
 
         private static (string repoOwner, string repoName) GetRepositoryName()
         {
-            var repoNameWithOwner = Environment.GetEnvironmentVariable("APPVEYOR_REPO_NAME");
+            var repoNameWithOwner = GetRequiredEnvironmentVariable("APPVEYOR_REPO_NAME");
             var parts = repoNameWithOwner.Split('/');
             return (parts[0], parts[1]);
         }
@@ -131,12 +121,21 @@
             return new GitHubClient(new ProductHeaderValue("FakeItEasy-build-scripts")) { Credentials = credentials };
         }
 
-        private static string GetAppVeyorTagName() => Environment.GetEnvironmentVariable("APPVEYOR_REPO_TAG_NAME");
+        private static string? GetAppVeyorTagName() => Environment.GetEnvironmentVariable("APPVEYOR_REPO_TAG_NAME");
 
-        private static string GetNuGetServerUrl() => Environment.GetEnvironmentVariable("NUGET_SERVER_URL");
+        private static string GetNuGetServerUrl() => GetRequiredEnvironmentVariable("NUGET_SERVER_URL");
 
-        private static string GetNuGetApiKey() => Environment.GetEnvironmentVariable("NUGET_API_KEY");
+        private static string GetNuGetApiKey() => GetRequiredEnvironmentVariable("NUGET_API_KEY");
 
-        private static string GetCurrentScriptDirectory([CallerFilePath] string path = null) => Path.GetDirectoryName(path);
+        private static string GetRequiredEnvironmentVariable(string key)
+        {
+            var environmentValue = Environment.GetEnvironmentVariable(key);
+            if (string.IsNullOrEmpty(environmentValue))
+            {
+                throw new Exception($"Required environment variable {key} is not set. Unable to continue.");
+            }
+
+            return environmentValue;
+        }
     }
 }

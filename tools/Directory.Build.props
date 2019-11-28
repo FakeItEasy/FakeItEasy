@@ -3,6 +3,11 @@
     <Import Project="../Directory.Build.props" />
 
     <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>netcoreapp3.0</TargetFramework>
+    </PropertyGroup>
+
+    <PropertyGroup>
         <NoWarn>$(NoWarn),SA0001</NoWarn>
         <SimpleExecVersion>6.1.0</SimpleExecVersion>
         <NuGetVersion>4.1.0</NuGetVersion>

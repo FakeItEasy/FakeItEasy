@@ -128,9 +128,11 @@ namespace FakeItEasy.Build
 
         private class Project
         {
+            public Project(string path) => this.Path = path;
+
             public string Path { get; set; }
 
-            public static implicit operator Project(string path) => new Project { Path = path };
+            public static implicit operator Project(string path) => new Project(path);
 
             public override string ToString() => this.Path.Split('/').Last();
         }

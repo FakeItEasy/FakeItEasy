@@ -119,6 +119,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{9D99B251-FB4F-49BF-8405-F6E0DE46EB32}"
 	ProjectSection(SolutionItems) = preProject
 		tools\deploy.cmd = tools\deploy.cmd
+		tools\Directory.Build.props = tools\Directory.Build.props
+		tools\FakeItEasy.ToolPaths.targets = tools\FakeItEasy.ToolPaths.targets
 		tools\prepare_release.cmd = tools\prepare_release.cmd
 	EndProjectSection
 EndProject
