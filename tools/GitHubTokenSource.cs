@@ -2,7 +2,8 @@ namespace FakeItEasy.Tools
 {
     using System;
     using System.IO;
-    using System.Runtime.CompilerServices;
+
+    using static FakeItEasy.Tools.ToolHelpers;
 
     public static class GitHubTokenSource
     {
@@ -25,7 +26,5 @@ namespace FakeItEasy.Tools
 
             return token;
         }
-
-        private static string GetCurrentScriptDirectory([CallerFilePath] string path = null) => Path.GetDirectoryName(path);
     }
 }

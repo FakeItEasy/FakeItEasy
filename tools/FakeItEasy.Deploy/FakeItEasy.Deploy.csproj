@@ -9,6 +9,7 @@
   <ItemGroup>
     <Compile Include="../GitHubTokenSource.cs" />
     <Compile Include="../ReleaseHelpers.cs" />
+    <Compile Include="../ToolHelpers.cs" />
   </ItemGroup>
 
   <Import Project="../FakeItEasy.ToolPaths.targets" />
