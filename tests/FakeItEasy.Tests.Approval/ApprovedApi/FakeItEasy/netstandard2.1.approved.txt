@@ -485,6 +485,9 @@ namespace FakeItEasy.Configuration
     public interface IAfterCallConfiguredWithOutAndRefParametersConfiguration<[System.Runtime.CompilerServices.NullableAttribute(2)]  out TInterface> : FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface>, FakeItEasy.Configuration.IBehaviorLifetimeConfiguration<TInterface>, FakeItEasy.Configuration.IOutAndRefParametersConfiguration<TInterface>, FakeItEasy.IHideObjectMembers { }
     public interface IAnyCallConfigurationWithNoReturnTypeSpecified : FakeItEasy.Configuration.IArgumentValidationConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.IAssertConfiguration, FakeItEasy.Configuration.ICallBaseConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.ICallbackConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.IDoNothingConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.IExceptionThrowerConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.IOutAndRefParametersConfiguration<FakeItEasy.Configuration.IVoidConfiguration>, FakeItEasy.Configuration.IVoidArgumentValidationConfiguration, FakeItEasy.Configuration.IVoidConfiguration, FakeItEasy.Configuration.IWhereConfiguration<FakeItEasy.Configuration.IAnyCallConfigurationWithNoReturnTypeSpecified>, FakeItEasy.IHideObjectMembers
     {
+        [return: System.Runtime.CompilerServices.NullableAttribute(new byte[] {
+                1,
+                2})]
         FakeItEasy.Configuration.IAnyCallConfigurationWithReturnTypeSpecified<object> WithNonVoidReturnType();
         FakeItEasy.Configuration.IAnyCallConfigurationWithReturnTypeSpecified<TMember> WithReturnType<[System.Runtime.CompilerServices.NullableAttribute(2)]  TMember>();
         FakeItEasy.Configuration.IAnyCallConfigurationWithVoidReturnType WithVoidReturnType();
