@@ -33,7 +33,7 @@ namespace FakeItEasy.Specs
 
         public string VirtualMethodValueDuringConstructorCall { get; }
 
-        public virtual string VirtualMethod(string parameter)
+        public virtual string VirtualMethod(string? parameter)
         {
             return "implementation value";
         }
