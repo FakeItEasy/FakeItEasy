@@ -126,7 +126,7 @@ namespace FakeItEasy.Specs
         [Scenario]
         public static void FakeableProperty(
             FakedClass fake,
-            IFoo result)
+            IFoo? result)
         {
             "Given a type with a virtual fakeable-type property"
                 .x(() => { }); // see FakedClasss
@@ -137,12 +137,15 @@ namespace FakeItEasy.Specs
             "When I get the property value"
                 .x(() => result = fake.FakeableProperty);
 
-            "Then the value will be a Dummy"
-                .x(() => result.IsADummy.Should().BeTrue("because the property value should be a Dummy"));
+            "Then the property will not be null"
+                .x(() => result.Should().NotBeNull());
+
+            "And it will be a Dummy"
+                .x(() => result!.IsADummy.Should().BeTrue("because the property value should be a Dummy"));
         }
 
         [Scenario]
-        public static void ToStringDescribesFake(FakedClass fake, string toStringValue)
+        public static void ToStringDescribesFake(FakedClass fake, string? toStringValue)
         {
             "Given a faked class instance"
                 .x(() => fake = A.Fake<FakedClass>());
@@ -203,7 +206,7 @@ namespace FakeItEasy.Specs
 
             public int ValueTypePropertyValueDuringConstructorCall { get; }
 
-            public virtual IFoo FakeableProperty { get; set; }
+            public virtual IFoo? FakeableProperty { get; set; }
         }
 
         public class Foo : IFoo
