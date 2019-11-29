@@ -97,10 +97,10 @@ namespace FakeItEasy.Specs
                 .See(() => new ClassWithMultipleConstructors());
 
             "And another constructor throws"
-                .See(() => new ClassWithMultipleConstructors(default(string)));
+                .See(() => new ClassWithMultipleConstructors(string.Empty));
 
             "And a third constructor has an argument that cannot be resolved"
-                .See(() => new ClassWithMultipleConstructors(default(UnresolvableArgument), default(string)));
+                .See(() => new ClassWithMultipleConstructors(new UnresolvableArgument(), string.Empty));
 
             "When I create a fake of the class"
                 .x(() => exception = Record.Exception(() => this.CreateFake<ClassWithMultipleConstructors>()));
@@ -147,10 +147,10 @@ namespace FakeItEasy.Specs
                 .See(() => new FakedClass());
 
             "And the class has a one-parameter constructor"
-                .See(() => new FakedClass(default));
+                .See(() => new FakedClass(new ArgumentThatShouldNeverBeResolved()));
 
             "And the class has a two-parameter constructor"
-                .See(() => new FakedClass(default, default));
+                .See(() => new FakedClass(A.Dummy<IDisposable>(), string.Empty));
 
             "When I create a fake of the class"
                 .x(() =>
@@ -189,7 +189,7 @@ namespace FakeItEasy.Specs
                 .See(() => new ClassWhosePreferredConstructorsThrow());
 
             "And the class has a two-parameter constructor that throws"
-                .See(() => new ClassWhosePreferredConstructorsThrow(default, default));
+                .See(() => new ClassWhosePreferredConstructorsThrow(A.Dummy<IDisposable>(), string.Empty));
 
             "And the class has a one-parameter constructor that succeeds"
                 .See(() => new ClassWhosePreferredConstructorsThrow(default));
@@ -532,7 +532,7 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
-        public void NamedFakeToString(object fake, string toStringResult)
+        public void NamedFakeToString(object fake, string? toStringResult)
         {
             "Given a named fake"
                 .x(() => fake = A.Fake<object>(o => o.Named("Foo")));
@@ -561,7 +561,7 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
-        public void NamedFakeDelegateToString(Action fake, string toStringResult)
+        public void NamedFakeDelegateToString(Action fake, string? toStringResult)
         {
             "Given a named delegate fake"
                 .x(() => fake = A.Fake<Action>(o => o.Named("Foo")));
@@ -601,7 +601,7 @@ namespace FakeItEasy.Specs
                 .See(() => new ClassWithLongSelfReferentialConstructor(typeof(object)));
 
             "And the class has a two-parameter constructor using its own type"
-                .See(() => new ClassWithLongSelfReferentialConstructor(typeof(object), default));
+                .See(() => new ClassWithLongSelfReferentialConstructor(typeof(object), A.Dummy<ClassWithLongSelfReferentialConstructor>()));
 
             "When I create a fake of the class"
                 .x(() => fake1 = A.Fake<ClassWithLongSelfReferentialConstructor>());

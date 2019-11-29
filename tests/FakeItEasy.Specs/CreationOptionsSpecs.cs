@@ -715,7 +715,7 @@ namespace FakeItEasy.Specs
             Exception exception)
         {
             "Given an explicit options builder that adds a null attribute to a fake"
-                .x(() => optionsBuilder = options => options.WithAttributes(null));
+                .x(() => optionsBuilder = options => options.WithAttributes(null!));
 
             "When I create a fake using the options builder"
                 .x(() => exception = Record.Exception(() => this.CreateFake(optionsBuilder)));
@@ -959,7 +959,7 @@ namespace FakeItEasy.Specs
             this.virtualMethodReturnValue = virtualMethodReturnValue;
         }
 
-        public override string VirtualMethod(string parameter)
+        public override string VirtualMethod(string? parameter)
         {
             return this.virtualMethodReturnValue;
         }

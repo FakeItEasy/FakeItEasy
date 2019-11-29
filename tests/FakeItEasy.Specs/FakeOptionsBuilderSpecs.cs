@@ -380,7 +380,7 @@ namespace FakeItEasy.Specs
         {
             if (options is object)
             {
-                options.Wrapping(null);
+                options.Wrapping(null!);
             }
         }
     }

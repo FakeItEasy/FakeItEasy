@@ -11,7 +11,7 @@ namespace FakeItEasy.Specs
     {
         public delegate void VoidDelegateWithOutAndRefValues(out string outString, ref int refInt);
 
-        public delegate int NonVoidDelegateWithOutAndRefValues(ref string refString, out int outInt);
+        public delegate int NonVoidDelegateWithOutAndRefValues(ref string? refString, out int outInt);
 
         [Scenario]
         public static void WithoutConfiguration(Func<string, int> fakedDelegate)
@@ -71,7 +71,7 @@ namespace FakeItEasy.Specs
                 .x(() => A.CallTo(() => fakedDelegate.Invoke(A<string>._)).Throws(expectedException = new FormatException()));
 
             "When I invoke it"
-                .x(() => exception = Record.Exception(() => fakedDelegate(null)));
+                .x(() => exception = Record.Exception(() => fakedDelegate(string.Empty)));
 
             "Then it throws the configured exception"
                 .x(() => exception.Should().BeSameAs(expectedException));
@@ -87,7 +87,7 @@ namespace FakeItEasy.Specs
                 .x(() => A.CallTo(() => fakedDelegate(A<string>._)).Returns(10));
 
             "When I invoke it without specifying the Invoke method explicitly"
-                .x(() => result = fakedDelegate(null));
+                .x(() => result = fakedDelegate(string.Empty));
 
             "Then it returns the configured value"
                 .x(() => result.Should().Be(10));
@@ -133,7 +133,7 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
-        public static void SetOutAndRefNonVoid(NonVoidDelegateWithOutAndRefValues fake, string theRefParameter, int theOutParameter)
+        public static void SetOutAndRefNonVoid(NonVoidDelegateWithOutAndRefValues fake, string? theRefParameter, int theOutParameter)
         {
             "Given a fake delegate with non-void return and out and ref parameters"
                 .x(() => fake = A.Fake<NonVoidDelegateWithOutAndRefValues>());
@@ -141,7 +141,7 @@ namespace FakeItEasy.Specs
             "And I configure it to set ref and out parameters"
                 .x(() =>
                 {
-                    string refString = null;
+                    string? refString = null;
                     int outInt;
                     A.CallTo(() => fake.Invoke(ref refString, out outInt)).AssignsOutAndRefParameters("fancy ref string", 5);
                 });

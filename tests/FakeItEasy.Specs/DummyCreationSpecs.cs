@@ -194,7 +194,7 @@ namespace FakeItEasy.Specs
                 .See<ClassWithLongConstructorWhoseArgumentsCannotBeResolved>();
 
             "And its longer constructor's argument cannot be resolved"
-                .See(() => new ClassWithLongConstructorWhoseArgumentsCannotBeResolved(default(ClassWhoseDummyFactoryThrows), default(int)));
+                .See(() => new ClassWithLongConstructorWhoseArgumentsCannotBeResolved(A.Dummy<ClassWhoseDummyFactoryThrows>(), A.Dummy<int>()));
 
             "When a dummy of that type is requested"
                 .x(() => dummy = this.CreateDummy<ClassWithLongConstructorWhoseArgumentsCannotBeResolved>());
@@ -214,7 +214,7 @@ namespace FakeItEasy.Specs
                 .See<SealedClassWithLongConstructorWhoseArgumentsCannotBeResolved>();
 
             "And its longer constructor's argument cannot be resolved"
-                .See(() => new SealedClassWithLongConstructorWhoseArgumentsCannotBeResolved(default(ClassWhoseDummyFactoryThrows), default(int)));
+                .See(() => new SealedClassWithLongConstructorWhoseArgumentsCannotBeResolved(A.Dummy<ClassWhoseDummyFactoryThrows>(), A.Dummy<int>()));
 
             "When a dummy of that type is requested"
                 .x(() => dummy = this.CreateDummy<SealedClassWithLongConstructorWhoseArgumentsCannotBeResolved>());
@@ -414,7 +414,7 @@ namespace FakeItEasy.Specs
                 .See(() => new ClassWithLongSelfReferentialConstructor(typeof(object)));
 
             "And the class has a two-parameter constructor using its own type"
-                .See(() => new ClassWithLongSelfReferentialConstructor(typeof(object), default));
+                .See(() => new ClassWithLongSelfReferentialConstructor(typeof(object), A.Dummy<ClassWithLongSelfReferentialConstructor>()));
 
             "When a dummy of the class is requested"
                 .x(() => dummy1 = this.CreateDummy<ClassWithLongSelfReferentialConstructor>());
@@ -839,9 +839,9 @@ namespace FakeItEasy.Specs
         {
         }
 
-        public class ClassWhoseDummyIsNullFactory : DummyFactory<ClassWhoseDummyIsNull>
+        public class ClassWhoseDummyIsNullFactory : DummyFactory<ClassWhoseDummyIsNull?>
         {
-            protected override ClassWhoseDummyIsNull Create() => null;
+            protected override ClassWhoseDummyIsNull? Create() => null;
         }
 
         public class ClassThatRequiresClassWhoseDummyIsNull
@@ -870,7 +870,7 @@ namespace FakeItEasy.Specs
     {
         protected override T CreateDummy<T>()
         {
-            return (T)Sdk.Create.Dummy(typeof(T));
+            return (T)Sdk.Create.Dummy(typeof(T)) !;
         }
 
         protected override IList<T> CreateCollectionOfDummy<T>(int count)

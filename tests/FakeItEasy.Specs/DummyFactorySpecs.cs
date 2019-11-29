@@ -73,7 +73,7 @@ namespace FakeItEasy.Specs
 
         public object Create(Type type)
         {
-            var dummy = (DomainEvent)Activator.CreateInstance(type);
+            var dummy = (DomainEvent)Activator.CreateInstance(type) !;
             dummy.ID = this.nextID++;
             return dummy;
         }
