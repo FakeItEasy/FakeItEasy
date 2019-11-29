@@ -57,22 +57,25 @@ namespace FakeItEasy.Specs
             event Action<int, bool> ActionEvent;
         }
 
-        private static IEvents Fake { get; set; }
+        private static IEvents? fake;
+        private static object? sampleSender;
 
-        private static object SampleSender { get; set; }
+        private static IEvents Fake { get => fake ?? throw new InvalidOperationException(nameof(Fake) + " is not initialized"); }
 
-        private static object CapturedSender { get; set; }
+        private static object SampleSender { get => sampleSender ?? throw new InvalidOperationException(nameof(SampleSender) + " is not initialized"); }
 
-        private static object CapturedArgs1 { get; set; }
+        private static object? CapturedSender { get; set; }
 
-        private static object CapturedArgs2 { get; set; }
+        private static object? CapturedArgs1 { get; set; }
+
+        private static object? CapturedArgs2 { get; set; }
 
         [Background]
         public void Background()
         {
-            Fake = A.Fake<IEvents>();
+            fake = A.Fake<IEvents>();
 
-            SampleSender = new object();
+            sampleSender = new object();
 
             Fake.SubscribedEvent += (sender, e) =>
             {
@@ -354,7 +357,7 @@ namespace FakeItEasy.Specs
 
             "When I raise the event as freeform specifying a null argument"
                 .x(() => exception = Record.Exception(() =>
-                        Fake.ValueTypeEvent += Raise.FreeForm<ValueTypeEventHandler>.With((object)null)));
+                        Fake.ValueTypeEvent += Raise.FreeForm<ValueTypeEventHandler>.With((object?)null)));
 
             "Then the call fails with a meaningful message"
                 .x(() => exception.Should().BeAnExceptionOfType<FakeConfigurationException>()
@@ -450,7 +453,7 @@ namespace FakeItEasy.Specs
 
             "When I raise the event specifying a null argument"
                 .x(() => exception = Record.Exception(() =>
-                    Fake.ValueTypeEvent += Raise.FreeForm.With((object)null)));
+                    Fake.ValueTypeEvent += Raise.FreeForm.With((object?)null)));
 
             "Then the call fails with a meaningful message"
                 .x(() => exception.Should().BeAnExceptionOfType<FakeConfigurationException>()
