@@ -28,10 +28,10 @@ namespace FakeItEasy.Configuration
             return this.configurationFactory.CreateConfiguration<TMember>(this.manager, this.configuredRule);
         }
 
-        public IAnyCallConfigurationWithReturnTypeSpecified<object> WithNonVoidReturnType()
+        public IAnyCallConfigurationWithReturnTypeSpecified<object?> WithNonVoidReturnType()
         {
             this.configuredRule.MakeApplicableToAllNonVoidReturnTypes();
-            return this.configurationFactory.CreateConfiguration<object>(this.manager, this.configuredRule);
+            return this.configurationFactory.CreateConfiguration<object?>(this.manager, this.configuredRule);
         }
 
         public IAnyCallConfigurationWithVoidReturnType WithVoidReturnType()
