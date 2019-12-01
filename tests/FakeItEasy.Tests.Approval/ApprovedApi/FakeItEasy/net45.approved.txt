@@ -198,9 +198,7 @@ namespace FakeItEasy
     [System.Runtime.CompilerServices.NullableAttribute(0)]
     public class static FakeObjectCallExtensions
     {
-        [return: System.Diagnostics.CodeAnalysis.MaybeNullAttribute()]
         public static T GetArgument<[System.Runtime.CompilerServices.NullableAttribute(2)]  T>(this FakeItEasy.Core.IFakeObjectCall call, int argumentIndex) { }
-        [return: System.Diagnostics.CodeAnalysis.MaybeNullAttribute()]
         public static T GetArgument<[System.Runtime.CompilerServices.NullableAttribute(2)]  T>(this FakeItEasy.Core.IFakeObjectCall call, string argumentName) { }
     }
     [System.Runtime.CompilerServices.NullableAttribute(0)]
@@ -383,9 +381,7 @@ namespace FakeItEasy.Configuration
         public int Count { get; }
         [System.Runtime.CompilerServices.NullableAttribute(2)]
         public object this[int argumentIndex] { get; }
-        [return: System.Diagnostics.CodeAnalysis.MaybeNullAttribute()]
         public T Get<[System.Runtime.CompilerServices.NullableAttribute(2)]  T>(int index) { }
-        [return: System.Diagnostics.CodeAnalysis.MaybeNullAttribute()]
         public T Get<[System.Runtime.CompilerServices.NullableAttribute(2)]  T>(string argumentName) { }
         [return: System.Runtime.CompilerServices.NullableAttribute(new byte[] {
                 1,
@@ -676,9 +672,4 @@ namespace FakeItEasy.Sdk
         public static object Fake(System.Type typeOfFake) { }
         public static object Fake(System.Type typeOfFake, System.Action<FakeItEasy.Creation.IFakeOptions> optionsBuilder) { }
     }
-}
-namespace System.Diagnostics.CodeAnalysis
-{
-    [System.AttributeUsageAttribute(System.AttributeTargets.Property | System.AttributeTargets.Field | System.AttributeTargets.Parameter | System.AttributeTargets.ReturnValue | System.AttributeTargets.All, Inherited=false)]
-    public sealed class MaybeNullAttribute : System.Attribute { }
 }
