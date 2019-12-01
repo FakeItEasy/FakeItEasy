@@ -40,20 +40,6 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
-        public static void ConfiguringSetterWithNull(
-            Exception exception)
-        {
-            "When assignment of a property is configured using a null expression"
-                .x(() => exception = Record.Exception(() => A.CallToSet<int>(null)));
-
-            "Then an argument null exception is thrown"
-                .x(() => exception.Should().BeAnExceptionOfType<ArgumentNullException>());
-
-            "And the parameter name is propertySpecification"
-                .x(() => exception.As<ArgumentNullException>().ParamName.Should().Be("propertySpecification"));
-        }
-
-        [Scenario]
         public static void ConfiguringNonConfigurableSetter(
             ClassWithInterestingProperties subject,
             Exception exception)
