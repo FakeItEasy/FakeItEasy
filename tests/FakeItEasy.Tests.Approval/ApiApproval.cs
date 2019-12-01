@@ -39,7 +39,7 @@ namespace FakeItEasy.Tests.Approval
             Skip.IfNot(File.Exists(assemblyFile), "Assembly doesn't exist.");
 
             var assembly = Assembly.LoadFile(Path.GetFullPath(assemblyFile));
-            var publicApi = ApiGenerator.GeneratePublicApi(assembly);
+            var publicApi = ApiGenerator.GeneratePublicApi(assembly, options: null);
 
             Approvals.Verify(
                 WriterFactory.CreateTextWriter(publicApi),
