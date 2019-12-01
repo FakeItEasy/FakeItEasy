@@ -3,6 +3,7 @@ namespace FakeItEasy.Tests
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Linq.Expressions;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using Xunit;
@@ -30,6 +31,19 @@ namespace FakeItEasy.Tests
 
             // Assert
             manager.Rules.Should().Equal(initialRules);
+        }
+
+        [Fact]
+        public void CallToSet_should_be_null_guarded()
+        {
+            // Arrange
+            var foo = A.Fake<IFoo>();
+            Expression<Action> call = () => A.CallToSet(() => foo.SomeProperty);
+
+            // Act
+
+            // Assert
+            call.Should().BeNullGuarded();
         }
     }
 }

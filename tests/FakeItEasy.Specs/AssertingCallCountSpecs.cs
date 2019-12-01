@@ -28,7 +28,7 @@ namespace FakeItEasy.Specs
 
             public string AssertionError { get; }
 
-            public CallCountAsserter(int numberOfCalls, Expression<Action<IAssertConfiguration>> assertion, string assertionError = null)
+            public CallCountAsserter(int numberOfCalls, Expression<Action<IAssertConfiguration>> assertion, string assertionError = "")
             {
                 this.NumberOfCalls = numberOfCalls;
                 this.assertion = assertion;
