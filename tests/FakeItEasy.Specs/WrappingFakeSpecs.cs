@@ -10,9 +10,9 @@ namespace FakeItEasy.Specs
     {
         public interface IFoo
         {
-            int NonVoidMethod(string parameter);
+            int NonVoidMethod(string? parameter);
 
-            void VoidMethod(string parameter);
+            void VoidMethod(string? parameter);
 
             void OutAndRefMethod(ref int @ref, out int @out);
         }
@@ -213,7 +213,7 @@ namespace FakeItEasy.Specs
 
             public bool OutAndRefMethodCalled { get; private set; }
 
-            public int NonVoidMethod(string parameter)
+            public int NonVoidMethod(string? parameter)
             {
                 this.NonVoidMethodCalled = true;
                 if (parameter is null)
@@ -224,7 +224,7 @@ namespace FakeItEasy.Specs
                 return parameter.Length;
             }
 
-            public void VoidMethod(string parameter)
+            public void VoidMethod(string? parameter)
             {
                 this.VoidMethodCalled = true;
                 if (parameter is null)
@@ -250,7 +250,7 @@ namespace FakeItEasy.Specs
 
             public int Id { get; }
 
-            public override bool Equals(object obj)
+            public override bool Equals(object? obj)
             {
                 return obj is IBar other && other.Id == this.Id;
             }

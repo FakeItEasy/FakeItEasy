@@ -20,7 +20,7 @@ namespace FakeItEasy.Configuration
         /// Matches calls that have any non-void return type.
         /// </summary>
         /// <returns>A configuration object.</returns>
-        IAnyCallConfigurationWithReturnTypeSpecified<object> WithNonVoidReturnType();
+        IAnyCallConfigurationWithReturnTypeSpecified<object?> WithNonVoidReturnType();
 
         /// <summary>
         /// Matches calls that have void return type.

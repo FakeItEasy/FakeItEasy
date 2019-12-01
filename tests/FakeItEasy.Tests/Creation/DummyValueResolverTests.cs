@@ -30,7 +30,7 @@ namespace FakeItEasy.Tests.Creation
                     CreationResult.FailedToCreateDummy(type, string.Empty));
         }
 
-        public static IEnumerable<object[]> DummiesInContainer()
+        public static IEnumerable<object?[]> DummiesInContainer()
         {
             return TestCases.FromObject(
                 "dummy value",
@@ -209,10 +209,11 @@ namespace FakeItEasy.Tests.Creation
             var result = resolver.TryResolveDummyValue(
                 typeof(TypeWithMultipleConstructorsOfDifferentWidth),
                 new LoopDetectingResolutionContext());
-            var typedDummy = (TypeWithMultipleConstructorsOfDifferentWidth)result.Result;
 
             // Assert
-            typedDummy.WidestConstructorWasCalled.Should().BeTrue();
+            var dummy = result.Result;
+            dummy.Should().BeOfType<TypeWithMultipleConstructorsOfDifferentWidth>();
+            ((TypeWithMultipleConstructorsOfDifferentWidth)dummy!).WidestConstructorWasCalled.Should().BeTrue();
         }
 
         [Theory]
@@ -250,7 +251,7 @@ namespace FakeItEasy.Tests.Creation
             result.WasSuccessful.Should().BeTrue();
             var dummy = result.Result;
             dummy.Should().BeOfType<Lazy<IFoo>>();
-            ((Lazy<IFoo>)dummy).Value.Should().BeSameAs(fake);
+            ((Lazy<IFoo>)dummy!).Value.Should().BeSameAs(fake);
         }
 
         private void StubFakeObjectCreatorWithValue<T>(T value)

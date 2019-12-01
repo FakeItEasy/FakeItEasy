@@ -6,7 +6,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <FileAlignment>512</FileAlignment>
     <SignAssembly>true</SignAssembly>
-    <DefineConstants>$(DefineConstants);VISUAL_BASIC</DefineConstants>
+    <DefineConstants>$(DefineConstants);VISUAL_BASIC;LACKS_NULLABLE_ATTRIBUTES</DefineConstants>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>
 

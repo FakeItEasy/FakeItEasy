@@ -46,7 +46,7 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
         /// </summary>
         public override object FakedObject => this.invocation.Proxy;
 
-        public override object ReturnValue
+        public override object? ReturnValue
         {
             get => this.invocation.ReturnValue;
             set => this.invocation.ReturnValue = value;
@@ -76,7 +76,7 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
         /// </summary>
         /// <param name="index">The index of the argument to set the value to.</param>
         /// <param name="value">The value to set to the argument.</param>
-        public override void SetArgumentValue(int index, object value)
+        public override void SetArgumentValue(int index, object? value)
         {
             this.invocation.SetArgumentValue(index, value);
         }

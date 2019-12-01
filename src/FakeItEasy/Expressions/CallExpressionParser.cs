@@ -11,19 +11,12 @@ namespace FakeItEasy.Expressions
     {
         public ParsedCallExpression Parse(LambdaExpression callExpression)
         {
-            var methodExpression = callExpression.Body as MethodCallExpression;
-            if (methodExpression is object)
+            return callExpression.Body switch
             {
-                return ParseMethodCallExpression(methodExpression);
-            }
-
-            var propertyExpression = callExpression.Body as MemberExpression;
-            if (propertyExpression is object)
-            {
-                return ParsePropertyCallExpression(propertyExpression);
-            }
-
-            return ParseInvocationExpression((InvocationExpression)callExpression.Body);
+                MethodCallExpression methodExpression => ParseMethodCallExpression(methodExpression),
+                MemberExpression propertyExpression => ParsePropertyCallExpression(propertyExpression),
+                _ => ParseInvocationExpression((InvocationExpression)callExpression.Body),
+            };
         }
 
         public ParsedCallExpression Parse(LambdaExpression callExpression, object fake)
@@ -38,8 +31,8 @@ namespace FakeItEasy.Expressions
 
         private static ParsedCallExpression ParseInvocationExpression(InvocationExpression expression)
         {
-            var target = expression.Expression.Evaluate();
-            var method = target.GetType().GetMethod("Invoke");
+            var expressionType = expression.Expression.Type;
+            var method = expressionType.GetMethod("Invoke");
 
             var argumentsExpressions = CreateParsedArgumentExpressions(expression.Arguments, method.GetParameters());
 

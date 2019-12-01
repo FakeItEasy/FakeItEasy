@@ -1,6 +1,7 @@
 namespace FakeItEasy.Tests
 {
     using System;
+    using System.Linq.Expressions;
     using FakeItEasy.Configuration;
     using FluentAssertions;
     using Xunit;
@@ -21,16 +22,15 @@ namespace FakeItEasy.Tests
         }
 
         [Fact]
-        public void Once_should_throw_when_configuration_is_null()
+        public void Once_should_be_null_guarded()
         {
             // Arrange
-            IBehaviorLifetimeConfiguration<IVoidConfiguration> behaviorLifetimeConfiguration = null;
 
             // Act
-            var exception = Record.Exception(() => behaviorLifetimeConfiguration.Once());
 
             // Assert
-            exception.Should().BeOfType<ArgumentNullException>();
+            Expression<Action> call = () => A.Fake<IBehaviorLifetimeConfiguration<IVoidConfiguration>>().Once();
+            call.Should().BeNullGuarded();
         }
 
         [Fact]
@@ -47,16 +47,15 @@ namespace FakeItEasy.Tests
         }
 
         [Fact]
-        public void Twice_should_throw_when_configuration_is_null()
+        public void Twice_should_be_null_guarded()
         {
             // Arrange
-            IBehaviorLifetimeConfiguration<IVoidConfiguration> behaviorLifetimeConfiguration = null;
 
             // Act
-            var exception = Record.Exception(() => behaviorLifetimeConfiguration.Twice());
 
             // Assert
-            exception.Should().BeOfType<ArgumentNullException>();
+            Expression<Action> call = () => A.Fake<IBehaviorLifetimeConfiguration<IVoidConfiguration>>().Twice();
+            call.Should().BeNullGuarded();
         }
     }
 }

@@ -394,8 +394,8 @@ namespace FakeItEasy.Specs
 
         public class MyException : Exception
         {
-            public MyException(string message, Exception inner = null)
-                : base(message, inner)
+            public MyException(string message)
+                : base(message)
             {
             }
         }
@@ -416,9 +416,9 @@ namespace FakeItEasy.Specs
         {
         }
 
-        public class MyDummyFactory : DummyFactory<MyDummy>
+        public class MyDummyFactory : DummyFactory<MyDummy?>
         {
-            protected override MyDummy Create()
+            protected override MyDummy? Create()
             {
                 ThrowException();
                 return default;

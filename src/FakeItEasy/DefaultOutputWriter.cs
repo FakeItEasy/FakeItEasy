@@ -33,7 +33,7 @@ namespace FakeItEasy
             return this;
         }
 
-        public IOutputWriter WriteArgumentValue(object value)
+        public IOutputWriter WriteArgumentValue(object? value)
         {
             return this.Write(this.argumentValueFormatter.GetArgumentValueAsString(value));
         }

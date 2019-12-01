@@ -22,7 +22,7 @@ namespace FakeItEasy.Creation
             this.implicitOptionsBuilderCatalogue = implicitOptionsBuilderCatalogue;
         }
 
-        public object CreateDummy(Type typeOfDummy, LoopDetectingResolutionContext resolutionContext)
+        public object? CreateDummy(Type typeOfDummy, LoopDetectingResolutionContext resolutionContext)
         {
             return this.dummyValueResolver.TryResolveDummyValue(typeOfDummy, resolutionContext).Result;
         }
@@ -33,7 +33,7 @@ namespace FakeItEasy.Creation
         {
             var proxyOptions = this.BuildProxyOptions(typeOfFake, DefaultOptionsBuilder);
 
-            return this.fakeCreator.CreateFake(typeOfFake, proxyOptions, this.dummyValueResolver, resolutionContext).Result;
+            return this.fakeCreator.CreateFake(typeOfFake, proxyOptions, this.dummyValueResolver, resolutionContext).Result !;
         }
 
         public object CreateFake(
@@ -43,10 +43,10 @@ namespace FakeItEasy.Creation
         {
             var proxyOptions = this.BuildProxyOptions(typeOfFake, optionsBuilder);
 
-            return this.fakeCreator.CreateFake(typeOfFake, proxyOptions, this.dummyValueResolver, resolutionContext).Result;
+            return this.fakeCreator.CreateFake(typeOfFake, proxyOptions, this.dummyValueResolver, resolutionContext).Result !;
         }
 
-        public bool TryCreateDummy(Type typeOfDummy, LoopDetectingResolutionContext resolutionContext, out object result)
+        public bool TryCreateDummy(Type typeOfDummy, LoopDetectingResolutionContext resolutionContext, out object? result)
         {
             var creationResult = this.dummyValueResolver.TryResolveDummyValue(typeOfDummy, resolutionContext);
             if (creationResult.WasSuccessful)

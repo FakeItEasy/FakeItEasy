@@ -5,9 +5,5 @@ namespace FakeItEasy.Tests.Configuration
     public class FakeConfigurationExceptionTests
         : ExceptionContractTests<FakeConfigurationException>
     {
-        protected override FakeConfigurationException CreateException()
-        {
-            return new FakeConfigurationException();
-        }
     }
 }

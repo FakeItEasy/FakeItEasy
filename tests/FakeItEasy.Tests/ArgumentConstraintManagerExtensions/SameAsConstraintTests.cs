@@ -11,14 +11,14 @@ namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
 
         protected override string ExpectedDescription => "same as Foo";
 
-        public static IEnumerable<object[]> InvalidValues()
+        public static IEnumerable<object?[]> InvalidValues()
         {
             return TestCases.FromObject(
                 new SomeRefType("Foo"),
                 new SomeRefType("Bar"));
         }
 
-        public static IEnumerable<object[]> ValidValues()
+        public static IEnumerable<object?[]> ValidValues()
         {
             return TestCases.FromObject(
                 TheRealThing);

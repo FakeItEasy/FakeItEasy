@@ -45,7 +45,7 @@ namespace FakeItEasy.Tests.Core
             var wrapped = A.Fake<IFoo>();
             A.CallTo(() => wrapped.Baz()).Returns(returnValue);
 
-            var call = FakeCall.Create<IFoo>("Baz", Type.EmptyTypes, Array.Empty<object>());
+            var call = FakeCall.Create<IFoo>(x => x.Baz());
 
             var rule = this.CreateRule(wrapped);
             rule.Apply(call);
@@ -58,7 +58,7 @@ namespace FakeItEasy.Tests.Core
         {
             var wrapped = A.Fake<IFoo>();
 
-            var call = FakeCall.Create<IFoo>("Bar", new[] { typeof(object), typeof(object) }, new object[] { "foo", "bar" });
+            var call = FakeCall.Create<IFoo>(x => x.Bar("foo", "bar"));
 
             var rule = this.CreateRule(wrapped);
             rule.Apply(call);
@@ -71,7 +71,8 @@ namespace FakeItEasy.Tests.Core
         {
             // Arrange
             var wrapped = new TypeWithReferenceArguments(10);
-            var call = FakeCall.Create<ITypeWithReferenceArguments>("MethodWithReferenceArgument", new[] { Type.GetType("System.Int32&") }, new object[] { 0 });
+            int i = 0;
+            var call = FakeCall.Create<ITypeWithReferenceArguments>(x => x.MethodWithReferenceArgument(ref i));
             var rule = this.CreateRule(wrapped);
 
             // Act
@@ -86,7 +87,8 @@ namespace FakeItEasy.Tests.Core
         {
             // Arrange
             var wrapped = new TypeWithOutputArguments(10);
-            var call = FakeCall.Create<ITypeWithOutputArguments>("MethodWithOutputArgument", new[] { Type.GetType("System.Int32&") }, new object[] { 0 });
+            int i = 0;
+            var call = FakeCall.Create<ITypeWithOutputArguments>(x => x.MethodWithOutputArgument(out i));
             var rule = this.CreateRule(wrapped);
 
             // Act

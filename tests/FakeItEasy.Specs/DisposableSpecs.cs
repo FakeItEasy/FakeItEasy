@@ -7,14 +7,13 @@ namespace FakeItEasy.Specs
 
     public static class DisposableSpecs
     {
-        private static Exception exception;
+        private static Exception? exception;
 
         [SuppressMessage("Microsoft.Reliability", "CA2001:AvoidCallingProblematicMethods", MessageId = "System.GC.Collect", Justification = "Required for testing.")]
         [Scenario]
-        public static void FakingDisposable(
-            IDisposable fake)
+        public static void FakingDisposable(IDisposable? fake)
         {
-            "establish"
+            "Given a fake of a disposable class"
                 .x(() =>
                     {
                         AppDomain.CurrentDomain.UnhandledException += UnhandledExceptionHandler;
@@ -23,7 +22,7 @@ namespace FakeItEasy.Specs
                     })
                 .Teardown(() => AppDomain.CurrentDomain.UnhandledException -= UnhandledExceptionHandler);
 
-            "when faking a disposable class"
+            "When the fake is finalized"
                 .x(() =>
                     {
                         fake = null;
@@ -31,7 +30,7 @@ namespace FakeItEasy.Specs
                         GC.WaitForPendingFinalizers();
                     });
 
-            "it should not throw when finalized"
+            "Then no exception is thrown"
                 .x(() => exception.Should().BeNull());
         }
 

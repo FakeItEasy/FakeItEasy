@@ -26,7 +26,7 @@ namespace FakeItEasy.Tests.Approval
         [MethodImpl(MethodImplOptions.NoInlining)]
         public void ApproveApi(string projectName, string frameworkVersion)
         {
-            string codeBase = Assembly.GetExecutingAssembly().CodeBase;
+            string codeBase = Assembly.GetExecutingAssembly().CodeBase!;
             UriBuilder uri = new UriBuilder(new Uri(codeBase));
             string assemblyPath = Uri.UnescapeDataString(uri.Path);
             var containingDirectory = Path.GetDirectoryName(assemblyPath);
@@ -60,6 +60,6 @@ namespace FakeItEasy.Tests.Approval
             public string Name { get; }
         }
 
-        private static string GetSourceDirectory([CallerFilePath] string path = null) => Path.GetDirectoryName(path);
+        private static string GetSourceDirectory([CallerFilePath] string path = "") => Path.GetDirectoryName(path) !;
     }
 }

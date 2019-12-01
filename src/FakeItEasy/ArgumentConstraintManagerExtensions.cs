@@ -94,7 +94,7 @@ namespace FakeItEasy
         /// <param name="value">The value the collection should contain.</param>
         /// <typeparam name="T">The type of sequence.</typeparam>
         /// <returns>A dummy argument value.</returns>
-        public static T Contains<T>(this IArgumentConstraintManager<T> manager, object value) where T : IEnumerable
+        public static T Contains<T>(this IArgumentConstraintManager<T> manager, object? value) where T : IEnumerable
         {
             Guard.AgainstNull(manager, nameof(manager));
 
@@ -184,7 +184,7 @@ namespace FakeItEasy
         /// <param name="values">The sequence to test against.</param>
         /// <typeparam name="T">The type of argument to constrain.</typeparam>
         /// <returns>A dummy argument value.</returns>
-        public static T IsSameSequenceAs<T>(this IArgumentConstraintManager<T> manager, params object[] values) where T : IEnumerable
+        public static T IsSameSequenceAs<T>(this IArgumentConstraintManager<T> manager, params object?[] values) where T : IEnumerable
         {
             Guard.AgainstNull(manager, nameof(manager));
             Guard.AgainstNull(values, nameof(values));
@@ -302,7 +302,7 @@ namespace FakeItEasy
         /// <returns>
         /// A dummy argument value.
         /// </returns>
-        public static T Matches<T>(this IArgumentConstraintManager<T> manager, Func<T, bool> predicate, string descriptionFormat, params object[] args)
+        public static T Matches<T>(this IArgumentConstraintManager<T> manager, Func<T, bool> predicate, string descriptionFormat, params object?[] args)
         {
             Guard.AgainstNull(manager, nameof(manager));
             Guard.AgainstNull(predicate, nameof(predicate));

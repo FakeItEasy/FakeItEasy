@@ -65,7 +65,7 @@ namespace FakeItEasy.Core
                 {
                     if (parameters[i].ParameterType == typeof(CancellationToken))
                     {
-                        var token = (CancellationToken)call.Arguments[i];
+                        var token = (CancellationToken)call.Arguments[i] !;
                         if (token.IsCancellationRequested)
                         {
                             return token;
@@ -76,7 +76,7 @@ namespace FakeItEasy.Core
                 return null;
             }
 
-            private static bool IsValueTask(Type type, out Type valueType)
+            private static bool IsValueTask(Type type, out Type? valueType)
             {
                 if (type.FullName == "System.Threading.Tasks.ValueTask")
                 {

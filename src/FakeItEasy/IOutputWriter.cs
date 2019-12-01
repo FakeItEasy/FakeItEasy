@@ -20,7 +20,7 @@ namespace FakeItEasy
         /// </summary>
         /// <param name="value">The value to write.</param>
         /// <returns>The writer for method chaining.</returns>
-        IOutputWriter WriteArgumentValue(object value);
+        IOutputWriter WriteArgumentValue(object? value);
 
         /// <summary>
         /// Indents the writer.

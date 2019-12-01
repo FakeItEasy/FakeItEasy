@@ -8,7 +8,7 @@ namespace FakeItEasy.Creation
 
         public Type ArgumentType { get; }
 
-        public object ResolvedValue { get; set; }
+        public object? ResolvedValue { get; set; }
 
         public bool WasResolved { get; set; }
     }

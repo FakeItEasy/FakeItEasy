@@ -11,16 +11,16 @@ namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
     {
         protected override string ExpectedDescription => "empty collection";
 
-        public static IEnumerable<object[]> InvalidValues()
+        public static IEnumerable<object?[]> InvalidValues()
         {
             return TestCases.FromObject(
-                null,
+                (object?)null,
                 new List<object> { 1, 2 },
                 new object[] { "foo" },
                 Enumerable.Range(1, 10).Cast<object>());
         }
 
-        public static IEnumerable<object[]> ValidValues()
+        public static IEnumerable<object?[]> ValidValues()
         {
             return TestCases.FromObject(
                 new List<object>(),

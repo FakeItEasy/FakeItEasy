@@ -24,7 +24,7 @@ namespace FakeItEasy
             }
         }
 
-        internal static void AssertThatValuesSatisfyCallSignature(MethodInfo callMethod, object[] values)
+        internal static void AssertThatValuesSatisfyCallSignature(MethodInfo callMethod, object?[] values)
         {
             if (IsCallSignatureSatisfiedByValues(callMethod, values))
             {
@@ -61,7 +61,7 @@ namespace FakeItEasy
             return true;
         }
 
-        private static bool IsCallSignatureSatisfiedByValues(MethodInfo callMethod, object[] values)
+        private static bool IsCallSignatureSatisfiedByValues(MethodInfo callMethod, object?[] values)
         {
             var callMethodParameterTypes = callMethod.GetParameters().Select(p => p.ParameterType).ToList();
 
@@ -91,7 +91,7 @@ namespace FakeItEasy
         private static string BuildSignatureDescription(MethodInfo method) =>
             method.GetParameters().ToCollectionString(p => p.ParameterType.ToString(), ", ");
 
-        private static string BuildSignatureDescription(object[] values) =>
+        private static string BuildSignatureDescription(object?[] values) =>
             values.ToCollectionString(v => v?.GetType()?.ToString() ?? "NULL", ", ");
     }
 }

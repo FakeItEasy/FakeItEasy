@@ -14,7 +14,7 @@ namespace FakeItEasy.IntegrationTests
     {
         public ExternalAssemblyGenerator()
         {
-            this.CreateBaseDirectory();
+            this.baseDirectory = CreateBaseDirectory();
             this.AssemblyOriginalPath = this.PrepareAssemblyPath("Original", AssemblyName);
             this.AssemblyCopyPath = this.PrepareAssemblyPath("Copy", AssemblyName);
             this.AssemblyDependencyPath = this.PrepareAssemblyPath("Dependency", DependencyAssemblyName);
@@ -48,7 +48,7 @@ namespace FakeItEasy.IntegrationTests
         private static IEnumerable<string> GetFrameworkAssemblyLocations()
         {
             var systemAssemblyLocation = typeof(object).GetTypeInfo().Assembly.Location;
-            var coreDir = Path.GetDirectoryName(systemAssemblyLocation);
+            var coreDir = Path.GetDirectoryName(systemAssemblyLocation) !;
             return new[] { "mscorlib.dll", "System.Runtime.dll" }
                 .Select(s => Path.Combine(coreDir, s))
                 .Concat(new[]
@@ -66,18 +66,19 @@ namespace FakeItEasy.IntegrationTests
         }
 #endif
 
-        private string baseDirectory;
-
-        private void CreateBaseDirectory()
+        private static string CreateBaseDirectory()
         {
-            this.baseDirectory = Path.Combine(Path.GetTempPath(), AssemblyName);
-            if (Directory.Exists(this.baseDirectory))
+            var dir = Path.Combine(Path.GetTempPath(), AssemblyName);
+            if (Directory.Exists(dir))
             {
-                Directory.Delete(this.baseDirectory, recursive: true);
+                Directory.Delete(dir, recursive: true);
             }
 
-            Directory.CreateDirectory(this.baseDirectory);
+            Directory.CreateDirectory(dir);
+            return dir;
         }
+
+        private string baseDirectory;
 
         private string PrepareAssemblyPath(string subDirectory, string assemblyName)
         {

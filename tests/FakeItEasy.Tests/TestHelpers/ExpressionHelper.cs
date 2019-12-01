@@ -26,54 +26,45 @@ namespace FakeItEasy.Tests.TestHelpers
             return CreateFakeCall(A.Fake<TFake>(), callSpecification);
         }
 
+        public static MethodInfo GetMethodInfo<T>(Expression<Action<T>> callSpecification) =>
+            GetMethodInfo((LambdaExpression)callSpecification);
+
+        public static MethodInfo GetMethodInfo<T, TResult>(Expression<Func<T, TResult>> callSpecification) =>
+            GetMethodInfo((LambdaExpression)callSpecification);
+
         private static IInterceptedFakeObjectCall CreateFakeCall<TFake>(TFake fakedObject, LambdaExpression callSpecification)
+            where TFake : class
         {
+            var arguments = CreateArgumentCollection(callSpecification);
             var result = A.Fake<IInterceptedFakeObjectCall>();
 
-            A.CallTo(() => result.Method).Returns(GetMethodInfo(callSpecification));
+            A.CallTo(() => result.Method).Returns(arguments.Method);
             A.CallTo(() => result.FakedObject).Returns(fakedObject);
-            A.CallTo(() => result.Arguments).Returns(CreateArgumentCollection(callSpecification));
+            A.CallTo(() => result.Arguments).Returns(arguments);
 
             return result;
         }
 
         private static MethodInfo GetMethodInfo(LambdaExpression callSpecification)
         {
-            var methodExpression = callSpecification.Body as MethodCallExpression;
-            if (methodExpression is object)
+            if (callSpecification.Body is MethodCallExpression methodExpression)
             {
                 return methodExpression.Method;
             }
 
             var memberExpression = (MemberExpression)callSpecification.Body;
             var property = (PropertyInfo)memberExpression.Member;
-            return property.GetGetMethod(true);
+            return property.GetGetMethod(true)
+                ?? throw new ArgumentException("Expression does not represent a method call or propery getter.", nameof(callSpecification));
         }
 
         private static ArgumentCollection CreateArgumentCollection(LambdaExpression callSpecification)
         {
-            var methodCall = callSpecification.Body as MethodCallExpression;
+            var arguments = callSpecification.Body is MethodCallExpression methodCall
+                ? methodCall.Arguments.Select(argument => argument.Evaluate()).ToArray()
+                : Array.Empty<object>();
 
-            MethodInfo method;
-            object[] arguments;
-
-            if (methodCall is object)
-            {
-                method = methodCall.Method;
-                arguments =
-                    (from argument in methodCall.Arguments
-                     select argument.Evaluate()).ToArray();
-            }
-            else
-            {
-                var propertyCall = (MemberExpression)callSpecification.Body;
-                var property = (PropertyInfo)propertyCall.Member;
-
-                method = property.GetGetMethod(true);
-                arguments = Array.Empty<object>();
-            }
-
-            return new ArgumentCollection(arguments, method);
+            return new ArgumentCollection(arguments, GetMethodInfo(callSpecification));
         }
     }
 }

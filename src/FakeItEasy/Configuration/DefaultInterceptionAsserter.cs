@@ -14,10 +14,9 @@ namespace FakeItEasy.Configuration
             this.methodInterceptionValidator = methodInterceptionValidator;
         }
 
-        public void AssertThatMethodCanBeInterceptedOnInstance(MethodInfo method, object callTarget)
+        public void AssertThatMethodCanBeInterceptedOnInstance(MethodInfo method, object? callTarget)
         {
-            string failReason;
-            if (!this.methodInterceptionValidator.MethodCanBeInterceptedOnInstance(method, callTarget, out failReason))
+            if (!this.methodInterceptionValidator.MethodCanBeInterceptedOnInstance(method, callTarget, out string? failReason))
             {
                 string memberType = method.IsPropertyGetterOrSetter() ? "property" : "method";
                 string description = method.GetDescription();

@@ -9,7 +9,7 @@ namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
     {
         protected override string ExpectedDescription => "NULL or string.Empty";
 
-        public static IEnumerable<object[]> InvalidValues()
+        public static IEnumerable<object?[]> InvalidValues()
         {
             return TestCases.FromObject(
                 "foo",
@@ -18,11 +18,11 @@ namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
                 "b");
         }
 
-        public static IEnumerable<object[]> ValidValues()
+        public static IEnumerable<object?[]> ValidValues()
         {
             return TestCases.FromObject(
                 string.Empty,
-                null);
+                null!);
         }
 
         [Theory]

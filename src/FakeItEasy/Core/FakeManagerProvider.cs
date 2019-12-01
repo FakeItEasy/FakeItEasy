@@ -20,7 +20,7 @@ namespace FakeItEasy.Core
         // We want to lock accesses to initializedFakeManager to guarantee thread-safety (see IFakeCallProcessorProvider documentation):
         private readonly object initializedFakeManagerLock = new object();
 
-        private FakeManager initializedFakeManager;
+        private FakeManager? initializedFakeManager;
 
         public FakeManagerProvider(
                 FakeManager.Factory fakeManagerFactory,
@@ -47,7 +47,7 @@ namespace FakeItEasy.Core
             {
                 this.EnsureInitialized(proxy);
 
-                return this.initializedFakeManager;
+                return this.initializedFakeManager!;
             }
         }
 

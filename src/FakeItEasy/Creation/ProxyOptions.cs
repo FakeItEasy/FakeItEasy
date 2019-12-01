@@ -3,6 +3,7 @@ namespace FakeItEasy.Creation
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Linq.Expressions;
 #if FEATURE_NETCORE_REFLECTION
@@ -17,7 +18,7 @@ namespace FakeItEasy.Creation
 
         public static IProxyOptions Default { get; } = new DefaultProxyOptions();
 
-        public IEnumerable<object> ArgumentsForConstructor { get; set; }
+        public IEnumerable<object?>? ArgumentsForConstructor { get; set; }
 
         public ReadOnlyCollection<Type> AdditionalInterfacesToImplement => this.additionalInterfacesToImplement.AsReadOnly();
 
@@ -25,7 +26,7 @@ namespace FakeItEasy.Creation
 
         public IEnumerable<Expression<Func<Attribute>>> Attributes => this.attributes;
 
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         public void AddInterfaceToImplement(Type interfaceType)
         {
@@ -51,7 +52,7 @@ namespace FakeItEasy.Creation
 
         private class DefaultProxyOptions : IProxyOptions
         {
-            public IEnumerable<object> ArgumentsForConstructor { get; } = null;
+            public IEnumerable<object?>? ArgumentsForConstructor { get; } = null;
 
             public ReadOnlyCollection<Type> AdditionalInterfacesToImplement { get; } = new ReadOnlyCollection<Type>(new List<Type>());
 
@@ -59,7 +60,7 @@ namespace FakeItEasy.Creation
 
             public IEnumerable<Expression<Func<Attribute>>> Attributes { get; } = Enumerable.Empty<Expression<Func<Attribute>>>();
 
-            public string Name => null;
+            public string? Name => null;
         }
     }
 }

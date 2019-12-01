@@ -75,7 +75,7 @@ namespace FakeItEasy
         /// <param name="fakeManager">The fake manager, or <c>null</c> if <paramref name="potentialFake"/> is not actually a faked object.</param>
         /// <returns><c>true</c> if <paramref name="potentialFake"/> is a faked object, else <c>false</c>.</returns>
         [DebuggerStepThrough]
-        public static bool TryGetFakeManager(object potentialFake, out FakeManager fakeManager)
+        public static bool TryGetFakeManager(object potentialFake, [NotNullWhen(true)] out FakeManager? fakeManager)
         {
             Guard.AgainstNull(potentialFake, nameof(potentialFake));
 

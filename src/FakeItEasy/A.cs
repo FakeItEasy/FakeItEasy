@@ -80,13 +80,16 @@ namespace FakeItEasy
         /// should be irrelevant. Dummy objects should not be configured.
         /// </summary>
         /// <typeparam name="T">The type of dummy to return.</typeparam>
-        /// <returns>A dummy object of the specified type.</returns>
+        /// <returns>
+        /// A dummy object of the specified type.
+        /// May be null, if a dummy factory is defined that returns null for dummies of type <typeparamref name="T"/>.
+        /// </returns>
         /// <exception cref="ArgumentException">Dummies of the specified type can not be created.</exception>
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "Used to specify the type of dummy.")]
         public static T Dummy<T>()
         {
-            return (T)FakeAndDummyManager.CreateDummy(typeof(T), new LoopDetectingResolutionContext());
+            return (T)FakeAndDummyManager.CreateDummy(typeof(T), new LoopDetectingResolutionContext()) !;
         }
 
         /// <summary>
@@ -94,7 +97,10 @@ namespace FakeItEasy
         /// </summary>
         /// <typeparam name="T">The type of dummies to create.</typeparam>
         /// <param name="numberOfDummies">The number of dummies in the collection.</param>
-        /// <returns>A collection of dummy objects of the specified type.</returns>
+        /// <returns>
+        /// A collection of dummy objects of the specified type.
+        /// Individual dummies may be null, if a dummy factory is defined that returns null for dummies of type <typeparamref name="T"/>.
+        /// </returns>
         /// <exception cref="ArgumentException">Dummies of the specified type can not be created.</exception>
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "Used to specify the type of dummy.")]
         [EditorBrowsable(EditorBrowsableState.Advanced)]

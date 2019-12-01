@@ -10,7 +10,7 @@ namespace FakeItEasy.Core
         /// <summary>
         /// Gets the value that was returned from the call.
         /// </summary>
-        object ReturnValue { get; }
+        object? ReturnValue { get; }
 
         /// <summary>
         /// Gets the arguments used in the call, after the call is made. Includes changes to the values of out and ref arguments.

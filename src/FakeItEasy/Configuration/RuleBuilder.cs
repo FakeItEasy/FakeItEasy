@@ -2,6 +2,7 @@ namespace FakeItEasy.Configuration
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq.Expressions;
 #if FEATURE_NETCORE_REFLECTION
     using System.Reflection;
@@ -50,7 +51,8 @@ namespace FakeItEasy.Configuration
             }
         }
 
-        private BuildableCallRule PreviousRule { get; set; }
+        [DisallowNull]
+        private BuildableCallRule? PreviousRule { get; set; }
 
         public IThenConfiguration<IVoidConfiguration> NumberOfTimes(int numberOfTimes)
         {
@@ -115,7 +117,7 @@ namespace FakeItEasy.Configuration
             return this;
         }
 
-        public virtual IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily(Func<IFakeObjectCall, ICollection<object>> valueProducer)
+        public virtual IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily(Func<IFakeObjectCall, ICollection<object?>> valueProducer)
         {
             Guard.AgainstNull(valueProducer, nameof(valueProducer));
 
@@ -244,7 +246,7 @@ namespace FakeItEasy.Configuration
                 return this;
             }
 
-            public IAfterCallConfiguredConfiguration<IReturnValueConfiguration<TMember>> AssignsOutAndRefParametersLazily(Func<IFakeObjectCall, ICollection<object>> valueProducer)
+            public IAfterCallConfiguredConfiguration<IReturnValueConfiguration<TMember>> AssignsOutAndRefParametersLazily(Func<IFakeObjectCall, ICollection<object?>> valueProducer)
             {
                 this.ParentConfiguration.AssignsOutAndRefParametersLazily(valueProducer);
                 return this;

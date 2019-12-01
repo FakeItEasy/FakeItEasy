@@ -1,6 +1,7 @@
 ﻿namespace FakeItEasy.Creation.CastleDynamicProxy
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Reflection;
     using FakeItEasy.Core;
@@ -14,7 +15,7 @@
             this.methodInfoManager = methodInfoManager;
         }
 
-        public bool MethodCanBeInterceptedOnInstance(MethodInfo method, object callTarget, out string failReason)
+        public bool MethodCanBeInterceptedOnInstance(MethodInfo method, object? callTarget, [NotNullWhen(false)]out string? failReason)
         {
             var invokedMethod = this.GetInvokedMethod(method, callTarget);
 
@@ -22,7 +23,7 @@
             return failReason is null;
         }
 
-        private static string GetReasonForWhyMethodCanNotBeIntercepted(MethodInfo method)
+        private static string? GetReasonForWhyMethodCanNotBeIntercepted(MethodInfo method)
         {
             if (Castle.DynamicProxy.ProxyUtil.IsProxyType(method.DeclaringType))
             {
@@ -67,17 +68,14 @@
             return null;
         }
 
-        private MethodInfo GetInvokedMethod(MethodInfo method, object callTarget)
+        private MethodInfo GetInvokedMethod(MethodInfo method, object? callTarget)
         {
-            var invokedMethod = method;
-
             if (callTarget is object)
             {
-                invokedMethod = this.methodInfoManager.GetMethodOnTypeThatWillBeInvokedByMethodInfo(
-                    callTarget.GetType(), method);
+                return this.methodInfoManager.GetMethodOnTypeThatWillBeInvokedByMethodInfo(callTarget.GetType(), method) !;
             }
 
-            return invokedMethod;
+            return method;
         }
     }
 }

@@ -50,7 +50,7 @@ namespace FakeItEasy.Specs
 
         public interface IIHaveACollectionParameter
         {
-            int Bar(object[] args);
+            int Bar(object?[] args);
         }
 
         public interface IHaveAnObjectParameter
@@ -102,9 +102,6 @@ namespace FakeItEasy.Specs
 
             "Then an assertion with all the same non-params argument values should succeed"
                 .x(() => A.CallTo(() => fake.MethodWithParameterArray("foo")).MustHaveHappened());
-
-            "And an assertion with null in place of the params arguments should fail"
-                .x(() => A.CallTo(() => fake.MethodWithParameterArray("foo", (string[])null)).MustNotHaveHappened());
 
             "And an assertion with an empty array in place of the params arguments should succeed"
                 .x(() => A.CallTo(() => fake.MethodWithParameterArray("foo", Array.Empty<string>())).MustHaveHappened());
@@ -183,7 +180,7 @@ namespace FakeItEasy.Specs
                 .x(() => fake = A.Fake<IIHaveACollectionParameter>());
 
             "And a call with argument [1, \"hello\", NULL, NULL, \"foo\", \"bar\"] made on this fake"
-                .x(() => fake.Bar(new object[] { 1, "hello", null, null, "foo", "bar" }));
+                .x(() => fake.Bar(new object?[] { 1, "hello", null, null, "foo", "bar" }));
 
             "When I assert that a call with an argument that contains null has happened on this fake"
                 .x(() => exception = Record.Exception(
@@ -204,15 +201,15 @@ namespace FakeItEasy.Specs
                 .x(() => fake = A.Fake<IIHaveACollectionParameter>());
 
             "And a call with argument [1, \"hello\", NULL, NULL, \"foo\", \"bar\"] made on this fake"
-                .x(() => fake.Bar(new object[] { 1, "hello", null, null, "foo", "bar" }));
+                .x(() => fake.Bar(new object?[] { 1, "hello", null, null, "foo", "bar" }));
 
             "And a call with argument [null, 42] made on this fake"
-                .x(() => fake.Bar(new object[] { null, 42 }));
+                .x(() => fake.Bar(new object?[] { null, 42 }));
 
             "When I assert that a call with an argument that is the same sequence as [null, 42, \"hello\"] has happened on this fake"
                 .x(() => exception = Record.Exception(
                     () => A.CallTo(
-                            () => fake.Bar(A<object[]>.That.IsSameSequenceAs(new object[] { null, 42, "hello" })))
+                            () => fake.Bar(A<object[]>.That.IsSameSequenceAs(new object?[] { null, 42, "hello" })))
                         .MustHaveHappened()));
 
             "Then the assertion should fail"
@@ -287,8 +284,8 @@ namespace FakeItEasy.Specs
         [Scenario]
         public static void OutParameter(
             IDictionary<string, string> subject,
-            string constraintValue,
-            string value)
+            string? constraintValue,
+            string? value)
         {
             "Given a fake"
                 .x(() => subject = A.Fake<IDictionary<string, string>>());
@@ -311,7 +308,7 @@ namespace FakeItEasy.Specs
         [Scenario]
         public static void FailingMatchOfOutParameter(
             IDictionary<string, string> subject,
-            string value,
+            string? value,
             Exception exception)
         {
             "Given a fake"
@@ -585,7 +582,7 @@ namespace FakeItEasy.Specs
         [Scenario]
         [MemberData(nameof(FakesWithBadToString))]
         public static void PassingAFakeWithABadToStringToAMethod<T>(
-            T fake, string fakeDescription, IHaveOneGenericParameter anotherFake, Exception exception)
+            T fake, string fakeDescription, IHaveOneGenericParameter anotherFake, Exception exception) where T : class
         {
             $"Given a fake {fakeDescription} with a ToString method which throws"
                 .x(() => A.CallTo(() => fake.ToString()).Throws<Exception>());
@@ -757,7 +754,7 @@ namespace FakeItEasy.Specs
                 .x(() => fake = A.Fake<IHaveAnObjectParameter>());
 
             "And a delegate that produces a constraint"
-                .x(() => constraintFactory = () => A<object>.That.Matches(i => i is object));
+                .x(() => constraintFactory = () => A<object>.That.Matches(i => i == fake));
 
             "And I try to configure a method of the fake with this delegate"
                 .x(() => A.CallTo(() => fake.Bar(constraintFactory())).Returns(1));
@@ -766,7 +763,7 @@ namespace FakeItEasy.Specs
                 .x(() => result1 = fake.Bar(fake));
 
             "And I call the method with a non-matching argument"
-                .x(() => result2 = fake.Bar(null));
+                .x(() => result2 = fake.Bar(new object()));
 
             "Then the first result has the configured value"
                 .x(() => result1.Should().Be(1));
@@ -929,6 +926,22 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Should().BeAnExceptionOfType<InvalidOperationException>());
         }
 
+        [Scenario]
+        public static void ArgumentConstraintExpressionInvokedOnce(IHaveNoGenericParameters fake, ConstraintFactory constraintFactory)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IHaveNoGenericParameters>());
+
+            "And an argument constraint factory"
+                .x(() => constraintFactory = new ConstraintFactory());
+
+            "When I configure a method of the fake with an argument constraint from the factory"
+                .x(() => A.CallTo(() => fake.Bar(constraintFactory.Create())).DoesNothing());
+
+            "Then the expression that invokes the constraint factory is called exactly once"
+                .x(() => constraintFactory.InvocationCount.Should().Be(1));
+        }
+
         public static IEnumerable<object[]> Fakes()
         {
             yield return new object[] { A.Fake<object>(), "Faked " + typeof(object) };
@@ -967,7 +980,7 @@ namespace FakeItEasy.Specs
 
         public class Dummy
         {
-            public string X { get; set; }
+            public string X { get; set; } = string.Empty;
         }
 
         public class Z
@@ -977,6 +990,17 @@ namespace FakeItEasy.Specs
             public Z(int value)
             {
                 this.Value = value;
+            }
+        }
+
+        public class ConstraintFactory
+        {
+            public int InvocationCount;
+
+            public int Create()
+            {
+                ++this.InvocationCount;
+                return A<int>._;
             }
         }
     }

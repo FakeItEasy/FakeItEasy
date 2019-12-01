@@ -3,6 +3,7 @@ namespace FakeItEasy.Tests.Creation.DelegateProxies
     using System;
     using FakeItEasy.Core;
     using FakeItEasy.Creation.DelegateProxies;
+    using FluentAssertions;
     using Xunit;
 
     public class DelegateProxyGeneratorTests
@@ -17,8 +18,11 @@ namespace FakeItEasy.Tests.Creation.DelegateProxies
             var proxyGeneratorResult = DelegateProxyGenerator.GenerateProxy(typeof(Action), fakeCallProcessorProvider);
 
             // Assert
+            var generatedProxy = proxyGeneratorResult.GeneratedProxy;
+            generatedProxy.Should().NotBeNull("we need a proxy");
+
             A.CallTo(() => fakeCallProcessorProvider.Fetch(A<object>._)).MustNotHaveHappened();
-            A.CallTo(() => fakeCallProcessorProvider.EnsureInitialized(proxyGeneratorResult.GeneratedProxy)).MustHaveHappened();
+            A.CallTo(() => fakeCallProcessorProvider.EnsureInitialized(generatedProxy!)).MustHaveHappened();
         }
     }
 }

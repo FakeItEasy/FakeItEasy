@@ -61,12 +61,12 @@ namespace FakeItEasy.Creation
             return (IFakeOptions)this.WithArgumentsForConstructor(GetConstructorArgumentsFromExpression(constructorCall));
         }
 
-        IFakeOptions IFakeOptions.WithArgumentsForConstructor(IEnumerable<object> argumentsForConstructor)
+        IFakeOptions IFakeOptions.WithArgumentsForConstructor(IEnumerable<object?> argumentsForConstructor)
         {
             return (IFakeOptions)this.WithArgumentsForConstructor(argumentsForConstructor);
         }
 
-        public IFakeOptions<T> WithArgumentsForConstructor(IEnumerable<object> argumentsForConstructor)
+        public IFakeOptions<T> WithArgumentsForConstructor(IEnumerable<object?> argumentsForConstructor)
         {
             Guard.AgainstNull(argumentsForConstructor, nameof(argumentsForConstructor));
 
@@ -131,7 +131,7 @@ namespace FakeItEasy.Creation
             manager.AddRuleFirst(rule);
         }
 
-        private static IEnumerable<object> GetConstructorArgumentsFromExpression<TConstructor>(Expression<Func<TConstructor>> constructorCall)
+        private static IEnumerable<object?> GetConstructorArgumentsFromExpression<TConstructor>(Expression<Func<TConstructor>> constructorCall)
         {
             AssertThatExpressionRepresentConstructorCall(constructorCall);
             return ((NewExpression)constructorCall.Body).Arguments.Select(argument => argument.Evaluate());

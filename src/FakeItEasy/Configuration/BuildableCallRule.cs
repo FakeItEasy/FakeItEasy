@@ -12,7 +12,7 @@ namespace FakeItEasy.Configuration
     internal abstract class BuildableCallRule
         : IFakeObjectCallRule
     {
-        public static readonly Func<IFakeObjectCall, ICollection<object>> DefaultOutAndRefParametersValueProducer = call =>
+        public static readonly Func<IFakeObjectCall, ICollection<object?>> DefaultOutAndRefParametersValueProducer = call =>
             ArrayHelper.Empty<object>();
 
         private static readonly Action<IInterceptedFakeObjectCall> DefaultApplicator = call =>
@@ -52,7 +52,7 @@ namespace FakeItEasy.Configuration
         /// <summary>
         /// Sets a function that provides values to apply to output and reference variables.
         /// </summary>
-        protected Func<IFakeObjectCall, ICollection<object>> OutAndRefParametersValueProducer
+        protected Func<IFakeObjectCall, ICollection<object?>> OutAndRefParametersValueProducer
         {
             private get; set;
         }
@@ -169,7 +169,7 @@ namespace FakeItEasy.Configuration
         /// <exception cref="System.InvalidOperationException">
         /// Thrown when the SetOutAndRefParametersValueProducer method has previously been called.
         /// </exception>
-        public void SetOutAndRefParametersValueProducer(Func<IFakeObjectCall, ICollection<object>> producer)
+        public void SetOutAndRefParametersValueProducer(Func<IFakeObjectCall, ICollection<object?>> producer)
         {
             if (!this.canSetOutAndRefParametersValueProducer)
             {
@@ -213,8 +213,7 @@ namespace FakeItEasy.Configuration
             }
 
             var indexes = GetIndexesOfOutAndRefParameters(fakeObjectCall);
-            ICollection<object> values;
-            values = this.OutAndRefParametersValueProducer(fakeObjectCall);
+            ICollection<object?> values = this.OutAndRefParametersValueProducer(fakeObjectCall);
 
             if (values.Count != indexes.Count)
             {

@@ -28,10 +28,10 @@ namespace FakeItEasy.Configuration
             return this.configurationFactory.CreateConfiguration<TMember>(this.manager, this.configuredRule);
         }
 
-        public IAnyCallConfigurationWithReturnTypeSpecified<object> WithNonVoidReturnType()
+        public IAnyCallConfigurationWithReturnTypeSpecified<object?> WithNonVoidReturnType()
         {
             this.configuredRule.MakeApplicableToAllNonVoidReturnTypes();
-            return this.configurationFactory.CreateConfiguration<object>(this.manager, this.configuredRule);
+            return this.configurationFactory.CreateConfiguration<object?>(this.manager, this.configuredRule);
         }
 
         public IAnyCallConfigurationWithVoidReturnType WithVoidReturnType()
@@ -53,7 +53,7 @@ namespace FakeItEasy.Configuration
         public IAfterCallConfiguredConfiguration<IVoidConfiguration> CallsBaseMethod() =>
             this.VoidConfiguration.CallsBaseMethod();
 
-        public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily(Func<IFakeObjectCall, ICollection<object>> valueProducer) =>
+        public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily(Func<IFakeObjectCall, ICollection<object?>> valueProducer) =>
             this.VoidConfiguration.AssignsOutAndRefParametersLazily(valueProducer);
 
         public UnorderedCallAssertion MustHaveHappened(int numberOfTimes, Times timesOption)

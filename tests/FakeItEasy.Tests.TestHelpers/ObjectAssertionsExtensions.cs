@@ -76,7 +76,7 @@ namespace FakeItEasy.Tests.TestHelpers
         public static ExceptionAssertions<TExpectedException> WithMessageModuloLineEndings<TExpectedException>(
             this ExceptionAssertions<TExpectedException> assertion,
             string expectedMessage,
-            string because = null,
+            string? because = null,
             params object[] becauseArgs)
             where TExpectedException : Exception
         {

@@ -10,16 +10,16 @@ namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
     {
         protected override string ExpectedDescription => "sequence that contains the value 10";
 
-        public static IEnumerable<object[]> InvalidValues()
+        public static IEnumerable<object?[]> InvalidValues()
         {
             return TestCases.FromObject(
-                null,
+                (object?)null,
                 Array.Empty<object>(),
-                new object[] { null },
+                new object?[] { null },
                 new object[] { 1, 2, 3, "foo", "bar" });
         }
 
-        public static IEnumerable<object[]> ValidValues()
+        public static IEnumerable<object?[]> ValidValues()
         {
             return TestCases.FromObject(
                 new object[] { 10 },
