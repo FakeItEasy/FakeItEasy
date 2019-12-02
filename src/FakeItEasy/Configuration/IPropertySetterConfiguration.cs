@@ -7,6 +7,7 @@ namespace FakeItEasy.Configuration
         IExceptionThrowerConfiguration<IPropertySetterConfiguration>,
         ICallbackConfiguration<IPropertySetterConfiguration>,
         ICallBaseConfiguration<IPropertySetterConfiguration>,
+        ICallWrappedMethodConfiguration<IPropertySetterConfiguration>,
         IAssertConfiguration,
         IDoNothingConfiguration<IPropertySetterConfiguration>
     {

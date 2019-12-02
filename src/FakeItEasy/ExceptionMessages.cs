@@ -30,6 +30,8 @@ namespace FakeItEasy
 
         public static string DelegateCannotCallBaseMethod => "Can not configure a delegate proxy to call a base method.";
 
+        public static string NotAWrappingFake => "The configured fake is not a wrapping fake.";
+
         public static string WrongConstructorExpressionType(Type actualConstructorType, Type expectedConstructorType) =>
             $"Supplied constructor is for type {actualConstructorType}, but must be for {expectedConstructorType}.";
 

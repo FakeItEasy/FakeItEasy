@@ -45,6 +45,11 @@ namespace FakeItEasy.Configuration
         public bool CallBaseMethod { get; set; }
 
         /// <summary>
+        /// Gets or sets a wrapped object to which the call should be delegated.
+        /// </summary>
+        public object? CallWrappedMethodOn { get; set; }
+
+        /// <summary>
         /// Gets or sets the number of times the configured rule should be used.
         /// </summary>
         public virtual int? NumberOfTimesToCall { get; set; }
@@ -100,6 +105,10 @@ namespace FakeItEasy.Configuration
             if (this.CallBaseMethod)
             {
                 fakeObjectCall.CallBaseMethod();
+            }
+            else if (this.CallWrappedMethodOn is object wrappedObject)
+            {
+                fakeObjectCall.CallWrappedMethod(wrappedObject);
             }
         }
 

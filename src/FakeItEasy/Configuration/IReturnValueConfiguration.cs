@@ -13,7 +13,8 @@ namespace FakeItEasy.Configuration
           IOutAndRefParametersConfiguration<IReturnValueConfiguration<TMember>>,
           ICallbackConfiguration<IReturnValueConfiguration<TMember>>,
           IAssertConfiguration,
-          ICallBaseConfiguration<IReturnValueConfiguration<TMember>>
+          ICallBaseConfiguration<IReturnValueConfiguration<TMember>>,
+          ICallWrappedMethodConfiguration<IReturnValueConfiguration<TMember>>
     {
         /// <summary>
         /// Specifies a function used to produce a return value when the configured call is made.

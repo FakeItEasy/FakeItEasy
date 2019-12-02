@@ -20,6 +20,7 @@ pages:
   - Assigning out and ref parameters: assigning-out-and-ref-parameters.md
   - Invoking Custom Code: invoking-custom-code.md
   - Calling base methods: calling-base-methods.md
+  - Calling wrapped methods: calling-wrapped-methods.md
   - Changing behavior between calls: changing-behavior-between-calls.md
 - Argument constraints: argument-constraints.md
 - Assertion:
