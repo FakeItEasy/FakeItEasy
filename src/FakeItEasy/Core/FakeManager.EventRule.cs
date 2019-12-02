@@ -165,7 +165,7 @@ namespace FakeItEasy.Core
                     IFakeObjectCall fakeObjectCall)
                 {
                     // This method is only called when IsApplicableTo is true, so eventInfo will not be null.
-                    var eventInfo = GetEvent(fakeObjectCall.Method) !;
+                    var eventInfo = GetEvent(fakeObjectCall.Method)!;
 
                     return new EventCall(eventInfo, fakeObjectCall.Method, (Delegate)fakeObjectCall.Arguments[0] !);
                 }

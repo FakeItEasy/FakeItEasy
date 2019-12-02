@@ -86,7 +86,7 @@ namespace FakeItEasy.Tests.Core
                 "three");
 
             A.CallTo(() => this.argumentFormatter.GetArgumentValueAsString(A<object>._))
-                .ReturnsLazily(x => (x.GetArgument<object>(0) !).ToString() !);
+                .ReturnsLazily(x => (x.GetArgument<object>(0)!).ToString()!);
 
             // Act
             var description = this.formatter.GetDescription(call);
@@ -120,8 +120,8 @@ namespace FakeItEasy.Tests.Core
         {
             // Arrange
             var propertyGetter = typeof(TypeWithProperties).GetProperty(
-                nameof(TypeWithProperties.NormalProperty)) !
-                .GetSetMethod() !;
+                nameof(TypeWithProperties.NormalProperty))!
+                .GetSetMethod()!;
             var call = this.CreateFakeCall(typeof(TypeWithProperties), propertyGetter, "foo");
             A.CallTo(() => this.argumentFormatter.GetArgumentValueAsString("foo")).Returns(@"""foo""");
 
@@ -151,8 +151,8 @@ namespace FakeItEasy.Tests.Core
         public void Should_write_indexed_property_setter_properly()
         {
             // Arrange
-            var propertySetter = typeof(TypeWithProperties).GetProperty("Item") !
-                .GetSetMethod() !;
+            var propertySetter = typeof(TypeWithProperties).GetProperty("Item")!
+                .GetSetMethod()!;
             var call = this.CreateFakeCall(typeof(TypeWithProperties), propertySetter, 0, "argument");
             A.CallTo(() => this.argumentFormatter.GetArgumentValueAsString(0)).Returns("0");
             A.CallTo(() => this.argumentFormatter.GetArgumentValueAsString("argument")).Returns(@"""argument""");

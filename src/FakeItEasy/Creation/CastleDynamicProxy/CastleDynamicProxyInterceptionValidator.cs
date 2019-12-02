@@ -72,7 +72,7 @@
         {
             if (callTarget is object)
             {
-                return this.methodInfoManager.GetMethodOnTypeThatWillBeInvokedByMethodInfo(callTarget.GetType(), method) !;
+                return this.methodInfoManager.GetMethodOnTypeThatWillBeInvokedByMethodInfo(callTarget.GetType(), method)!;
             }
 
             return method;

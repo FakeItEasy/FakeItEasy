@@ -45,10 +45,10 @@ namespace FakeItEasy.Core
         }
 
         /// <summary>
-        /// Converts a raiser into an <see cref="EventHandler{TEventArgs}"/>
+        /// Converts a raiser into an <see cref="EventHandler{TEventArgs}"/>.
         /// </summary>
         /// <param name="raiser">The raiser to convert.</param>
-        /// <returns>The new event handler</returns>
+        /// <returns>The new event handler.</returns>
         [SuppressMessage("Microsoft.Usage", "CA2225:OperatorOverloadsHaveNamedAlternates", Justification = "Provides the event raising syntax.")]
         public static implicit operator EventHandler<TEventArgs>(Raise<TEventArgs> raiser)
         {
@@ -58,10 +58,10 @@ namespace FakeItEasy.Core
         }
 
         /// <summary>
-        /// Converts a raiser into an <see cref="EventHandler"/>
+        /// Converts a raiser into an <see cref="EventHandler"/>.
         /// </summary>
         /// <param name="raiser">The raiser to convert.</param>
-        /// <returns>The new event handler</returns>
+        /// <returns>The new event handler.</returns>
         [SuppressMessage("Microsoft.Usage", "CA2225:OperatorOverloadsHaveNamedAlternates", Justification = "Provides the event raising syntax.")]
         public static implicit operator EventHandler(Raise<TEventArgs> raiser)
         {

@@ -60,6 +60,6 @@ namespace FakeItEasy.Tests.Approval
             public string Name { get; }
         }
 
-        private static string GetSourceDirectory([CallerFilePath] string path = "") => Path.GetDirectoryName(path) !;
+        private static string GetSourceDirectory([CallerFilePath] string path = "") => Path.GetDirectoryName(path)!;
     }
 }

@@ -870,7 +870,7 @@ namespace FakeItEasy.Specs
     {
         protected override T CreateDummy<T>()
         {
-            return (T)Sdk.Create.Dummy(typeof(T)) !;
+            return (T)Sdk.Create.Dummy(typeof(T))!;
         }
 
         protected override IList<T> CreateCollectionOfDummy<T>(int count)
