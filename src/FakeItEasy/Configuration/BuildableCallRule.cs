@@ -77,7 +77,7 @@ namespace FakeItEasy.Configuration
         {
             if (this.wasApplicatorSet)
             {
-                throw new InvalidOperationException("The behavior for this call has already been defined");
+                throw new InvalidOperationException(ExceptionMessages.CallBehaviorAlreadyDefined);
             }
 
             this.applicator = newApplicator;
@@ -182,7 +182,7 @@ namespace FakeItEasy.Configuration
         {
             if (!this.canSetOutAndRefParametersValueProducer)
             {
-                throw new InvalidOperationException("How to assign out and ref parameters has already been defined for this call");
+                throw new InvalidOperationException(ExceptionMessages.OutAndRefBehaviorAlreadyDefined);
             }
 
             this.OutAndRefParametersValueProducer = producer;

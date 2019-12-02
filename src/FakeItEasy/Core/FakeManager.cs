@@ -224,7 +224,7 @@ namespace FakeItEasy.Core
                 var previousNode = this.allUserRules.Nodes().FirstOrDefault(n => n.Value.Rule == previousRule);
                 if (previousNode is null)
                 {
-                    throw new InvalidOperationException("The rule after which to add the new rule was not found in the list.");
+                    throw new InvalidOperationException(ExceptionMessages.CannotFindPreviousRule);
                 }
 
                 this.allUserRules.AddAfter(previousNode, CallRuleMetadata.NeverCalled(newRule));

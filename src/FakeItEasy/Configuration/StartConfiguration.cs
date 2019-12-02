@@ -76,7 +76,7 @@ namespace FakeItEasy.Configuration
         {
             if (callTarget != this.manager.Object)
             {
-                throw new ArgumentException("The target of this call is not the fake object being configured.");
+                throw new ArgumentException(ExceptionMessages.CallTargetIsNotFakeBeingConfigured);
             }
         }
 

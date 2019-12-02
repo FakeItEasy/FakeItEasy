@@ -57,7 +57,7 @@ namespace FakeItEasy.Expressions
 
             if (property is null)
             {
-                throw new ArgumentException("The specified expression is not a method call or property getter.");
+                throw new ArgumentException(ExceptionMessages.NotAMethodCallOrPropertyGetter);
             }
 
             return new ParsedCallExpression(

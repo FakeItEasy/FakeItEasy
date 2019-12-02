@@ -62,7 +62,7 @@ namespace FakeItEasy.Configuration
                 throw new ArgumentOutOfRangeException(
                     nameof(numberOfTimes),
                     numberOfTimes,
-                    "The number of times to occur is not greater than zero.");
+                    ExceptionMessages.NumberOfTimesNotGreaterThanZero);
             }
 
             this.RuleBeingBuilt.NumberOfTimesToCall = numberOfTimes;

@@ -28,7 +28,7 @@ namespace FakeItEasy.Core
             var targetType = binder.Type;
             if (!targetType.GetTypeInfo().IsSubclassOf(typeof(Delegate)))
             {
-                throw new InvalidCastException($"Unable to cast object of type '{this.GetType()}' to type '{targetType}'.");
+                throw new InvalidCastException(ExceptionMessages.UnableToCast(this.GetType(), targetType));
             }
 
             var method = targetType.GetMethod("Invoke");
