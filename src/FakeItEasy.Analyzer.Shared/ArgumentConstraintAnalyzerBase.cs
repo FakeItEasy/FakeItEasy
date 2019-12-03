@@ -12,7 +12,7 @@ namespace FakeItEasy.Analyzer
     using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 #endif
 
-    public abstract class ArgumentConstraintAnalyzerBase : DiagnosticAnalyzer
+    internal abstract class ArgumentConstraintAnalyzerBase : DiagnosticAnalyzer
     {
         public override void Initialize(AnalysisContext context)
         {
