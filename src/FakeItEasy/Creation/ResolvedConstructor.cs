@@ -22,6 +22,7 @@ namespace FakeItEasy.Creation
         [DisallowNull]
         public string? ReasonForFailure { get; set; }
 
+        [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Appropriate in Try-style methods")]
         private static IEnumerable<ResolvedArgument> ResolveArguments(
             IEnumerable<Type> parameterTypes,
             IDummyValueResolver resolver,

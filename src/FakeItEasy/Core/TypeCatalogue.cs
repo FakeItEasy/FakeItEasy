@@ -111,6 +111,7 @@ namespace FakeItEasy.Core
                 .Distinct();
         }
 
+        [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Defensive and performed on best effort basis.")]
         private static IEnumerable<Assembly> GetAssemblies(IEnumerable<string> files)
         {
             foreach (var file in files)
