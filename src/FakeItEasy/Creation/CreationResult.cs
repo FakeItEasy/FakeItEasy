@@ -33,7 +33,7 @@ namespace FakeItEasy.Creation
         /// Returns a creation result for a dummy by combining two results.
         /// Successful results are preferred to failed. Failed results will have their reasons for failure aggregated.
         /// </summary>
-        /// <param name="other">The other result to merge. Must not be <code>null</code>.</param>
+        /// <param name="other">The other result to merge. Must not be <c>null</c>.</param>
         /// <returns>A combined creation result. Successful if either input was successful, and failed otherwise.</returns>
         public abstract CreationResult MergeIntoDummyResult(CreationResult other);
 

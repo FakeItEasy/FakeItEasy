@@ -48,7 +48,7 @@ namespace FakeItEasy.IntegrationTests
         private static IEnumerable<string> GetFrameworkAssemblyLocations()
         {
             var systemAssemblyLocation = typeof(object).GetTypeInfo().Assembly.Location;
-            var coreDir = Path.GetDirectoryName(systemAssemblyLocation) !;
+            var coreDir = Path.GetDirectoryName(systemAssemblyLocation)!;
             return new[] { "mscorlib.dll", "System.Runtime.dll" }
                 .Select(s => Path.Combine(coreDir, s))
                 .Concat(new[]

@@ -13,7 +13,7 @@ namespace FakeItEasy.Tests
             // Arrange
 
             // Act
-            var result = (T)Activator.CreateInstance(typeof(T), "A message") !;
+            var result = (T)Activator.CreateInstance(typeof(T), "A message")!;
 
             // Assert
             result.Message.Should().StartWith("A message");
@@ -25,7 +25,7 @@ namespace FakeItEasy.Tests
             // Arrange
 
             // Act
-            var result = (T)Activator.CreateInstance(typeof(T), "A message", new InvalidOperationException()) !;
+            var result = (T)Activator.CreateInstance(typeof(T), "A message", new InvalidOperationException())!;
 
             // Assert
             result.Message.Should().Be("A message");
@@ -38,7 +38,7 @@ namespace FakeItEasy.Tests
             var innerException = new InvalidOperationException();
 
             // Act
-            var result = (T)Activator.CreateInstance(typeof(T), string.Empty, innerException) !;
+            var result = (T)Activator.CreateInstance(typeof(T), string.Empty, innerException)!;
 
             // Assert
             result.InnerException.Should().Be(innerException);
@@ -50,7 +50,7 @@ namespace FakeItEasy.Tests
             // Arrange
 
             // Act
-            var result = (T)Activator.CreateInstance(typeof(T)) !;
+            var result = (T)Activator.CreateInstance(typeof(T))!;
 
             // Assert
             result.Should().NotBeNull();

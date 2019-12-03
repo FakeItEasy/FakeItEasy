@@ -6,7 +6,7 @@ namespace FakeItEasy
     /// <summary>
     /// Helps define the number of times to expect a faked call to have occurred.
     /// Can be used to indicate whether the call must have occurred exactly the specified number of
-    /// times, at least the specified number of times, or at most the specified number of times
+    /// times, at least the specified number of times, or at most the specified number of times.
     /// </summary>
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1623:PropertySummaryDocumentationMustMatchAccessors", Justification = "Fluent API.")]
     public abstract class Times

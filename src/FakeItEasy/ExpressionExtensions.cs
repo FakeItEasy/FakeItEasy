@@ -14,7 +14,7 @@ namespace FakeItEasy
         /// </summary>
         /// <notes>
         /// This method evaluates an expression, but tries to do it in a light-weight way that doesn't compile it into a delegate.
-        /// It is often used to solve 'what object/value does the user-supplied Expression refer to?'
+        /// It is often used to determine what object/value the user-supplied Expression refers to.
         /// </notes>
         /// <param name="expression">The expression to be evaluated.</param>
         /// <returns>The value returned from the delegate compiled from the expression.</returns>

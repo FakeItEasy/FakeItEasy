@@ -205,7 +205,7 @@ namespace FakeItEasy.Analyzer.Tests.Helpers
                     count++;
                 }
 
-                return solution.GetProject(projectId) !;
+                return solution.GetProject(projectId)!;
             }
         }
 
@@ -235,7 +235,7 @@ namespace FakeItEasy.Analyzer.Tests.Helpers
         private static MetadataReference[] GetMetadataReferences()
         {
             var systemAssemblyLocation = typeof(object).Assembly.Location;
-            var coreDir = Path.GetDirectoryName(systemAssemblyLocation) !;
+            var coreDir = Path.GetDirectoryName(systemAssemblyLocation)!;
             var paths = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
             {
                 systemAssemblyLocation,

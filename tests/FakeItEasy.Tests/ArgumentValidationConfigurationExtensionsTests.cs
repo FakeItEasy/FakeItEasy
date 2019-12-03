@@ -19,7 +19,7 @@ namespace FakeItEasy.Tests
             configuration.WithAnyArguments();
 
             // Assert
-            var predicate = Fake.GetCalls(configuration).Single().Arguments.Get<Func<ArgumentCollection?, bool>>(0) !;
+            var predicate = Fake.GetCalls(configuration).Single().Arguments.Get<Func<ArgumentCollection?, bool>>(0)!;
 
             predicate.Invoke(null).Should().BeTrue();
         }
@@ -34,7 +34,7 @@ namespace FakeItEasy.Tests
             configuration.WithAnyArguments();
 
             // Assert
-            var predicate = Fake.GetCalls(configuration).Single().Arguments.Get<Func<ArgumentCollection?, bool>>(0) !;
+            var predicate = Fake.GetCalls(configuration).Single().Arguments.Get<Func<ArgumentCollection?, bool>>(0)!;
 
             predicate.Invoke(null).Should().BeTrue();
         }
