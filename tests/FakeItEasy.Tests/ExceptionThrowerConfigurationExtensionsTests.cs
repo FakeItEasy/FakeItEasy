@@ -532,7 +532,7 @@ namespace FakeItEasy.Tests
         {
             var expectedMessage = "The faked method has the signature " + fakeSignature + ", but throws was used with " + throwsSignature + ".";
 
-            act.ShouldThrow<FakeConfigurationException>().WithMessage(expectedMessage);
+            act.Should().Throw<FakeConfigurationException>().WithMessage(expectedMessage);
         }
     }
 }

@@ -342,10 +342,8 @@ namespace FakeItEasy.Configuration
 {
     public class ArgumentCollection : System.Collections.Generic.IEnumerable<object?>, System.Collections.IEnumerable
     {
-        [System.Runtime.CompilerServices.IndexerName("Item")]
-        public System.Collections.Generic.IEnumerable<string> Item { get; }
-        [System.Runtime.CompilerServices.IndexerName("Item")]
-        public int Item { get; }
+        public System.Collections.Generic.IEnumerable<string> ArgumentNames { get; }
+        public int Count { get; }
         public object? this[int argumentIndex] { get; }
         [return: System.Diagnostics.CodeAnalysis.MaybeNull]
         public T Get<T>(int index) { }
