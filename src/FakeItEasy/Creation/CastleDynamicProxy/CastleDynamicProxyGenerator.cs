@@ -15,6 +15,7 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
         private static readonly IProxyGenerationHook ProxyGenerationHook = new InterceptEverythingHook();
         private static readonly ProxyGenerator ProxyGenerator = new ProxyGenerator();
 
+        [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Appropriate in Try-style methods")]
         public static ProxyGeneratorResult GenerateInterfaceProxy(
             Type typeOfProxy,
             ReadOnlyCollection<Type> additionalInterfacesToImplement,
@@ -55,6 +56,7 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
             return new ProxyGeneratorResult(generatedProxy: proxy);
         }
 
+        [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Appropriate in Try-style methods")]
         public static ProxyGeneratorResult GenerateClassProxy(
             Type typeOfProxy,
             ReadOnlyCollection<Type> additionalInterfacesToImplement,

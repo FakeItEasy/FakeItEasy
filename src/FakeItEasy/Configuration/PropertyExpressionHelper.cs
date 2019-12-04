@@ -42,11 +42,10 @@ namespace FakeItEasy.Configuration
                 if (parsedCallExpression.ArgumentsExpressions.Any())
                 {
                     var expressionDescription = GetExpressionDescription(parsedCallExpression);
-                    throw new ArgumentException("Expression '" + expressionDescription +
-                                                "' refers to an indexed property that does not have a setter.");
+                    throw new ArgumentException(ExceptionMessages.ExpressionIsIndexedPropertyWithoutSetter(expressionDescription));
                 }
 
-                throw new ArgumentException($"The property {propertyName} does not have a setter.");
+                throw new ArgumentException(ExceptionMessages.PropertyHasNoSetter(propertyName));
             }
 
             var originalParameterInfos = indexerSetterInfo.GetParameters();
@@ -84,8 +83,7 @@ namespace FakeItEasy.Configuration
             }
 
             var expressionDescription = GetExpressionDescription(parsedCallExpression);
-            throw new ArgumentException("Expression '" + expressionDescription +
-                                        "' must refer to a property or indexer getter, but doesn't.");
+            throw new ArgumentException(ExceptionMessages.IsNotAGetter(expressionDescription));
         }
 
         private static bool HasThis(MethodInfo methodCall)

@@ -18,7 +18,7 @@ namespace FakeItEasy.Analyzer
 #elif VISUAL_BASIC
     [DiagnosticAnalyzer(LanguageNames.VisualBasic)]
 #endif
-    public class UnusedReturnValueAnalyzer : DiagnosticAnalyzer
+    internal class UnusedReturnValueAnalyzer : DiagnosticAnalyzer
     {
         private static readonly ImmutableHashSet<string> CallSpecMethods =
             ImmutableHashSet.Create(

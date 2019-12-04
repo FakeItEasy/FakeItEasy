@@ -19,8 +19,10 @@ namespace FakeItEasy
                 var fakeSignature = BuildSignatureDescription(callMethod);
                 var actionSignature = BuildSignatureDescription(valueProducerMethod);
 
-                throw new FakeConfigurationException(
-                    $"The faked method has the signature ({fakeSignature}), but {nameOfFeature} was used with ({actionSignature}).");
+                throw new FakeConfigurationException(ExceptionMessages.CallSignatureDoesNotMatchValueProducer(
+                    nameOfFeature,
+                    fakeSignature,
+                    actionSignature));
             }
         }
 
@@ -35,7 +37,7 @@ namespace FakeItEasy
             var actionSignature = BuildSignatureDescription(values);
 
             throw new FakeConfigurationException(
-                $"The event has the signature ({fakeSignature}), but the provided arguments have types ({actionSignature}).");
+                ExceptionMessages.CallSignatureDoesNotMatchArguments(fakeSignature, actionSignature));
         }
 
         private static bool IsCallSignatureSatisfiedByValueProducerSignature(MethodInfo callMethod, MethodInfo valueProducerMethod)

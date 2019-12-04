@@ -5,6 +5,7 @@
     <Rule Id="CA1014" Action="None" />
     <Rule Id="CA1016" Action="None" />
     <Rule Id="CA1017" Action="None" />
+    <Rule Id="CA1303" Action="None" /> <!-- Method [...] passes a literal string as parameter 'message' of a call to [...]' -->
     <Rule Id="CA1707" Action="None" />
     <Rule Id="CA1709" Action="None" />
     <Rule Id="CA1801" Action="None" />

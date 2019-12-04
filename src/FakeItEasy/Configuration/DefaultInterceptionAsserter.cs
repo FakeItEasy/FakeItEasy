@@ -20,17 +20,7 @@ namespace FakeItEasy.Configuration
             {
                 string memberType = method.IsPropertyGetterOrSetter() ? "property" : "method";
                 string description = method.GetDescription();
-                var message = new StringBuilder()
-                    .AppendLine()
-                    .AppendLine()
-                    .Append("  ")
-                    .AppendLine(
-                        $"The current proxy generator can not intercept the {memberType} {description} for the following reason:")
-                    .Append("    - ")
-                    .AppendLine(failReason)
-                    .AppendLine().ToString();
-
-                throw new FakeConfigurationException(message);
+                throw new FakeConfigurationException(ExceptionMessages.CannotInterceptMember(failReason, memberType, description));
             }
         }
     }

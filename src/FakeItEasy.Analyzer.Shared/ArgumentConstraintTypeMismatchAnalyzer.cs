@@ -19,7 +19,7 @@ namespace FakeItEasy.Analyzer
 #elif VISUAL_BASIC
     [DiagnosticAnalyzer(LanguageNames.VisualBasic)]
 #endif
-    public class ArgumentConstraintTypeMismatchAnalyzer : ArgumentConstraintAnalyzerBase
+    internal class ArgumentConstraintTypeMismatchAnalyzer : ArgumentConstraintAnalyzerBase
     {
         internal const string ParameterTypeKey = "parameterType";
 

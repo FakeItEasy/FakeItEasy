@@ -20,7 +20,7 @@ namespace FakeItEasy
         {
             var service = Service<T>.Instance;
             return service is null
-                ? throw new KeyNotFoundException($"The specified service {typeof(T)} was not registered.")
+                ? throw new KeyNotFoundException(ExceptionMessages.ServiceNotRegistered<T>())
                 : service;
         }
 

@@ -12,7 +12,7 @@ namespace FakeItEasy.Core
     {
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "CallTo", Justification = "It's an identifier")]
         private static readonly Action<IArgumentConstraint> ThrowWhenUnpreparedToTrapConstraint = constraint =>
-            throw new InvalidOperationException("A<T>.Ignored, A<T>._, and A<T>.That can only be used in the context of a call specification with A.CallTo()");
+            throw new InvalidOperationException(ExceptionMessages.ArgumentConstraintCanOnlyBeUsedInCallSpecification);
 
         private static ThreadLocal<Action<IArgumentConstraint>> saveTrappedConstraintAction =
             new ThreadLocal<Action<IArgumentConstraint>>(() => ThrowWhenUnpreparedToTrapConstraint);

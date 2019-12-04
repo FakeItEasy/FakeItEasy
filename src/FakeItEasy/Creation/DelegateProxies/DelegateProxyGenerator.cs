@@ -3,6 +3,7 @@ namespace FakeItEasy.Creation.DelegateProxies
     using System;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
@@ -15,6 +16,7 @@ namespace FakeItEasy.Creation.DelegateProxies
         private static readonly ProxyGenerator ProxyGenerator = new ProxyGenerator();
         private static readonly ConcurrentDictionary<Type, bool> AccessibleToDynamicProxyCache = new ConcurrentDictionary<Type, bool>();
 
+        [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Appropriate in Try-style methods")]
         public static ProxyGeneratorResult GenerateProxy(
             Type typeOfProxy,
             IFakeCallProcessorProvider fakeCallProcessorProvider)

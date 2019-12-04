@@ -17,7 +17,7 @@ namespace FakeItEasy.Analyzer
 #elif VISUAL_BASIC
     [DiagnosticAnalyzer(LanguageNames.VisualBasic)]
 #endif
-    public class ArgumentConstraintOutsideCallSpecAnalyzer : ArgumentConstraintAnalyzerBase
+    internal class ArgumentConstraintOutsideCallSpecAnalyzer : ArgumentConstraintAnalyzerBase
     {
         private static readonly ImmutableHashSet<string> MethodsSupportingArgumentConstraints =
             ImmutableHashSet.Create(
