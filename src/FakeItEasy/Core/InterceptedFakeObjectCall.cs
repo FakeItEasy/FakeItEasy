@@ -43,6 +43,16 @@ namespace FakeItEasy.Core
         /// <param name="value">The value to set to the argument.</param>
         public abstract void SetArgumentValue(int index, object value);
 
-        void IInterceptedFakeObjectCall.SetReturnValue(object returnValue) => this.ReturnValue = returnValue;
+        /// <summary>
+        /// Sets the return value of the call.
+        /// </summary>
+        /// <param name="returnValue">The return value to set.</param>
+        /// <remarks>
+        /// Does not to be a public member for our purposes, but
+        /// AutoFixture.AutoFakeItEasy relies on being able to access this member via reflection.
+        /// </remarks>
+        public void SetReturnValue(object returnValue) => this.ReturnValue = returnValue;
+
+        void IInterceptedFakeObjectCall.SetReturnValue(object returnValue) => this.SetReturnValue(returnValue);
     }
 }
