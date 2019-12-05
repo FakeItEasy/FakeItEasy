@@ -186,7 +186,7 @@ namespace FakeItEasy.Specs
             "Then an exception is thrown"
                 .x(() => exception.Should().BeAnExceptionOfType<UserCallbackException>()
                     .WithInnerException<ArgumentException>()
-                    .WithInnerMessage("Supplied constructor is for type FakeItEasy.Specs.ConstructorArgumentsSetByConstructorForWrongType, but must be for FakeItEasy.Specs.ConstructorArgumentsSetByConstructor."));
+                    .WithMessage("Supplied constructor is for type FakeItEasy.Specs.ConstructorArgumentsSetByConstructorForWrongType, but must be for FakeItEasy.Specs.ConstructorArgumentsSetByConstructor."));
         }
 
         [Scenario]
