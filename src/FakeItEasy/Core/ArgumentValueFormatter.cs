@@ -12,13 +12,10 @@ namespace FakeItEasy.Core
 
     internal class ArgumentValueFormatter
     {
-        private readonly ConcurrentDictionary<Type, IArgumentValueFormatter> cachedFormatters;
         private readonly IEnumerable<IArgumentValueFormatter> typeFormatters;
 
         public ArgumentValueFormatter(IEnumerable<IArgumentValueFormatter> typeFormatters)
         {
-            this.cachedFormatters = new ConcurrentDictionary<Type, IArgumentValueFormatter>();
-
             this.typeFormatters = typeFormatters.Concat(
                 new IArgumentValueFormatter[]
                     {
@@ -37,16 +34,26 @@ namespace FakeItEasy.Core
 
             var argumentType = argumentValue.GetType();
 
-            var formatter = this.cachedFormatters.GetOrAdd(argumentType, this.ResolveTypeFormatter);
+            foreach (var formatter in this.GetTypeFormatterCandidates(argumentType))
+            {
+                try
+                {
+                    var formattedValue = formatter.GetArgumentValueAsString(argumentValue);
+                    if (formattedValue is object)
+                    {
+                        return formattedValue;
+                    }
+                }
+                catch when (formatter.GetType().GetTypeInfo().Assembly != typeof(ArgumentValueFormatter).GetTypeInfo().Assembly)
+                {
+                    // We don't expect internal formatters to throw. If one does, letting the exception bubble up may
+                    // inconvenience the users in the short term, but it's better that we learn about it.
+                }
+            }
 
-            try
-            {
-                return formatter.GetArgumentValueAsString(argumentValue);
-            }
-            catch (Exception ex) when (formatter.GetType().GetTypeInfo().Assembly != typeof(ArgumentValueFormatter).GetTypeInfo().Assembly)
-            {
-                throw new UserCallbackException(ExceptionMessages.UserCallbackThrewAnException($"Custom argument value formatter '{formatter}'"), ex);
-            }
+            // There's a built-in formatter that matches any object, so we're guaranteed not to reach this point.
+            // Return just to satisfy the compiler.
+            return argumentType.ToString();
         }
 
         private static int GetDistanceFromKnownType(Type comparedType, Type knownType)
@@ -77,15 +84,11 @@ namespace FakeItEasy.Core
             return int.MaxValue;
         }
 
-        private IArgumentValueFormatter ResolveTypeFormatter(Type forType)
-        {
-            return
-                this.typeFormatters
-                    .Where(formatter => formatter.ForType.IsAssignableFrom(forType))
-                    .OrderBy(formatter => GetDistanceFromKnownType(formatter.ForType, forType))
-                    .ThenByDescending(formatter => formatter.Priority)
-                    .First();
-        }
+        private IEnumerable<IArgumentValueFormatter> GetTypeFormatterCandidates(Type forType) =>
+            this.typeFormatters
+                .Where(formatter => formatter.ForType.IsAssignableFrom(forType))
+                .OrderBy(formatter => GetDistanceFromKnownType(formatter.ForType, forType))
+                .ThenByDescending(formatter => formatter.Priority);
 
         private class DefaultFormatter
             : ArgumentValueFormatter<object>

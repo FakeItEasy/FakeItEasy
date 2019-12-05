@@ -14,6 +14,10 @@ namespace FakeItEasy.Specs
 
             int Bar(HasCustomValueFormatter x);
 
+            int Bar(HasCustomValueFormatterThatReturnsNull x);
+
+            int Bar(HasCustomValueFormatterThatThrows x);
+
             int Baz { get; set; }
         }
 
@@ -200,6 +204,52 @@ namespace FakeItEasy.Specs
                     "*\r\n    FakeItEasy.Specs.CallDescriptionsInAssertionSpecs+IFoo.Bar(x: hello world)\r\n*"));
         }
 
+        [Scenario]
+        public void AssertedCallDescriptionWithCustomValueFormatterThatReturnsNull(IFoo fake, Exception exception)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IFoo>());
+
+            "And the fake has a method with a parameter that has a custom argument value formatter that returns null"
+                .See<IFoo>(foo => foo.Bar(new HasCustomValueFormatterThatReturnsNull()));
+
+            "And no call is made to the fake"
+                .x(() => { });
+
+            "When I assert that the method was called"
+                .x(() => exception = Record.Exception(() => A.CallTo(() => fake.Bar(new HasCustomValueFormatterThatReturnsNull())).MustHaveHappened()));
+
+            "Then the assertion should fail"
+                .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>());
+
+            "And the exception should correctly describe the asserted call, using the next best argument value formatter"
+                .x(() => exception.Message.Should().MatchModuloLineEndings(
+                    "*\r\n    FakeItEasy.Specs.CallDescriptionsInAssertionSpecs+IFoo.Bar(x: hello world)\r\n*"));
+        }
+
+        [Scenario]
+        public void ExceptionInCustomArgumentValueFormatter(IFoo fake, Exception exception)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IFoo>());
+
+            "And the fake has a method with a parameter that has a custom argument value formatter that throws"
+                .See<IFoo>(foo => foo.Bar(new HasCustomValueFormatterThatThrows()));
+
+            "And no call is made to the fake"
+                .x(() => { });
+
+            "When I assert that the method was called"
+                .x(() => exception = Record.Exception(() => A.CallTo(() => fake.Bar(new HasCustomValueFormatterThatThrows())).MustHaveHappened()));
+
+            "Then the assertion should fail"
+                .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>());
+
+            "And the exception should correctly describe the asserted call, using the next best argument value formatter"
+                .x(() => exception.Message.Should().MatchModuloLineEndings(
+                    "*\r\n    FakeItEasy.Specs.CallDescriptionsInAssertionSpecs+IFoo.Bar(x: FakeItEasy.Specs.CallDescriptionsInAssertionSpecs+HasCustomValueFormatterThatThrows)\r\n*"));
+        }
+
         public class HasCustomValueFormatter
         {
         }
@@ -210,6 +260,28 @@ namespace FakeItEasy.Specs
             {
                 return "hello world";
             }
+        }
+
+        public class HasCustomValueFormatterThatReturnsNull : HasCustomValueFormatter
+        {
+        }
+
+        public class HasCustomValueFormatterThatReturnsNullValueFormatter
+            : ArgumentValueFormatter<HasCustomValueFormatterThatReturnsNull>
+        {
+            protected override string GetStringValue(HasCustomValueFormatterThatReturnsNull argumentValue) =>
+                null!;
+        }
+
+        public class HasCustomValueFormatterThatThrows
+        {
+        }
+
+        public class HasCustomValueFormatterThatThrowsValueFormatter
+            : ArgumentValueFormatter<HasCustomValueFormatterThatThrows>
+        {
+            protected override string GetStringValue(HasCustomValueFormatterThatThrows argumentValue) =>
+                throw new Exception("Oops");
         }
     }
 }
