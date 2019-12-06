@@ -1,8 +1,18 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <NoWarn>$(NoWarn),SA0001</NoWarn>
+  </PropertyGroup>
+
   <ItemGroup>
+    <PackageReference Remove="Microsoft.CodeAnalysis.FxCopAnalyzers" />
     <PackageReference Include="Bullseye" Version="3.0.0" />
-    <PackageReference Include="SimpleExec" Version="$(SimpleExecVersion)" />
+    <PackageReference Include="SimpleExec" Version="6.1.0" />
   </ItemGroup>
 
 </Project>

@@ -1,1 +1,1 @@
-dotnet run --project "%~dp0\FakeItEasy.PrepareRelease\FakeItEasy.PrepareRelease.csproj" -- %*
+dotnet run --project "%~dp0..\tools-shared\FakeItEasy.PrepareRelease\FakeItEasy.PrepareRelease.csproj" -- FakeItEasy %*

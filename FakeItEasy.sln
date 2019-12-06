@@ -128,9 +128,9 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "FakeItEasy.Analyzer.Shared"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FakeItEasy.Build", "tools\FakeItEasy.Build\FakeItEasy.Build.csproj", "{81779103-4CA9-4177-B78A-A435FC37DADC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FakeItEasy.PrepareRelease", "tools\FakeItEasy.PrepareRelease\FakeItEasy.PrepareRelease.csproj", "{0E2ED1CD-C7ED-4641-9482-C4BBBA58B623}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FakeItEasy.PrepareRelease", "tools-shared\FakeItEasy.PrepareRelease\FakeItEasy.PrepareRelease.csproj", "{0E2ED1CD-C7ED-4641-9482-C4BBBA58B623}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FakeItEasy.Deploy", "tools\FakeItEasy.Deploy\FakeItEasy.Deploy.csproj", "{5F4FC5FA-E2FA-456D-813F-6057B7CE7FF0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FakeItEasy.Deploy", "tools-shared\FakeItEasy.Deploy\FakeItEasy.Deploy.csproj", "{5F4FC5FA-E2FA-456D-813F-6057B7CE7FF0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FakeItEasy.Extensions.ValueTask", "src\FakeItEasy.Extensions.ValueTask\FakeItEasy.Extensions.ValueTask.csproj", "{17B22C7C-9ECB-4D05-A238-48B40DDA06E8}"
 EndProject
