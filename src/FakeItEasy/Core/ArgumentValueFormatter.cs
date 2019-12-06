@@ -2,8 +2,8 @@ namespace FakeItEasy.Core
 {
     using System;
     using System.Collections;
-    using System.Collections.Concurrent;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 
 #if FEATURE_NETCORE_REFLECTION
@@ -25,6 +25,7 @@ namespace FakeItEasy.Core
                     });
         }
 
+        [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Any type of exception may be encountered.")]
         public virtual string GetArgumentValueAsString(object? argumentValue)
         {
             if (argumentValue is null)
