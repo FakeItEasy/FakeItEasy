@@ -1,0 +1,3 @@
+[submodule "tools-shared"]
+	path = tools-shared
+	url = https://github.com/FakeItEasy/FakeItEasy.Tools.git
