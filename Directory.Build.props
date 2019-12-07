@@ -16,6 +16,9 @@
     <CodeAnalysisDictionary Include="$(MSBuildThisFileDirectory)src/FakeItEasy.Dictionary.xml">
       <Link>Properties\FakeItEasy.Dictionary.xml</Link>
     </CodeAnalysisDictionary>
+    <AdditionalFiles Include="$(MSBuildThisFileDirectory)src/stylecop.json">
+      <Link>Properties\stylecop.json</Link>
+    </AdditionalFiles>
   </ItemGroup>
 
   <!-- User properties -->
