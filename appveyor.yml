@@ -7,6 +7,9 @@ image:
 pull_requests:
   do_not_increment_build_number: true
 
+install:
+  - git submodule -q update --init
+
 for:
 - matrix:
     only:
