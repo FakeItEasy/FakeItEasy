@@ -15,18 +15,14 @@ namespace FakeItEasy.Build
         private static readonly Project[] ProjectsToPack =
         {
             "src/FakeItEasy/FakeItEasy.csproj",
-            "src/FakeItEasy.Extensions.ValueTask/FakeItEasy.Extensions.ValueTask.csproj",
-            "src/FakeItEasy.Analyzer.CSharp/FakeItEasy.Analyzer.CSharp.csproj",
-            "src/FakeItEasy.Analyzer.VisualBasic/FakeItEasy.Analyzer.VisualBasic.csproj"
+            "src/FakeItEasy.Extensions.ValueTask/FakeItEasy.Extensions.ValueTask.csproj"
         };
 
         private static readonly IReadOnlyDictionary<string, string[]> TestSuites = new Dictionary<string, string[]>
         {
             ["unit"] = new[]
             {
-                "tests/FakeItEasy.Tests",
-                "tests/FakeItEasy.Analyzer.CSharp.Tests",
-                "tests/FakeItEasy.Analyzer.VisualBasic.Tests",
+                "tests/FakeItEasy.Tests"
             },
             ["integ"] = new[]
             {

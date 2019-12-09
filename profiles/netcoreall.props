@@ -7,7 +7,6 @@
     <SpecsTargetFrameworks>netcoreapp1.0;netcoreapp2.1;netcoreapp3.0</SpecsTargetFrameworks>
     <IntegrationTestsTargetFrameworks>netcoreapp1.0;netcoreapp2.1;netcoreapp3.0</IntegrationTestsTargetFrameworks>
     <UnitTestsTargetFrameworks>netcoreapp1.0;netcoreapp2.1;netcoreapp3.0</UnitTestsTargetFrameworks>
-    <AnalyzerTestsTargetFrameworks>netcoreapp2.1;netcoreapp3.0</AnalyzerTestsTargetFrameworks>
     <TestHelpersTargetFrameworks>netstandard1.6;netstandard2.0;netstandard2.1</TestHelpersTargetFrameworks>
     <ApprovalTestsTargetFrameworks>netcoreapp3.0</ApprovalTestsTargetFrameworks>
   </PropertyGroup>
