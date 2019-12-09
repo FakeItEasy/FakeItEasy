@@ -7,7 +7,6 @@
     <SpecsTargetFrameworks>net461</SpecsTargetFrameworks>
     <IntegrationTestsTargetFrameworks>net461</IntegrationTestsTargetFrameworks>
     <UnitTestsTargetFrameworks>net461</UnitTestsTargetFrameworks>
-    <AnalyzerTestsTargetFrameworks>net461</AnalyzerTestsTargetFrameworks>
     <TestHelpersTargetFrameworks>net461</TestHelpersTargetFrameworks>
     <ApprovalTestsTargetFrameworks>net461</ApprovalTestsTargetFrameworks>
   </PropertyGroup>
