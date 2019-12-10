@@ -4,7 +4,7 @@ theme: readthedocs
 repo_url: https://github.com/FakeItEasy/FakeItEasy
 extra_css: [css/extra-highlight.css]
 
-pages:
+nav:
 - FakeItEasy: index.md
 - Quickstart: quickstart.md
 - Creating Fakes:
@@ -37,7 +37,7 @@ pages:
 - Scanning for Extension Points: scanning-for-extension-points.md
 - Bootstrapper: bootstrapper.md
 - Advanced usage: advanced-usage.md
-- Analyzer: analyzer.md
+- Analyzer: /projects/analyzers
 - Snippets for FakeItEasy in SideWaffle: snippets-for-fakeiteasy-in-sidewaffle.md
 - Platform support: platform-support.md
 - Source Stepping: source-stepping.md
