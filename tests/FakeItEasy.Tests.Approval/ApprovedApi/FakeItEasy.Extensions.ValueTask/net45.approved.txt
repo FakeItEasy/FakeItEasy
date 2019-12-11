@@ -1,4 +1,5 @@
-﻿[assembly: System.Runtime.Versioning.TargetFramework(".NETFramework,Version=v4.5", FrameworkDisplayName=".NET Framework 4.5")]
+﻿[assembly: System.Runtime.InteropServices.ComVisible(false)]
+[assembly: System.Runtime.Versioning.TargetFramework(".NETFramework,Version=v4.5", FrameworkDisplayName=".NET Framework 4.5")]
 namespace FakeItEasy
 {
     public static class ValueTaskAsyncReturnValueConfigurationExtensions
