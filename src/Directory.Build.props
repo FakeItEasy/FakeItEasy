@@ -22,7 +22,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="$(MSBuildThisFileDirectory)/FakeItEasy.png" Pack="true" PackagePath="images/FakeItEasy.png" />
+    <Compile Include="$(MSBuildThisFileDirectory)*.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)FakeItEasy.png" Pack="true" PackagePath="images/FakeItEasy.png" />
   </ItemGroup>
 
 </Project>
