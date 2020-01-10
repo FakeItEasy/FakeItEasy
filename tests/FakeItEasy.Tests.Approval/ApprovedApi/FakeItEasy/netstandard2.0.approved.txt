@@ -34,6 +34,7 @@ namespace FakeItEasy
     public static class ArgumentConstraintManagerExtensions
     {
         public static string Contains(this FakeItEasy.IArgumentConstraintManager<string> manager, string value) { }
+        public static string Contains(this FakeItEasy.IArgumentConstraintManager<string> manager, string value, System.StringComparison comparisonType) { }
         public static T Contains<T>(this FakeItEasy.IArgumentConstraintManager<T> manager, object? value)
             where T : System.Collections.IEnumerable { }
         public static string EndsWith(this FakeItEasy.IArgumentConstraintManager<string> manager, string value) { }
