@@ -81,7 +81,7 @@ namespace FakeItEasy
             Guard.AgainstNull(value, nameof(value));
 
 #if FEATURE_STRING_CONTAINS_COMPARISONTYPE
-            return manager.NullCheckedMatches(x => x.Contains(value, StringComparison.CurrentCulture), x => x.Write("string that contains ").WriteArgumentValue(value));
+            return manager.NullCheckedMatches(x => x.Contains(value, StringComparison.Ordinal), x => x.Write("string that contains ").WriteArgumentValue(value));
 #else
             return manager.NullCheckedMatches(x => x.Contains(value), x => x.Write("string that contains ").WriteArgumentValue(value));
 #endif
