@@ -70,7 +70,7 @@ namespace FakeItEasy
         }
 
         /// <summary>
-        /// Constrains the string argument to contain the specified text.
+        /// Constrains the string argument to contain the specified text, using the <see cref="StringComparison.Ordinal" /> comparison type.
         /// </summary>
         /// <param name="manager">The constraint manager to match the constraint.</param>
         /// <param name="value">The string the argument string should contain.</param>
