@@ -65,7 +65,8 @@ used. There are a few built-in matchers:
 |IsEqualTo(other)|object equality using `object.Equals`|
 |IsSameAs(other)|object identity - like `object.ReferenceEquals`|
 |IsInstanceOf(type)|an argument that can be assigned to a variable of type `type`|
-|Contains(string)|substring match|
+|Contains(string)|substring match with ordinal string comparison|
+|Contains(string, comparisonType)|substring match with the specified comparison type|
 |StartsWith(string)|substring at beginning of string|
 |EndsWith(string)|substring at end of string|
 |IsNullOrEmpty()|`null` or `""`|

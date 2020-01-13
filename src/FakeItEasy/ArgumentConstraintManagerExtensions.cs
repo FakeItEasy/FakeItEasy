@@ -70,20 +70,32 @@ namespace FakeItEasy
         }
 
         /// <summary>
-        /// Constrains the string argument to contain the specified text.
+        /// Constrains the string argument to contain the specified text, using the <see cref="StringComparison.Ordinal" /> comparison type.
         /// </summary>
         /// <param name="manager">The constraint manager to match the constraint.</param>
         /// <param name="value">The string the argument string should contain.</param>
         /// <returns>A dummy argument value.</returns>
         public static string Contains(this IArgumentConstraintManager<string> manager, string value)
         {
+            return manager.Contains(value, StringComparison.Ordinal);
+        }
+
+        /// <summary>
+        /// Constrains the string argument to contain the specified text, using the specified comparison type.
+        /// </summary>
+        /// <param name="manager">The constraint manager to match the constraint.</param>
+        /// <param name="value">The string the argument string should contain.</param>
+        /// <param name="comparisonType">The type of string comparison to use.</param>
+        /// <returns>A dummy argument value.</returns>
+        public static string Contains(this IArgumentConstraintManager<string> manager, string value, StringComparison comparisonType)
+        {
             Guard.AgainstNull(manager, nameof(manager));
             Guard.AgainstNull(value, nameof(value));
 
 #if FEATURE_STRING_CONTAINS_COMPARISONTYPE
-            return manager.NullCheckedMatches(x => x.Contains(value, StringComparison.Ordinal), x => x.Write("string that contains ").WriteArgumentValue(value));
+            return manager.NullCheckedMatches(x => x.Contains(value, comparisonType), x => x.Write("string that contains ").WriteArgumentValue(value));
 #else
-            return manager.NullCheckedMatches(x => x.Contains(value), x => x.Write("string that contains ").WriteArgumentValue(value));
+            return manager.NullCheckedMatches(x => x.IndexOf(value, comparisonType) >= 0, x => x.Write("string that contains ").WriteArgumentValue(value));
 #endif
         }
 
