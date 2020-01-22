@@ -40,7 +40,6 @@
   <!-- Selectively include build output for package -->
   <ItemGroup>
     <None Include="$(OutputPath)/**/$(AssemblyName).dll" Pack="true" PackagePath="lib" Visible="false" />
-    <None Include="$(OutputPath)/**/$(AssemblyName).pdb" Pack="true" PackagePath="lib" Visible="false" />
     <None Include="$(OutputPath)/**/$(AssemblyName).xml" Pack="true" PackagePath="lib" Visible="false" />
     <None Remove="$(OutputPath)/netstandard2.1/*" />
   </ItemGroup>
