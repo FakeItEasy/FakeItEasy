@@ -38,7 +38,6 @@ nav:
 - Bootstrapper: bootstrapper.md
 - Advanced usage: advanced-usage.md
 - Analyzer: /projects/analyzers
-- Snippets for FakeItEasy in SideWaffle: snippets-for-fakeiteasy-in-sidewaffle.md
 - Platform support: platform-support.md
 - Source Stepping: source-stepping.md
 - Why was FakeItEasy created?: why-was-fakeiteasy-created.md
