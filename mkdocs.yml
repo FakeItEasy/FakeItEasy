@@ -37,7 +37,7 @@ nav:
 - Scanning for Extension Points: scanning-for-extension-points.md
 - Bootstrapper: bootstrapper.md
 - Advanced usage: advanced-usage.md
-- Analyzer: /projects/analyzers
+- Analyzer Packages: /projects/analyzers
 - Platform support: platform-support.md
 - Source Stepping: source-stepping.md
 - Why was FakeItEasy created?: why-was-fakeiteasy-created.md
