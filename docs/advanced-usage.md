@@ -44,7 +44,7 @@ Assert.Equal("Baz", calls[1].Method.Name);
 
 ## The `FakeManager` object
 
-The `Fake.GetFakeManager` method returns a `FakeManager` object that can be used to get information on the fake and manipulate its call rules. 
+The `Fake.GetFakeManager` method returns a `FakeManager` object that can be used to get information on the fake and manipulate its call rules.
 
 `Fake.GetFakeManager` throws an exception if the provided object is not a fake. To test if an object is a fake you can call `Fake.IsFake`
 or try get the `FakeManager` with `Fake.TryGetFakeManager` which will return true if the provided object is a fake and also give you the `FakeManager`
@@ -57,7 +57,7 @@ if you're writing code that dynamically manipulates fakes.
 
 ```csharp
 var foo = A.Fake<IFoo>();
-var manager = Fake.GetFakeManager();
+var manager = Fake.GetFakeManager(foo);
 Assert.Equal(typeof(IFoo), manager.FakeObjectType);
 ```
 
@@ -67,7 +67,7 @@ The `FakeManager.Object` property returns the fake object managed by this `FakeM
 
 ```csharp
 var foo = A.Fake<IFoo>();
-var manager = Fake.GetFakeManager();
+var manager = Fake.GetFakeManager(foo);
 Assert.Equal(foo, manager.Object);
 ```
 
