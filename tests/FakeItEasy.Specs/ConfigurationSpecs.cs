@@ -748,6 +748,22 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Should().BeNull());
         }
 
+        [Scenario]
+        public static void CallToExplicitInterfaceImplementation(
+            FooWithExplicitImplementationOfBaz fake,
+            Exception exception)
+        {
+            "Given a fake of a class that explicitly implements an interface method"
+                .x(() => fake = A.Fake<FooWithExplicitImplementationOfBaz>());
+
+            "When I start to configure the explicitly implemented interface method"
+                .x(() => exception = Record.Exception(() => A.CallTo(() => ((IFoo)fake).Baz())));
+
+            "Then it throws a fake configuration exception"
+                .x(() => exception.Should().BeAnExceptionOfType<FakeConfigurationException>()
+                    .And.Message.Should().Contain("The base type implements this interface method explicitly. In order to be able to intercept this method, the fake must specify that it implements this interface in the fake creation options."));
+        }
+
         public class BaseClass
         {
             public bool WasCalled { get; private set; }
@@ -828,6 +844,21 @@ namespace FakeItEasy.Specs
             {
                 throw new NotImplementedException();
             }
+        }
+
+        public class FooWithExplicitImplementationOfBaz : IFoo
+        {
+            int IFoo.Baz() => 123;
+
+            public IFoo Bafoo() => throw new NotImplementedException();
+
+            public IFoo Bafoo(out int i) => throw new NotImplementedException();
+
+            public void Bar() => throw new NotImplementedException();
+
+            public string Bas() => throw new NotImplementedException();
+
+            public IFoo Wrap(IFoo wrappee) => throw new NotImplementedException();
         }
 
         public class FooFactory : DummyFactory<IFoo>
