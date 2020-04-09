@@ -51,6 +51,17 @@ A.CallTo(() => deepThought.Invoke("What is the answer to life, the universe, and
 A.CallTo(() => deepThought("What is the answer to life, the universe, and everything?")).Returns(42);
 ```
 
+## Specifying a call to an explicitly implemented interface member
+
+An explicitly implemented member is not directly visible on the concrete class. Instead, it has to be called
+(or overridden) via the interface. In addition, since fakes don't automatically intercept explicitly implemented
+interfaces, you need to explicitly specify that the fake implements the interface:
+
+```csharp
+var fakeShop = A.Fake<CandyShop>(options => options.Implements<ICandyShop>());
+A.CallTo(() => ((ICandyShop)fakeShop).GetTopSellingCandy()).Returns(lollipop);
+```
+
 ## Specifying a call to any method or property
 
 Instead of supplying an expression to identify a specific method, pass
