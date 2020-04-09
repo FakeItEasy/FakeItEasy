@@ -208,7 +208,7 @@ namespace FakeItEasy.Creation
                     var creationResult = resolver.TryResolveDummyValue(typeof(T), new LoopDetectingResolutionContext());
                     return creationResult.WasSuccessful
                         ? (T)creationResult.Result!
-                        : default;
+                        : default!;
                 });
             }
         }

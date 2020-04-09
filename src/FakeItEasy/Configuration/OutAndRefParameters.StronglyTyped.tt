@@ -86,7 +86,7 @@ void GenerateMethodImplementations(string configurationInterface, string indent 
     for (int typeParametersCount = 1; typeParametersCount <= 8; typeParametersCount++)
     {
         var typeParamList = string.Join(", ", Enumerable.Range(1, typeParametersCount).Select(i => "T" + i));
-        var argumentList = string.Join(", ", Enumerable.Range(1, typeParametersCount).Select(i => $"call.GetArgument<T{i}>({i - 1})"));
+        var argumentList = string.Join(", ", Enumerable.Range(1, typeParametersCount).Select(i => $"call.GetArgument<T{i}>({i - 1})!"));
 #>
         /// <summary>
         /// Specifies a function used to produce output values for out and ref parameters.

@@ -183,7 +183,7 @@ namespace FakeItEasy.Configuration
                 ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(
                     call.Method, valueProducer.GetMethodInfo(), NameOfOutRefLazilyFeature);
 
-                return valueProducer(call.GetArgument<T1>(0));
+                return valueProducer(call.GetArgument<T1>(0)!);
             });
         }
 
@@ -209,7 +209,7 @@ namespace FakeItEasy.Configuration
                 ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(
                     call.Method, valueProducer.GetMethodInfo(), NameOfOutRefLazilyFeature);
 
-                return valueProducer(call.GetArgument<T1>(0), call.GetArgument<T2>(1));
+                return valueProducer(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!);
             });
         }
 
@@ -236,7 +236,7 @@ namespace FakeItEasy.Configuration
                 ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(
                     call.Method, valueProducer.GetMethodInfo(), NameOfOutRefLazilyFeature);
 
-                return valueProducer(call.GetArgument<T1>(0), call.GetArgument<T2>(1), call.GetArgument<T3>(2));
+                return valueProducer(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!, call.GetArgument<T3>(2)!);
             });
         }
 
@@ -264,7 +264,7 @@ namespace FakeItEasy.Configuration
                 ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(
                     call.Method, valueProducer.GetMethodInfo(), NameOfOutRefLazilyFeature);
 
-                return valueProducer(call.GetArgument<T1>(0), call.GetArgument<T2>(1), call.GetArgument<T3>(2), call.GetArgument<T4>(3));
+                return valueProducer(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!, call.GetArgument<T3>(2)!, call.GetArgument<T4>(3)!);
             });
         }
 
@@ -293,7 +293,7 @@ namespace FakeItEasy.Configuration
                 ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(
                     call.Method, valueProducer.GetMethodInfo(), NameOfOutRefLazilyFeature);
 
-                return valueProducer(call.GetArgument<T1>(0), call.GetArgument<T2>(1), call.GetArgument<T3>(2), call.GetArgument<T4>(3), call.GetArgument<T5>(4));
+                return valueProducer(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!, call.GetArgument<T3>(2)!, call.GetArgument<T4>(3)!, call.GetArgument<T5>(4)!);
             });
         }
 
@@ -323,7 +323,7 @@ namespace FakeItEasy.Configuration
                 ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(
                     call.Method, valueProducer.GetMethodInfo(), NameOfOutRefLazilyFeature);
 
-                return valueProducer(call.GetArgument<T1>(0), call.GetArgument<T2>(1), call.GetArgument<T3>(2), call.GetArgument<T4>(3), call.GetArgument<T5>(4), call.GetArgument<T6>(5));
+                return valueProducer(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!, call.GetArgument<T3>(2)!, call.GetArgument<T4>(3)!, call.GetArgument<T5>(4)!, call.GetArgument<T6>(5)!);
             });
         }
 
@@ -354,7 +354,7 @@ namespace FakeItEasy.Configuration
                 ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(
                     call.Method, valueProducer.GetMethodInfo(), NameOfOutRefLazilyFeature);
 
-                return valueProducer(call.GetArgument<T1>(0), call.GetArgument<T2>(1), call.GetArgument<T3>(2), call.GetArgument<T4>(3), call.GetArgument<T5>(4), call.GetArgument<T6>(5), call.GetArgument<T7>(6));
+                return valueProducer(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!, call.GetArgument<T3>(2)!, call.GetArgument<T4>(3)!, call.GetArgument<T5>(4)!, call.GetArgument<T6>(5)!, call.GetArgument<T7>(6)!);
             });
         }
 
@@ -386,7 +386,7 @@ namespace FakeItEasy.Configuration
                 ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(
                     call.Method, valueProducer.GetMethodInfo(), NameOfOutRefLazilyFeature);
 
-                return valueProducer(call.GetArgument<T1>(0), call.GetArgument<T2>(1), call.GetArgument<T3>(2), call.GetArgument<T4>(3), call.GetArgument<T5>(4), call.GetArgument<T6>(5), call.GetArgument<T7>(6), call.GetArgument<T8>(7));
+                return valueProducer(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!, call.GetArgument<T3>(2)!, call.GetArgument<T4>(3)!, call.GetArgument<T5>(4)!, call.GetArgument<T6>(5)!, call.GetArgument<T7>(6)!, call.GetArgument<T8>(7)!);
             });
         }
 
@@ -414,7 +414,7 @@ namespace FakeItEasy.Configuration
                     ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(
                         call.Method, valueProducer.GetMethodInfo(), NameOfOutRefLazilyFeature);
     
-                    return valueProducer(call.GetArgument<T1>(0));
+                    return valueProducer(call.GetArgument<T1>(0)!);
                 });
             }
     
@@ -440,7 +440,7 @@ namespace FakeItEasy.Configuration
                     ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(
                         call.Method, valueProducer.GetMethodInfo(), NameOfOutRefLazilyFeature);
     
-                    return valueProducer(call.GetArgument<T1>(0), call.GetArgument<T2>(1));
+                    return valueProducer(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!);
                 });
             }
     
@@ -467,7 +467,7 @@ namespace FakeItEasy.Configuration
                     ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(
                         call.Method, valueProducer.GetMethodInfo(), NameOfOutRefLazilyFeature);
     
-                    return valueProducer(call.GetArgument<T1>(0), call.GetArgument<T2>(1), call.GetArgument<T3>(2));
+                    return valueProducer(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!, call.GetArgument<T3>(2)!);
                 });
             }
     
@@ -495,7 +495,7 @@ namespace FakeItEasy.Configuration
                     ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(
                         call.Method, valueProducer.GetMethodInfo(), NameOfOutRefLazilyFeature);
     
-                    return valueProducer(call.GetArgument<T1>(0), call.GetArgument<T2>(1), call.GetArgument<T3>(2), call.GetArgument<T4>(3));
+                    return valueProducer(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!, call.GetArgument<T3>(2)!, call.GetArgument<T4>(3)!);
                 });
             }
     
@@ -524,7 +524,7 @@ namespace FakeItEasy.Configuration
                     ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(
                         call.Method, valueProducer.GetMethodInfo(), NameOfOutRefLazilyFeature);
     
-                    return valueProducer(call.GetArgument<T1>(0), call.GetArgument<T2>(1), call.GetArgument<T3>(2), call.GetArgument<T4>(3), call.GetArgument<T5>(4));
+                    return valueProducer(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!, call.GetArgument<T3>(2)!, call.GetArgument<T4>(3)!, call.GetArgument<T5>(4)!);
                 });
             }
     
@@ -554,7 +554,7 @@ namespace FakeItEasy.Configuration
                     ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(
                         call.Method, valueProducer.GetMethodInfo(), NameOfOutRefLazilyFeature);
     
-                    return valueProducer(call.GetArgument<T1>(0), call.GetArgument<T2>(1), call.GetArgument<T3>(2), call.GetArgument<T4>(3), call.GetArgument<T5>(4), call.GetArgument<T6>(5));
+                    return valueProducer(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!, call.GetArgument<T3>(2)!, call.GetArgument<T4>(3)!, call.GetArgument<T5>(4)!, call.GetArgument<T6>(5)!);
                 });
             }
     
@@ -585,7 +585,7 @@ namespace FakeItEasy.Configuration
                     ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(
                         call.Method, valueProducer.GetMethodInfo(), NameOfOutRefLazilyFeature);
     
-                    return valueProducer(call.GetArgument<T1>(0), call.GetArgument<T2>(1), call.GetArgument<T3>(2), call.GetArgument<T4>(3), call.GetArgument<T5>(4), call.GetArgument<T6>(5), call.GetArgument<T7>(6));
+                    return valueProducer(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!, call.GetArgument<T3>(2)!, call.GetArgument<T4>(3)!, call.GetArgument<T5>(4)!, call.GetArgument<T6>(5)!, call.GetArgument<T7>(6)!);
                 });
             }
     
@@ -617,7 +617,7 @@ namespace FakeItEasy.Configuration
                     ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(
                         call.Method, valueProducer.GetMethodInfo(), NameOfOutRefLazilyFeature);
     
-                    return valueProducer(call.GetArgument<T1>(0), call.GetArgument<T2>(1), call.GetArgument<T3>(2), call.GetArgument<T4>(3), call.GetArgument<T5>(4), call.GetArgument<T6>(5), call.GetArgument<T7>(6), call.GetArgument<T8>(7));
+                    return valueProducer(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!, call.GetArgument<T3>(2)!, call.GetArgument<T4>(3)!, call.GetArgument<T5>(4)!, call.GetArgument<T6>(5)!, call.GetArgument<T7>(6)!, call.GetArgument<T8>(7)!);
                 });
             }
     
@@ -649,7 +649,7 @@ namespace FakeItEasy.Configuration
                 ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(
                     call.Method, valueProducer.GetMethodInfo(), NameOfOutRefLazilyFeature);
 
-                return valueProducer(call.GetArgument<T1>(0));
+                return valueProducer(call.GetArgument<T1>(0)!);
             });
         }
 
@@ -675,7 +675,7 @@ namespace FakeItEasy.Configuration
                 ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(
                     call.Method, valueProducer.GetMethodInfo(), NameOfOutRefLazilyFeature);
 
-                return valueProducer(call.GetArgument<T1>(0), call.GetArgument<T2>(1));
+                return valueProducer(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!);
             });
         }
 
@@ -702,7 +702,7 @@ namespace FakeItEasy.Configuration
                 ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(
                     call.Method, valueProducer.GetMethodInfo(), NameOfOutRefLazilyFeature);
 
-                return valueProducer(call.GetArgument<T1>(0), call.GetArgument<T2>(1), call.GetArgument<T3>(2));
+                return valueProducer(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!, call.GetArgument<T3>(2)!);
             });
         }
 
@@ -730,7 +730,7 @@ namespace FakeItEasy.Configuration
                 ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(
                     call.Method, valueProducer.GetMethodInfo(), NameOfOutRefLazilyFeature);
 
-                return valueProducer(call.GetArgument<T1>(0), call.GetArgument<T2>(1), call.GetArgument<T3>(2), call.GetArgument<T4>(3));
+                return valueProducer(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!, call.GetArgument<T3>(2)!, call.GetArgument<T4>(3)!);
             });
         }
 
@@ -759,7 +759,7 @@ namespace FakeItEasy.Configuration
                 ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(
                     call.Method, valueProducer.GetMethodInfo(), NameOfOutRefLazilyFeature);
 
-                return valueProducer(call.GetArgument<T1>(0), call.GetArgument<T2>(1), call.GetArgument<T3>(2), call.GetArgument<T4>(3), call.GetArgument<T5>(4));
+                return valueProducer(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!, call.GetArgument<T3>(2)!, call.GetArgument<T4>(3)!, call.GetArgument<T5>(4)!);
             });
         }
 
@@ -789,7 +789,7 @@ namespace FakeItEasy.Configuration
                 ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(
                     call.Method, valueProducer.GetMethodInfo(), NameOfOutRefLazilyFeature);
 
-                return valueProducer(call.GetArgument<T1>(0), call.GetArgument<T2>(1), call.GetArgument<T3>(2), call.GetArgument<T4>(3), call.GetArgument<T5>(4), call.GetArgument<T6>(5));
+                return valueProducer(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!, call.GetArgument<T3>(2)!, call.GetArgument<T4>(3)!, call.GetArgument<T5>(4)!, call.GetArgument<T6>(5)!);
             });
         }
 
@@ -820,7 +820,7 @@ namespace FakeItEasy.Configuration
                 ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(
                     call.Method, valueProducer.GetMethodInfo(), NameOfOutRefLazilyFeature);
 
-                return valueProducer(call.GetArgument<T1>(0), call.GetArgument<T2>(1), call.GetArgument<T3>(2), call.GetArgument<T4>(3), call.GetArgument<T5>(4), call.GetArgument<T6>(5), call.GetArgument<T7>(6));
+                return valueProducer(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!, call.GetArgument<T3>(2)!, call.GetArgument<T4>(3)!, call.GetArgument<T5>(4)!, call.GetArgument<T6>(5)!, call.GetArgument<T7>(6)!);
             });
         }
 
@@ -852,7 +852,7 @@ namespace FakeItEasy.Configuration
                 ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(
                     call.Method, valueProducer.GetMethodInfo(), NameOfOutRefLazilyFeature);
 
-                return valueProducer(call.GetArgument<T1>(0), call.GetArgument<T2>(1), call.GetArgument<T3>(2), call.GetArgument<T4>(3), call.GetArgument<T5>(4), call.GetArgument<T6>(5), call.GetArgument<T7>(6), call.GetArgument<T8>(7));
+                return valueProducer(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!, call.GetArgument<T3>(2)!, call.GetArgument<T4>(3)!, call.GetArgument<T5>(4)!, call.GetArgument<T6>(5)!, call.GetArgument<T7>(6)!, call.GetArgument<T8>(7)!);
             });
         }
 

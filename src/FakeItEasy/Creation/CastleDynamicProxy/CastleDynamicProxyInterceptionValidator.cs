@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Creation.CastleDynamicProxy
+namespace FakeItEasy.Creation.CastleDynamicProxy
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
@@ -37,7 +37,11 @@
 #else
                 var explicitImplementation = method.Name.Contains('.');
 #endif
-                if (!explicitImplementation)
+                if (explicitImplementation)
+                {
+                    return "The base type implements this interface method explicitly. In order to be able to intercept this method, the fake must specify that it implements this interface in the fake creation options.";
+                }
+                else
                 {
                     return "Non-virtual members can not be intercepted. Only interface members and virtual, overriding, and abstract members can be intercepted.";
                 }
