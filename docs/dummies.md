@@ -84,7 +84,8 @@ can't be made.
   `Activator.CreateInstance`.
 1. If `T` is [fakeable](what-can-be-faked.md), the Dummy will be a
   Fake `T`.
-1. If nothing above matched, then `T` is a class. Loop over all its constructors in _descending order of argument list length_.
+1. If nothing above matched, then `T` is a class. Loop over all its
+  public constructors in _descending order of argument list length_.
   For each constructor, attempt to get Dummies to satisfy the argument
   list. If the Dummies can be found, use `Activator.CreateInstance` to
   create the Dummy, supplying the Dummies as the argument list. If the
