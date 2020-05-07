@@ -16,6 +16,129 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
+        [InlineData(StrictFakeOptions.AllowEquals)]
+        [InlineData(StrictFakeOptions.AllowObjectMethods)]
+        public static void CallToEqualsAllowed(
+            StrictFakeOptions strictOptions,
+            IMyInterface fake,
+            Exception exception)
+        {
+            "Given a strict fake that allows calls to Equals"
+                .x(() => fake = A.Fake<IMyInterface>(options =>
+                    options.Strict(strictOptions)));
+
+            "When I call Equals on the fake"
+                .x(() => exception = Record.Exception(
+                    () => fake.Equals(null)));
+
+            "Then it shouldn't throw an exception"
+                .x(() => exception.Should().BeNull());
+        }
+
+        [Scenario]
+        [InlineData(StrictFakeOptions.None)]
+        [InlineData(StrictFakeOptions.AllowGetHashCode)]
+        [InlineData(StrictFakeOptions.AllowToString)]
+        public static void CallToEqualsNotAllowed(
+            StrictFakeOptions strictOptions,
+            IMyInterface fake,
+            Exception exception)
+        {
+            "Given a strict fake that doesn't allow calls to Equals"
+                .x(() => fake = A.Fake<IMyInterface>(options =>
+                    options.Strict(strictOptions)));
+
+            "When I call Equals on the fake"
+                .x(() => exception = Record.Exception(
+                    () => fake.Equals(null)));
+
+            "Then it should throw an exception"
+                .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>());
+        }
+
+        [Scenario]
+        [InlineData(StrictFakeOptions.AllowGetHashCode)]
+        [InlineData(StrictFakeOptions.AllowObjectMethods)]
+        public static void CallToGetHashCodeAllowed(
+            StrictFakeOptions strictOptions,
+            IMyInterface fake,
+            Exception exception)
+        {
+            "Given a strict fake that allows calls to GetHashCode"
+                .x(() => fake = A.Fake<IMyInterface>(options =>
+                    options.Strict(strictOptions)));
+
+            "When I call GetHashCode on the fake"
+                .x(() => exception = Record.Exception(
+                    () => fake.GetHashCode()));
+
+            "Then it shouldn't throw an exception"
+                .x(() => exception.Should().BeNull());
+        }
+
+        [Scenario]
+        [InlineData(StrictFakeOptions.None)]
+        [InlineData(StrictFakeOptions.AllowEquals)]
+        [InlineData(StrictFakeOptions.AllowToString)]
+        public static void CallToGetHashCodeNotAllowed(
+            StrictFakeOptions strictOptions,
+            IMyInterface fake,
+            Exception exception)
+        {
+            "Given a strict fake that doesn't allow calls to GetHashCode"
+                .x(() => fake = A.Fake<IMyInterface>(options =>
+                    options.Strict(strictOptions)));
+
+            "When I call GetHashCode on the fake"
+                .x(() => exception = Record.Exception(
+                    () => fake.GetHashCode()));
+
+            "Then it should throw an exception"
+                .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>());
+        }
+
+        [Scenario]
+        [InlineData(StrictFakeOptions.AllowToString)]
+        [InlineData(StrictFakeOptions.AllowObjectMethods)]
+        public static void CallToToStringAllowed(
+            StrictFakeOptions strictOptions,
+            IMyInterface fake,
+            Exception exception)
+        {
+            "Given a strict fake that allows calls to ToString"
+                .x(() => fake = A.Fake<IMyInterface>(options =>
+                    options.Strict(strictOptions)));
+
+            "When I call ToString on the fake"
+                .x(() => exception = Record.Exception(
+                    () => fake.ToString()));
+
+            "Then it shouldn't throw an exception"
+                .x(() => exception.Should().BeNull());
+        }
+
+        [Scenario]
+        [InlineData(StrictFakeOptions.None)]
+        [InlineData(StrictFakeOptions.AllowEquals)]
+        [InlineData(StrictFakeOptions.AllowGetHashCode)]
+        public static void CallToToStringNotAllowed(
+            StrictFakeOptions strictOptions,
+            IMyInterface fake,
+            Exception exception)
+        {
+            "Given a strict fake that doesn't allow calls to ToString"
+                .x(() => fake = A.Fake<IMyInterface>(options =>
+                    options.Strict(strictOptions)));
+
+            "When I call ToString on the fake"
+                .x(() => exception = Record.Exception(
+                    () => fake.ToString()));
+
+            "Then it should throw an exception"
+                .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>());
+        }
+
+        [Scenario]
         public static void ArgumentMismatchVoid(
             IMyInterface fake,
             Exception exception)
