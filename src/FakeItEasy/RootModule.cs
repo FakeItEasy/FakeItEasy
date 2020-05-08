@@ -27,7 +27,9 @@ namespace FakeItEasy
             var bootstrapper = BootstrapperLocator.FindBootstrapper();
 
             var typeCatalogue = new TypeCatalogue();
-            typeCatalogue.Load(bootstrapper.GetAssemblyFileNamesToScanForExtensions());
+            var assemblyFilesNames = bootstrapper.GetAssemblyFileNamesToScanForExtensions()
+                ?? throw new InvalidOperationException(ExceptionMessages.GetAssemblyFileNamesToScanForExtensionsShouldntReturnNull);
+            typeCatalogue.Load(assemblyFilesNames);
             var typeCatalogueInstanceProvider = new TypeCatalogueInstanceProvider(typeCatalogue);
 
             var argumentValueFormatters = typeCatalogueInstanceProvider.InstantiateAllOfType<IArgumentValueFormatter>();
