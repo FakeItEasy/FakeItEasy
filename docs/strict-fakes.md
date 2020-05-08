@@ -23,3 +23,25 @@ A.CallTo(() => foo.Bar()).Returns("bar");
 
 Strict fakes are useful when it is important to ensure that no calls
 are made to your fake other than the ones you are expecting.
+
+## Object members
+
+It can sometimes be inconvenient that *all* methods throw an exception
+if not configured. You might want to allow calls to methods inherited
+from `System.Object` (`Equals`, `GetHashCode` and `ToString`), because
+they're used all the time, often implicitly, and in most cases there's
+no real value in configuring them manually.
+
+To achieve this, pass a `StrictFakeOptions` value to the `Strict`
+method when you create the fake:
+
+```csharp
+// Allow calls to all object methods
+var foo = A.Fake<IFoo>(x => x.Strict(StrictFakeOptions.AllowObjectMethods));
+
+// Allow calls to ToString
+var foo = A.Fake<IFoo>(x => x.Strict(StrictFakeOptions.AllowToString));
+
+// Allow calls to Equals and GetHashCode
+var foo = A.Fake<IFoo>(x => x.Strict(StrictFakeOptions.AllowEquals | StrictFakeOptions.AllowGetHashCode));
+```
