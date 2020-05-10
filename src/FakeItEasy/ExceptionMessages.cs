@@ -54,6 +54,9 @@ namespace FakeItEasy
         public static string ArgumentConstraintCanOnlyBeUsedInCallSpecification =>
             "A<T>.Ignored, A<T>._, and A<T>.That can only be used in the context of a call specification with A.CallTo()";
 
+        public static string GetAssemblyFileNamesToScanForExtensionsShouldntReturnNull =>
+            "IBootstrapper.GetAssemblyFileNamesToScanForExtensions must not return null";
+
         public static string WrongConstructorExpressionType(Type actualConstructorType, Type expectedConstructorType) =>
             $"Supplied constructor is for type {actualConstructorType}, but must be for {expectedConstructorType}.";
 
