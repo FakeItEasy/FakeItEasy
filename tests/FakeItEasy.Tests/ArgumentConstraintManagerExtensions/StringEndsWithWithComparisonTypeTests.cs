@@ -1,32 +1,35 @@
 namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
 {
+    using System;
     using System.Collections.Generic;
     using FakeItEasy.Tests.TestHelpers;
     using Xunit;
 
-    public class StringStartsWithTests
+    public class StringEndsWithWithComparisonTypeTests
         : ArgumentConstraintTestBase<string>
     {
-        protected override string ExpectedDescription => "string that starts with \"abc\"";
+        protected override string ExpectedDescription => "string that ends with \"TABLE\"";
 
         public static IEnumerable<object?[]> InvalidValues()
         {
             return TestCases.FromObject(
-                "foo",
-                "bar",
-                "biz",
-                "baz",
+                "rabbit",
+                "apple",
+                "bear",
+                "chicken",
                 "lorem ipsum",
-                (object?)null);
+                (object?)null,
+                "tabletop",
+                "stabled");
         }
 
         public static IEnumerable<object?[]> ValidValues()
         {
             return TestCases.FromObject(
-                "abc",
-                "abcd",
-                "abc abc",
-                "abc lorem ipsum");
+                "comfortable",
+                "portable",
+                "immutable",
+                "lorem ipsum table");
         }
 
         [Theory]
@@ -45,9 +48,7 @@ namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
 
         protected override void CreateConstraint(INegatableArgumentConstraintManager<string> scope)
         {
-#pragma warning disable CA1307 // Specify StringComparison
-            scope.StartsWith("abc");
-#pragma warning restore CA1307 // Specify StringComparison
+            scope.EndsWith("TABLE", StringComparison.OrdinalIgnoreCase);
         }
     }
 }

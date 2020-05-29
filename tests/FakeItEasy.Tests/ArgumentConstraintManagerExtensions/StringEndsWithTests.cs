@@ -45,7 +45,9 @@ namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
 
         protected override void CreateConstraint(INegatableArgumentConstraintManager<string> scope)
         {
+#pragma warning disable CA1307 // Specify StringComparison
             scope.EndsWith("table");
+#pragma warning restore CA1307 // Specify StringComparison
         }
     }
 }

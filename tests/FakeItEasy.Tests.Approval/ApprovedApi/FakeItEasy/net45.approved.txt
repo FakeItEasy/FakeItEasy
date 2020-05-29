@@ -38,6 +38,7 @@ namespace FakeItEasy
         public static T Contains<T>(this FakeItEasy.IArgumentConstraintManager<T> manager, object? value)
             where T : System.Collections.IEnumerable { }
         public static string EndsWith(this FakeItEasy.IArgumentConstraintManager<string> manager, string value) { }
+        public static string EndsWith(this FakeItEasy.IArgumentConstraintManager<string> manager, string value, System.StringComparison comparisonType) { }
         public static System.Threading.CancellationToken IsCanceled(this FakeItEasy.IArgumentConstraintManager<System.Threading.CancellationToken> manager) { }
         public static T IsEmpty<T>(this FakeItEasy.IArgumentConstraintManager<T> manager)
             where T : System.Collections.IEnumerable { }
@@ -65,6 +66,7 @@ namespace FakeItEasy
         public static T Matches<T>(this FakeItEasy.IArgumentConstraintManager<T> manager, System.Func<T, bool> predicate, string descriptionFormat, params object?[] args) { }
         public static T NullCheckedMatches<T>(this FakeItEasy.IArgumentConstraintManager<T> manager, System.Func<T, bool> predicate, System.Action<FakeItEasy.IOutputWriter> descriptionWriter) { }
         public static string StartsWith(this FakeItEasy.IArgumentConstraintManager<string> manager, string value) { }
+        public static string StartsWith(this FakeItEasy.IArgumentConstraintManager<string> manager, string value, System.StringComparison comparisonType) { }
     }
     public static class ArgumentValidationConfigurationExtensions
     {
