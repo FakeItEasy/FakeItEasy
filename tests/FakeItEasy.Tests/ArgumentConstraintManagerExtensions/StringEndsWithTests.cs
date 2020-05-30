@@ -17,7 +17,9 @@ namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
                 "bear",
                 "chicken",
                 "lorem ipsum",
-                (object?)null);
+                (object?)null,
+                "tabletop",
+                "stabled");
         }
 
         public static IEnumerable<object?[]> ValidValues()
