@@ -67,8 +67,10 @@ used. There are a few built-in matchers:
 |IsInstanceOf(type)|an argument that can be assigned to a variable of type `type`|
 |Contains(string)|substring match with ordinal string comparison|
 |Contains(string, comparisonType)|substring match with the specified comparison type|
-|StartsWith(string)|substring at beginning of string|
-|EndsWith(string)|substring at end of string|
+|StartsWith(string)|substring at beginning of string with ordinal string comparison|
+|StartsWith(string, comparisonType)|substring at beginning of string with the specified comparison type|
+|EndsWith(string)|substring at end of string with ordinal string comparison|
+|EndsWith(string, comparisonType)|substring at end of string with the specified comparison type|
 |IsNullOrEmpty()|`null` or `""`|
 |IsEmpty()|empty enumerable|
 |Contains(item)|item's presence in an enumerable|

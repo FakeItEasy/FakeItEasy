@@ -1,13 +1,14 @@
 namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
 {
+    using System;
     using System.Collections.Generic;
     using FakeItEasy.Tests.TestHelpers;
     using Xunit;
 
-    public class StringStartsWithTests
+    public class StringStartsWithWithComparisonTypeTests
         : ArgumentConstraintTestBase<string>
     {
-        protected override string ExpectedDescription => "string that starts with \"abc\"";
+        protected override string ExpectedDescription => "string that starts with \"ABC\"";
 
         public static IEnumerable<object?[]> InvalidValues()
         {
@@ -47,9 +48,7 @@ namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
 
         protected override void CreateConstraint(INegatableArgumentConstraintManager<string> scope)
         {
-#pragma warning disable CA1307 // Specify StringComparison
-            scope.StartsWith("abc");
-#pragma warning restore CA1307 // Specify StringComparison
+            scope.StartsWith("ABC", StringComparison.OrdinalIgnoreCase);
         }
     }
 }

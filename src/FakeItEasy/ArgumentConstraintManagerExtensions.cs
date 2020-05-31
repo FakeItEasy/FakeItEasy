@@ -116,21 +116,40 @@ namespace FakeItEasy
         }
 
         /// <summary>
-        /// Constrains the string so that it must start with the specified value.
+        /// Constrains the string so that it must start with the specified value,
+        /// using the <see cref="StringComparison.Ordinal" /> comparison type.
         /// </summary>
         /// <param name="manager">The constraint manager to match the constraint.</param>
         /// <param name="value">The value the string should start with.</param>
         /// <returns>A dummy argument value.</returns>
         public static string StartsWith(this IArgumentConstraintManager<string> manager, string value)
         {
-            Guard.AgainstNull(manager, nameof(manager));
-            Guard.AgainstNull(value, nameof(value));
-
-            return manager.NullCheckedMatches(x => x.StartsWith(value, StringComparison.Ordinal), x => x.Write("string that starts with ").WriteArgumentValue(value));
+            return manager.StartsWith(value, StringComparison.Ordinal);
         }
 
         /// <summary>
-        /// Constrains the string so that it must end with the specified value.
+        /// Constrains the string so that it must start with the specified value, using the specified comparison type.
+        /// </summary>
+        /// <param name="manager">The constraint manager to match the constraint.</param>
+        /// <param name="value">The value the string should start with.</param>
+        /// <param name="comparisonType">The type of string comparison to use.</param>
+        /// <returns>A dummy argument value.</returns>
+        public static string StartsWith(
+            this IArgumentConstraintManager<string> manager,
+            string value,
+            StringComparison comparisonType)
+        {
+            Guard.AgainstNull(manager, nameof(manager));
+            Guard.AgainstNull(value, nameof(value));
+
+            return manager.NullCheckedMatches(
+                x => x.StartsWith(value, comparisonType),
+                x => x.Write("string that starts with ").WriteArgumentValue(value));
+        }
+
+        /// <summary>
+        /// Constrains the string so that it must end with the specified value,
+        /// using the <see cref="StringComparison.Ordinal" /> comparison type.
         /// </summary>
         /// <param name="manager">The constraint manager to match the constraint.</param>
         /// <param name="value">The value the string should end with.</param>
@@ -140,7 +159,27 @@ namespace FakeItEasy
             Guard.AgainstNull(manager, nameof(manager));
             Guard.AgainstNull(value, nameof(value));
 
-            return manager.NullCheckedMatches(x => x.EndsWith(value, StringComparison.Ordinal), x => x.Write("string that ends with ").WriteArgumentValue(value));
+            return manager.EndsWith(value, StringComparison.Ordinal);
+        }
+
+        /// <summary>
+        /// Constrains the string so that it must end with the specified value, using the specified comparison type.
+        /// </summary>
+        /// <param name="manager">The constraint manager to match the constraint.</param>
+        /// <param name="value">The value the string should end with.</param>
+        /// <param name="comparisonType">The type of string comparison to use.</param>
+        /// <returns>A dummy argument value.</returns>
+        public static string EndsWith(
+            this IArgumentConstraintManager<string> manager,
+            string value,
+            StringComparison comparisonType)
+        {
+            Guard.AgainstNull(manager, nameof(manager));
+            Guard.AgainstNull(value, nameof(value));
+
+            return manager.NullCheckedMatches(
+                x => x.EndsWith(value, comparisonType),
+                x => x.Write("string that ends with ").WriteArgumentValue(value));
         }
 
         /// <summary>
