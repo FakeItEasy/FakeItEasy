@@ -211,7 +211,7 @@ namespace FakeItEasy.Tests.Core
             }
 
             [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "other", Justification = "Required for testing.")]
-            public bool Equals(Base other) => true;
+            public bool Equals([AllowNull] Base other) => true;
 
             public override bool Equals(object? other) => true;
 
