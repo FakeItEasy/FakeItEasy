@@ -92,7 +92,7 @@ namespace FakeItEasy
             registrar.Register<IFakeObjectCallFormatter>(fakeObjectCallFormatter);
 
             StringBuilderOutputWriter StringBuilderOutputWriterFactory() =>
-                new StringBuilderOutputWriter(argumentValueFormatter);
+                new StringBuilderOutputWriter(argumentValueFormatter!);
 
             FakeManager FakeManagerFactory(Type fakeObjectType, object proxy, string? name) =>
                 new FakeManager(fakeObjectType, proxy, name);
