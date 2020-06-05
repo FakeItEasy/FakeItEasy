@@ -6,11 +6,11 @@ namespace FakeItEasy
     using System.Text;
 
     /// <summary>
-    /// Provides extension methods for <see cref="MethodBase"/>.
+    /// Provides extension methods for <see cref="MethodInfo"/>.
     /// </summary>
-    internal static class MethodBaseExtensions
+    internal static class MethodInfoExtensions
     {
-        public static string GetGenericArgumentsString(this MethodBase method)
+        public static string GetGenericArgumentsString(this MethodInfo method)
         {
             var genericArguments = method.GetGenericArguments();
             if (genericArguments.Length == 0)
@@ -26,22 +26,22 @@ namespace FakeItEasy
                 "]");
         }
 
-        public static bool IsPropertyGetterOrSetter(this MethodBase method)
+        public static bool IsPropertyGetterOrSetter(this MethodInfo method)
         {
             return method.IsPropertyGetter() || method.IsPropertySetter();
         }
 
-        public static bool IsPropertySetter(this MethodBase method)
+        public static bool IsPropertySetter(this MethodInfo method)
         {
             return method.IsSpecialName && method.Name.StartsWith("set_", StringComparison.Ordinal);
         }
 
-        public static bool IsPropertyGetter(this MethodBase method)
+        public static bool IsPropertyGetter(this MethodInfo method)
         {
             return method.IsSpecialName && method.Name.StartsWith("get_", StringComparison.Ordinal);
         }
 
-        public static string GetDescription(this MethodBase method)
+        public static string GetDescription(this MethodInfo method)
         {
             var builder = new StringBuilder();
 
@@ -56,7 +56,7 @@ namespace FakeItEasy
             return builder.ToString();
         }
 
-        public static bool IsSameMethodAs(this MethodBase method, MethodBase otherMethod)
+        public static bool IsSameMethodAs(this MethodInfo method, MethodInfo otherMethod)
         {
             return method.DeclaringType == otherMethod.DeclaringType
                 && method.MetadataToken == otherMethod.MetadataToken
@@ -82,7 +82,7 @@ namespace FakeItEasy
             return method.GetBaseDefinition();
         }
 
-        private static void AppendMethodName(StringBuilder builder, MethodBase method)
+        private static void AppendMethodName(StringBuilder builder, MethodInfo method)
         {
             if (IsPropertyGetterOrSetter(method))
             {
@@ -96,7 +96,7 @@ namespace FakeItEasy
             builder.Append(method.GetGenericArgumentsString());
         }
 
-        private static void AppendParameterList(StringBuilder builder, MethodBase method)
+        private static void AppendParameterList(StringBuilder builder, MethodInfo method)
         {
             var parameters = method.GetParameters();
 
@@ -110,7 +110,7 @@ namespace FakeItEasy
             }
         }
 
-        private static void AppendParameterListPrefix(StringBuilder builder, MethodBase method)
+        private static void AppendParameterListPrefix(StringBuilder builder, MethodInfo method)
         {
             if (method.IsPropertyGetterOrSetter())
             {
@@ -122,7 +122,7 @@ namespace FakeItEasy
             }
         }
 
-        private static void AppendParameterListSuffix(StringBuilder builder, MethodBase method)
+        private static void AppendParameterListSuffix(StringBuilder builder, MethodInfo method)
         {
             if (method.IsPropertyGetterOrSetter())
             {
