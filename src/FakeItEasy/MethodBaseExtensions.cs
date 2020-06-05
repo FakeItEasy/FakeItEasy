@@ -59,9 +59,27 @@ namespace FakeItEasy
         public static bool IsSameMethodAs(this MethodBase method, MethodBase otherMethod)
         {
             return method.DeclaringType == otherMethod.DeclaringType
-                       && method.MetadataToken == otherMethod.MetadataToken
-                       && method.Module == otherMethod.Module
-                       && method.GetGenericArguments().SequenceEqual(otherMethod.GetGenericArguments());
+                && method.MetadataToken == otherMethod.MetadataToken
+                && method.Module == otherMethod.Module
+                && method.GetGenericArguments().SequenceEqual(otherMethod.GetGenericArguments());
+        }
+
+        public static bool HasSameBaseMethodAs(this MethodInfo first, MethodInfo second)
+        {
+            var baseOfFirst = GetBaseDefinition(first);
+            var baseOfSecond = GetBaseDefinition(second);
+
+            return baseOfFirst.IsSameMethodAs(baseOfSecond);
+        }
+
+        private static MethodInfo GetBaseDefinition(MethodInfo method)
+        {
+            if (method.IsGenericMethod && !method.IsGenericMethodDefinition)
+            {
+                method = method.GetGenericMethodDefinition();
+            }
+
+            return method.GetBaseDefinition();
         }
 
         private static void AppendMethodName(StringBuilder builder, MethodBase method)
