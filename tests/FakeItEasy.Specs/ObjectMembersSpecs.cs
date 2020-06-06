@@ -122,6 +122,61 @@ namespace FakeItEasy.Specs
                 .x(() => stringRepresentation.Should().Be("Faked FakeItEasy.Specs.ObjectMembersSpecs+Foo"));
         }
 
+        [Scenario]
+        public static void HiddenEqualsWithSelf(Bar fake, bool equals)
+        {
+            "Given a fake of a type that hides Equals"
+                .x(() => fake = A.Fake<Bar>(o => o.WithArgumentsForConstructor(() => new Bar(1))));
+
+            "When Equals is called on the fake with the fake as the argument"
+                .x(() => equals = fake.Equals(fake));
+
+            "Then it returns false"
+                .x(() => equals.Should().BeFalse());
+        }
+
+        [Scenario]
+        public static void HiddenEqualsWithOtherFake(Bar fake, Foo otherFake, bool equals)
+        {
+            "Given a fake of a type that hides Equals"
+                .x(() => fake = A.Fake<Bar>(o => o.WithArgumentsForConstructor(() => new Bar(1))));
+
+            "And another fake of the same type"
+                .x(() => otherFake = A.Fake<Foo>(o => o.WithArgumentsForConstructor(() => new Foo(2))));
+
+            "When Equals is called on the first fake with the other fake as the argument"
+                .x(() => equals = fake.Equals(otherFake));
+
+            "Then it returns false"
+                .x(() => equals.Should().BeFalse());
+        }
+
+        [Scenario]
+        public static void HiddenGetHashCode(Bar fake, int fakeHashCode)
+        {
+            "Given a fake of a type that hides GetHashCode"
+                .x(() => fake = A.Fake<Bar>(o => o.WithArgumentsForConstructor(() => new Bar(1))));
+
+            "When GetHashCode is called on the fake"
+                .x(() => fakeHashCode = fake.GetHashCode());
+
+            "Then it returns 0"
+                .x(() => fakeHashCode.Should().Be(0));
+        }
+
+        [Scenario]
+        public static void HiddenToString(Bar fake, string? stringRepresentation)
+        {
+            "Given a fake of a type that hides ToString"
+                .x(() => fake = A.Fake<Bar>(o => o.WithArgumentsForConstructor(() => new Bar(1))));
+
+            "When ToString is called on the fake"
+                .x(() => stringRepresentation = fake.ToString());
+
+            "Then it should return an empty string"
+                .x(() => stringRepresentation.Should().BeEmpty());
+        }
+
         public interface IFoo
         {
             void Bar();
@@ -141,6 +196,22 @@ namespace FakeItEasy.Specs
             public override int GetHashCode() => this.Value.GetHashCode();
 
             public override string ToString() => $"Foo {this.Value}";
+        }
+
+        public class Bar
+        {
+            public Bar(int value)
+            {
+                this.Value = value;
+            }
+
+            public int Value { get; }
+
+            public new virtual bool Equals(object? obj) => obj is Foo other && other.Value == this.Value;
+
+            public new virtual int GetHashCode() => this.Value.GetHashCode();
+
+            public new virtual string ToString() => $"Foo {this.Value}";
         }
     }
 }
