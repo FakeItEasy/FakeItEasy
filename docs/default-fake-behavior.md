@@ -49,6 +49,18 @@ This behavior can be used to
 * supply values for the system under test to use (via the getter) or to
 * verify that the system under test performed the `set` action on the Fake
 
+### Object members
+
+Virtual methods inherited from `System.Object` are faked with a special default behavior:
+
+* `Equals` uses reference equality: it returns `true` if the argument is the fake
+  itself, `false` for any other argument.
+* `GetHashCode` returns a hashcode consistent with the behavior of `Equals`.
+* `ToString` returns a string of the form "Faked &lt;type of fake&gt;"
+
+This behavior applies to all fakes, including fakes of types that override these
+methods. Like any other method, the behavior can be explictly configured.
+
 ### Cancellation tokens
 
 When a faked method that accepts a `CancellationToken` receives a canceled token
