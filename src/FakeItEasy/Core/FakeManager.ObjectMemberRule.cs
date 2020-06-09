@@ -9,9 +9,9 @@ namespace FakeItEasy.Core
             : SharedFakeObjectCallRule
         {
             public override bool IsApplicableTo(IFakeObjectCall fakeObjectCall) =>
-                fakeObjectCall.Method.IsSameMethodAs(EqualsMethod) ||
-                fakeObjectCall.Method.IsSameMethodAs(ToStringMethod) ||
-                fakeObjectCall.Method.IsSameMethodAs(GetHashCodeMethod);
+                fakeObjectCall.Method.HasSameBaseMethodAs(EqualsMethod) ||
+                fakeObjectCall.Method.HasSameBaseMethodAs(ToStringMethod) ||
+                fakeObjectCall.Method.HasSameBaseMethodAs(GetHashCodeMethod);
 
             public override void Apply(IInterceptedFakeObjectCall fakeObjectCall)
             {
@@ -34,7 +34,7 @@ namespace FakeItEasy.Core
 
             private static bool TryHandleGetHashCode(IInterceptedFakeObjectCall fakeObjectCall, FakeManager fakeManager)
             {
-                if (!fakeObjectCall.Method.IsSameMethodAs(GetHashCodeMethod))
+                if (!fakeObjectCall.Method.HasSameBaseMethodAs(GetHashCodeMethod))
                 {
                     return false;
                 }
@@ -46,7 +46,7 @@ namespace FakeItEasy.Core
 
             private static bool TryHandleToString(IInterceptedFakeObjectCall fakeObjectCall, FakeManager fakeManager)
             {
-                if (!fakeObjectCall.Method.IsSameMethodAs(ToStringMethod))
+                if (!fakeObjectCall.Method.HasSameBaseMethodAs(ToStringMethod))
                 {
                     return false;
                 }
@@ -58,7 +58,7 @@ namespace FakeItEasy.Core
 
             private static bool TryHandleEquals(IInterceptedFakeObjectCall fakeObjectCall, FakeManager fakeManager)
             {
-                if (!fakeObjectCall.Method.IsSameMethodAs(EqualsMethod))
+                if (!fakeObjectCall.Method.HasSameBaseMethodAs(EqualsMethod))
                 {
                     return false;
                 }
