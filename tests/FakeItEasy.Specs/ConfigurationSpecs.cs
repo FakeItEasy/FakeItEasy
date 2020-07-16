@@ -2,6 +2,7 @@ namespace FakeItEasy.Specs
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+    using System.Threading.Tasks;
     using FakeItEasy.Configuration;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
@@ -23,6 +24,8 @@ namespace FakeItEasy.Specs
             IFoo Bafoo(out int i);
 
             IFoo Wrap(IFoo wrappee);
+
+            Task BarAsync();
         }
 
         [SuppressMessage("Microsoft.Design", "CA1040:AvoidEmptyInterfaces", Justification = "It's just used for testing.")]
@@ -764,6 +767,25 @@ namespace FakeItEasy.Specs
                     .And.Message.Should().Contain("The base type implements this interface method explicitly. In order to be able to intercept this method, the fake must specify that it implements this interface in the fake creation options."));
         }
 
+        [Scenario]
+        public static void DoesNothingOnTaskReturningMethod(IFoo fake, Task result)
+        {
+            "Given a fake of a class with a task-returning method"
+                .x(() => fake = A.Fake<IFoo>());
+
+            "And the method is configured to return an failed task"
+                .x(() => A.CallTo(() => fake.BarAsync()).Returns(Task.FromException(new Exception("oops"))));
+
+            "When the method is configured to do nothing"
+                .x(() => A.CallTo(() => fake.BarAsync()).DoesNothing());
+
+            "And the method is called"
+                .x(() => result = fake.BarAsync());
+
+            "Then it returns a successfully completed task"
+                .x(() => result.Status.Should().Be(TaskStatus.RanToCompletion));
+        }
+
         public class BaseClass
         {
             public bool WasCalled { get; private set; }
@@ -844,6 +866,11 @@ namespace FakeItEasy.Specs
             {
                 throw new NotImplementedException();
             }
+
+            public Task BarAsync()
+            {
+                throw new NotImplementedException();
+            }
         }
 
         public class FooWithExplicitImplementationOfBaz : IFoo
@@ -859,6 +886,8 @@ namespace FakeItEasy.Specs
             public string Bas() => throw new NotImplementedException();
 
             public IFoo Wrap(IFoo wrappee) => throw new NotImplementedException();
+
+            public Task BarAsync() => throw new NotImplementedException();
         }
 
         public class FooFactory : DummyFactory<IFoo>
