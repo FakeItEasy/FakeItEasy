@@ -15,6 +15,8 @@ namespace FakeItEasy
                 nameof(CreateGenericCanceledTask),
                 BindingFlags.Static | BindingFlags.NonPublic);
 
+        public static Task CompletedTask { get; } = FromResult(false);
+
         public static Task<T> FromResult<T>(T result)
         {
             var source = new TaskCompletionSource<T>();
