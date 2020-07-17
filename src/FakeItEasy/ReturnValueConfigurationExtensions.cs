@@ -117,6 +117,18 @@ namespace FakeItEasy
             configuration.ReturnsNextFromQueue(new ConcurrentQueue<Task<T>>(values.Select(TaskHelper.FromResult)));
         }
 
+        /// <summary>
+        /// Configures the specified call to do nothing when called.
+        /// </summary>
+        /// <param name="configuration">The call configuration to extend.</param>
+        /// <returns>A configuration object.</returns>
+        public static IAfterCallConfiguredConfiguration<IReturnValueConfiguration<Task>> DoesNothing(this IReturnValueConfiguration<Task> configuration)
+        {
+            Guard.AgainstNull(configuration, nameof(configuration));
+
+            return configuration.Returns(TaskHelper.CompletedTask);
+        }
+
         internal static void ReturnsNextFromQueue<T>(this IReturnValueConfiguration<T> configuration, ConcurrentQueue<T> queue)
         {
             configuration.ReturnsLazily(x =>

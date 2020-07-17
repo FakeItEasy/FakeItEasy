@@ -133,7 +133,7 @@ namespace FakeItEasy.Creation
             {
                 if (typeOfDummy == typeof(Task))
                 {
-                    return CreationResult.SuccessfullyCreated(TaskHelper.FromResult(default(object)));
+                    return CreationResult.SuccessfullyCreated(TaskHelper.CompletedTask);
                 }
 
                 if (typeOfDummy.GetTypeInfo().IsGenericType && typeOfDummy.GetGenericTypeDefinition() == typeof(Task<>))

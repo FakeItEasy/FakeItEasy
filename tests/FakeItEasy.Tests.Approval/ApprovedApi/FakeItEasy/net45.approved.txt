@@ -303,6 +303,7 @@ namespace FakeItEasy
     }
     public static class ReturnValueConfigurationExtensions
     {
+        public static FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task>> DoesNothing(this FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task> configuration) { }
         public static FakeItEasy.Configuration.IAfterCallConfiguredWithOutAndRefParametersConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task<T>>> Returns<T>(this FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task<T>> configuration, T value) { }
         public static FakeItEasy.Configuration.IAfterCallConfiguredWithOutAndRefParametersConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<T>> Returns<T>(this FakeItEasy.Configuration.IReturnValueConfiguration<T> configuration, T value) { }
         public static FakeItEasy.Configuration.IAfterCallConfiguredWithOutAndRefParametersConfiguration<FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task<T>>> ReturnsLazily<T>(this FakeItEasy.Configuration.IReturnValueConfiguration<System.Threading.Tasks.Task<T>> configuration, System.Func<T> valueProducer) { }
