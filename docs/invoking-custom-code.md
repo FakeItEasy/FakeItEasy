@@ -40,3 +40,24 @@ A.CallTo(() => fakeShop.NumberOfSweetsSoldOn(A<DateTime>._))
                                                      " is closed on " +
                                                      callObject.Arguments[0]));
 ```
+
+## Case study - customizing a read/write property
+
+Sometimes customizing a Fake's behavior interferes with the default Fake
+behavior in undesired ways. For example, changing the setter behavior of a
+read/write property (perhaps to [raise an event](raising-events.md)) can break
+how the
+[`set` and `get` share values](default-fake-behavior.md#readwrite-properties).
+If the setter's behavior is changed, it's necessary to explicitly retain the
+connection to the getter:
+
+```c#
+A.CallToSet(() => fakeShop.OpeningHours).Invokes(TimeRange newTimes) =>
+{
+    // have the getter return the new times when called
+    A.CallTo(() => fakeShop.OpeningHours).Returns(newTimes);
+
+    // custom action - notify listeners of the change
+    fakeShop.OpeningHoursChanged += Raise.With(new HoursChangedEvent(newTimes));
+}
+```
