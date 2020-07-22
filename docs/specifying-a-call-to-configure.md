@@ -39,6 +39,13 @@ A.CallToSet(() => fakeShop.Address).DoesNothing(); // ignores the value that's s
 constrain the value that's set into the property, or the indexes that
 must be supplied when invoking an indexer.
 
+Note that any customization of a read/write property's behavior will break the
+default behavior of having
+[the getter return the last set value](default-fake-behavior.md#readwrite-properties).
+To avoid this, a
+[custom action](invoking-custom-code.md#case-study-customizing-a-readwrite-property)
+may be used to preserve the behavior.
+
 ## Specifying the invocation of a delegate
 
 To specify the invocation of a delegate, just use `A.CallTo`, invoking the fake delegate as you normally would:
