@@ -44,7 +44,7 @@ for extension points.
 ```csharp
 public class ScanAnExternalAssemblyBootstrapper : FakeItEasy.DefaultBootstrapper
 {
-    public override IEnumerable<string> GetAssemblyFilenamesToScanForExtensions()
+    public override IEnumerable<string> GetAssemblyFileNamesToScanForExtensions()
     {
         return new [] { @"c:\full\path\to\another\assembly.dll" };
     }
