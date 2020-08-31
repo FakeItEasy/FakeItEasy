@@ -13,7 +13,6 @@ namespace FakeItEasy.Core
     /// <summary>
     /// Provides access to all types in:
     /// <list type="bullet">
-    ///   <item>FakeItEasy,</item>
     ///   <item>currently loaded assemblies that reference FakeItEasy and</item>
     ///   <item>assemblies whose paths are supplied to the constructor, that also reference FakeItEasy.</item>
     /// </list>
@@ -107,7 +106,6 @@ namespace FakeItEasy.Core
             // This optimization can be fooled by test runners that make shadow copies of the assemblies but it's a start.
             return GetAssemblies(extraAssemblyFiles.Except(loadedAssemblyFiles))
                 .Concat(loadedAssembliesReferencingFakeItEasy)
-                .Concat(FakeItEasyAssembly)
                 .Distinct();
         }
 

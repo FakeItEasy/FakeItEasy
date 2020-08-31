@@ -3,6 +3,7 @@ namespace FakeItEasy
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Linq;
     using System.Text;
     using FakeItEasy.Configuration;
     using FakeItEasy.Core;
@@ -33,7 +34,12 @@ namespace FakeItEasy
             var typeCatalogueInstanceProvider = new TypeCatalogueInstanceProvider(typeCatalogue);
 
             var argumentValueFormatters = typeCatalogueInstanceProvider.InstantiateAllOfType<IArgumentValueFormatter>();
-            var dummyFactories = typeCatalogueInstanceProvider.InstantiateAllOfType<IDummyFactory>();
+            var dummyFactories = typeCatalogueInstanceProvider.InstantiateAllOfType<IDummyFactory>()
+                .Concat(new[]
+                {
+                    new StringDummyFactory()
+                });
+
             var fakeOptionsBuilders = typeCatalogueInstanceProvider.InstantiateAllOfType<IFakeOptionsBuilder>();
 
             var implicitOptionsBuilderCatalogue = new ImplicitOptionsBuilderCatalogue(fakeOptionsBuilders);
