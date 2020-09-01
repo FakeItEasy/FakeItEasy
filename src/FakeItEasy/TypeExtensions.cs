@@ -26,7 +26,7 @@ namespace FakeItEasy
             }
 
             var typeInfo = type.GetTypeInfo();
-            return !typeInfo.IsAbstract && !typeInfo.ContainsGenericParameters;
+            return !typeInfo.IsAbstract && !typeInfo.ContainsGenericParameters && type.HasDefaultConstructor();
         }
 
         public static bool IsNullable(this Type type)
@@ -34,6 +34,12 @@ namespace FakeItEasy
             var typeInfo = type.GetTypeInfo();
             return !typeInfo.IsValueType
                 || (typeInfo.IsGenericType && typeInfo.GetGenericTypeDefinition() == typeof(Nullable<>));
+        }
+
+        [DebuggerStepThrough]
+        private static bool HasDefaultConstructor(this Type type)
+        {
+            return type.GetConstructor(Type.EmptyTypes) is object;
         }
     }
 }

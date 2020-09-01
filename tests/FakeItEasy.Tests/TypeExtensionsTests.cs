@@ -52,6 +52,16 @@
             type.CanBeInstantiatedAs(targetType).Should().BeTrue();
         }
 
+        [Theory]
+        [InlineData(typeof(NonPublicConstructorFoo), typeof(IBar))]
+        [InlineData(typeof(MissingDefaultConstructorFoo), typeof(IBar))]
+        public void CanBeInstantiatedAs_should_return_false_when_the_type_does_not_have_a_default_public_constructor(
+            Type type,
+            Type targetType)
+        {
+            type.CanBeInstantiatedAs(targetType).Should().BeFalse();
+        }
+
         private abstract class AbstractBar : IBar
         {
         }
@@ -62,6 +72,23 @@
 
         private class GenericBar<T> : AbstractBar
         {
+        }
+
+        private class NonPublicConstructorFoo : IBar
+        {
+            private NonPublicConstructorFoo()
+            {
+            }
+        }
+
+        private class MissingDefaultConstructorFoo : IBar
+        {
+            private readonly string bar;
+
+            public MissingDefaultConstructorFoo(string bar)
+            {
+                this.bar = bar;
+            }
         }
     }
 }

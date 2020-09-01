@@ -81,7 +81,7 @@ namespace FakeItEasy.IntegrationTests
         }
 
         [Fact]
-        public void Should_be_able_to_get_types_from_fakeiteasy()
+        public void Should_not_include_types_from_fakeiteasy()
         {
             // Arrange
             var catalogue = new TypeCatalogue();
@@ -90,7 +90,7 @@ namespace FakeItEasy.IntegrationTests
             CaptureConsoleOutput(() => catalogue.Load(Enumerable.Empty<string>()));
 
             // Assert
-            catalogue.GetAvailableTypes().Should().Contain(typeof(A));
+            catalogue.GetAvailableTypes().Should().NotContain(typeof(A));
         }
 
         [Fact]
