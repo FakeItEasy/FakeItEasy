@@ -5,7 +5,7 @@ Fake objects come with useful default behavior as soon as
 can make the fakes easier to work with and can lead to more concise
 tests.
 
-## Non-overideable members cannot be faked
+## Non-overrideable members cannot be faked
 
 Methods and properties can only be faked if they are declared on a
 faked interface, or are declared abstract or virtual on a faked
@@ -59,7 +59,7 @@ Virtual methods inherited from `System.Object` are faked with a special default 
 * `ToString` returns a string of the form "Faked &lt;type of fake&gt;"
 
 This behavior applies to all fakes, including fakes of types that override these
-methods. Like any other method, the behavior can be explictly configured.
+methods. Like any other method, the behavior can be explicitly configured.
 
 ### Cancellation tokens
 

@@ -33,7 +33,7 @@ When creating fakes you can, through a fluent interface, specify options for how
 | Option                                                                                            | Applies to    |
 |---------------------------------------------------------------------------------------------------|---------------|
 | Specify arguments for the constructor of the faked type                                           | non-delegates |
-| Specify additional interfaces that the fake should implemen                                       | non-delegates |
+| Specify additional interfaces that the fake should implement                                      | non-delegates |
 | Assign additional custom attributes to the faked type                                             | non-delegates |
 | Cause a fake to have [strict mocking semantics](strict-fakes.md)                                  | any fake      |
 | Configure all of a fake's methods to [use their original implementation](calling-base-methods.md) | classes       |

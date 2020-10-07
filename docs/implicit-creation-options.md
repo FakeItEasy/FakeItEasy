@@ -55,7 +55,7 @@ single explicit type, extending `abstract class FakeOptionsBuilder<T>:
 IFakeOptionsBuilder` is preferred, as was done above. This abstract
 class provides default implementations of `Priority` and
 `CanBuildOptionsForFakeOfType` (although the `Priority` can be
-overridden if needed). If you want to configure a vaierty of Fake
+overridden if needed). If you want to configure a variety of Fake
 types, you may prefer to extend `IFakeOptionsBuilder` directly. For
 example, if you wanted all Fakes to be Strict, you might write
 something like this:
