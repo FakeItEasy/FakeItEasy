@@ -200,7 +200,7 @@ namespace FakeItEasy.Specs
 
             public virtual string StringProperty { get; set; }
 
-            public string StringPropertyValueDuringConstructorCall { get; }
+            public string? StringPropertyValueDuringConstructorCall { get; }
 
             public virtual int ValueTypeProperty { get; set; }
 
