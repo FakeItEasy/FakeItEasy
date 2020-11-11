@@ -16,6 +16,8 @@ namespace FakeItEasy.Specs
             void VoidMethod(string? parameter);
 
             void OutAndRefMethod(ref int @ref, out int @out);
+
+            event EventHandler? SomeEvent;
         }
 
         public interface IBar
@@ -272,6 +274,28 @@ namespace FakeItEasy.Specs
                     .WithMessage("The configured fake is not a wrapping fake."));
         }
 
+        [Scenario]
+        public static void EventSubscriptionSubscribesToWrappedEvent(Foo realObject, IFoo wrapper, EventHandler handler)
+        {
+            "Given a real object"
+                .x(() => realObject = new Foo());
+
+            "And a fake wrapping this object"
+                .x(() => wrapper = A.Fake<IFoo>(o => o.Wrapping(realObject)));
+
+            "And an event handler"
+                .x(() => handler = A.Fake<EventHandler>());
+
+            "When the handler is subscribed to the fake's event"
+                .x(() => wrapper.SomeEvent += handler);
+
+            "And the event is raised"
+                .x(() => realObject.RaiseSomeEvent());
+
+            "Then the handler is called"
+                .x(() => A.CallTo(handler).MustHaveHappened());
+        }
+
         public class Foo : IFoo
         {
             public bool NonVoidMethodCalled { get; private set; }
@@ -306,6 +330,12 @@ namespace FakeItEasy.Specs
                 @ref += 1;
                 @out = 42;
             }
+
+            public event EventHandler? SomeEvent;
+
+#pragma warning disable CA1030 // Use events where appropriate
+            public void RaiseSomeEvent() => this.SomeEvent?.Invoke(this, EventArgs.Empty);
+#pragma warning restore CA1030 // Use events where appropriate
         }
 
         public class Bar : IBar

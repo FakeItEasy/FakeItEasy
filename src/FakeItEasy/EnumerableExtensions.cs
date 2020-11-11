@@ -61,5 +61,12 @@ namespace FakeItEasy
         {
             return source as IList<object> ?? source.Cast<object>().ToList();
         }
+
+#if LACKS_PREPEND
+        public static IEnumerable<T> Prepend<T>(this IEnumerable<T> source, T item)
+        {
+            return new[] { item }.Concat(source);
+        }
+#endif
     }
 }
