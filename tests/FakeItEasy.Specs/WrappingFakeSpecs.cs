@@ -289,11 +289,39 @@ namespace FakeItEasy.Specs
             "When the handler is subscribed to the fake's event"
                 .x(() => wrapper.SomeEvent += handler);
 
-            "And the event is raised"
+            "And the event is raised using a method on the wrapped object"
                 .x(() => realObject.RaiseSomeEvent());
 
             "Then the handler is called"
                 .x(() => A.CallTo(handler).MustHaveHappened());
+        }
+
+        [Scenario]
+        public static void RaisingEventOnWrappingFakeUsingRaiseSyntax(Foo realObject, IFoo wrapper, EventHandler handler, Exception exception)
+        {
+            "Given a real object"
+                .x(() => realObject = new Foo());
+
+            "And a fake wrapping this object"
+                .x(() => wrapper = A.Fake<IFoo>(o => o.Wrapping(realObject)));
+
+            "And an event handler"
+                .x(() => handler = A.Fake<EventHandler>());
+
+            "When the handler is subscribed to the fake's event"
+                .x(() => wrapper.SomeEvent += handler);
+
+            "And the event is raised using the '+= Raise' syntax"
+                .x(() => realObject.SomeEvent += Raise.WithEmpty());
+
+            "Then the handler is not called"
+                .x(() => A.CallTo(handler).MustNotHaveHappened());
+
+            "And when the event is raised using a method on the wrapped object"
+                .x(() => exception = Record.Exception(() => realObject.RaiseSomeEvent()));
+
+            "Then a NotSupportedException is thrown"
+                .x(() => exception.Should().BeAnExceptionOfType<NotSupportedException>());
         }
 
         public class Foo : IFoo
