@@ -2,9 +2,6 @@ namespace FakeItEasy
 {
     using System;
     using System.Diagnostics;
-#if FEATURE_NETCORE_REFLECTION
-    using System.Reflection;
-#endif
 
     /// <summary>
     /// Provides extension methods for <see cref="Type"/>.

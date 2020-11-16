@@ -4,9 +4,6 @@ namespace FakeItEasy
     using System.Collections.Concurrent;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-#if FEATURE_NETCORE_REFLECTION
-    using System.Reflection;
-#endif
     using System.Threading.Tasks;
     using FakeItEasy.Configuration;
 

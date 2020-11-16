@@ -4,9 +4,6 @@ namespace FakeItEasy.IntegrationTests
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-#if FEATURE_NETCORE_REFLECTION
-    using System.Reflection;
-#endif
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
 

@@ -2,9 +2,6 @@ namespace FakeItEasy.Core
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
-#if FEATURE_NETCORE_REFLECTION
-    using System.Reflection;
-#endif
 
     /// <summary>
     /// A class exposing an event handler to attach to a delegate-type event of a faked object

@@ -2,10 +2,6 @@ namespace FakeItEasy
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
-#if FEATURE_NETCORE_REFLECTION
-    using System.Reflection;
-#endif
-
     using FakeItEasy.Configuration;
 
     /// <summary>

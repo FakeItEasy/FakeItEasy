@@ -1,4 +1,3 @@
-#if !FEATURE_NETCORE_REFLECTION
 namespace FakeItEasy
 {
     using System;
@@ -52,4 +51,3 @@ namespace FakeItEasy
         }
     }
 }
-#endif

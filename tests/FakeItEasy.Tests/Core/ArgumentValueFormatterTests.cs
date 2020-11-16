@@ -5,9 +5,6 @@ namespace FakeItEasy.Tests.Core
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-#if FEATURE_NETCORE_REFLECTION
-    using System.Reflection;
-#endif
     using FakeItEasy.Core;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;

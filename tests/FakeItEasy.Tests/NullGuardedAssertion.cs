@@ -346,11 +346,7 @@ namespace FakeItEasy.Tests
                     this.target = NullGuardedConstraint.GetValueProducedByExpression(expression.Object);
                 }
 
-#if FEATURE_NETCORE_REFLECTION
-                protected override string CallDescription => this.method.DeclaringType?.Name + "." + this.method.Name;
-#else
                 protected override string CallDescription => this.method.ReflectedType?.Name + "." + this.method.Name;
-#endif
 
                 protected override void PerformCall(object?[] arguments)
                 {
@@ -374,11 +370,7 @@ namespace FakeItEasy.Tests
                     this.constructorInfo = expression.Constructor;
                 }
 
-#if FEATURE_NETCORE_REFLECTION
-                protected override string CallDescription => this.constructorInfo.DeclaringType + ".ctor";
-#else
                 protected override string CallDescription => this.constructorInfo.ReflectedType + ".ctor";
-#endif
 
                 protected override void PerformCall(object?[] arguments)
                 {

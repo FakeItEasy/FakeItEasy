@@ -10,9 +10,6 @@
 namespace FakeItEasy.Configuration
 {
     using System;
-#if FEATURE_NETCORE_REFLECTION
-    using System.Reflection;
-#endif
 
     public partial interface IOutAndRefParametersConfiguration<out TInterface>
     {

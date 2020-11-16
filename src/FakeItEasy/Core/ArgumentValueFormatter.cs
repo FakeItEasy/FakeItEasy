@@ -6,10 +6,6 @@ namespace FakeItEasy.Core
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 
-#if FEATURE_NETCORE_REFLECTION
-    using System.Reflection;
-#endif
-
     internal class ArgumentValueFormatter
     {
         private readonly IEnumerable<IArgumentValueFormatter> typeFormatters;

@@ -1,9 +1,6 @@
 namespace FakeItEasy.Core
 {
     using System;
-#if FEATURE_NETCORE_REFLECTION
-    using System.Reflection;
-#endif
     using System.Threading;
     using System.Threading.Tasks;
 
