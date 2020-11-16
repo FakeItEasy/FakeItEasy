@@ -6,7 +6,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(TargetFramework)' == 'netcoreapp3.0'">
+  <PropertyGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
     <DefineConstants>$(DefineConstants);FEATURE_NETCORE_REFLECTION;FEATURE_STRING_CONTAINS_COMPARISONTYPE;REQUIRES_NETSTANDARD_REFERENCE</DefineConstants>
   </PropertyGroup>
 

@@ -33,13 +33,13 @@ You might not need everything to run a [partial build](#building-only-a-subset-o
 
 ### On Linux
 
-The default [build profile](#building-only-a-subset-of-the-supported-target-frameworks) on Linux is `netcore2+`, which builds FakeItEasy for .NET Standard 2.0 and 2.1, and runs the tests on .NET Core 2.1 and 3.0. The .NET Framework isn't supported on Linux, and .NET Core 1.0 is no longer supported, which makes it difficult (if not impossible) to install on Linux.
+The default [build profile](#building-only-a-subset-of-the-supported-target-frameworks) on Linux is `netcore2+`, which builds FakeItEasy for .NET Standard 2.0 and 2.1, and runs the tests on .NET Core 2.1 and 3.1. The .NET Framework isn't supported on Linux, and .NET Core 1.0 is no longer supported, which makes it difficult (if not impossible) to install on Linux.
 
 Ensure the following are installed:
 
 1. The .NET Core 2.1 runtime
 
-2. A recent version of the .NET Core 3.0 SDK (currently this means 3.0.100 or later)
+2. A recent version of the .NET Core 3.1 SDK (currently this means 3.1.404 or later)
 
 ## Building
 
@@ -94,9 +94,9 @@ available:
 
 * `full`: the default profile on Windows, builds all supported target frameworks
 * `net45`: builds only the .NET Framework 4.5 target framework
-* `netcore2+`: the default profile on non-Windows OSes, builds only .NET Core 2.1 and 3.0 / .NET Standard 2.0 and 2.1 target frameworks.
+* `netcore2+`: the default profile on non-Windows OSes, builds only .NET Core 2.1 and 3.1 / .NET Standard 2.0 and 2.1 target frameworks.
 * `netcore2.1`: builds only .NET Core 2.1 / .NET Standard 2.0 target frameworks
-* `netcore3.0`: builds only .NET Core 3.0 / .NET Standard 2.1 target frameworks
+* `netcore3.1`: builds only .NET Core 3.1 / .NET Standard 2.1 target frameworks
 * `netcoreall`: builds all supported .NET Core / .NET Standard target frameworks
 
 In order to select a profile, create a `FakeItEasy.user.props` file at the root
@@ -112,7 +112,7 @@ either by editing the file by hand or via a build target (which will actually
 create the file if it doesn't already exist). For example:
 
 ```
-build.cmd use-profile-netcore3.0
+build.cmd use-profile-netcore3.1
 ```
 
 Note that Visual Studio will not reflect a change of build profile until you
