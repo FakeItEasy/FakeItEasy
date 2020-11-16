@@ -14,10 +14,6 @@
     <DefineConstants>$(DefineConstants);FEATURE_NETCORE_REFLECTION;FEATURE_STRING_CONTAINS_COMPARISONTYPE;REQUIRES_NETSTANDARD_REFERENCE</DefineConstants>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(TargetFramework)' == 'netcoreapp1.0'">
-    <DefineConstants>$(DefineConstants);FEATURE_NETCORE_REFLECTION</DefineConstants>
-  </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.Compilers" Version="2.1.0" />
     <ProjectReference Include="..\..\src\FakeItEasy\FakeItEasy.csproj" />

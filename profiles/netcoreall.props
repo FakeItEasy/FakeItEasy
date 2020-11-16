@@ -1,13 +1,13 @@
 <Project>
   <!-- All .NET Core / .NET Standard TFMs -->
   <PropertyGroup>
-    <FakeItEasyTargetFrameworks>netstandard1.6;netstandard2.0;netstandard2.1</FakeItEasyTargetFrameworks>
-    <ValueTaskExtensionsTargetFrameworks>netstandard1.6;netstandard2.0;netstandard2.1</ValueTaskExtensionsTargetFrameworks>
+    <FakeItEasyTargetFrameworks>netstandard2.0;netstandard2.1</FakeItEasyTargetFrameworks>
+    <ValueTaskExtensionsTargetFrameworks>netstandard2.0;netstandard2.1</ValueTaskExtensionsTargetFrameworks>
     <ExampleTargetFrameworks>netcoreapp3.1</ExampleTargetFrameworks>
-    <SpecsTargetFrameworks>netcoreapp1.0;netcoreapp2.1;netcoreapp3.1</SpecsTargetFrameworks>
-    <IntegrationTestsTargetFrameworks>netcoreapp1.0;netcoreapp2.1;netcoreapp3.1</IntegrationTestsTargetFrameworks>
-    <UnitTestsTargetFrameworks>netcoreapp1.0;netcoreapp2.1;netcoreapp3.1</UnitTestsTargetFrameworks>
-    <TestHelpersTargetFrameworks>netstandard1.6;netstandard2.0;netstandard2.1</TestHelpersTargetFrameworks>
+    <SpecsTargetFrameworks>netcoreapp2.1;netcoreapp3.1</SpecsTargetFrameworks>
+    <IntegrationTestsTargetFrameworks>netcoreapp2.1;netcoreapp3.1</IntegrationTestsTargetFrameworks>
+    <UnitTestsTargetFrameworks>netcoreapp2.1;netcoreapp3.1</UnitTestsTargetFrameworks>
+    <TestHelpersTargetFrameworks>netstandard2.0;netstandard2.1</TestHelpersTargetFrameworks>
     <ApprovalTestsTargetFrameworks>netcoreapp3.1</ApprovalTestsTargetFrameworks>
   </PropertyGroup>
 </Project>

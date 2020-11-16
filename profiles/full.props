@@ -1,13 +1,13 @@
 <Project>
   <!-- Everything -->
   <PropertyGroup>
-    <FakeItEasyTargetFrameworks>net40;net45;netstandard1.6;netstandard2.0;netstandard2.1</FakeItEasyTargetFrameworks>
-    <ValueTaskExtensionsTargetFrameworks>net45;netstandard1.6;netstandard2.0;netstandard2.1</ValueTaskExtensionsTargetFrameworks>
+    <FakeItEasyTargetFrameworks>net40;net45;netstandard2.0;netstandard2.1</FakeItEasyTargetFrameworks>
+    <ValueTaskExtensionsTargetFrameworks>net45;netstandard2.0;netstandard2.1</ValueTaskExtensionsTargetFrameworks>
     <ExampleTargetFrameworks>netcoreapp3.1</ExampleTargetFrameworks>
-    <SpecsTargetFrameworks>net461;netcoreapp1.0;netcoreapp2.1;netcoreapp3.1</SpecsTargetFrameworks>
-    <IntegrationTestsTargetFrameworks>net461;netcoreapp1.0;netcoreapp2.1;netcoreapp3.1</IntegrationTestsTargetFrameworks>
-    <UnitTestsTargetFrameworks>net461;netcoreapp1.0;netcoreapp2.1;netcoreapp3.1</UnitTestsTargetFrameworks>
-    <TestHelpersTargetFrameworks>net461;netstandard1.6;netstandard2.0;netstandard2.1</TestHelpersTargetFrameworks>
+    <SpecsTargetFrameworks>net461;netcoreapp2.1;netcoreapp3.1</SpecsTargetFrameworks>
+    <IntegrationTestsTargetFrameworks>net461;netcoreapp2.1;netcoreapp3.1</IntegrationTestsTargetFrameworks>
+    <UnitTestsTargetFrameworks>net461;netcoreapp2.1;netcoreapp3.1</UnitTestsTargetFrameworks>
+    <TestHelpersTargetFrameworks>net461;netstandard2.0;netstandard2.1</TestHelpersTargetFrameworks>
     <ApprovalTestsTargetFrameworks>netcoreapp3.1</ApprovalTestsTargetFrameworks>
   </PropertyGroup>
 </Project>

@@ -84,7 +84,7 @@ After the build has completed, the build artifacts will be located in `artifacts
 ### Building only a subset of the supported target frameworks
 
 FakeItEasy targets multiple versions of .NET (.NET Framework 4.0 and 4.5, .NET
-Standard 1.6, 2.0 and 2.1), and the tests also run on multiple frameworks (.NET
+Standard 2.0 and 2.1), and the tests also run on multiple frameworks (.NET
 Framework 4.6.1 and several versions of .NET Core). A consequence is that a full
 build can take a significant amount of time. When working on the code, you might
 want a faster feedback loop. To this end, FakeItEasy's build infrastructure has

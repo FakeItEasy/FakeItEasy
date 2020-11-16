@@ -9,10 +9,6 @@
     <DefineConstants>$(DefineConstants);FEATURE_STRING_CONTAINS_COMPARISONTYPE</DefineConstants>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard1.6'">
-    <DefineConstants>$(DefineConstants);FEATURE_NETCORE_REFLECTION</DefineConstants>
-  </PropertyGroup>
-
   <PropertyGroup Condition="'$(TargetFramework)' == 'net461'">
     <DefineConstants>$(DefineConstants);FEATURE_THREAD_CURRENTCULTURE</DefineConstants>
   </PropertyGroup>
