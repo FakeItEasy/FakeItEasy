@@ -50,8 +50,6 @@ AddHandler robot.FellInLove, Raise.With(sender, someEventArgs)
 
 Events of type `EventHandler<TEventArgs>` can be raised in exactly the same way.
 
-Note that for the .NET 4.0 version of the FakeItEasy library, `TEventArgs` needs to extend `EventArgs` to support the above syntax. Otherwise, the event must be raised as if it were a "free-form" event as described below.
-
 ## "Free-form" events using arbitrary delegates
 
 It is also possible to raise events defined using a **custom delegate** (a.k.a
@@ -59,8 +57,7 @@ It is also possible to raise events defined using a **custom delegate** (a.k.a
 
 ```csharp
 public delegate void FreeformEventHandler(int count);
-public delegate void CustomEventHandler(object sender, CustomEventArgs e); // considered a custom
-                                                                           // delegate in .NET 4.0
+public delegate void CustomEventHandler(object sender, CustomEventArgs e);
 …
 event FreeformEventHandler FreeformEvent;
 event CustomEventHandler CustomEvent;

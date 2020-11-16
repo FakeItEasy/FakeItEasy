@@ -14,7 +14,6 @@ namespace FakeItEasy.Tests.Approval
     public class ApiApproval
     {
         [SkippableTheory]
-        [InlineData("FakeItEasy", "net40")]
         [InlineData("FakeItEasy", "net45")]
         [InlineData("FakeItEasy", "netstandard2.0")]
         [InlineData("FakeItEasy", "netstandard2.1")]
