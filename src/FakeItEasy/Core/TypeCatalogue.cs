@@ -119,8 +119,6 @@ namespace FakeItEasy.Core
                 {
 #if FEATURE_REFLECTIONONLYLOAD
                     assembly = Assembly.ReflectionOnlyLoadFrom(file);
-#elif USE_RUNTIMELOADER
-                    assembly = AssemblyLoadContext.Default.LoadFromAssemblyPath(file);
 #else
                     assembly = Assembly.LoadFrom(file);
 #endif
