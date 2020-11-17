@@ -91,7 +91,7 @@ namespace FakeItEasy.Creation
                 IDummyValueResolver resolver,
                 LoopDetectingResolutionContext resolutionContext)
             {
-                if (typeOfDummy.GetTypeInfo().IsValueType && typeOfDummy != typeof(void))
+                if (typeOfDummy.IsValueType && typeOfDummy != typeof(void))
                 {
                     return CreationResult.SuccessfullyCreated(Activator.CreateInstance(typeOfDummy));
                 }
@@ -136,7 +136,7 @@ namespace FakeItEasy.Creation
                     return CreationResult.SuccessfullyCreated(TaskHelper.CompletedTask);
                 }
 
-                if (typeOfDummy.GetTypeInfo().IsGenericType && typeOfDummy.GetGenericTypeDefinition() == typeof(Task<>))
+                if (typeOfDummy.IsGenericType && typeOfDummy.GetGenericTypeDefinition() == typeof(Task<>))
                 {
                     var typeOfTaskResult = typeOfDummy.GetGenericArguments()[0];
                     var creationResult = resolver.TryResolveDummyValue(typeOfTaskResult, resolutionContext);
@@ -153,8 +153,8 @@ namespace FakeItEasy.Creation
                     return CreationResult.SuccessfullyCreated(typeOfDummy.GetDefaultValue());
                 }
 
-                if (typeOfDummy.GetTypeInfo().IsGenericType &&
-                    !typeOfDummy.GetTypeInfo().IsGenericTypeDefinition &&
+                if (typeOfDummy.IsGenericType &&
+                    !typeOfDummy.IsGenericTypeDefinition &&
                     typeOfDummy.FullName.StartsWith("System.Threading.Tasks.ValueTask`", StringComparison.Ordinal))
                 {
                     var typeOfTaskResult = typeOfDummy.GetGenericArguments()[0];
@@ -190,7 +190,7 @@ namespace FakeItEasy.Creation
                 IDummyValueResolver resolver,
                 LoopDetectingResolutionContext resolutionContext)
             {
-                if (typeOfDummy.GetTypeInfo().IsGenericType && typeOfDummy.GetGenericTypeDefinition() == typeof(Lazy<>))
+                if (typeOfDummy.IsGenericType && typeOfDummy.GetGenericTypeDefinition() == typeof(Lazy<>))
                 {
                     var typeOfLazyResult = typeOfDummy.GetGenericArguments()[0];
                     var method = CreateLazyDummyGenericDefinition.MakeGenericMethod(typeOfLazyResult);
@@ -219,7 +219,7 @@ namespace FakeItEasy.Creation
             {
                 if (IsTuple(typeOfDummy))
                 {
-                    var argTypes = typeOfDummy.GetTypeInfo().GetGenericArguments();
+                    var argTypes = typeOfDummy.GetGenericArguments();
                     var args = new object?[argTypes.Length];
                     for (int i = 0; i < argTypes.Length; i++)
                     {
@@ -238,8 +238,8 @@ namespace FakeItEasy.Creation
             }
 
             private static bool IsTuple(Type type) =>
-                type.GetTypeInfo().IsGenericType
-                && !type.GetTypeInfo().IsGenericTypeDefinition
+                type.IsGenericType
+                && !type.IsGenericTypeDefinition
                 && (type.FullName.StartsWith("System.Tuple`", StringComparison.Ordinal) ||
                     type.FullName.StartsWith("System.ValueTuple`", StringComparison.Ordinal));
         }
@@ -259,7 +259,7 @@ namespace FakeItEasy.Creation
                     return CreationResult.FailedToCreateDummy(typeOfDummy, "It is a Delegate.");
                 }
 
-                if (typeOfDummy.GetTypeInfo().IsAbstract)
+                if (typeOfDummy.IsAbstract)
                 {
                     return CreationResult.FailedToCreateDummy(typeOfDummy, "It is abstract.");
                 }

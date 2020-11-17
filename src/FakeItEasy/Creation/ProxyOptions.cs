@@ -29,7 +29,7 @@ namespace FakeItEasy.Creation
         {
             Guard.AgainstNull(interfaceType, nameof(interfaceType));
 
-            if (!interfaceType.GetTypeInfo().IsInterface)
+            if (!interfaceType.IsInterface)
             {
                 throw new ArgumentException(ExceptionMessages.NotAnInterface(interfaceType));
             }

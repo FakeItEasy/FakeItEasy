@@ -17,7 +17,7 @@ namespace FakeItEasy.Core
                 Guard.AgainstNull(fakeObjectCall, nameof(fakeObjectCall));
 
                 var returnType = fakeObjectCall.Method.ReturnType;
-                if (typeof(Task).GetTypeInfo().IsAssignableFrom(returnType))
+                if (typeof(Task).IsAssignableFrom(returnType))
                 {
                     Task task;
                     if (returnType == typeof(Task))
@@ -26,7 +26,7 @@ namespace FakeItEasy.Core
                     }
                     else
                     {
-                        var taskResultType = returnType.GetTypeInfo().GetGenericArguments()[0];
+                        var taskResultType = returnType.GetGenericArguments()[0];
                         task = TaskHelper.Canceled(taskResultType);
                     }
 
@@ -81,8 +81,8 @@ namespace FakeItEasy.Core
                     return true;
                 }
 
-                if (type.GetTypeInfo().IsGenericType &&
-                    !type.GetTypeInfo().IsGenericTypeDefinition &&
+                if (type.IsGenericType &&
+                    !type.IsGenericTypeDefinition &&
                     type.FullName.StartsWith("System.Threading.Tasks.ValueTask`", StringComparison.Ordinal))
                 {
                     valueType = type.GetGenericArguments()[0];

@@ -37,7 +37,7 @@ namespace FakeItEasy.Specs
                 .x(() => fake.ID.Should().BeGreaterThan(0));
 
             "And the fake has the attribute"
-                .x(() => fake.GetType().GetTypeInfo().GetCustomAttributes(inherit: false).Select(a => a.GetType())
+                .x(() => fake.GetType().GetCustomAttributes(inherit: false).Select(a => a.GetType())
                     .Should().Contain(typeof(ForTestAttribute)));
 
             "And the fake implements the interface specified by parameter"
@@ -517,7 +517,7 @@ namespace FakeItEasy.Specs
 
         public bool CanBuildOptionsForFakeOfType(Type type)
         {
-            return typeof(DomainEvent).GetTypeInfo().IsAssignableFrom(type);
+            return typeof(DomainEvent).IsAssignableFrom(type);
         }
 
         public void BuildOptions(Type typeOfFake, IFakeOptions options)

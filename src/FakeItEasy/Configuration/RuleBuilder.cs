@@ -104,7 +104,7 @@ namespace FakeItEasy.Configuration
 
         public virtual IAfterCallConfiguredConfiguration<IVoidConfiguration> CallsBaseMethod()
         {
-            if (this.manager.FakeObjectType.GetTypeInfo().IsSubclassOf(typeof(Delegate)))
+            if (this.manager.FakeObjectType.IsSubclassOf(typeof(Delegate)))
             {
                 throw new FakeConfigurationException(ExceptionMessages.DelegateCannotCallBaseMethod);
             }

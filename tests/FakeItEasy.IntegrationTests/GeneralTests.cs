@@ -59,7 +59,7 @@ namespace FakeItEasy.IntegrationTests
             var fake = A.Fake<IEmpty>(a => a.WithAttributes(() => new ForTestAttribute()));
 
             // Assert
-            fake.GetType().GetTypeInfo().GetCustomAttributes(typeof(ForTestAttribute), true).Should().HaveCount(1);
+            fake.GetType().GetCustomAttributes(typeof(ForTestAttribute), true).Should().HaveCount(1);
         }
 
         [Fact]
@@ -72,7 +72,7 @@ namespace FakeItEasy.IntegrationTests
             var secondFake = A.Fake<IFormattable>();
 
             // Assert
-            secondFake.GetType().GetTypeInfo().GetCustomAttributes(typeof(ForTestAttribute), true).Should().BeEmpty();
+            secondFake.GetType().GetCustomAttributes(typeof(ForTestAttribute), true).Should().BeEmpty();
         }
 
         [Fact]

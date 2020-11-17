@@ -23,7 +23,7 @@ namespace FakeItEasy.Core
         public override bool TryConvert(ConvertBinder binder, out object result)
         {
             var targetType = binder.Type;
-            if (!targetType.GetTypeInfo().IsSubclassOf(typeof(Delegate)))
+            if (!targetType.IsSubclassOf(typeof(Delegate)))
             {
                 throw new InvalidCastException(ExceptionMessages.UnableToCast(this.GetType(), targetType));
             }

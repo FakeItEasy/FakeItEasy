@@ -55,7 +55,7 @@ namespace FakeItEasy.Creation
             IDummyValueResolver resolver,
             LoopDetectingResolutionContext resolutionContext)
         {
-            if (typeOfFake.GetTypeInfo().IsInterface)
+            if (typeOfFake.IsInterface)
             {
                 return this.defaultCreationStrategy.CreateFakeInterface(typeOfFake, proxyOptions);
             }

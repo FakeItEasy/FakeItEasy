@@ -55,7 +55,7 @@ namespace FakeItEasy.Core
         {
             var reflectedType = methodWrapper.ReflectedType;
 
-            if (reflectedType.GetTypeInfo().IsInterface)
+            if (reflectedType.IsInterface)
             {
                 return null;
             }
@@ -88,7 +88,7 @@ namespace FakeItEasy.Core
         {
             var baseDefinition = method.GetBaseDefinition();
 
-            if (!baseDefinition.DeclaringType.GetTypeInfo().IsInterface || !TypeImplementsInterface(type, baseDefinition.DeclaringType))
+            if (!baseDefinition.DeclaringType.IsInterface || !TypeImplementsInterface(type, baseDefinition.DeclaringType))
             {
                 return null;
             }
