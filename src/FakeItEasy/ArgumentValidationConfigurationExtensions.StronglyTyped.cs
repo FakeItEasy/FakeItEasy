@@ -9,6 +9,7 @@
 namespace FakeItEasy
 {
     using System;
+    using System.Reflection;
     using FakeItEasy.Configuration;
 
     public static partial class ArgumentValidationConfigurationExtensions

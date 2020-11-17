@@ -10,6 +10,7 @@
 namespace FakeItEasy.Configuration
 {
     using System;
+    using System.Reflection;
 
     public partial interface IOutAndRefParametersConfiguration<out TInterface>
     {
