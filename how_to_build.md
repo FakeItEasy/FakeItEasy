@@ -27,7 +27,7 @@ Ensure that the following are installed:
 
 5. The targeting packs for .NET Framework 4.0 and 4.5
 
-6. A recent version of the .NET Core 3.0 SDK (currently this means 3.0.100 or later)
+6. A recent version of the .NET Core 5.0 SDK (currently this means 5.0.100 or later)
 
 You might not need everything to run a [partial build](#building-only-a-subset-of-the-supported-target-frameworks).
 
