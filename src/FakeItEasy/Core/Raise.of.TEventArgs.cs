@@ -9,9 +9,6 @@ namespace FakeItEasy.Core
     /// </summary>
     /// <typeparam name="TEventArgs">The type of the event args.</typeparam>
     public class Raise<TEventArgs> : IEventRaiserArgumentProvider
-#if FEATURE_EVENT_ARGS_MUST_EXTEND_EVENTARGS
-        where TEventArgs : EventArgs
-#endif
     {
         private readonly TEventArgs eventArguments;
         private readonly object? eventSender;
