@@ -5,10 +5,6 @@ namespace FakeItEasy.Core
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Reflection;
-#if !FEATURE_REFLECTION_GETASSEMBLIES
-    using System.Runtime.Loader;
-    using Microsoft.Extensions.DependencyModel;
-#endif
 
     /// <summary>
     /// Provides access to all types in:
@@ -24,11 +20,7 @@ namespace FakeItEasy.Core
         /// <summary>
         /// Gets the <c>FakeItEasy</c> assembly.
         /// </summary>
-#if FEATURE_REFLECTION_GETASSEMBLIES
         public static Assembly FakeItEasyAssembly { get; } = Assembly.GetExecutingAssembly();
-#else
-        public static Assembly FakeItEasyAssembly { get; } = typeof(TypeCatalogue).GetTypeInfo().Assembly;
-#endif
 
         /// <summary>
         /// Loads the available types into the <see cref="TypeCatalogue"/>.
@@ -79,16 +71,7 @@ namespace FakeItEasy.Core
         [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Appropriate in try methods.")]
         private static IEnumerable<Assembly> GetAllAssemblies(IEnumerable<string> extraAssemblyFiles)
         {
-#if FEATURE_REFLECTION_GETASSEMBLIES
             var loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies();
-#else
-            var context = DependencyContext.Default;
-            var loadedAssemblies = context.RuntimeLibraries
-                .SelectMany(library => library.GetDefaultAssemblyNames(context))
-                .Distinct()
-                .Select(Assembly.Load)
-                .ToArray();
-#endif
             var loadedAssembliesReferencingFakeItEasy = loadedAssemblies.Where(assembly => assembly.ReferencesFakeItEasy());
 
             // Find the paths of already loaded assemblies so we don't double scan them.

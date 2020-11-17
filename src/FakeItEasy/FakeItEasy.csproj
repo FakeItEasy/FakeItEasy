@@ -25,19 +25,19 @@
   <!-- .NET Standard 2.1 -->
 
   <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
-    <DefineConstants>$(DefineConstants);FEATURE_REFLECTION_GETASSEMBLIES;FEATURE_ARRAY_EMPTY;FEATURE_STRING_CONTAINS_COMPARISONTYPE</DefineConstants>
+    <DefineConstants>$(DefineConstants);FEATURE_ARRAY_EMPTY;FEATURE_STRING_CONTAINS_COMPARISONTYPE</DefineConstants>
   </PropertyGroup>
 
   <!-- .NET Standard 2.0 -->
 
   <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <DefineConstants>$(DefineConstants);FEATURE_REFLECTION_GETASSEMBLIES;FEATURE_ARRAY_EMPTY;LACKS_NULLABLE_ATTRIBUTES</DefineConstants>
+    <DefineConstants>$(DefineConstants);FEATURE_ARRAY_EMPTY;LACKS_NULLABLE_ATTRIBUTES</DefineConstants>
   </PropertyGroup>
 
   <!-- .NET 4.5 -->
 
   <PropertyGroup Condition="'$(TargetFramework)' == 'net45'">
-    <DefineConstants>$(DefineConstants);FEATURE_REFLECTION_GETASSEMBLIES;FEATURE_REFLECTIONONLYLOAD;LACKS_NULLABLE_ATTRIBUTES</DefineConstants>
+    <DefineConstants>$(DefineConstants);FEATURE_REFLECTIONONLYLOAD;LACKS_NULLABLE_ATTRIBUTES</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
