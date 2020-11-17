@@ -17,15 +17,9 @@ namespace FakeItEasy
                 return false;
             }
 
-#if FEATURE_PARAMETERINFO_CUSTOMATTRIBUTES_PROPERTY
             var parameterAttributes = parameterInfo.CustomAttributes;
             return parameterAttributes is null ||
                    parameterAttributes.All(customAttributeData => customAttributeData.AttributeType.FullName != IsReadOnlyAttributeFullName);
-#else
-            var parameterAttributes = parameterInfo.GetCustomAttributesData();
-            return parameterAttributes is null ||
-                   parameterAttributes.All(customAttributeData => customAttributeData.Constructor.DeclaringType?.FullName != IsReadOnlyAttributeFullName);
-#endif
         }
     }
 }
