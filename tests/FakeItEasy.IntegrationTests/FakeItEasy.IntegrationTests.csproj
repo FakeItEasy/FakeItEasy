@@ -6,6 +6,10 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net5.0'">
+    <DefineConstants>$(DefineConstants);FEATURE_STRING_CONTAINS_COMPARISONTYPE;REQUIRES_NETSTANDARD_REFERENCE</DefineConstants>
+  </PropertyGroup>
+
   <PropertyGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
     <DefineConstants>$(DefineConstants);FEATURE_STRING_CONTAINS_COMPARISONTYPE;REQUIRES_NETSTANDARD_REFERENCE</DefineConstants>
   </PropertyGroup>

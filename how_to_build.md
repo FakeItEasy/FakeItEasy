@@ -19,23 +19,23 @@ Ensure that the following are installed:
 
 1. a recent version of Visual Studio 2019 (currently this means 16.3 or later) or the Build Tools for Visual Studio 2019
 
-2. The .NET Core 2.1 runtime
+2. The .NET Core 2.1 and 3.1 runtimes
 
 3. The .NET Framework 4.6.1 or higher
 
 4. The targeting pack for .NET Framework 4.5
 
-5. A recent version of the .NET Core 5.0 SDK (currently this means 5.0.100 or later)
+5. An up-to-date version of the .NET 5.0 SDK (currently this means 5.0.100 or later)
 
 You might not need everything to run a [partial build](#building-only-a-subset-of-the-supported-target-frameworks).
 
 ### On Linux
 
-The default [build profile](#building-only-a-subset-of-the-supported-target-frameworks) on Linux is `netcoreall`, which builds FakeItEasy for .NET Standard 2.0 and 2.1, and runs the tests on .NET Core 2.1 and 3.1. (the .NET Framework isn't supported on Linux).
+The default [build profile](#building-only-a-subset-of-the-supported-target-frameworks) on Linux is `netcoreall`, which builds FakeItEasy for .NET Standard 2.0 and 2.1, and runs the tests on .NET Core 2.1, .NET Core 3.1 and .NET 5.0. (the .NET Framework isn't supported on Linux).
 
 Ensure the following are installed:
 
-1. The .NET Core 2.1 runtime
+1. The .NET Core 2.1 and 3.1 runtimes
 
 2. A recent version of the .NET Core 5.0 SDK (currently this means 5.0.100 or later)
 
@@ -94,6 +94,7 @@ available:
 * `net45`: builds only the .NET Framework 4.5 target framework
 * `netcore2.1`: builds only .NET Core 2.1 / .NET Standard 2.0 target frameworks
 * `netcore3.1`: builds only .NET Core 3.1 / .NET Standard 2.1 target frameworks
+* `net5.0`: builds only .NET 5.0 / .NET Standard 2.1 target frameworks
 * `netcoreall`: the default profile on non-Windows OSes, builds all supported
   .NET Core / .NET Standard target frameworks
 
@@ -110,7 +111,7 @@ either by editing the file by hand or via a build target (which will actually
 create the file if it doesn't already exist). For example:
 
 ```
-build.cmd use-profile-netcore3.1
+build.cmd use-profile-net5.0
 ```
 
 Note that Visual Studio will not reflect a change of build profile until you

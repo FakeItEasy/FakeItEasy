@@ -3,11 +3,11 @@
   <PropertyGroup>
     <FakeItEasyTargetFrameworks>net45;netstandard2.0;netstandard2.1</FakeItEasyTargetFrameworks>
     <ValueTaskExtensionsTargetFrameworks>net45;netstandard2.0;netstandard2.1</ValueTaskExtensionsTargetFrameworks>
-    <ExampleTargetFrameworks>netcoreapp3.1</ExampleTargetFrameworks>
-    <SpecsTargetFrameworks>net461;netcoreapp2.1;netcoreapp3.1</SpecsTargetFrameworks>
-    <IntegrationTestsTargetFrameworks>net461;netcoreapp2.1;netcoreapp3.1</IntegrationTestsTargetFrameworks>
-    <UnitTestsTargetFrameworks>net461;netcoreapp2.1;netcoreapp3.1</UnitTestsTargetFrameworks>
+    <ExampleTargetFrameworks>net5.0</ExampleTargetFrameworks>
+    <SpecsTargetFrameworks>net461;netcoreapp2.1;netcoreapp3.1;net5.0</SpecsTargetFrameworks>
+    <IntegrationTestsTargetFrameworks>net461;netcoreapp2.1;netcoreapp3.1;net5.0</IntegrationTestsTargetFrameworks>
+    <UnitTestsTargetFrameworks>net461;netcoreapp2.1;netcoreapp3.1;net5.0</UnitTestsTargetFrameworks>
     <TestHelpersTargetFrameworks>net461;netstandard2.0;netstandard2.1</TestHelpersTargetFrameworks>
-    <ApprovalTestsTargetFrameworks>netcoreapp3.1</ApprovalTestsTargetFrameworks>
+    <ApprovalTestsTargetFrameworks>net5.0</ApprovalTestsTargetFrameworks>
   </PropertyGroup>
 </Project>
