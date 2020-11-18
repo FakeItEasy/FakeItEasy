@@ -7,11 +7,15 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
-    <DefineConstants>$(DefineConstants);FEATURE_NETCORE_REFLECTION;FEATURE_STRING_CONTAINS_COMPARISONTYPE;REQUIRES_NETSTANDARD_REFERENCE</DefineConstants>
+    <DefineConstants>$(DefineConstants);FEATURE_STRING_CONTAINS_COMPARISONTYPE;REQUIRES_NETSTANDARD_REFERENCE</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(TargetFramework)' == 'netcoreapp2.1'">
-    <DefineConstants>$(DefineConstants);FEATURE_NETCORE_REFLECTION;FEATURE_STRING_CONTAINS_COMPARISONTYPE;REQUIRES_NETSTANDARD_REFERENCE</DefineConstants>
+    <DefineConstants>$(DefineConstants);FEATURE_STRING_CONTAINS_COMPARISONTYPE;REQUIRES_NETSTANDARD_REFERENCE</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net45'">
+    <DefineConstants>$(DefineConstants);THROWS_ON_DUPLICATE_ASSEMBLY_LOAD</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
