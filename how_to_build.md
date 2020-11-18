@@ -19,27 +19,25 @@ Ensure that the following are installed:
 
 1. a recent version of Visual Studio 2019 (currently this means 16.3 or later) or the Build Tools for Visual Studio 2019
 
-2. The .NET Core 1.0 runtime
+2. The .NET Core 2.1 runtime
 
-3. The .NET Core 2.1 runtime
+3. The .NET Framework 4.6.1 or higher
 
-4. The .NET Framework 4.6.1 or higher
+4. The targeting pack for .NET Framework 4.5
 
-5. The targeting pack for .NET Framework 4.5
-
-6. A recent version of the .NET Core 5.0 SDK (currently this means 5.0.100 or later)
+5. A recent version of the .NET Core 5.0 SDK (currently this means 5.0.100 or later)
 
 You might not need everything to run a [partial build](#building-only-a-subset-of-the-supported-target-frameworks).
 
 ### On Linux
 
-The default [build profile](#building-only-a-subset-of-the-supported-target-frameworks) on Linux is `netcore2+`, which builds FakeItEasy for .NET Standard 2.0 and 2.1, and runs the tests on .NET Core 2.1 and 3.1. The .NET Framework isn't supported on Linux, and .NET Core 1.0 is no longer supported, which makes it difficult (if not impossible) to install on Linux.
+The default [build profile](#building-only-a-subset-of-the-supported-target-frameworks) on Linux is `netcoreall`, which builds FakeItEasy for .NET Standard 2.0 and 2.1, and runs the tests on .NET Core 2.1 and 3.1. (the .NET Framework isn't supported on Linux).
 
 Ensure the following are installed:
 
 1. The .NET Core 2.1 runtime
 
-2. A recent version of the .NET Core 3.1 SDK (currently this means 3.1.404 or later)
+2. A recent version of the .NET Core 5.0 SDK (currently this means 5.0.100 or later)
 
 ## Building
 
@@ -94,10 +92,10 @@ available:
 
 * `full`: the default profile on Windows, builds all supported target frameworks
 * `net45`: builds only the .NET Framework 4.5 target framework
-* `netcore2+`: the default profile on non-Windows OSes, builds only .NET Core 2.1 and 3.1 / .NET Standard 2.0 and 2.1 target frameworks.
 * `netcore2.1`: builds only .NET Core 2.1 / .NET Standard 2.0 target frameworks
 * `netcore3.1`: builds only .NET Core 3.1 / .NET Standard 2.1 target frameworks
-* `netcoreall`: builds all supported .NET Core / .NET Standard target frameworks
+* `netcoreall`: the default profile on non-Windows OSes, builds all supported
+  .NET Core / .NET Standard target frameworks
 
 In order to select a profile, create a `FakeItEasy.user.props` file at the root
 of the repository by running

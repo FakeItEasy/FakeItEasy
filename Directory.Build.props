@@ -28,7 +28,7 @@
 
   <PropertyGroup>
     <BuildProfile Condition="'$(OS)' == 'Windows_NT' AND '$(BuildProfile)' == '' ">full</BuildProfile>
-    <BuildProfile Condition="'$(OS)' != 'Windows_NT' AND '$(BuildProfile)' == '' ">netcore2+</BuildProfile>
+    <BuildProfile Condition="'$(OS)' != 'Windows_NT' AND '$(BuildProfile)' == '' ">netcoreall</BuildProfile>
   </PropertyGroup>
 
   <Import Project="$(MSBuildThisFileDirectory)profiles/$(BuildProfile).props" />
