@@ -6,10 +6,6 @@ namespace FakeItEasy.Core
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 
-#if FEATURE_NETCORE_REFLECTION
-    using System.Reflection;
-#endif
-
     internal class ArgumentValueFormatter
     {
         private readonly IEnumerable<IArgumentValueFormatter> typeFormatters;
@@ -45,7 +41,7 @@ namespace FakeItEasy.Core
                         return formattedValue;
                     }
                 }
-                catch when (formatter.GetType().GetTypeInfo().Assembly != typeof(ArgumentValueFormatter).GetTypeInfo().Assembly)
+                catch when (formatter.GetType().Assembly != typeof(ArgumentValueFormatter).Assembly)
                 {
                     // We don't expect internal formatters to throw. If one does, letting the exception bubble up may
                     // inconvenience the users in the short term, but it's better that we learn about it.
@@ -64,13 +60,13 @@ namespace FakeItEasy.Core
                 return 0;
             }
 
-            if (comparedType.GetTypeInfo().IsInterface && knownType.GetInterfaces().Contains(comparedType))
+            if (comparedType.IsInterface && knownType.GetInterfaces().Contains(comparedType))
             {
                 return 1;
             }
 
             var distance = 2;
-            var currentType = knownType.GetTypeInfo().BaseType;
+            var currentType = knownType.BaseType;
             while (currentType is object)
             {
                 if (currentType == comparedType)
@@ -79,7 +75,7 @@ namespace FakeItEasy.Core
                 }
 
                 distance++;
-                currentType = currentType.GetTypeInfo().BaseType;
+                currentType = currentType.BaseType;
             }
 
             return int.MaxValue;

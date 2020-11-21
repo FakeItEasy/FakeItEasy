@@ -705,7 +705,7 @@ namespace FakeItEasy.Specs
                 .x(() => fake = this.CreateFake(optionsBuilder));
 
             "Then it has the attribute"
-                .x(() => fake.GetType().GetTypeInfo().GetCustomAttributes(inherit: false).Select(a => a.GetType())
+                .x(() => fake.GetType().GetCustomAttributes(inherit: false).Select(a => a.GetType())
                     .Should().Contain(typeof(ForTestAttribute)));
         }
 
@@ -742,7 +742,7 @@ namespace FakeItEasy.Specs
                 .x(() => fake = this.CreateFake(optionsBuilder));
 
             "Then it has all of the attributes"
-                .x(() => fake.GetType().GetTypeInfo().GetCustomAttributes(inherit: false)
+                .x(() => fake.GetType().GetCustomAttributes(inherit: false)
                     .Select(a => a.GetType()).Should()
                     .Contain(typeof(ScenarioAttribute)).And
                     .Contain(typeof(ExampleAttribute)).And
@@ -768,12 +768,12 @@ namespace FakeItEasy.Specs
                 .x(() => fake1.GetType().Should().Be(fake2.GetType()));
 
             "And the first fake should have the attribute"
-                .x(() => fake1.GetType().GetTypeInfo().GetCustomAttributes(inherit: false)
+                .x(() => fake1.GetType().GetCustomAttributes(inherit: false)
                     .Select(a => a.GetType())
                     .Should().Contain(typeof(ForTestAttribute)));
 
             "And the second fake should have the attribute"
-                .x(() => fake2.GetType().GetTypeInfo().GetCustomAttributes(inherit: false)
+                .x(() => fake2.GetType().GetCustomAttributes(inherit: false)
                     .Select(a => a.GetType())
                     .Should().Contain(typeof(ForTestAttribute)));
         }
@@ -801,12 +801,12 @@ namespace FakeItEasy.Specs
                 .x(() => fake1.GetType().Should().NotBe(fake2.GetType()));
 
             "And the first fake should have the first attribute"
-                .x(() => fake1.GetType().GetTypeInfo().GetCustomAttributes(inherit: false)
+                .x(() => fake1.GetType().GetCustomAttributes(inherit: false)
                     .Select(a => a.GetType())
                     .Should().Contain(typeof(ForTestAttribute)));
 
             "And the second fake should have the second attribute"
-                .x(() => fake2.GetType().GetTypeInfo().GetCustomAttributes(inherit: false)
+                .x(() => fake2.GetType().GetCustomAttributes(inherit: false)
                     .Select(a => a.GetType())
                     .Should().Contain(typeof(DebuggerStepThroughAttribute)));
         }

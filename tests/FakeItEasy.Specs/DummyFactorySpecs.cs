@@ -68,7 +68,7 @@ namespace FakeItEasy.Specs
 
         public bool CanCreate(Type type)
         {
-            return typeof(DomainEvent).GetTypeInfo().IsAssignableFrom(type);
+            return typeof(DomainEvent).IsAssignableFrom(type);
         }
 
         public object Create(Type type)

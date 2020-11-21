@@ -56,8 +56,7 @@ namespace FakeItEasy.Creation.DelegateProxies
                     return false;
                 }
 
-                var info = t.GetTypeInfo();
-                if (info.IsGenericType && !info.IsGenericTypeDefinition)
+                if (type.IsGenericType && !type.IsGenericTypeDefinition)
                 {
                     return t.GetGenericArguments().All(IsAccessibleToDynamicProxy);
                 }

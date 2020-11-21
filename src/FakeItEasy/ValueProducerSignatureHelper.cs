@@ -76,7 +76,7 @@ namespace FakeItEasy
             {
                 if (values[i] is null)
                 {
-                    if (callMethodParameterTypes[i].GetTypeInfo().IsValueType)
+                    if (callMethodParameterTypes[i].IsValueType)
                     {
                         return false;
                     }

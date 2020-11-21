@@ -2,9 +2,6 @@ namespace FakeItEasy
 {
     using System;
     using System.Diagnostics;
-#if FEATURE_NETCORE_REFLECTION
-    using System.Reflection;
-#endif
 
     /// <summary>
     /// Provides extension methods for <see cref="Type"/>.
@@ -14,7 +11,7 @@ namespace FakeItEasy
         [DebuggerStepThrough]
         public static object? GetDefaultValue(this Type type)
         {
-            return type.GetTypeInfo().IsValueType && !type.Equals(typeof(void)) ? Activator.CreateInstance(type) : null;
+            return type.IsValueType && !type.Equals(typeof(void)) ? Activator.CreateInstance(type) : null;
         }
 
         [DebuggerStepThrough]
@@ -25,15 +22,13 @@ namespace FakeItEasy
                 return false;
             }
 
-            var typeInfo = type.GetTypeInfo();
-            return !typeInfo.IsAbstract && !typeInfo.ContainsGenericParameters && type.HasDefaultConstructor();
+            return !type.IsAbstract && !type.ContainsGenericParameters && type.HasDefaultConstructor();
         }
 
         public static bool IsNullable(this Type type)
         {
-            var typeInfo = type.GetTypeInfo();
-            return !typeInfo.IsValueType
-                || (typeInfo.IsGenericType && typeInfo.GetGenericTypeDefinition() == typeof(Nullable<>));
+            return !type.IsValueType
+                || (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>));
         }
 
         [DebuggerStepThrough]

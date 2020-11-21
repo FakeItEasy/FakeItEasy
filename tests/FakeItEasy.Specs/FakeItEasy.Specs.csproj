@@ -20,8 +20,4 @@
     <ProjectReference Include="..\FakeItEasy.Tests.TestHelpers\FakeItEasy.Tests.TestHelpers.csproj" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp1.0'">
-    <Compile Remove="DisposableSpecs.cs" />
-  </ItemGroup>
-
 </Project>

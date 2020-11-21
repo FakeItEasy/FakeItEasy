@@ -115,13 +115,13 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
 
         public static bool CanGenerateProxy(Type typeOfProxy, [NotNullWhen(false)] out string? failReason)
         {
-            if (typeOfProxy.GetTypeInfo().IsValueType)
+            if (typeOfProxy.IsValueType)
             {
                 failReason = DynamicProxyMessages.ProxyIsValueType(typeOfProxy);
                 return false;
             }
 
-            if (typeOfProxy.GetTypeInfo().IsSealed)
+            if (typeOfProxy.IsSealed)
             {
                 failReason = DynamicProxyMessages.ProxyIsSealedType(typeOfProxy);
                 return false;

@@ -10,9 +10,7 @@ namespace FakeItEasy.Configuration
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
-#if FEATURE_NETCORE_REFLECTION
     using System.Reflection;
-#endif
     using FakeItEasy.Core;
 
     public partial interface IExceptionThrowerConfiguration<out TInterface>

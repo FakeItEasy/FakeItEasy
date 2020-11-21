@@ -2,9 +2,6 @@ namespace FakeItEasy.Core
 {
     using System;
     using System.Dynamic;
-#if FEATURE_NETCORE_REFLECTION
-    using System.Reflection;
-#endif
     using FakeItEasy.Sdk;
 
     internal class DynamicRaiser : DynamicObject, IEventRaiserArgumentProvider
@@ -26,7 +23,7 @@ namespace FakeItEasy.Core
         public override bool TryConvert(ConvertBinder binder, out object result)
         {
             var targetType = binder.Type;
-            if (!targetType.GetTypeInfo().IsSubclassOf(typeof(Delegate)))
+            if (!targetType.IsSubclassOf(typeof(Delegate)))
             {
                 throw new InvalidCastException(ExceptionMessages.UnableToCast(this.GetType(), targetType));
             }

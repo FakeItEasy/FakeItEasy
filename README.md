@@ -19,9 +19,8 @@ A .NET dynamic fake library for creating all types of fake objects, mocks, stubs
 * NuGet packages:
     * [Official releases on NuGet.org](https://www.nuget.org/profiles/FakeItEasy "FakeItEasy's packages on NuGet.org"), targeting:
       * .NET Standard 2.0
-      * .NET Standard 1.6
+      * .NET Standard 2.1
       * .NET Framework 4.5
-      * .NET Framework 4.0
     * Unreleased packages built from latest source are on AppVeyor:<br>
       https://ci.appveyor.com/nuget/FakeItEasy
 

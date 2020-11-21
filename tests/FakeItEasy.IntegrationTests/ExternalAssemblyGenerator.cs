@@ -4,9 +4,6 @@ namespace FakeItEasy.IntegrationTests
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-#if FEATURE_NETCORE_REFLECTION
-    using System.Reflection;
-#endif
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
 
@@ -47,7 +44,7 @@ namespace FakeItEasy.IntegrationTests
 
         private static IEnumerable<string> GetFrameworkAssemblyLocations()
         {
-            var systemAssemblyLocation = typeof(object).GetTypeInfo().Assembly.Location;
+            var systemAssemblyLocation = typeof(object).Assembly.Location;
             var coreDir = Path.GetDirectoryName(systemAssemblyLocation)!;
             return new[] { "mscorlib.dll", "System.Runtime.dll" }
                 .Select(s => Path.Combine(coreDir, s))
@@ -142,7 +139,7 @@ namespace FakeItEasy.IntegrationTests.External
             var references = GetFrameworkAssemblyLocations()
                 .Concat(new[]
                 {
-                    typeof(A).GetTypeInfo().Assembly.Location,
+                    typeof(A).Assembly.Location,
 #if REQUIRES_NETSTANDARD_REFERENCE
                     GetNetStandardAssemblyLocation(),
 #endif

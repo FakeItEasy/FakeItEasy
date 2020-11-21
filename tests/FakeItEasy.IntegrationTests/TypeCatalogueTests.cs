@@ -4,9 +4,6 @@ namespace FakeItEasy.IntegrationTests
     using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Linq;
-#if FEATURE_NETCORE_REFLECTION
-    using System.Reflection;
-#endif
     using FakeItEasy.Core;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
@@ -26,10 +23,10 @@ namespace FakeItEasy.IntegrationTests
         private readonly ExternalAssemblyGenerator externalAssemblyGenerator;
 
         [SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times", Justification = "No exception is thrown.")]
-#if FEATURE_NETCORE_REFLECTION
-        [Fact(Skip = "Loading assemblies from duplicate files does not throw an error on this platform.")]
-#else
+#if THROWS_ON_DUPLICATE_ASSEMBLY_LOAD
         [Fact]
+#else
+        [Fact(Skip = "Loading assemblies from duplicate files does not throw an error on this platform.")]
 #endif
         public void Should_warn_of_duplicate_input_assemblies_with_different_paths()
         {

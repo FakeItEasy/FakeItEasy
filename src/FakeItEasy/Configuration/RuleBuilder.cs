@@ -5,9 +5,6 @@ namespace FakeItEasy.Configuration
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Linq.Expressions;
-#if FEATURE_NETCORE_REFLECTION
-    using System.Reflection;
-#endif
     using FakeItEasy.Core;
 
     internal partial class RuleBuilder
@@ -107,7 +104,7 @@ namespace FakeItEasy.Configuration
 
         public virtual IAfterCallConfiguredConfiguration<IVoidConfiguration> CallsBaseMethod()
         {
-            if (this.manager.FakeObjectType.GetTypeInfo().IsSubclassOf(typeof(Delegate)))
+            if (this.manager.FakeObjectType.IsSubclassOf(typeof(Delegate)))
             {
                 throw new FakeConfigurationException(ExceptionMessages.DelegateCannotCallBaseMethod);
             }

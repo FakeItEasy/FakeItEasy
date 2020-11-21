@@ -14,13 +14,10 @@ namespace FakeItEasy.Tests.Approval
     public class ApiApproval
     {
         [SkippableTheory]
-        [InlineData("FakeItEasy", "net40")]
         [InlineData("FakeItEasy", "net45")]
-        [InlineData("FakeItEasy", "netstandard1.6")]
         [InlineData("FakeItEasy", "netstandard2.0")]
         [InlineData("FakeItEasy", "netstandard2.1")]
         [InlineData("FakeItEasy.Extensions.ValueTask", "net45")]
-        [InlineData("FakeItEasy.Extensions.ValueTask", "netstandard1.6")]
         [InlineData("FakeItEasy.Extensions.ValueTask", "netstandard2.0")]
         [UseReporter(typeof(DiffReporter))]
         [MethodImpl(MethodImplOptions.NoInlining)]

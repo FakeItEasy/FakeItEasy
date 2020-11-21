@@ -136,10 +136,9 @@ namespace FakeItEasy.Expressions
 
         private static Type GetGenericTypeDefinition(Type type)
         {
-            var typeInfo = type.GetTypeInfo();
-            if (typeInfo.IsGenericType && !typeInfo.IsGenericTypeDefinition)
+            if (type.IsGenericType && !type.IsGenericTypeDefinition)
             {
-                return typeInfo.GetGenericTypeDefinition();
+                return type.GetGenericTypeDefinition();
             }
 
             return type;
