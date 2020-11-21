@@ -1,13 +1,13 @@
 <Project>
   <!-- Everything -->
   <PropertyGroup>
-    <FakeItEasyTargetFrameworks>net45;netstandard2.0;netstandard2.1</FakeItEasyTargetFrameworks>
-    <ValueTaskExtensionsTargetFrameworks>net45;netstandard2.0;netstandard2.1</ValueTaskExtensionsTargetFrameworks>
+    <FakeItEasyTargetFrameworks>net45;netstandard2.0;netstandard2.1;net5.0</FakeItEasyTargetFrameworks>
+    <ValueTaskExtensionsTargetFrameworks>net45;netstandard2.0;netstandard2.1;net5.0</ValueTaskExtensionsTargetFrameworks>
     <ExampleTargetFrameworks>net5.0</ExampleTargetFrameworks>
     <SpecsTargetFrameworks>net461;netcoreapp2.1;netcoreapp3.1;net5.0</SpecsTargetFrameworks>
     <IntegrationTestsTargetFrameworks>net461;netcoreapp2.1;netcoreapp3.1;net5.0</IntegrationTestsTargetFrameworks>
     <UnitTestsTargetFrameworks>net461;netcoreapp2.1;netcoreapp3.1;net5.0</UnitTestsTargetFrameworks>
-    <TestHelpersTargetFrameworks>net461;netstandard2.0;netstandard2.1</TestHelpersTargetFrameworks>
+    <TestHelpersTargetFrameworks>net461;netstandard2.0;netstandard2.1;net5.0</TestHelpersTargetFrameworks>
     <ApprovalTestsTargetFrameworks>net5.0</ApprovalTestsTargetFrameworks>
   </PropertyGroup>
 </Project>

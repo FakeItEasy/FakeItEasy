@@ -3,7 +3,7 @@
 These instructions are *only* for building from the command line, which includes compilation, test execution and packaging. This is the simplest way to build.
 It also replicates the build on the Continuous Integration build server and is the best indicator of whether a pull request will build.
 
-You can also build the solution using Visual Studio 2019 or later, but this doesn't provide the same assurances as the command line build.
+You can also build the solution using Visual Studio 2019 16.8 or later, but this doesn't provide the same assurances as the command line build.
 
 At the time of writing the full build (including all target frameworks) can only run on Windows.
 
@@ -17,7 +17,7 @@ The build requires that a few pieces of software be installed on the host comput
 
 Ensure that the following are installed:
 
-1. a recent version of Visual Studio 2019 (currently this means 16.3 or later) or the Build Tools for Visual Studio 2019
+1. a recent version of Visual Studio 2019 (currently this means 16.8 or later) or the Build Tools for Visual Studio 2019
 
 2. The .NET Core 2.1 and 3.1 runtimes
 
@@ -94,7 +94,7 @@ available:
 * `net45`: builds only the .NET Framework 4.5 target framework
 * `netcore2.1`: builds only .NET Core 2.1 / .NET Standard 2.0 target frameworks
 * `netcore3.1`: builds only .NET Core 3.1 / .NET Standard 2.1 target frameworks
-* `net5.0`: builds only .NET 5.0 / .NET Standard 2.1 target frameworks
+* `net5.0`: builds only .NET 5.0 target frameworks
 * `netcoreall`: the default profile on non-Windows OSes, builds all supported
   .NET Core / .NET Standard target frameworks
 

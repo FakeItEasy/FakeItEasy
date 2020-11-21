@@ -1,13 +1,13 @@
 <Project>
-  <!-- .NET 5.0 / .NET Standard 2.1 -->
+  <!-- .NET 5.0 -->
   <PropertyGroup>
-    <FakeItEasyTargetFrameworks>netstandard2.1</FakeItEasyTargetFrameworks>
-    <ValueTaskExtensionsTargetFrameworks>netstandard2.1</ValueTaskExtensionsTargetFrameworks>
+    <FakeItEasyTargetFrameworks>net5.0</FakeItEasyTargetFrameworks>
+    <ValueTaskExtensionsTargetFrameworks>net5.0</ValueTaskExtensionsTargetFrameworks>
     <ExampleTargetFrameworks>net5.0</ExampleTargetFrameworks>
     <SpecsTargetFrameworks>net5.0</SpecsTargetFrameworks>
     <IntegrationTestsTargetFrameworks>net5.0</IntegrationTestsTargetFrameworks>
     <UnitTestsTargetFrameworks>net5.0</UnitTestsTargetFrameworks>
-    <TestHelpersTargetFrameworks>netstandard2.1</TestHelpersTargetFrameworks>
+    <TestHelpersTargetFrameworks>net5.0</TestHelpersTargetFrameworks>
     <ApprovalTestsTargetFrameworks>net5.0</ApprovalTestsTargetFrameworks>
   </PropertyGroup>
 </Project>

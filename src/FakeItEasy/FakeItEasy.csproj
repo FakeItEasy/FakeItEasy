@@ -22,6 +22,12 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
+  <!-- .NET 5.0 -->
+
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net5.0'">
+    <DefineConstants>$(DefineConstants);FEATURE_STRING_CONTAINS_COMPARISONTYPE</DefineConstants>
+  </PropertyGroup>
+
   <!-- .NET Standard 2.1 -->
 
   <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
@@ -34,7 +40,7 @@
     <DefineConstants>$(DefineConstants);LACKS_NULLABLE_ATTRIBUTES</DefineConstants>
   </PropertyGroup>
 
-  <!-- .NET 4.5 -->
+  <!-- .NET Framework 4.5 -->
 
   <PropertyGroup Condition="'$(TargetFramework)' == 'net45'">
     <DefineConstants>$(DefineConstants);FEATURE_REFLECTIONONLYLOAD;LACKS_NULLABLE_ATTRIBUTES;LACKS_ARRAY_EMPTY</DefineConstants>

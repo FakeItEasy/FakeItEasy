@@ -17,6 +17,7 @@ namespace FakeItEasy.Tests.Approval
         [InlineData("FakeItEasy", "net45")]
         [InlineData("FakeItEasy", "netstandard2.0")]
         [InlineData("FakeItEasy", "netstandard2.1")]
+        [InlineData("FakeItEasy", "net5.0")]
         [InlineData("FakeItEasy.Extensions.ValueTask", "net45")]
         [InlineData("FakeItEasy.Extensions.ValueTask", "netstandard2.0")]
         [UseReporter(typeof(DiffReporter))]

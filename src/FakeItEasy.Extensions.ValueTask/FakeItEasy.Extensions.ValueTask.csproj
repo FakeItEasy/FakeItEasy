@@ -4,7 +4,7 @@
     <TargetFrameworks>$(ValueTaskExtensionsTargetFrameworks)</TargetFrameworks>
     <SignAssembly>true</SignAssembly>
     <IncludeBuildOutput>false</IncludeBuildOutput>
-    <BeforePack>AddNetStd21Placeholder;$(BeforePackOn)</BeforePack>
+    <BeforePack>AddTfmPlaceholders;$(BeforePackOn)</BeforePack>
   </PropertyGroup>
 
   <PropertyGroup Label="Package properties">
@@ -37,14 +37,17 @@
   <ItemGroup>
     <None Include="$(OutputPath)/**/$(AssemblyName).dll" Pack="true" PackagePath="lib" Visible="false" />
     <None Include="$(OutputPath)/**/$(AssemblyName).xml" Pack="true" PackagePath="lib" Visible="false" />
-    <None Remove="$(OutputPath)/netstandard2.1/*" />
+    <None Remove="$(OutputPath)/netstandard2.1/**" />
+    <None Remove="$(OutputPath)/net5.0/**" />
   </ItemGroup>
 
-  <!-- Include a placeholder file in netstandard2.1 folder in package -->
-  <Target Name="AddNetStd21Placeholder">
-    <WriteLinesToFile File="$(IntermediateOutputPath)_._" Overwrite="true" Lines="" />
+  <!-- Include placeholder files in netstandard2.1 and net5.0 folders in package -->
+  <Target Name="AddTfmPlaceholders">
+    <WriteLinesToFile File="$(IntermediateOutputPath)netstandard2.1/_._" Overwrite="true" Lines="" />
+    <WriteLinesToFile File="$(IntermediateOutputPath)net5.0/_._" Overwrite="true" Lines="" />
     <ItemGroup>
-      <None Include="$(IntermediateOutputPath)_._" Pack="true" PackagePath="lib/netstandard2.1" Visible="false" />
+      <None Include="$(IntermediateOutputPath)netstandard2.1/_._" Pack="true" PackagePath="lib/netstandard2.1" Visible="false" />
+      <None Include="$(IntermediateOutputPath)net5.0/_._" Pack="true" PackagePath="lib/net5.0" Visible="false" />
     </ItemGroup>
   </Target>
 
