@@ -245,10 +245,10 @@ namespace FakeItEasy
     }
     public interface IHideObjectMembers
     {
-        bool Equals(object o);
+        bool Equals(object? o);
         int GetHashCode();
         System.Type GetType();
-        string ToString();
+        string? ToString();
     }
     public interface INegatableArgumentConstraintManager<T> : FakeItEasy.IArgumentConstraintManager<T>, FakeItEasy.IHideObjectMembers
     {
@@ -276,7 +276,7 @@ namespace FakeItEasy
         public static FakeItEasy.Priority Default { get; }
         public int CompareTo(FakeItEasy.Priority other) { }
         public bool Equals(FakeItEasy.Priority other) { }
-        public override bool Equals(object obj) { }
+        public override bool Equals(object? obj) { }
         public override int GetHashCode() { }
         public override string ToString() { }
         public static bool !=(FakeItEasy.Priority left, FakeItEasy.Priority right) { }
@@ -525,7 +525,7 @@ namespace FakeItEasy.Core
     {
         public string? FakeObjectName { get; }
         public virtual System.Type FakeObjectType { get; }
-        public virtual object Object { get; }
+        public virtual object? Object { get; }
         public virtual System.Collections.Generic.IEnumerable<FakeItEasy.Core.IFakeObjectCallRule> Rules { get; }
         public void AddInterceptionListener(FakeItEasy.Core.IInterceptionListener listener) { }
         public virtual void AddRuleFirst(FakeItEasy.Core.IFakeObjectCallRule rule) { }
