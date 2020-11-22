@@ -39,7 +39,7 @@ namespace FakeItEasy.Tests.Core
         public void Method_call_should_return_default_value_when_there_is_no_matching_interception_and_return_type_is_value_type()
         {
             var fake = this.CreateFakeManager<IFoo>();
-            var result = ((IFoo)fake.Object).Baz();
+            var result = ((IFoo)fake.Object!).Baz();
 
             result.Should().Be(0);
         }
@@ -48,7 +48,7 @@ namespace FakeItEasy.Tests.Core
         public void Method_call_should_not_set_return_value_when_there_is_no_matching_interception_and_return_type_is_void()
         {
             var fake = this.CreateFakeManager<IFoo>();
-            ((IFoo)fake.Object).Bar();
+            ((IFoo)fake.Object!).Bar();
         }
 
         [Fact]
@@ -64,7 +64,7 @@ namespace FakeItEasy.Tests.Core
             fake.AddRuleFirst(interception);
 
             // Act
-            ((IFoo)fake.Object).Bar();
+            ((IFoo)fake.Object!).Bar();
 
             interception.ApplyWasCalled.Should().BeTrue();
         }
@@ -82,7 +82,7 @@ namespace FakeItEasy.Tests.Core
             fake.AddRuleFirst(NonApplicableInterception);
             fake.AddRuleFirst(interception);
 
-            ((IFoo)fake.Object).Bar();
+            ((IFoo)fake.Object!).Bar();
 
             interception.ApplyWasCalled.Should().BeTrue();
         }
@@ -98,7 +98,7 @@ namespace FakeItEasy.Tests.Core
             fake.AddRuleFirst(firstRule);
             fake.AddRuleFirst(latestRule);
 
-            var foo = (IFoo)fake.Object;
+            var foo = (IFoo)fake.Object!;
             foo.Bar();
             foo.Bar();
             foo.Bar();
@@ -122,7 +122,7 @@ namespace FakeItEasy.Tests.Core
             fake.AddRuleFirst(nextApplicable);
             fake.AddRuleFirst(applicableTwice);
 
-            ((IFoo)fake.Object).Bar();
+            ((IFoo)fake.Object!).Bar();
             ((IFoo)fake.Object).Bar();
             nextApplicable.ApplyWasCalled.Should().BeFalse();
 
@@ -141,7 +141,7 @@ namespace FakeItEasy.Tests.Core
 
             fake.AddRuleFirst(applicableTwice);
 
-            ((IFoo)fake.Object).Baz();
+            ((IFoo)fake.Object!).Baz();
             ((IFoo)fake.Object).Baz();
 
             var result = ((IFoo)fake.Object).Baz();
@@ -168,7 +168,7 @@ namespace FakeItEasy.Tests.Core
         {
             var fake = this.CreateFakeManager<IFoo>();
 
-            var foo = (IFoo)fake.Object;
+            var foo = (IFoo)fake.Object!;
             foo.Bar();
             Record.Exception(() => foo[1]);
 

@@ -72,7 +72,7 @@ namespace FakeItEasy.Core
         /// </summary>
         /// <remarks>Can be null if the proxy object has been collected by the garbage collector.</remarks>
 #pragma warning disable CA1716, CA1720 // Identifier contains keyword, Identifier contains type name
-        public virtual object Object => this.objectReference.Target;
+        public virtual object? Object => this.objectReference.Target;
 #pragma warning restore CA1716, CA1720 // Identifier contains keyword, Identifier contains type name
 
         /// <summary>

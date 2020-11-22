@@ -120,7 +120,7 @@ namespace FakeItEasy.Core
             {
                 if (this.RegisteredEventHandlers.TryGetValue(call.Event, out var raiseMethod))
                 {
-                    var arguments = argumentProvider.GetEventArguments(this.fakeManager.Object);
+                    var arguments = argumentProvider.GetEventArguments(this.fakeManager.Object!);
 
                     try
                     {
