@@ -11,8 +11,8 @@ namespace FakeItEasy.Core
         private class PropertyBehaviorRule
             : IFakeObjectCallRule
         {
-            private readonly MethodInfo propertyGetter;
-            private readonly MethodInfo propertySetter;
+            private readonly MethodInfo? propertyGetter;
+            private readonly MethodInfo? propertySetter;
 
             public PropertyBehaviorRule(MethodInfo propertyGetterOrSetter)
             {
@@ -55,7 +55,7 @@ namespace FakeItEasy.Core
             private static PropertyInfo GetProperty(MethodInfo propertyGetterOrSetter)
             {
                 return
-                    (from property in propertyGetterOrSetter.DeclaringType.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+                    (from property in propertyGetterOrSetter.DeclaringType!.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
                      let getMethod = property.GetGetMethod(true)
                      let setMethod = property.GetSetMethod(true)
                      where (getMethod is object && getMethod.GetBaseDefinition().Equals(propertyGetterOrSetter.GetBaseDefinition()))

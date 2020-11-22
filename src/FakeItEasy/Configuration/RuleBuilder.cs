@@ -294,7 +294,7 @@ namespace FakeItEasy.Configuration
                        ReferenceEquals(this.builder.manager.Object, call.FakedObject);
             }
 
-            public override string ToString() =>
+            public override string? ToString() =>
                 this.builder.RuleBeingBuilt.ToString();
         }
     }

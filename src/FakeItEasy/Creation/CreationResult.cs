@@ -215,7 +215,7 @@ namespace FakeItEasy.Creation
 
             public static ResolvedConstructorComparer Default { get; } = new ResolvedConstructorComparer();
 
-            public bool Equals(ResolvedConstructor x, ResolvedConstructor y)
+            public bool Equals(ResolvedConstructor? x, ResolvedConstructor? y)
             {
                 return ReferenceEquals(x, y) || (x is object && y is object && ConstructorArgumentTypes(x).SequenceEqual(ConstructorArgumentTypes(y)));
 

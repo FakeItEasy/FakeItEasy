@@ -23,8 +23,17 @@ namespace FakeItEasy.Tests.TestHelpers
 
         public override void After(MethodInfo methodUnderTest)
         {
-            CultureInfo.CurrentCulture = this.originalCulture;
-            CultureInfo.CurrentUICulture = this.originalUiCulture;
+            if (this.originalCulture is CultureInfo originalCulture)
+            {
+                CultureInfo.CurrentCulture = originalCulture;
+                this.originalCulture = null;
+            }
+
+            if (this.originalUiCulture is CultureInfo originalUiCulture)
+            {
+                CultureInfo.CurrentUICulture = originalUiCulture;
+                this.originalUiCulture = null;
+            }
         }
 
         public override void Before(MethodInfo methodUnderTest)

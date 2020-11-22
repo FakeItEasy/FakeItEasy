@@ -13,7 +13,7 @@ namespace FakeItEasy
         private static readonly MethodInfo CreateGenericCanceledTaskGenericDefinition =
             typeof(TaskHelper).GetMethod(
                 nameof(CreateGenericCanceledTask),
-                BindingFlags.Static | BindingFlags.NonPublic);
+                BindingFlags.Static | BindingFlags.NonPublic)!;
 
         public static Task CompletedTask { get; } = FromResult(false);
 
@@ -53,7 +53,7 @@ namespace FakeItEasy
                 type =>
                 {
                     var method = CreateGenericCanceledTaskGenericDefinition.MakeGenericMethod(type);
-                    return (Task)method.Invoke(null, ArrayHelper.Empty<object>());
+                    return (Task)method.Invoke(null, ArrayHelper.Empty<object>())!;
                 });
         }
 

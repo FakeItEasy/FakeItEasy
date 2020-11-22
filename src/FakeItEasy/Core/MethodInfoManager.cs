@@ -53,7 +53,7 @@ namespace FakeItEasy.Core
 
         private static MethodInfo? GetMethodOnInterfaceTypeImplementedByMethod(Type type, MethodInfo method)
         {
-            var reflectedType = method.ReflectedType;
+            var reflectedType = method.ReflectedType!;
 
             if (reflectedType.IsInterface)
             {
@@ -88,7 +88,7 @@ namespace FakeItEasy.Core
         {
             var baseDefinition = method.GetBaseDefinition();
 
-            if (!baseDefinition.DeclaringType.IsInterface || !TypeImplementsInterface(type, baseDefinition.DeclaringType))
+            if (!baseDefinition.DeclaringType!.IsInterface || !TypeImplementsInterface(type, baseDefinition.DeclaringType))
             {
                 return null;
             }
@@ -139,11 +139,9 @@ namespace FakeItEasy.Core
             }
 
             [SuppressMessage("Microsoft.Usage", "CA2231:OverloadOperatorEqualsOnOverridingValueTypeEquals", Justification = "The type is used privately only.")]
-            public override bool Equals(object obj)
+            public override bool Equals(object? obj)
             {
-                var other = (TypeMethodInfoPair)obj;
-
-                return this.Equals(other);
+                return obj is TypeMethodInfoPair other && this.Equals(other);
             }
 
             public bool Equals(TypeMethodInfoPair other)

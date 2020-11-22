@@ -32,7 +32,7 @@ namespace FakeItEasy.Core
             {
                 try
                 {
-                    result.Add((T)Activator.CreateInstance(type));
+                    result.Add((T)Activator.CreateInstance(type)!);
                 }
                 catch
                 {

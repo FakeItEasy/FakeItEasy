@@ -44,7 +44,7 @@ namespace FakeItEasy
         // - method calls
         // - array creation (including params arrays)
         // - quoted expressions
-        private static bool TryFastEvaluate(Expression expression, out object? result)
+        private static bool TryFastEvaluate(Expression? expression, out object? result)
         {
             result = null;
 
@@ -124,7 +124,7 @@ namespace FakeItEasy
 
                 case ExpressionType.NewArrayInit:
                     var newArrayExpression = (NewArrayExpression)expression;
-                    var arrayItems = Array.CreateInstance(newArrayExpression.Type.GetElementType(), newArrayExpression.Expressions.Count);
+                    var arrayItems = Array.CreateInstance(newArrayExpression.Type.GetElementType()!, newArrayExpression.Expressions.Count);
 
                     for (int i = 0; i < newArrayExpression.Expressions.Count; i++)
                     {

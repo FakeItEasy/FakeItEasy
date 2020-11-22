@@ -21,7 +21,7 @@ namespace FakeItEasy.Core
         {
             Guard.AgainstNull(proxy, nameof(proxy));
 
-            FakeManager result = this.TryGetFakeManager(proxy);
+            FakeManager? result = this.TryGetFakeManager(proxy);
 
             if (result is null)
             {
@@ -36,12 +36,11 @@ namespace FakeItEasy.Core
         /// </summary>
         /// <param name="proxy">The proxy to get the manager from.</param>
         /// <returns>The fake manager, or <c>null</c> if <paramref name="proxy"/> is not actually a faked object.</returns>
-        public FakeManager TryGetFakeManager(object proxy)
+        public FakeManager? TryGetFakeManager(object proxy)
         {
             Guard.AgainstNull(proxy, nameof(proxy));
 
-            FakeManager fakeManager;
-            FakeManagers.TryGetValue(proxy, out fakeManager);
+            FakeManagers.TryGetValue(proxy, out FakeManager? fakeManager);
             return fakeManager;
         }
 

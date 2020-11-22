@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Core
+namespace FakeItEasy.Core
 {
     using System;
 
@@ -21,7 +21,7 @@
         /// </summary>
         /// <param name="proxy">The proxy to get the manager from.</param>
         /// <returns>The fake manager, or <c>null</c> if <paramref name="proxy"/> is not actually a faked object.</returns>
-        FakeManager TryGetFakeManager(object proxy);
+        FakeManager? TryGetFakeManager(object proxy);
 
         /// <summary>
         /// Sets the fake manager for a proxy object, so that it can accessed later by <see cref="GetFakeManager"/>.

@@ -11,7 +11,7 @@ namespace FakeItEasy.Core
     internal class DynamicDummyFactory
     {
         private readonly IEnumerable<IDummyFactory> allDummyFactories;
-        private readonly ConcurrentDictionary<Type, IDummyFactory> cachedDummyFactories;
+        private readonly ConcurrentDictionary<Type, IDummyFactory?> cachedDummyFactories;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DynamicDummyFactory" /> class.
@@ -20,7 +20,7 @@ namespace FakeItEasy.Core
         public DynamicDummyFactory(IEnumerable<IDummyFactory> dummyFactories)
         {
             this.allDummyFactories = dummyFactories.OrderByDescending(factory => factory.Priority).ToArray();
-            this.cachedDummyFactories = new ConcurrentDictionary<Type, IDummyFactory>();
+            this.cachedDummyFactories = new ConcurrentDictionary<Type, IDummyFactory?>();
         }
 
         /// <summary>

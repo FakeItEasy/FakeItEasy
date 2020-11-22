@@ -18,7 +18,7 @@ namespace FakeItEasy.Core
             new ThreadLocal<Action<IArgumentConstraint>>(() => ThrowWhenUnpreparedToTrapConstraint);
 
         public static void ReportTrappedConstraint(IArgumentConstraint constraint) =>
-            saveTrappedConstraintAction.Value.Invoke(constraint);
+            saveTrappedConstraintAction.Value!.Invoke(constraint);
 
         public IArgumentConstraint TrapConstraintOrCreate(
             Action actionThatProducesConstraint,

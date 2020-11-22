@@ -18,7 +18,7 @@ namespace FakeItEasy
         /// </summary>
         /// <returns>A string representation of the implementing object.</returns>
         [EditorBrowsable(EditorBrowsableState.Never)]
-        string ToString();
+        string? ToString();
 
         /// <summary>
         /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
@@ -29,7 +29,7 @@ namespace FakeItEasy
         /// </returns>
         [EditorBrowsable(EditorBrowsableState.Never)]
         [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "o", Justification = "Uses the same name as the hidden method.")]
-        bool Equals(object o);
+        bool Equals(object? o);
 
         /// <summary>
         /// Returns a hash code for this instance.

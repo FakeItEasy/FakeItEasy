@@ -11,7 +11,7 @@ namespace FakeItEasy.Expressions
 
         public ParsedCallExpression(
             MethodInfo calledMethod,
-            Expression callTargetExpression,
+            Expression? callTargetExpression,
             ParsedArgumentExpression[] argumentsExpressions)
         {
             this.CalledMethod = calledMethod;

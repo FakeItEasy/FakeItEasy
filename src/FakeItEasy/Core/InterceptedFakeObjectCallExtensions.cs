@@ -19,7 +19,7 @@ namespace FakeItEasy.Core
             Guard.AgainstNull(wrappedObject, nameof(wrappedObject));
 
             var parameters = fakeObjectCall.Arguments.GetUnderlyingArgumentsArray();
-            object returnValue;
+            object? returnValue;
             try
             {
                 if (fakeObjectCall.Method.IsSameMethodAs(EqualsMethod))

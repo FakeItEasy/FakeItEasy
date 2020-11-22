@@ -221,7 +221,7 @@ namespace FakeItEasy.Creation
                 // of constructors enumerable.
                 var consideredConstructors = new List<ResolvedConstructor>();
 
-                if (this.parameterTypesCache.TryGetValue(typeOfFake, out Type[] cachedParameterTypes))
+                if (this.parameterTypesCache.TryGetValue(typeOfFake, out Type[]? cachedParameterTypes))
                 {
                     var constructor = new ResolvedConstructor(cachedParameterTypes, resolver, resolutionContext);
                     if (constructor.WasSuccessfullyResolved)

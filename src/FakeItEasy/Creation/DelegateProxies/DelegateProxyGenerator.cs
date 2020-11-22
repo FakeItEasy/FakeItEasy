@@ -23,7 +23,7 @@ namespace FakeItEasy.Creation.DelegateProxies
         {
             Guard.AgainstNull(typeOfProxy, nameof(typeOfProxy));
 
-            var invokeMethod = typeOfProxy.GetMethod("Invoke");
+            var invokeMethod = typeOfProxy.GetMethod("Invoke")!;
 
             if (!IsAccessibleToDynamicProxy(typeOfProxy))
             {
@@ -129,7 +129,7 @@ namespace FakeItEasy.Creation.DelegateProxies
             {
                 // If the return type is non void, cast the result of eventRaiser.Raise()
                 // to the real return type and assign to the result variable
-                call = Expression.Assign(result, Expression.Convert(call, delegateMethod.ReturnType));
+                call = Expression.Assign(result!, Expression.Convert(call, delegateMethod.ReturnType));
             }
 
             bodyExpressions.Add(call);
@@ -151,7 +151,7 @@ namespace FakeItEasy.Creation.DelegateProxies
                 bodyExpressions.Add(result!);
             }
 
-            var variables = isVoid ? new[] { arguments } : new[] { arguments, result };
+            var variables = isVoid ? new[] { arguments } : new[] { arguments, result! };
             return Expression.Block(variables, bodyExpressions);
         }
 
@@ -171,7 +171,7 @@ namespace FakeItEasy.Creation.DelegateProxies
 
         private class DelegateCallInterceptedEventRaiser
         {
-            public static readonly MethodInfo RaiseMethod = typeof(DelegateCallInterceptedEventRaiser).GetMethod(nameof(Raise));
+            public static readonly MethodInfo RaiseMethod = typeof(DelegateCallInterceptedEventRaiser).GetMethod(nameof(Raise))!;
 
             private readonly IFakeCallProcessorProvider fakeCallProcessorProvider;
             private readonly MethodInfo method;
