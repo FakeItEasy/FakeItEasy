@@ -125,8 +125,7 @@ namespace FakeItEasy.Tests
             this.foo.SomethingHappened += raisingHandler;
 
             // Assert
-            IEventRaiserArgumentProvider ignoredArgumentProvider;
-            eventHandlerArgumentProvider.TryTakeArgumentProviderFor(raisingHandler, out ignoredArgumentProvider)
+            eventHandlerArgumentProvider.TryTakeArgumentProviderFor(raisingHandler, out _)
                 .Should().BeFalse();
         }
 

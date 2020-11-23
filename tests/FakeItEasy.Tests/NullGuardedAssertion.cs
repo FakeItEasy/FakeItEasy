@@ -343,7 +343,7 @@ namespace FakeItEasy.Tests
                     : base(GetExpressionArguments(expression))
                 {
                     this.method = expression.Method;
-                    this.target = NullGuardedConstraint.GetValueProducedByExpression(expression.Object);
+                    this.target = NullGuardedConstraint.GetValueProducedByExpression(expression.Object!);
                 }
 
                 protected override string CallDescription => this.method.ReflectedType?.Name + "." + this.method.Name;
@@ -367,7 +367,7 @@ namespace FakeItEasy.Tests
                 public ConstructorCallConstraintState(NewExpression expression)
                     : base(GetArgumentInfos(expression))
                 {
-                    this.constructorInfo = expression.Constructor;
+                    this.constructorInfo = expression.Constructor!;
                 }
 
                 protected override string CallDescription => this.constructorInfo.ReflectedType + ".ctor";
@@ -379,7 +379,7 @@ namespace FakeItEasy.Tests
 
                 private static IEnumerable<ArgumentInfo> GetArgumentInfos(NewExpression expression)
                 {
-                    return GetArgumentInfos(expression.Arguments, expression.Constructor.GetParameters());
+                    return GetArgumentInfos(expression.Arguments, expression.Constructor!.GetParameters());
                 }
             }
         }

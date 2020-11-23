@@ -53,7 +53,7 @@ namespace FakeItEasy.Creation
 
             try
             {
-                return this.strategyCache.TryGetValue(typeOfDummy, out ResolveStrategy cachedStrategy)
+                return this.strategyCache.TryGetValue(typeOfDummy, out ResolveStrategy? cachedStrategy)
                     ? cachedStrategy.TryCreateDummyValue(typeOfDummy, this, resolutionContext)
                     : this.TryResolveDummyValueWithAllAvailableStrategies(typeOfDummy, resolutionContext);
             }
@@ -155,7 +155,8 @@ namespace FakeItEasy.Creation
 
                 if (typeOfDummy.IsGenericType &&
                     !typeOfDummy.IsGenericTypeDefinition &&
-                    typeOfDummy.FullName.StartsWith("System.Threading.Tasks.ValueTask`", StringComparison.Ordinal))
+                    typeOfDummy.FullName is string fullName &&
+                    fullName.StartsWith("System.Threading.Tasks.ValueTask`", StringComparison.Ordinal))
                 {
                     var typeOfTaskResult = typeOfDummy.GetGenericArguments()[0];
                     var creationResult = resolver.TryResolveDummyValue(typeOfTaskResult, resolutionContext);
@@ -163,7 +164,7 @@ namespace FakeItEasy.Creation
                         ? creationResult.Result
                         : typeOfTaskResult.GetDefaultValue();
 
-                    var ctor = typeOfDummy.GetConstructor(new[] { typeOfTaskResult });
+                    var ctor = typeOfDummy.GetConstructor(new[] { typeOfTaskResult })!;
                     return CreationResult.SuccessfullyCreated(ctor.Invoke(new[] { taskResult }));
                 }
 
@@ -183,7 +184,7 @@ namespace FakeItEasy.Creation
             private static readonly MethodInfo CreateLazyDummyGenericDefinition =
                 typeof(ResolveByCreatingLazyStrategy).GetMethod(
                     nameof(CreateLazyDummy),
-                    BindingFlags.Static | BindingFlags.NonPublic);
+                    BindingFlags.Static | BindingFlags.NonPublic)!;
 
             public override CreationResult TryCreateDummyValue(
                 Type typeOfDummy,
@@ -240,8 +241,9 @@ namespace FakeItEasy.Creation
             private static bool IsTuple(Type type) =>
                 type.IsGenericType
                 && !type.IsGenericTypeDefinition
-                && (type.FullName.StartsWith("System.Tuple`", StringComparison.Ordinal) ||
-                    type.FullName.StartsWith("System.ValueTuple`", StringComparison.Ordinal));
+                && type.FullName is string fullName
+                && (fullName.StartsWith("System.Tuple`", StringComparison.Ordinal) ||
+                    fullName.StartsWith("System.ValueTuple`", StringComparison.Ordinal));
         }
 
         private class ResolveByInstantiatingClassUsingDummyValuesAsConstructorArgumentsStrategy : ResolveStrategy
@@ -268,7 +270,7 @@ namespace FakeItEasy.Creation
                 // of constructors enumerable.
                 var consideredConstructors = new List<ResolvedConstructor>();
 
-                if (this.cachedConstructors.TryGetValue(typeOfDummy, out ConstructorInfo cachedConstructor))
+                if (this.cachedConstructors.TryGetValue(typeOfDummy, out ConstructorInfo? cachedConstructor))
                 {
                     var resolvedConstructor = new ResolvedConstructor(
                         cachedConstructor.GetParameters().Select(pi => pi.ParameterType),
@@ -327,7 +329,11 @@ namespace FakeItEasy.Creation
                 catch (TargetInvocationException e)
                 {
                     result = default;
-                    resolvedConstructor.ReasonForFailure = e.InnerException.Message;
+                    if (e.InnerException?.Message is string message)
+                    {
+                        resolvedConstructor.ReasonForFailure = message;
+                    }
+
                     return false;
                 }
             }

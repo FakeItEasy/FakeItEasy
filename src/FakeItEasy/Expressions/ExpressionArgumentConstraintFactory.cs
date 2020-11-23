@@ -104,7 +104,7 @@ namespace FakeItEasy.Expressions
 
             // Checking for an extension method is very expensive, so check the common
             // case first - that the method is one of the predefined extension methods.
-            if (GetGenericTypeDefinition(methodCallExpression.Method.DeclaringType) ==
+            if (GetGenericTypeDefinition(methodCallExpression.Method.DeclaringType!) ==
                 typeof(ArgumentConstraintManagerExtensions))
             {
                 return true;
@@ -131,7 +131,7 @@ namespace FakeItEasy.Expressions
 
         private static bool IsMemberOfA(MemberInfo member)
         {
-            return GetGenericTypeDefinition(member.DeclaringType) == typeof(A<>);
+            return GetGenericTypeDefinition(member.DeclaringType!) == typeof(A<>);
         }
 
         private static Type GetGenericTypeDefinition(Type type)
@@ -146,7 +146,7 @@ namespace FakeItEasy.Expressions
 
         private static void CheckConstraintIsCompatibleWithParameterType(ITypedArgumentConstraint constraint, Type parameterType)
         {
-            parameterType = parameterType.IsByRef ? parameterType.GetElementType() : parameterType;
+            parameterType = parameterType.IsByRef ? parameterType.GetElementType()! : parameterType;
 
             if (!parameterType.IsAssignableFrom(constraint.Type))
             {
@@ -171,7 +171,7 @@ namespace FakeItEasy.Expressions
             {
                 throw new UserCallbackException(
                     ExceptionMessages.UserCallbackThrewAnException($"Argument constraint expression <{expression}>"),
-                    ex.InnerException);
+                    ex.InnerException!);
             }
 
             if (constraint is ITypedArgumentConstraint typedConstraint)
@@ -187,7 +187,7 @@ namespace FakeItEasy.Expressions
         private IArgumentConstraint CreateParamArrayConstraint(NewArrayExpression expression, Type parameterType)
         {
             var result = new List<IArgumentConstraint>();
-            var itemType = parameterType.GetElementType();
+            var itemType = parameterType.GetElementType()!;
 
             foreach (var argumentExpression in expression.Expressions)
             {

@@ -49,7 +49,7 @@ namespace FakeItEasy.Core
         /// </summary>
         public void RecordCall() => ++this.CalledNumberOfTimes;
 
-        public override string ToString()
+        public override string? ToString()
         {
             return this.Rule.ToString();
         }

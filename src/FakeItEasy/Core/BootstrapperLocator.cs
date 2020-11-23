@@ -34,7 +34,7 @@ namespace FakeItEasy.Core
 
             var bootstrapperType = candidateTypes.FirstOrDefault() ?? typeof(DefaultBootstrapper);
 
-            return (IBootstrapper)Activator.CreateInstance(bootstrapperType);
+            return (IBootstrapper)Activator.CreateInstance(bootstrapperType)!;
         }
     }
 }

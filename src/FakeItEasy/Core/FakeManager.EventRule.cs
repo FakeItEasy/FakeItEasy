@@ -58,10 +58,9 @@ namespace FakeItEasy.Core
             {
                 if (eventCall.IsEventRegistration())
                 {
-                    IEventRaiserArgumentProvider argumentProvider;
                     if (EventHandlerArgumentProviderMap.TryTakeArgumentProviderFor(
                         eventCall.EventHandler,
-                        out argumentProvider))
+                        out var argumentProvider))
                     {
                         this.RaiseEvent(eventCall, argumentProvider);
                     }
@@ -88,9 +87,7 @@ namespace FakeItEasy.Core
 
             private void AddHandler(object key, Delegate handler)
             {
-                Delegate result;
-
-                if (this.RegisteredEventHandlers.TryGetValue(key, out result))
+                if (this.RegisteredEventHandlers.TryGetValue(key, out var result))
                 {
                     result = Delegate.Combine(result, handler);
                 }
@@ -104,9 +101,7 @@ namespace FakeItEasy.Core
 
             private void RemoveHandler(object key, Delegate handler)
             {
-                Delegate registration;
-
-                if (this.RegisteredEventHandlers.TryGetValue(key, out registration))
+                if (this.RegisteredEventHandlers.TryGetValue(key, out var registration))
                 {
                     registration = Delegate.Remove(registration, handler);
 
@@ -123,11 +118,9 @@ namespace FakeItEasy.Core
 
             private void RaiseEvent(EventCall call, IEventRaiserArgumentProvider argumentProvider)
             {
-                Delegate raiseMethod;
-
-                if (this.RegisteredEventHandlers.TryGetValue(call.Event, out raiseMethod))
+                if (this.RegisteredEventHandlers.TryGetValue(call.Event, out var raiseMethod))
                 {
-                    var arguments = argumentProvider.GetEventArguments(this.fakeManager.Object);
+                    var arguments = argumentProvider.GetEventArguments(this.fakeManager.Object!);
 
                     try
                     {
@@ -145,8 +138,8 @@ namespace FakeItEasy.Core
 
             private class EventCall
             {
-                private static readonly Func<EventInfo, MethodInfo> GetAddMethod = e => e.GetAddMethod(true);
-                private static readonly Func<EventInfo, MethodInfo> GetRemoveMethod = e => e.GetRemoveMethod(true);
+                private static readonly Func<EventInfo, MethodInfo> GetAddMethod = e => e.GetAddMethod(true)!;
+                private static readonly Func<EventInfo, MethodInfo> GetRemoveMethod = e => e.GetRemoveMethod(true)!;
 
                 private EventCall(EventInfo @event, MethodInfo callingMethod, Delegate eventHandler)
                 {
@@ -191,7 +184,7 @@ namespace FakeItEasy.Core
                         return null;
                     }
 
-                    var eventInfos = eventAdderOrRemover.DeclaringType.GetEvents(
+                    var eventInfos = eventAdderOrRemover.DeclaringType!.GetEvents(
                         BindingFlags.Instance |
                         BindingFlags.Public |
                         BindingFlags.NonPublic);

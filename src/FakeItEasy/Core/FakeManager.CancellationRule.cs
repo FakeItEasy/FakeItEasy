@@ -37,14 +37,14 @@ namespace FakeItEasy.Core
                     if (taskResultType == null)
                     {
                         var canceledTask = TaskHelper.Canceled();
-                        var ctor = returnType.GetConstructor(new[] { typeof(Task) });
+                        var ctor = returnType.GetConstructor(new[] { typeof(Task) })!;
                         var valueTask = ctor.Invoke(new object[] { canceledTask });
                         fakeObjectCall.SetReturnValue(valueTask);
                     }
                     else
                     {
                         var canceledTask = TaskHelper.Canceled(taskResultType);
-                        var ctor = returnType.GetConstructor(new[] { canceledTask.GetType() });
+                        var ctor = returnType.GetConstructor(new[] { canceledTask.GetType() })!;
                         var valueTask = ctor.Invoke(new object[] { canceledTask });
                         fakeObjectCall.SetReturnValue(valueTask);
                     }
@@ -83,7 +83,8 @@ namespace FakeItEasy.Core
 
                 if (type.IsGenericType &&
                     !type.IsGenericTypeDefinition &&
-                    type.FullName.StartsWith("System.Threading.Tasks.ValueTask`", StringComparison.Ordinal))
+                    type.FullName is string fullName &&
+                    fullName.StartsWith("System.Threading.Tasks.ValueTask`", StringComparison.Ordinal))
                 {
                     valueType = type.GetGenericArguments()[0];
                     return true;

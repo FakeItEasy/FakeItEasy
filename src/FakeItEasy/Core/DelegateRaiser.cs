@@ -17,7 +17,7 @@ namespace FakeItEasy.Core
         /// <param name="argumentProviderMap">A map from event handlers to supplied arguments to use when raising.</param>
         public DelegateRaiser(object?[] arguments, EventHandlerArgumentProviderMap argumentProviderMap)
         {
-            var delegateMethod = typeof(TEventHandler).GetMethod("Invoke");
+            var delegateMethod = typeof(TEventHandler).GetMethod("Invoke")!;
 
             ValueProducerSignatureHelper.AssertThatValuesSatisfyCallSignature(delegateMethod, arguments);
 

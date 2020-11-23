@@ -6,7 +6,7 @@ namespace FakeItEasy.Core
     internal class FakeCallEqualityComparer
         : IEqualityComparer<IFakeObjectCall>
     {
-        public bool Equals(IFakeObjectCall x, IFakeObjectCall y)
+        public bool Equals(IFakeObjectCall? x, IFakeObjectCall? y)
         {
             Guard.AgainstNull(x, nameof(x));
             Guard.AgainstNull(y, nameof(y));

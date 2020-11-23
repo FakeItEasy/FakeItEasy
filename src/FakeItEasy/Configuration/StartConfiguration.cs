@@ -26,7 +26,7 @@ namespace FakeItEasy.Configuration
         {
             Guard.AgainstNull(callSpecification, nameof(callSpecification));
 
-            var parsedCallExpression = this.expressionParser.Parse(callSpecification, this.manager.Object);
+            var parsedCallExpression = this.expressionParser.Parse(callSpecification, this.manager.Object!);
             this.GuardAgainstWrongFake(parsedCallExpression.CallTarget);
             this.AssertThatMemberCanBeIntercepted(parsedCallExpression);
 
@@ -38,7 +38,7 @@ namespace FakeItEasy.Configuration
         {
             Guard.AgainstNull(callSpecification, nameof(callSpecification));
 
-            var parsedCallExpression = this.expressionParser.Parse(callSpecification, this.manager.Object);
+            var parsedCallExpression = this.expressionParser.Parse(callSpecification, this.manager.Object!);
             this.GuardAgainstWrongFake(parsedCallExpression.CallTarget);
             this.AssertThatMemberCanBeIntercepted(parsedCallExpression);
 
@@ -50,7 +50,7 @@ namespace FakeItEasy.Configuration
         {
             Guard.AgainstNull(propertySpecification, nameof(propertySpecification));
 
-            var parsedCallExpression = this.expressionParser.Parse(propertySpecification, this.manager.Object);
+            var parsedCallExpression = this.expressionParser.Parse(propertySpecification, this.manager.Object!);
             this.GuardAgainstWrongFake(parsedCallExpression.CallTarget);
             this.AssertThatMemberCanBeIntercepted(parsedCallExpression);
 

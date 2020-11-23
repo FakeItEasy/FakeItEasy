@@ -17,17 +17,18 @@ namespace FakeItEasy.Tests.Approval
         [InlineData("FakeItEasy", "net45")]
         [InlineData("FakeItEasy", "netstandard2.0")]
         [InlineData("FakeItEasy", "netstandard2.1")]
+        [InlineData("FakeItEasy", "net5.0")]
         [InlineData("FakeItEasy.Extensions.ValueTask", "net45")]
         [InlineData("FakeItEasy.Extensions.ValueTask", "netstandard2.0")]
         [UseReporter(typeof(DiffReporter))]
         [MethodImpl(MethodImplOptions.NoInlining)]
         public void ApproveApi(string projectName, string frameworkVersion)
         {
-            string codeBase = Assembly.GetExecutingAssembly().CodeBase!;
+            string codeBase = Assembly.GetExecutingAssembly().Location!;
             UriBuilder uri = new UriBuilder(new Uri(codeBase));
             string assemblyPath = Uri.UnescapeDataString(uri.Path);
             var containingDirectory = Path.GetDirectoryName(assemblyPath);
-            var configurationName = new DirectoryInfo(containingDirectory).Parent.Name;
+            var configurationName = new DirectoryInfo(containingDirectory!).Parent!.Name;
             var assemblyFile = Path.GetFullPath(
                 Path.Combine(
                     GetSourceDirectory(),

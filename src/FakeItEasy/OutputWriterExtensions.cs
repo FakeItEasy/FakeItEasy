@@ -50,7 +50,7 @@ namespace FakeItEasy
             Guard.AgainstNull(writer, nameof(writer));
             Guard.AgainstNull(value, nameof(value));
 
-            writer.Write(value.ToString());
+            writer.Write(value.ToString() ?? string.Empty);
             return writer;
         }
 

@@ -169,7 +169,7 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
                 return HashCode;
             }
 
-            public override bool Equals(object obj)
+            public override bool Equals(object? obj)
             {
                 return obj is InterceptEverythingHook;
             }

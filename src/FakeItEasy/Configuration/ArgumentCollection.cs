@@ -125,7 +125,7 @@ namespace FakeItEasy.Configuration
             return this.arguments;
         }
 
-        private string[] GetArgumentNames() => this.Method.GetParameters().Select(x => x.Name).ToArray();
+        private string[] GetArgumentNames() => this.Method.GetParameters().Select(x => x.Name!).ToArray();
 
         private int GetArgumentIndex(string argumentName)
         {

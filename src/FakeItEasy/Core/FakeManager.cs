@@ -70,8 +70,9 @@ namespace FakeItEasy.Core
         /// <summary>
         /// Gets the faked proxy object.
         /// </summary>
+        /// <remarks>Can be null if the proxy object has been collected by the garbage collector.</remarks>
 #pragma warning disable CA1716, CA1720 // Identifier contains keyword, Identifier contains type name
-        public virtual object Object => this.objectReference.Target;
+        public virtual object? Object => this.objectReference.Target;
 #pragma warning restore CA1716, CA1720 // Identifier contains keyword, Identifier contains type name
 
         /// <summary>
@@ -142,7 +143,10 @@ namespace FakeItEasy.Core
             lock (this.allUserRules)
             {
                 var ruleToRemove = this.allUserRules.FirstOrDefault(x => x.Rule.Equals(rule));
-                this.allUserRules.Remove(ruleToRemove);
+                if (ruleToRemove is object)
+                {
+                    this.allUserRules.Remove(ruleToRemove);
+                }
             }
         }
 

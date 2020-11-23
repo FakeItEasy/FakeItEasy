@@ -32,7 +32,7 @@ namespace FakeItEasy.Expressions
         private static ParsedCallExpression ParseInvocationExpression(InvocationExpression expression)
         {
             var expressionType = expression.Expression.Type;
-            var method = expressionType.GetMethod("Invoke");
+            var method = expressionType.GetMethod("Invoke")!;
 
             var argumentsExpressions = CreateParsedArgumentExpressions(expression.Arguments, method.GetParameters());
 
@@ -61,7 +61,7 @@ namespace FakeItEasy.Expressions
             }
 
             return new ParsedCallExpression(
-                calledMethod: property.GetGetMethod(true),
+                calledMethod: property.GetGetMethod(true)!,
                 callTargetExpression: expression.Expression,
                 argumentsExpressions: ArrayHelper.Empty<ParsedArgumentExpression>());
         }

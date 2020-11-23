@@ -19,7 +19,7 @@ namespace FakeItEasy.Expressions
         /// <param name="argumentConstraints">The argument constraints applied to the method.</param>
         public static void DescribeCallOn(IOutputWriter writer, MethodInfo method, IEnumerable<IArgumentConstraint> argumentConstraints)
         {
-            writer.Write(method.DeclaringType);
+            writer.Write(method.DeclaringType!);
             writer.Write(".");
             WriteMethodName(writer, method);
 
@@ -66,7 +66,7 @@ namespace FakeItEasy.Expressions
                     }
 
                     var parameter = parameters[index];
-                    writer.Write(parameter.Name).Write(": ");
+                    writer.Write(parameter.Name!).Write(": ");
                     constraint.WriteDescription(writer);
                     index++;
                 }

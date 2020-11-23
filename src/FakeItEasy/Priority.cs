@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy
+namespace FakeItEasy
 {
     using System;
 
@@ -157,9 +157,9 @@
         /// </summary>
         /// <returns> True if the current object is equal to the <paramref name="obj"/> parameter; otherwise, false.</returns>
         /// <param name="obj">An object to compare with this object.</param>
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
-            return obj is Priority && this.Equals((Priority)obj);
+            return obj is Priority other && this.Equals(other);
         }
 
         /// <summary>

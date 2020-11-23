@@ -28,7 +28,7 @@ namespace FakeItEasy.Core
                 throw new InvalidCastException(ExceptionMessages.UnableToCast(this.GetType(), targetType));
             }
 
-            var method = targetType.GetMethod("Invoke");
+            var method = targetType.GetMethod("Invoke")!;
             ValueProducerSignatureHelper.AssertThatValuesSatisfyCallSignature(method, this.arguments);
             var @delegate = (Delegate)Create.Fake(targetType);
             this.argumentProviderMap.AddArgumentProvider(@delegate, this);

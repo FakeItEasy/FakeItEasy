@@ -15,13 +15,13 @@ namespace FakeItEasy.Tests.TestHelpers
         /// <typeparam name="T">The type of the input test objects.</typeparam>
         /// <param name="cases">The input test objects.</param>
         /// <returns>A sequence of test cases.</returns>
-        public static IEnumerable<object[]> FromProperties<T>(params T[] cases)
+        public static IEnumerable<object?[]> FromProperties<T>(params T[] cases)
         {
             var properties = typeof(T).GetProperties(BindingFlags.Instance | BindingFlags.Public);
 
-            Func<T, object[]> objectToPropertiesProjection = x =>
+            Func<T, object?[]> objectToPropertiesProjection = x =>
             {
-                var result = new object[properties.Length];
+                var result = new object?[properties.Length];
 
                 for (int i = 0; i < result.Length; i++)
                 {

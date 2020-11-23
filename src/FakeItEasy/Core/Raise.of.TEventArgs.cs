@@ -73,13 +73,13 @@ namespace FakeItEasy.Core
         }
 
 #pragma warning disable CA1822 // Mark members as static
-        private void Now(object sender, TEventArgs e)
+        private void Now(object? sender, TEventArgs e)
 #pragma warning restore CA1822 // Mark members as static
         {
             throw new NotSupportedException(ExceptionMessages.NowCalledDirectly);
         }
 
-        private void Now(object sender, EventArgs e)
+        private void Now(object? sender, EventArgs e)
         {
             throw new NotSupportedException(ExceptionMessages.NowCalledDirectly);
         }
