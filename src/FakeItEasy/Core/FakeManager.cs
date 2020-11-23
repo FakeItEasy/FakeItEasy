@@ -23,7 +23,7 @@ namespace FakeItEasy.Core
             new DefaultReturnValueRule(),
         };
 
-        private readonly IEnumerable<IFakeObjectCallRule> postUserRules;
+        private readonly EventRule eventRule;
         private readonly LinkedList<IInterceptionListener> interceptionListeners;
         private readonly WeakReference objectReference;
 
@@ -48,7 +48,7 @@ namespace FakeItEasy.Core
             this.FakeObjectType = fakeObjectType;
             this.FakeObjectName = fakeObjectName;
 
-            this.postUserRules = SharedPostUserRules.Prepend<IFakeObjectCallRule>(new EventRule(this)).ToList();
+            this.eventRule = new EventRule(this);
             this.allUserRules = new LinkedList<CallRuleMetadata>();
 
             this.recordedCalls = new ConcurrentQueue<CompletedFakeObjectCall>();
@@ -255,7 +255,13 @@ namespace FakeItEasy.Core
                 return;
             }
 
-            foreach (var postUserRule in this.postUserRules)
+            if (this.eventRule.IsApplicableTo(fakeObjectCall))
+            {
+                this.eventRule.Apply(fakeObjectCall);
+                return;
+            }
+
+            foreach (var postUserRule in SharedPostUserRules)
             {
                 if (postUserRule.IsApplicableTo(fakeObjectCall))
                 {

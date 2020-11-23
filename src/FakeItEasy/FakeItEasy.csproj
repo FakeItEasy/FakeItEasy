@@ -43,7 +43,7 @@
   <!-- .NET Framework 4.5 -->
 
   <PropertyGroup Condition="'$(TargetFramework)' == 'net45'">
-    <DefineConstants>$(DefineConstants);FEATURE_REFLECTIONONLYLOAD;LACKS_NULLABLE_ATTRIBUTES;LACKS_ARRAY_EMPTY;LACKS_PREPEND</DefineConstants>
+    <DefineConstants>$(DefineConstants);FEATURE_REFLECTIONONLYLOAD;LACKS_NULLABLE_ATTRIBUTES;LACKS_ARRAY_EMPTY</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
