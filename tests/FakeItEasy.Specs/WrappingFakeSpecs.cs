@@ -308,20 +308,13 @@ namespace FakeItEasy.Specs
             "And an event handler"
                 .x(() => handler = A.Fake<EventHandler>());
 
-            "When the handler is subscribed to the fake's event"
-                .x(() => wrapper.SomeEvent += handler);
+            "When the event is raised on the fake using the '+= Raise' syntax"
+                .x(() => exception = Record.Exception(() => wrapper.SomeEvent += Raise.WithEmpty()));
 
-            "And the event is raised using the '+= Raise' syntax"
-                .x(() => realObject.SomeEvent += Raise.WithEmpty());
-
-            "Then the handler is not called"
-                .x(() => A.CallTo(handler).MustNotHaveHappened());
-
-            "And when the event is raised using a method on the wrapped object"
-                .x(() => exception = Record.Exception(() => realObject.RaiseSomeEvent()));
-
-            "Then a NotSupportedException is thrown"
-                .x(() => exception.Should().BeAnExceptionOfType<NotSupportedException>());
+            "Then an InvalidOperationException is thrown"
+                .x(() => exception.Should()
+                    .BeAnExceptionOfType<InvalidOperationException>()
+                    .WithMessage("*The fake cannot raise the event because it's a wrapping fake*"));
         }
 
         public class Foo : IFoo
