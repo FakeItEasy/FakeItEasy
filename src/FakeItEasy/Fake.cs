@@ -80,7 +80,7 @@ namespace FakeItEasy
             Guard.AgainstNull(potentialFake, nameof(potentialFake));
 
             fakeManager = FakeManagerAccessor.TryGetFakeManager(potentialFake);
-            return fakeManager is object;
+            return fakeManager is not null;
         }
 
         /// <summary>

@@ -32,8 +32,8 @@ namespace FakeItEasy.Core
             public bool Equals(Delegate? leftDelegate, Delegate? rightDelegate)
             {
                 return ReferenceEquals(leftDelegate, rightDelegate) ||
-                       (leftDelegate is object &&
-                        rightDelegate is object &&
+                       (leftDelegate is not null &&
+                        rightDelegate is not null &&
                         ReferenceEquals(leftDelegate.Target, rightDelegate.Target));
             }
 

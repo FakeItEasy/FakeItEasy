@@ -49,7 +49,7 @@ namespace FakeItEasy
         {
             Guard.AgainstNull(manager, nameof(manager));
 
-            return manager.Matches(x => x is object, x => x.Write("NOT NULL"));
+            return manager.Matches(x => x is not null, x => x.Write("NOT NULL"));
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace FakeItEasy
         {
             Guard.AgainstNull(manager, nameof(manager));
 
-            return manager.Matches(x => x is object, x => x.Write("NOT NULL"));
+            return manager.Matches(x => x is not null, x => x.Write("NOT NULL"));
         }
 
         /// <summary>
@@ -299,7 +299,7 @@ namespace FakeItEasy
             Guard.AgainstNull(manager, nameof(manager));
             Guard.AgainstNull(type, nameof(type));
 
-            return manager.Matches(x => x is object && type.IsAssignableFrom(x.GetType()), description => description.Write("Instance of ").Write(type.ToString()));
+            return manager.Matches(x => x is not null && type.IsAssignableFrom(x.GetType()), description => description.Write("Instance of ").Write(type.ToString()));
         }
 
         /// <summary>
@@ -401,7 +401,7 @@ namespace FakeItEasy
             Guard.AgainstNull(descriptionWriter, nameof(descriptionWriter));
 
             return manager.Matches(
-                x => x is object && predicate(x),
+                x => x is not null && predicate(x),
                 descriptionWriter);
         }
 

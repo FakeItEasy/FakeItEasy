@@ -80,7 +80,7 @@ namespace FakeItEasy.Creation
             var proxyOptions = new ProxyOptions();
             var fakeOptions = FakeOptionsFactoryCache.GetOrAdd(typeOfFake, GetFakeOptionsFactory).Invoke(proxyOptions);
 
-            if (implicitOptionsBuilder is object)
+            if (implicitOptionsBuilder is not null)
             {
                 try
                 {

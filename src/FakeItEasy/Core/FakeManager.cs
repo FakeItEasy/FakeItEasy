@@ -143,7 +143,7 @@ namespace FakeItEasy.Core
             lock (this.allUserRules)
             {
                 var ruleToRemove = this.allUserRules.FirstOrDefault(x => x.Rule.Equals(rule));
-                if (ruleToRemove is object)
+                if (ruleToRemove is not null)
                 {
                     this.allUserRules.Remove(ruleToRemove);
                 }
@@ -164,7 +164,7 @@ namespace FakeItEasy.Core
         [SuppressMessage("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes", Justification = "Explicit implementation to be able to make the IFakeCallProcessor interface internal.")]
         void IFakeCallProcessor.Process(InterceptedFakeObjectCall fakeObjectCall)
         {
-            for (var listenerNode = this.interceptionListeners.First; listenerNode is object; listenerNode = listenerNode.Next)
+            for (var listenerNode = this.interceptionListeners.First; listenerNode is not null; listenerNode = listenerNode.Next)
             {
                 listenerNode.Value.OnBeforeCallIntercepted(fakeObjectCall);
             }
@@ -179,7 +179,7 @@ namespace FakeItEasy.Core
             finally
             {
                 callToRecord.ReturnValue = fakeObjectCall.ReturnValue;
-                for (var listenerNode = this.interceptionListeners.Last; listenerNode is object; listenerNode = listenerNode.Previous)
+                for (var listenerNode = this.interceptionListeners.Last; listenerNode is not null; listenerNode = listenerNode.Previous)
                 {
                     listenerNode.Value.OnAfterCallIntercepted(callToRecord);
                 }
@@ -260,7 +260,7 @@ namespace FakeItEasy.Core
                 }
             }
 
-            if (bestUserRule is object)
+            if (bestUserRule is not null)
             {
                 bestUserRule.RecordCall();
                 bestUserRule.Rule.Apply(fakeObjectCall);

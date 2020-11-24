@@ -144,7 +144,7 @@ namespace FakeItEasy.Creation
                     .Append(this.type)
                     .Append(":");
 
-                if (this.reasonsForFailure is object)
+                if (this.reasonsForFailure is not null)
                 {
                     foreach (var reasonForFailure in this.reasonsForFailure)
                     {
@@ -157,7 +157,7 @@ namespace FakeItEasy.Creation
                 message
                     .AppendLine();
 
-                if (this.consideredConstructors is object && this.consideredConstructors.Any(x => x.WasSuccessfullyResolved))
+                if (this.consideredConstructors is not null && this.consideredConstructors.Any(x => x.WasSuccessfullyResolved))
                 {
                     message
                         .AppendLine()
@@ -217,7 +217,7 @@ namespace FakeItEasy.Creation
 
             public bool Equals(ResolvedConstructor? x, ResolvedConstructor? y)
             {
-                return ReferenceEquals(x, y) || (x is object && y is object && ConstructorArgumentTypes(x).SequenceEqual(ConstructorArgumentTypes(y)));
+                return ReferenceEquals(x, y) || (x is not null && y is not null && ConstructorArgumentTypes(x).SequenceEqual(ConstructorArgumentTypes(y)));
 
                 IEnumerable<Type> ConstructorArgumentTypes(ResolvedConstructor constructor) =>
                     constructor.Arguments.Select(a => a.ArgumentType);

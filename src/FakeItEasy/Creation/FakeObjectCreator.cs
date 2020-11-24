@@ -68,7 +68,7 @@ namespace FakeItEasy.Creation
         [SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "2#", Justification = "Seems appropriate here.")]
         public bool MethodCanBeInterceptedOnInstance(MethodInfo method, object? callTarget, [NotNullWhen(false)] out string? failReason)
         {
-            if (callTarget is object && DelegateCreationStrategy.IsResponsibleForCreating(callTarget.GetType()))
+            if (callTarget is not null && DelegateCreationStrategy.IsResponsibleForCreating(callTarget.GetType()))
             {
                 return this.delegateCreationStrategy.MethodCanBeInterceptedOnInstance(method, callTarget, out failReason);
             }
@@ -98,7 +98,7 @@ namespace FakeItEasy.Creation
                     return CreationResult.FailedToCreateFake(typeOfFake, "Faked delegates cannot have custom attributes applied to them.");
                 }
 
-                if (proxyOptions.ArgumentsForConstructor is object && proxyOptions.ArgumentsForConstructor.Any())
+                if (proxyOptions.ArgumentsForConstructor is not null && proxyOptions.ArgumentsForConstructor.Any())
                 {
                     return CreationResult.FailedToCreateFake(typeOfFake, "Faked delegates cannot be made using explicit constructor arguments.");
                 }
@@ -137,7 +137,7 @@ namespace FakeItEasy.Creation
 
             public CreationResult CreateFakeInterface(Type typeOfFake, IProxyOptions proxyOptions)
             {
-                if (proxyOptions.ArgumentsForConstructor is object)
+                if (proxyOptions.ArgumentsForConstructor is not null)
                 {
                     throw new ArgumentException(DynamicProxyMessages.ArgumentsForConstructorOnInterfaceType);
                 }
@@ -164,7 +164,7 @@ namespace FakeItEasy.Creation
                     return CreationResult.FailedToCreateFake(typeOfFake, reasonCannotGenerate);
                 }
 
-                if (proxyOptions.ArgumentsForConstructor is object)
+                if (proxyOptions.ArgumentsForConstructor is not null)
                 {
                     var proxyGeneratorResult = this.GenerateProxy(typeOfFake, proxyOptions, proxyOptions.ArgumentsForConstructor);
 

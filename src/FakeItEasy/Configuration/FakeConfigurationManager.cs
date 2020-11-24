@@ -78,7 +78,7 @@ namespace FakeItEasy.Configuration
 
         private static void GuardAgainstNonFake(object? target)
         {
-            if (target is object)
+            if (target is not null)
             {
                 Fake.GetFakeManager(target);
             }

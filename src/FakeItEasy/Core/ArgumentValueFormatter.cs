@@ -36,7 +36,7 @@ namespace FakeItEasy.Core
                 try
                 {
                     var formattedValue = formatter.GetArgumentValueAsString(argumentValue);
-                    if (formattedValue is object)
+                    if (formattedValue is not null)
                     {
                         return formattedValue;
                     }
@@ -67,7 +67,7 @@ namespace FakeItEasy.Core
 
             var distance = 2;
             var currentType = knownType.BaseType;
-            while (currentType is object)
+            while (currentType is not null)
             {
                 if (currentType == comparedType)
                 {
