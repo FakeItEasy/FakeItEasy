@@ -57,6 +57,12 @@ namespace FakeItEasy
         public static string GetAssemblyFileNamesToScanForExtensionsShouldntReturnNull =>
             "IBootstrapper.GetAssemblyFileNamesToScanForExtensions must not return null";
 
+        public static string WrappingFakeCannotRaiseEvent =>
+            "The fake cannot raise the event because it's a wrapping fake and the event subscription is managed by the wrapped object. The event can only be raised internally by the wrapped object.";
+
+        public static string CannotRaiseEventWhenCallingBaseMethod =>
+            "The fake cannot raise the event because event subscription calls the base implementation.";
+
         public static string WrongConstructorExpressionType(Type actualConstructorType, Type expectedConstructorType) =>
             $"Supplied constructor is for type {actualConstructorType}, but must be for {expectedConstructorType}.";
 

@@ -104,6 +104,11 @@ namespace FakeItEasy.Configuration
 
             if (this.CallBaseMethod)
             {
+                if (EventCall.TryGetEventCall(fakeObjectCall, out var eventCall) && eventCall.IsEventRaiser())
+                {
+                    throw new InvalidOperationException(ExceptionMessages.CannotRaiseEventWhenCallingBaseMethod);
+                }
+
                 fakeObjectCall.CallBaseMethod();
             }
             else if (this.CallWrappedMethodOn is object wrappedObject)
