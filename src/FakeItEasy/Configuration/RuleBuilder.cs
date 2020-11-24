@@ -174,7 +174,7 @@ namespace FakeItEasy.Configuration
         {
             if (!this.wasRuleAdded)
             {
-                if (this.PreviousRule is object)
+                if (this.PreviousRule is not null)
                 {
                     this.manager.AddRuleAfter(this.PreviousRule, this.RuleBeingBuilt);
                 }

@@ -20,7 +20,7 @@ namespace FakeItEasy.Tests
             where T : IEnumerable
         {
             return scope.Matches(
-                x => x is object && x.Cast<object>().SequenceEqual(collection),
+                x => x is not null && x.Cast<object>().SequenceEqual(collection),
                 "This sequence: " + collection.ToCollectionString(x => x.ToString(), ", "));
         }
 

@@ -26,7 +26,7 @@ namespace FakeItEasy.Core
             {
                 hash = (hash * 23) + (obj.Method is null ? 0 : obj.Method.GetHashCode());
 
-                if (obj.Arguments is object)
+                if (obj.Arguments is not null)
                 {
                     foreach (var argument in obj.Arguments)
                     {

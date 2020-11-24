@@ -34,7 +34,7 @@ namespace FakeItEasy
         [DebuggerStepThrough]
         private static bool HasDefaultConstructor(this Type type)
         {
-            return type.GetConstructor(Type.EmptyTypes) is object;
+            return type.GetConstructor(Type.EmptyTypes) is not null;
         }
     }
 }

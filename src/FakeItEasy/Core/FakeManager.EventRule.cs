@@ -44,7 +44,7 @@ namespace FakeItEasy.Core
             {
                 Guard.AgainstNull(fakeObjectCall, nameof(fakeObjectCall));
 
-                return EventCall.GetEvent(fakeObjectCall.Method) is object;
+                return EventCall.GetEvent(fakeObjectCall.Method) is not null;
             }
 
             public void Apply(IInterceptedFakeObjectCall fakeObjectCall)
@@ -105,7 +105,7 @@ namespace FakeItEasy.Core
                 {
                     registration = Delegate.Remove(registration, handler);
 
-                    if (registration is object)
+                    if (registration is not null)
                     {
                         this.RegisteredEventHandlers[key] = registration;
                     }

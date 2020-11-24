@@ -74,7 +74,7 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
 
         private MethodInfo GetInvokedMethod(MethodInfo method, object? callTarget)
         {
-            if (callTarget is object)
+            if (callTarget is not null)
             {
                 return this.methodInfoManager.GetMethodOnTypeThatWillBeInvokedByMethodInfo(callTarget.GetType(), method)!;
             }

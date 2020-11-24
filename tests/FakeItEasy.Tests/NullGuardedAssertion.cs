@@ -69,7 +69,7 @@ namespace FakeItEasy.Tests
             private static ConstraintState CreateCall(Expression<Action> methodCall)
             {
                 var methodExpression = methodCall.Body as MethodCallExpression;
-                if (methodExpression is object)
+                if (methodExpression is not null)
                 {
                     return new MethodCallConstraintState(methodExpression);
                 }
@@ -238,7 +238,7 @@ namespace FakeItEasy.Tests
 
                     foreach (var argument in this.ValidArguments)
                     {
-                        if (argument.Value is object && IsNullableType(argument.ArgumentType))
+                        if (argument.Value is not null && IsNullableType(argument.ArgumentType))
                         {
                             result.Add(new CallThatShouldThrow(
                             argument.Name,
@@ -319,7 +319,7 @@ namespace FakeItEasy.Tests
                         else
                         {
                             var argumentNullException = this.thrown as ArgumentNullException;
-                            if (argumentNullException is object)
+                            if (argumentNullException is not null)
                             {
                                 description.Write(
                                     $"threw ArgumentNullException with wrong argument name, it should be {this.ArgumentName}.");

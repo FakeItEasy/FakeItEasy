@@ -39,7 +39,7 @@ namespace FakeItEasy.Creation
             Guard.AgainstNull(reasonForFailure, nameof(reasonForFailure));
             Guard.AgainstNull(exception, nameof(exception));
 
-            if (exception is TargetInvocationException && exception.InnerException is object)
+            if (exception is TargetInvocationException && exception.InnerException is not null)
             {
                 exception = exception.InnerException;
             }
@@ -72,7 +72,7 @@ namespace FakeItEasy.Creation
         /// <summary>
         /// Gets a value indicating whether the proxy was successfully created.
         /// </summary>
-        public bool ProxyWasSuccessfullyGenerated => this.GeneratedProxy is object;
+        public bool ProxyWasSuccessfullyGenerated => this.GeneratedProxy is not null;
 
         /// <summary>
         /// Gets the generated proxy when it was successfully created.

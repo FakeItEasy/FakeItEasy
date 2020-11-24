@@ -29,7 +29,7 @@ namespace FakeItEasy.Core
                         .OfType<PropertyBehaviorRule>()
                         .LastOrDefault(rule => rule.IsMatchForSetter(fakeObjectCall));
 
-                    if (existingRule is object)
+                    if (existingRule is not null)
                     {
                         existingRule.Value = fakeObjectCall.Arguments.Last();
                     }

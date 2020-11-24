@@ -364,7 +364,7 @@ namespace FakeItEasy.Specs
 
         public bool CanBuildOptionsForFakeOfType(Type type)
         {
-            return type is object && type.FullName + "OptionsBuilder" == this.GetType().FullName;
+            return type is not null && type.FullName + "OptionsBuilder" == this.GetType().FullName;
         }
 
         public abstract void BuildOptions(Type typeOfFake, IFakeOptions options);
@@ -378,7 +378,7 @@ namespace FakeItEasy.Specs
     {
         public override void BuildOptions(Type typeOfFake, IFakeOptions options)
         {
-            if (options is object)
+            if (options is not null)
             {
                 options.Wrapping(null!);
             }
@@ -405,7 +405,7 @@ namespace FakeItEasy.Specs
 
         public override void BuildOptions(Type typeOfFake, IFakeOptions options)
         {
-            if (options is object)
+            if (options is not null)
             {
                 options.Wrapping(WrappedObject);
             }
@@ -423,7 +423,7 @@ namespace FakeItEasy.Specs
     {
         public override void BuildOptions(Type typeOfFake, IFakeOptions options)
         {
-            if (options is object)
+            if (options is not null)
             {
                 options.Strict();
             }
@@ -439,7 +439,7 @@ namespace FakeItEasy.Specs
     {
         public override void BuildOptions(Type typeOfFake, IFakeOptions options)
         {
-            if (options is object)
+            if (options is not null)
             {
                 options.CallsBaseMethods();
             }
@@ -460,7 +460,7 @@ namespace FakeItEasy.Specs
     {
         public override void BuildOptions(Type typeOfFake, IFakeOptions options)
         {
-            if (options is object)
+            if (options is not null)
             {
                 options.WithArgumentsForConstructor(new object[] { this.GetType().Name });
             }
@@ -481,7 +481,7 @@ namespace FakeItEasy.Specs
     {
         public override void BuildOptions(Type typeOfFake, IFakeOptions options)
         {
-            if (options is object)
+            if (options is not null)
             {
                 options.WithArgumentsForConstructor(() => new ConstructorArgumentsSetByConstructor(this.GetType().Name));
             }
@@ -502,7 +502,7 @@ namespace FakeItEasy.Specs
     {
         public override void BuildOptions(Type typeOfFake, IFakeOptions options)
         {
-            if (options is object)
+            if (options is not null)
             {
                 options.WithArgumentsForConstructor(() => new ConstructorArgumentsSetByConstructor(this.GetType().Name));
             }
