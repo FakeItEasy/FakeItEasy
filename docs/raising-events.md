@@ -83,3 +83,30 @@ AddHandler fake.CustomEvent, Raise.FreeForm(Of CustomEventHandler).With(fake, sa
 
 Specifying the type of the event handler gets around the language restrictions in VB.NET.
 This method may also be used from C# if you don't want to rely on late binding.
+
+## Limitations
+
+The approach described above for raising events doesn't work in some situations:
+- Wrapping fakes
+- Fakes configured to call base methods
+
+This is because the calls (including event subscription and unsubscription) are
+forwarded to another implementation (wrapped object or base class) that
+FakeItEasy has no control over, so the fake doesn't know about the handlers and
+cannot call them.
+
+To work around this limitation, you will need to explicitly configure the calls
+to the event accessors to handle event subscription yourself, as in the example
+below:
+
+```csharp
+// Declare a delegate to store the event handlers
+EventHandler handlers = null;
+
+// Configure event subscription on the fake
+A.CallTo(robot).Where(call => call.Method.Name == "add_FellInLove").Invokes((EventHandler h) => handlers += h);
+A.CallTo(robot).Where(call => call.Method.Name == "remove_FellInLove").Invokes((EventHandler h) => handlers -= h);
+
+// Raise the event
+handlers?.Invoke(robot, EventArgs.Empty);
+```
