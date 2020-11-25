@@ -317,6 +317,35 @@ namespace FakeItEasy.Specs
                     .WithMessage("*The fake cannot raise the event because it's a wrapping fake*"));
         }
 
+        [Scenario]
+        public static void RaisingEventOnWrappingFakeWorkaround(Foo realObject, IFoo wrapper, EventHandler? handlers, EventHandler individualHandler)
+        {
+            "Given a real object"
+                .x(() => realObject = new Foo());
+
+            "And a fake wrapping this object"
+                .x(() => wrapper = A.Fake<IFoo>(o => o.Wrapping(realObject)));
+
+            "And an event handler"
+                .x(() => individualHandler = A.Fake<EventHandler>());
+
+            "When the fake is configured to handle event subscriptions manually"
+                .x(() =>
+                {
+                    A.CallTo(wrapper).Where(call => call.Method.Name == "add_SomeEvent").Invokes((EventHandler h) => handlers += h);
+                    A.CallTo(wrapper).Where(call => call.Method.Name == "remove_SomeEvent").Invokes((EventHandler h) => handlers -= h);
+                });
+
+            "And the handler is subscribed to the event"
+                .x(() => wrapper.SomeEvent += individualHandler);
+
+            "And the event is raised"
+                .x(() => handlers?.Invoke(wrapper, EventArgs.Empty));
+
+            "Then the event handler is called"
+                .x(() => A.CallTo(individualHandler).MustHaveHappened());
+        }
+
         public class Foo : IFoo
         {
             public bool NonVoidMethodCalled { get; private set; }
