@@ -20,6 +20,8 @@ namespace FakeItEasy.Core
             return this.map.TryRemove(eventHandler, out argumentProvider);
         }
 
+        public bool HasArgumentProvider(Delegate eventHandler) => this.map.ContainsKey(eventHandler);
+
         /// <summary>
         /// Allows a more lenient comparison of delegates, chiefly so <see cref="EventHandler"/>s and
         /// <see cref="EventHandler{TEventArgs}"/>s that refer to the same method on the same instance

@@ -14,7 +14,7 @@ namespace FakeItEasy.Core
     /// </summary>
     public partial class FakeManager : IFakeCallProcessor
     {
-        private static readonly SharedFakeObjectCallRule[] PostUserRules =
+        private static readonly SharedFakeObjectCallRule[] SharedPostUserRules =
         {
             new ObjectMemberRule(),
             new AutoFakePropertyRule(),
@@ -23,7 +23,7 @@ namespace FakeItEasy.Core
             new DefaultReturnValueRule(),
         };
 
-        private readonly IFakeObjectCallRule[] preUserRules;
+        private readonly EventRule eventRule;
         private readonly LinkedList<IInterceptionListener> interceptionListeners;
         private readonly WeakReference objectReference;
 
@@ -48,10 +48,7 @@ namespace FakeItEasy.Core
             this.FakeObjectType = fakeObjectType;
             this.FakeObjectName = fakeObjectName;
 
-            this.preUserRules = new IFakeObjectCallRule[]
-            {
-                new EventRule(this),
-            };
+            this.eventRule = new EventRule(this);
             this.allUserRules = new LinkedList<CallRuleMetadata>();
 
             this.recordedCalls = new ConcurrentQueue<CompletedFakeObjectCall>();
@@ -238,15 +235,6 @@ namespace FakeItEasy.Core
         // Apply the best rule to the call. There will always be at least one applicable rule.
         private void ApplyBestRule(IInterceptedFakeObjectCall fakeObjectCall)
         {
-            foreach (var preUserRule in this.preUserRules)
-            {
-                if (preUserRule.IsApplicableTo(fakeObjectCall))
-                {
-                    preUserRule.Apply(fakeObjectCall);
-                    return;
-                }
-            }
-
             CallRuleMetadata? bestUserRule = null;
             lock (this.allUserRules)
             {
@@ -267,7 +255,13 @@ namespace FakeItEasy.Core
                 return;
             }
 
-            foreach (var postUserRule in PostUserRules)
+            if (this.eventRule.IsApplicableTo(fakeObjectCall))
+            {
+                this.eventRule.Apply(fakeObjectCall);
+                return;
+            }
+
+            foreach (var postUserRule in SharedPostUserRules)
             {
                 if (postUserRule.IsApplicableTo(fakeObjectCall))
                 {

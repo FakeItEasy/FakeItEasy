@@ -16,6 +16,8 @@ namespace FakeItEasy.Specs
             void VoidMethod(string? parameter);
 
             void OutAndRefMethod(ref int @ref, out int @out);
+
+            event EventHandler? SomeEvent;
         }
 
         public interface IBar
@@ -272,6 +274,78 @@ namespace FakeItEasy.Specs
                     .WithMessage("The configured fake is not a wrapping fake."));
         }
 
+        [Scenario]
+        public static void EventSubscriptionSubscribesToWrappedEvent(Foo realObject, IFoo wrapper, EventHandler handler)
+        {
+            "Given a real object"
+                .x(() => realObject = new Foo());
+
+            "And a fake wrapping this object"
+                .x(() => wrapper = A.Fake<IFoo>(o => o.Wrapping(realObject)));
+
+            "And an event handler"
+                .x(() => handler = A.Fake<EventHandler>());
+
+            "When the handler is subscribed to the fake's event"
+                .x(() => wrapper.SomeEvent += handler);
+
+            "And the event is raised using a method on the wrapped object"
+                .x(() => realObject.RaiseSomeEvent());
+
+            "Then the handler is called"
+                .x(() => A.CallTo(handler).MustHaveHappened());
+        }
+
+        [Scenario]
+        public static void RaisingEventOnWrappingFakeUsingRaiseSyntax(Foo realObject, IFoo wrapper, EventHandler handler, Exception exception)
+        {
+            "Given a real object"
+                .x(() => realObject = new Foo());
+
+            "And a fake wrapping this object"
+                .x(() => wrapper = A.Fake<IFoo>(o => o.Wrapping(realObject)));
+
+            "And an event handler"
+                .x(() => handler = A.Fake<EventHandler>());
+
+            "When the event is raised on the fake using the '+= Raise' syntax"
+                .x(() => exception = Record.Exception(() => wrapper.SomeEvent += Raise.WithEmpty()));
+
+            "Then an InvalidOperationException is thrown"
+                .x(() => exception.Should()
+                    .BeAnExceptionOfType<InvalidOperationException>()
+                    .WithMessage("*The fake cannot raise the event because it's a wrapping fake*"));
+        }
+
+        [Scenario]
+        public static void RaisingEventOnWrappingFakeWorkaround(Foo realObject, IFoo wrapper, EventHandler? handlers, EventHandler individualHandler)
+        {
+            "Given a real object"
+                .x(() => realObject = new Foo());
+
+            "And a fake wrapping this object"
+                .x(() => wrapper = A.Fake<IFoo>(o => o.Wrapping(realObject)));
+
+            "And an event handler"
+                .x(() => individualHandler = A.Fake<EventHandler>());
+
+            "When the fake is configured to handle event subscriptions manually"
+                .x(() =>
+                {
+                    A.CallTo(wrapper).Where(call => call.Method.Name == "add_SomeEvent").Invokes((EventHandler h) => handlers += h);
+                    A.CallTo(wrapper).Where(call => call.Method.Name == "remove_SomeEvent").Invokes((EventHandler h) => handlers -= h);
+                });
+
+            "And the handler is subscribed to the event"
+                .x(() => wrapper.SomeEvent += individualHandler);
+
+            "And the event is raised"
+                .x(() => handlers?.Invoke(wrapper, EventArgs.Empty));
+
+            "Then the event handler is called"
+                .x(() => A.CallTo(individualHandler).MustHaveHappened());
+        }
+
         public class Foo : IFoo
         {
             public bool NonVoidMethodCalled { get; private set; }
@@ -306,6 +380,12 @@ namespace FakeItEasy.Specs
                 @ref += 1;
                 @out = 42;
             }
+
+            public event EventHandler? SomeEvent;
+
+#pragma warning disable CA1030 // Use events where appropriate
+            public void RaiseSomeEvent() => this.SomeEvent?.Invoke(this, EventArgs.Empty);
+#pragma warning restore CA1030 // Use events where appropriate
         }
 
         public class Bar : IBar

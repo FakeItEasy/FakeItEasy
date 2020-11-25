@@ -3,7 +3,6 @@ namespace FakeItEasy.Core
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using System.Linq;
     using System.Reflection;
 
     /// <content>Event rule.</content>
@@ -13,9 +12,6 @@ namespace FakeItEasy.Core
         private class EventRule
             : IFakeObjectCallRule
         {
-            private static readonly EventHandlerArgumentProviderMap EventHandlerArgumentProviderMap =
-                ServiceLocator.Resolve<EventHandlerArgumentProviderMap>();
-
             private readonly FakeManager fakeManager;
 
             private Dictionary<object, Delegate>? registeredEventHandlersField;
@@ -44,23 +40,22 @@ namespace FakeItEasy.Core
             {
                 Guard.AgainstNull(fakeObjectCall, nameof(fakeObjectCall));
 
-                return EventCall.GetEvent(fakeObjectCall.Method) is not null;
+                return EventCall.TryGetEventCall(fakeObjectCall, out _);
             }
 
             public void Apply(IInterceptedFakeObjectCall fakeObjectCall)
             {
-                var eventCall = EventCall.GetEventCall(fakeObjectCall);
-
-                this.HandleEventCall(eventCall);
+                if (EventCall.TryGetEventCall(fakeObjectCall, out var eventCall))
+                {
+                    this.HandleEventCall(eventCall);
+                }
             }
 
             private void HandleEventCall(EventCall eventCall)
             {
                 if (eventCall.IsEventRegistration())
                 {
-                    if (EventHandlerArgumentProviderMap.TryTakeArgumentProviderFor(
-                        eventCall.EventHandler,
-                        out var argumentProvider))
+                    if (eventCall.TryTakeEventRaiserArgumentProvider(out var argumentProvider))
                     {
                         this.RaiseEvent(eventCall, argumentProvider);
                     }
@@ -133,75 +128,6 @@ namespace FakeItEasy.Core
                         ex.InnerException?.Rethrow();
                         throw;
                     }
-                }
-            }
-
-            private class EventCall
-            {
-                private static readonly Func<EventInfo, MethodInfo> GetAddMethod = e => e.GetAddMethod(true)!;
-                private static readonly Func<EventInfo, MethodInfo> GetRemoveMethod = e => e.GetRemoveMethod(true)!;
-
-                private EventCall(EventInfo @event, MethodInfo callingMethod, Delegate eventHandler)
-                {
-                    this.Event = @event;
-                    this.CallingMethod = callingMethod;
-                    this.EventHandler = eventHandler;
-                }
-
-                public EventInfo Event { get; }
-
-                public Delegate EventHandler { get; }
-
-                private MethodInfo CallingMethod { get; }
-
-                public static EventCall GetEventCall(
-                    IFakeObjectCall fakeObjectCall)
-                {
-                    // This method is only called when IsApplicableTo is true, so eventInfo will not be null.
-                    var eventInfo = GetEvent(fakeObjectCall.Method)!;
-
-                    return new EventCall(eventInfo, fakeObjectCall.Method, (Delegate)fakeObjectCall.Arguments[0] !);
-                }
-
-                public static EventInfo? GetEvent(MethodInfo eventAdderOrRemover)
-                {
-                    if (!eventAdderOrRemover.IsSpecialName)
-                    {
-                        return null;
-                    }
-
-                    Func<EventInfo, MethodInfo> getMethod;
-                    if (eventAdderOrRemover.Name.StartsWith("add_", StringComparison.Ordinal))
-                    {
-                        getMethod = GetAddMethod;
-                    }
-                    else if (eventAdderOrRemover.Name.StartsWith("remove_", StringComparison.Ordinal))
-                    {
-                        getMethod = GetRemoveMethod;
-                    }
-                    else
-                    {
-                        return null;
-                    }
-
-                    var eventInfos = eventAdderOrRemover.DeclaringType!.GetEvents(
-                        BindingFlags.Instance |
-                        BindingFlags.Public |
-                        BindingFlags.NonPublic);
-                    if (eventInfos.Length == 0)
-                    {
-                        return null;
-                    }
-
-                    var adderOrRemoverDefinition = eventAdderOrRemover.GetBaseDefinition();
-                    return
-                        eventInfos.SingleOrDefault(e =>
-                            Equals(getMethod(e).GetBaseDefinition(), adderOrRemoverDefinition));
-                }
-
-                public bool IsEventRegistration()
-                {
-                    return GetAddMethod(this.Event).Equals(this.CallingMethod);
                 }
             }
         }

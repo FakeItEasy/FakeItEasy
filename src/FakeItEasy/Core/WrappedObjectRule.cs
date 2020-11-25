@@ -1,5 +1,6 @@
 namespace FakeItEasy.Core
 {
+    using System;
     using System.Reflection;
     using static ObjectMembers;
 
@@ -47,6 +48,14 @@ namespace FakeItEasy.Core
         /// an exception.
         /// </summary>
         /// <param name="fakeObjectCall">The call to apply the interceptor to.</param>
-        public void Apply(IInterceptedFakeObjectCall fakeObjectCall) => fakeObjectCall.CallWrappedMethod(this.WrappedObject);
+        public void Apply(IInterceptedFakeObjectCall fakeObjectCall)
+        {
+            if (EventCall.TryGetEventCall(fakeObjectCall, out var eventCall) && eventCall.IsEventRaiser())
+            {
+                throw new InvalidOperationException(ExceptionMessages.WrappingFakeCannotRaiseEvent);
+            }
+
+            fakeObjectCall.CallWrappedMethod(this.WrappedObject);
+        }
     }
 }
