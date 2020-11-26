@@ -47,6 +47,7 @@ namespace FakeItEasy
         /// </summary>
         /// <param name="fakedObject">The faked object to clear the configuration of.</param>
         [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "object", Justification = "The term fake object does not refer to the type System.Object.")]
+        [Obsolete("ClearConfiguration will be removed in version 8.0.0. Prefer to discard the fake and create a new one.")]
         public static void ClearConfiguration(object fakedObject)
         {
             Guard.AgainstNull(fakedObject, nameof(fakedObject));

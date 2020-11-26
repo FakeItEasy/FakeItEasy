@@ -4,16 +4,11 @@ FakeItEasy exposes a few APIs that aren't commonly needed, but can be useful in 
 
 ## Clearing the configuration of a fake
 
-The `Fake.ClearConfiguration` method removes all configured rules from a fake, leaving it in the default configuration.
-
-```csharp
-var foo = A.Fake<IFoo>();
-Assert.Equal(0, foo.Bar());
-A.CallTo(() => foo.Bar()).Returns(42);
-Assert.Equal(42, foo.Bar());
-Fake.ClearConfiguration(foo);
-Assert.Equal(0, foo.Bar());
-```
+To "unconfigure" a fake so it has default behavior, discard the fake and create
+a new one. If this is not feasible, for example because you wish to remove the
+configuration in the middle of a test and the system under test already holds
+the fake, see
+[Changing behavior between calls](changing-behavior-between-calls.md).
 
 ## Clearing a fake's recorded calls
 

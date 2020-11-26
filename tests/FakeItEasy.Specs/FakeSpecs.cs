@@ -130,7 +130,9 @@ namespace FakeItEasy.Specs
                 .x(() => A.CallTo(() => fake.AMethod()).Invokes(() => configuredBehaviorWasUsed = true));
 
             "When I clear the configuration"
+#pragma warning disable CS0618 // ClearConfiguration is obsolete
                 .x(() => Fake.ClearConfiguration(fake));
+#pragma warning restore CS0618 // ClearConfiguration is obsolete
 
             "And I execute the previously-configured method"
                 .x(() => fake.AMethod());
