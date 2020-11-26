@@ -127,7 +127,9 @@ namespace FakeItEasy.IntegrationTests
 
         private class ClearConfiguration : RuleMutatingAction
         {
+#pragma warning disable CS0618 // ClearConfiguration is obsolete
             public override void MutateRules(IFoo fake) => Fake.ClearConfiguration(fake);
+#pragma warning restore CS0618 // ClearConfiguration is obsolete
         }
 
         private class AddConfigurationViaACallTo : RuleMutatingAction

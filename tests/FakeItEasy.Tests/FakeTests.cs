@@ -39,7 +39,9 @@ namespace FakeItEasy.Tests
             // Act
 
             // Assert
+#pragma warning disable CS0618 // ClearConfiguration is obsolete
             Expression<Action> call = () => Fake.ClearConfiguration(A.Dummy<object>());
+#pragma warning restore CS0618 // ClearConfiguration is obsolete
             call.Should().BeNullGuarded();
         }
 
