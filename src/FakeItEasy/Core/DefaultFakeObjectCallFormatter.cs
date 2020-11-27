@@ -31,7 +31,7 @@ namespace FakeItEasy.Core
 
             builder
                 .Append(this.fakeManagerAccessor.GetFakeManager(call.FakedObject).FakeObjectType)
-                .Append(".");
+                .Append('.');
 
             AppendMethodName(builder, call.Method);
 
@@ -54,11 +54,11 @@ namespace FakeItEasy.Core
         {
             if (method.IsPropertyGetterOrSetter())
             {
-                builder.Append("[");
+                builder.Append('[');
             }
             else
             {
-                builder.Append("(");
+                builder.Append('(');
             }
         }
 
@@ -66,11 +66,11 @@ namespace FakeItEasy.Core
         {
             if (method.IsPropertyGetterOrSetter())
             {
-                builder.Append("]");
+                builder.Append(']');
             }
             else
             {
-                builder.Append(")");
+                builder.Append(')');
             }
         }
 
@@ -94,7 +94,7 @@ namespace FakeItEasy.Core
             {
                 if (argumentIndex > 0)
                 {
-                    builder.Append(",");
+                    builder.Append(',');
                 }
 
                 builder.AppendLine();

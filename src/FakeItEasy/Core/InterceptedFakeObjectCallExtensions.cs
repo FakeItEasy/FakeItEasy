@@ -2,7 +2,7 @@ namespace FakeItEasy.Core
 {
     using System.Reflection;
     using FakeItEasy.Creation;
-    using static ObjectMembers;
+    using static FakeItEasy.ObjectMembers;
 
     internal static class InterceptedFakeObjectCallExtensions
     {

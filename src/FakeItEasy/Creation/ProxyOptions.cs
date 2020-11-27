@@ -49,7 +49,7 @@ namespace FakeItEasy.Creation
 
         private class DefaultProxyOptions : IProxyOptions
         {
-            public IEnumerable<object?>? ArgumentsForConstructor { get; } = null;
+            public IEnumerable<object?>? ArgumentsForConstructor { get; }
 
             public ReadOnlyCollection<Type> AdditionalInterfacesToImplement { get; } = new ReadOnlyCollection<Type>(new List<Type>());
 

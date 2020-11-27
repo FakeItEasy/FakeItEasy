@@ -138,8 +138,8 @@ namespace FakeItEasy.Specs
             // unsuccessful constructors may be called more than once, so serialize dummy
             // creation for this test.
             "And nobody else is trying to create a dummy of the class right now"
-                .x(() => Monitor.TryEnter(typeof(ClassWhoseLongerConstructorThrows), TimeSpan.FromSeconds(30)).Should().BeTrue("we must enter the monitor"))
-                .Teardown(() => Monitor.Exit(typeof(ClassWhoseLongerConstructorThrows)));
+                .x(() => Monitor.TryEnter(ClassWhoseLongerConstructorThrows.SyncRoot, TimeSpan.FromSeconds(30)).Should().BeTrue("we must enter the monitor"))
+                .Teardown(() => Monitor.Exit(ClassWhoseLongerConstructorThrows.SyncRoot));
 
             "When a dummy of that type is requested"
                 .x(() => dummy1 = this.CreateDummy<ClassWhoseLongerConstructorThrows>());
@@ -734,6 +734,8 @@ namespace FakeItEasy.Specs
 
         public sealed class ClassWhoseLongerConstructorThrows
         {
+            public static readonly object SyncRoot = new object();
+
             private static int numberOfTimesLongerConstructorWasCalled;
 
             public string CalledConstructor { get; }
@@ -819,11 +821,11 @@ namespace FakeItEasy.Specs
         {
             protected override ClassWhoseDummyFactoryThrows Create()
             {
-                throw new Exception("dummy factory threw");
+                throw new NotSupportedException("dummy factory threw");
             }
         }
 
-        #pragma warning disable CA1052
+#pragma warning disable CA1052
         public class LazilyCreated
         {
             public static bool IsInstanceCreated { get; set; }
@@ -833,7 +835,7 @@ namespace FakeItEasy.Specs
                 IsInstanceCreated = true;
             }
         }
-        #pragma warning restore CA1052
+#pragma warning restore CA1052
 
         public class ClassWhoseDummyIsNull
         {

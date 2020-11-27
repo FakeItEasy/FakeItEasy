@@ -281,12 +281,12 @@ namespace FakeItEasy
         public override bool Equals(object? obj) { }
         public override int GetHashCode() { }
         public override string ToString() { }
-        public static bool !=(FakeItEasy.Priority left, FakeItEasy.Priority right) { }
-        public static bool <(FakeItEasy.Priority left, FakeItEasy.Priority right) { }
-        public static bool <=(FakeItEasy.Priority left, FakeItEasy.Priority right) { }
-        public static bool ==(FakeItEasy.Priority left, FakeItEasy.Priority right) { }
-        public static bool >(FakeItEasy.Priority left, FakeItEasy.Priority right) { }
-        public static bool >=(FakeItEasy.Priority left, FakeItEasy.Priority right) { }
+        public static bool operator !=(FakeItEasy.Priority left, FakeItEasy.Priority right) { }
+        public static bool operator <(FakeItEasy.Priority left, FakeItEasy.Priority right) { }
+        public static bool operator <=(FakeItEasy.Priority left, FakeItEasy.Priority right) { }
+        public static bool operator ==(FakeItEasy.Priority left, FakeItEasy.Priority right) { }
+        public static bool operator >(FakeItEasy.Priority left, FakeItEasy.Priority right) { }
+        public static bool operator >=(FakeItEasy.Priority left, FakeItEasy.Priority right) { }
     }
     public static class Raise
     {

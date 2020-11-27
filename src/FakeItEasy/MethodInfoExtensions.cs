@@ -47,7 +47,7 @@ namespace FakeItEasy
 
             builder
                 .Append(method.DeclaringType)
-                .Append(".");
+                .Append('.');
 
             AppendMethodName(builder, method);
 
@@ -114,11 +114,11 @@ namespace FakeItEasy
         {
             if (method.IsPropertyGetterOrSetter())
             {
-                builder.Append("[");
+                builder.Append('[');
             }
             else
             {
-                builder.Append("(");
+                builder.Append('(');
             }
         }
 
@@ -126,11 +126,11 @@ namespace FakeItEasy
         {
             if (method.IsPropertyGetterOrSetter())
             {
-                builder.Append("]");
+                builder.Append(']');
             }
             else
             {
-                builder.Append(")");
+                builder.Append(')');
             }
         }
 
@@ -141,7 +141,7 @@ namespace FakeItEasy
                 AppendParameterSeparator(builder, i);
                 builder
                     .Append(parameters[i].ParameterType)
-                    .Append(" ")
+                    .Append(' ')
                     .Append(parameters[i].Name);
             }
         }

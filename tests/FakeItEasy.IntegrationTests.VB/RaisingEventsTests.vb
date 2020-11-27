@@ -11,8 +11,6 @@ Public Interface IHaveEvents
     Event NonGenericEventHander As EventHandler
     Event GenericEventHander As EventHandler(Of MyEventArgs)
 
-    <SuppressMessage("Microsoft.Design", "CA1009:DeclareEventHandlersCorrectly",
-        Justification:="Required to test nonstandard events.")>
     Event TokenEvent(ByVal eventValue As Token)
 
 End Interface

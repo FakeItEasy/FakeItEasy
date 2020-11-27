@@ -98,7 +98,7 @@ namespace FakeItEasy.Configuration
         [return: MaybeNull]
         public T Get<T>(int index)
         {
-            return (T)this.arguments[index] !;
+            return (T)this.arguments[index]!;
         }
 
         /// <summary>
