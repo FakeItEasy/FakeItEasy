@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>$(ExampleTargetFrameworks)</TargetFrameworks>
-    <CodeAnalysisRuleset>FakeItEasy.Examples.VB.ruleset</CodeAnalysisRuleset>
+    <NoWarn>$(NoWarn),AD0001</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>

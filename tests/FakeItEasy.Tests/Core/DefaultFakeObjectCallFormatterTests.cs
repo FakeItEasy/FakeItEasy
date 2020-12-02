@@ -198,7 +198,6 @@ namespace FakeItEasy.Tests.Core
 
             [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "index", Justification = "Required for testing.")]
             [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "value", Justification = "Required for testing.")]
-            [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Required for testing.")]
             public string this[int index]
             {
                 get { return index.ToString(); }

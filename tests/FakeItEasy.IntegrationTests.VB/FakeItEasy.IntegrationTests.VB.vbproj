@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>$(IntegrationTestsTargetFrameworks)</TargetFrameworks>
-    <CodeAnalysisRuleset>FakeItEasy.IntegrationTests.VB.ruleset</CodeAnalysisRuleset>
+    <NoWarn>$(NoWarn),AD0001</NoWarn>
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
 

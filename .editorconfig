@@ -33,3 +33,14 @@ charset = utf-8-bom
 [*.json]
 # 2-column space indentation
 indent_size = 2
+
+[*.cs]
+dotnet_diagnostic.CA1305.severity = none    # The behavior of parsing or formatting method could vary based on the current user's locale settings
+dotnet_diagnostic.SA1124.severity = warning # Do not use regions
+dotnet_diagnostic.SA1127.severity = none    # Generic type constraints should be on their own line
+dotnet_diagnostic.SA1413.severity = none    # Use trailing comma in multi-line initializers
+dotnet_diagnostic.SA1600.severity = none    # Elements should be documented
+dotnet_diagnostic.SA1601.severity = none    # Partial elements should be documented
+dotnet_diagnostic.SA1628.severity = warning # Documentation text must begin with a capital letter
+dotnet_diagnostic.SA1629.severity = warning # Documentation text must end with a period
+dotnet_diagnostic.SA1633.severity = none    # Files should have file headers

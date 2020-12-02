@@ -546,7 +546,6 @@ namespace FakeItEasy.Specs
 
         public class ClassWithInterestingProperties
         {
-            [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Required for testing.")]
 #pragma warning disable 649
             internal int Field;
 #pragma warning restore 649

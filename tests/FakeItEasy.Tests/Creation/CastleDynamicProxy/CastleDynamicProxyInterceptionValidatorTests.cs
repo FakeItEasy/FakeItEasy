@@ -110,7 +110,8 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
 
         public class NonInterceptableTestCase : InterceptionTestCase
         {
-            public NonInterceptableTestCase(Expression<Action> expression, string failReason) : base(expression)
+            public NonInterceptableTestCase(Expression<Action> expression, string failReason)
+                : base(expression)
             {
                 this.FailReason = failReason;
             }

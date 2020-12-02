@@ -3,7 +3,7 @@
   <Import Project="../Directory.Build.props" />
 
   <PropertyGroup>
-    <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)FakeItEasy.Examples.ruleset</CodeAnalysisRuleSet>
+    <NoWarn>$(NoWarn),SA0001,CA1014</NoWarn>
   </PropertyGroup>
 
 </Project>

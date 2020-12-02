@@ -23,7 +23,7 @@ namespace FakeItEasy
         /// <summary>
         /// Makes the fake strict. This means that any call to the fake
         /// that has not been explicitly configured will throw an exception,
-        /// except calls to the <see cref="System.Object"/> methods specified
+        /// except calls to the <see cref="object"/> methods specified
         /// in <paramref name="strictOptions"/>.
         /// </summary>
         /// <typeparam name="T">The type of fake object.</typeparam>
@@ -55,7 +55,7 @@ namespace FakeItEasy
         /// <summary>
         /// Makes the fake strict. This means that any call to the fake
         /// that has not been explicitly configured will throw an exception,
-        /// except calls to the <see cref="System.Object"/> methods specified
+        /// except calls to the <see cref="object"/> methods specified
         /// in <paramref name="strictOptions"/>.
         /// </summary>
         /// <param name="options">Options used to create the fake object.</param>

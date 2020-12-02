@@ -150,8 +150,8 @@ namespace FakeItEasy.Specs
             "And a call with arguments of type int and double made on this fake"
                 .x(() => fake.Bar(1, 2D));
 
-            "And a call with arguments of type Generic<bool, long> and int made on this call"
-                .x(() => fake.Bar(new Generic<bool, long>(), 3));
+            "And a call with arguments of type GenericClass<bool, long> and int made on this call"
+                .x(() => fake.Bar(new GenericClass<bool, long>(), 3));
 
             "When I assert that a call with arguments of type string and string has happened on this fake"
                 .x(() => exception = Record.Exception(() => A.CallTo(() => fake.Bar(A<string>.Ignored, A<string>.Ignored)).MustHaveHappened()));
@@ -166,7 +166,7 @@ namespace FakeItEasy.Specs
     FakeItEasy.Specs.CallMatchingSpecs+IHaveTwoGenericParameters.Bar`2[System.String,System.String](baz1: <Ignored>, baz2: <Ignored>)
   Expected to find it once or more but didn't find it among the calls:
     1: FakeItEasy.Specs.CallMatchingSpecs+IHaveTwoGenericParameters.Bar`2[System.Int32,System.Double](baz1: 1, baz2: 2)
-    2: FakeItEasy.Specs.CallMatchingSpecs+IHaveTwoGenericParameters.Bar`2[FakeItEasy.Specs.CallMatchingSpecs+Generic`2[System.Boolean,System.Int64],System.Int32](baz1: FakeItEasy.Specs.CallMatchingSpecs+Generic`2[System.Boolean,System.Int64], baz2: 3)
+    2: FakeItEasy.Specs.CallMatchingSpecs+IHaveTwoGenericParameters.Bar`2[FakeItEasy.Specs.CallMatchingSpecs+GenericClass`2[System.Boolean,System.Int64],System.Int32](baz1: FakeItEasy.Specs.CallMatchingSpecs+GenericClass`2[System.Boolean,System.Int64], baz2: 3)
 
 "));
         }
@@ -266,7 +266,7 @@ namespace FakeItEasy.Specs
                 .x(() => { });
 
             "When I assert that a call has happened on this fake"
-                .x(() => exception = Record.Exception(() => A.CallTo(() => fake.Bar<Generic<string>>(A<Generic<string>>.Ignored)).MustHaveHappened()));
+                .x(() => exception = Record.Exception(() => A.CallTo(() => fake.Bar<GenericClass<string>>(A<GenericClass<string>>.Ignored)).MustHaveHappened()));
 
             "Then the assertion should fail"
                 .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>());
@@ -275,7 +275,7 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Message.Should().BeModuloLineEndings(@"
 
   Assertion failed for the following call:
-    FakeItEasy.Specs.CallMatchingSpecs+IHaveOneGenericParameter.Bar`1[FakeItEasy.Specs.CallMatchingSpecs+Generic`1[System.String]](baz: <Ignored>)
+    FakeItEasy.Specs.CallMatchingSpecs+IHaveOneGenericParameter.Bar`1[FakeItEasy.Specs.CallMatchingSpecs+GenericClass`1[System.String]](baz: <Ignored>)
   Expected to find it once or more but no calls were made to the fake object.
 
 "));
@@ -960,11 +960,11 @@ namespace FakeItEasy.Specs
             yield return new object[] { new Func<object>(() => A.Fake<Action<int>>(o => o.Strict())), "Faked " + typeof(Action<int>).ToString() };
         }
 
-        public class Generic<T>
+        public class GenericClass<T>
         {
         }
 
-        public class Generic<T1, T2>
+        public class GenericClass<T1, T2>
         {
         }
 

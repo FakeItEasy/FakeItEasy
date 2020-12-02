@@ -167,7 +167,6 @@ namespace FakeItEasy.IntegrationTests
         }
     }
 
-    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Tidier.")]
     public class DummyTestsDummyFactory : IDummyFactory
     {
         public Priority Priority => Priority.Default;

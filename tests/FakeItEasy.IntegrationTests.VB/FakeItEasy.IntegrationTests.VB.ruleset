@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RuleSet Name="FakeItEasy Integration VB" ToolsVersion="12.0">
-  <Include Path="../FakeItEasy.Tests.ruleset" Action="Default" />
-  <Rules AnalyzerId="Microsoft.Analyzers.ManagedCodeAnalysis" RuleNamespace="Microsoft.Rules.Managed">
-    <Rule Id="AD0001" Action="None" />
-  </Rules>
-</RuleSet>
