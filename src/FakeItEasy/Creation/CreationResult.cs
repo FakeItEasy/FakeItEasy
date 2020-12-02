@@ -142,7 +142,7 @@ namespace FakeItEasy.Creation
                     .AppendLine()
                     .AppendIndented("  ", $"Failed to create {this.creationMode.Name} of type ")
                     .Append(this.type)
-                    .Append(":");
+                    .Append(':');
 
                 if (this.reasonsForFailure is not null)
                 {

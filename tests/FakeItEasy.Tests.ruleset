@@ -3,6 +3,7 @@
   <Include Path="../src/FakeItEasy.ruleset" Action="Default" />
   <Rules AnalyzerId="Microsoft.Analyzers.ManagedCodeAnalysis" RuleNamespace="Microsoft.Rules.Managed">
     <Rule Id="CA1000" Action="None" />
+    <Rule Id="CA1003" Action="None" />
     <Rule Id="CA1006" Action="None" />
     <Rule Id="CA1014" Action="None" />
     <Rule Id="CA1016" Action="None" />
@@ -23,11 +24,13 @@
     <Rule Id="CA1704" Action="None" />
     <Rule Id="CA1707" Action="None" />
     <Rule Id="CA1709" Action="None" />
+    <Rule Id="CA1711" Action="None" />
     <Rule Id="CA1716" Action="None" />
     <Rule Id="CA1720" Action="None" />
     <Rule Id="CA1724" Action="None" />
     <Rule Id="CA1822" Action="None" />
     <Rule Id="CA2000" Action="None" />
+    <Rule Id="CA2201" Action="None" />
     <Rule Id="CA2204" Action="None" />
     <Rule Id="CA2210" Action="None" />
   </Rules>

@@ -1,6 +1,6 @@
 namespace FakeItEasy.Core
 {
-    using static ObjectMembers;
+    using static FakeItEasy.ObjectMembers;
 
     /// <content>Object member rule.</content>
     public partial class FakeManager

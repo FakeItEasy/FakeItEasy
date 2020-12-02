@@ -42,7 +42,9 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
                     () => object.Equals("foo", "bar"),
                     "Static methods can not be intercepted."),
                 new NonInterceptableTestCase(
-                    () => "foo".Count(),
+                    #pragma warning disable CA1806 // Do not ignore method results
+                    () => "foo".Distinct(),
+                    #pragma warning restore CA1806 // Do not ignore method results
                     "Extension methods can not be intercepted since they're static."),
                 new NonInterceptableTestCase(
                     () => new TypeWithSealedOverride().ToString(),

@@ -1,6 +1,6 @@
 namespace FakeItEasy.Core
 {
-    using static ObjectMembers;
+    using static FakeItEasy.ObjectMembers;
 
     internal class StrictFakeRule : IFakeObjectCallRule
     {

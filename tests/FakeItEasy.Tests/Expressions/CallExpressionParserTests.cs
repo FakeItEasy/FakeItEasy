@@ -28,7 +28,7 @@ namespace FakeItEasy.Tests.Expressions
         public void Should_return_parsed_expression_with_instance_method_set()
         {
             // Arrange
-            var call = Call(() => string.Empty.Equals(null, StringComparison.CurrentCulture));
+            var call = Call(() => string.Empty.Equals(null, StringComparison.Ordinal));
 
             // Act
             var result = this.parser.Parse(call);

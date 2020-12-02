@@ -2,11 +2,12 @@
 
   <PropertyGroup>
     <TargetFrameworks>$(IntegrationTestsTargetFrameworks)</TargetFrameworks>
+    <CodeAnalysisRuleset>FakeItEasy.IntegrationTests.VB.ruleset</CodeAnalysisRuleset>
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.Compilers" Version="2.1.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Compilers" Version="3.8.0" />
     <ProjectReference Include="..\..\src\FakeItEasy\FakeItEasy.csproj" />
     <ProjectReference Include="..\FakeItEasy.Tests.TestHelpers\FakeItEasy.Tests.TestHelpers.csproj" />
   </ItemGroup>

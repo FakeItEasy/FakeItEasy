@@ -873,6 +873,7 @@ namespace FakeItEasy.Specs
             }
         }
 
+        [SuppressMessage("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes", Justification = "Required for testing.")]
         public class FooWithExplicitImplementationOfBaz : IFoo
         {
             int IFoo.Baz() => 123;

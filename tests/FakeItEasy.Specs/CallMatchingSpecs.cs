@@ -971,7 +971,6 @@ namespace FakeItEasy.Specs
         public class ToStringThrows
         {
             [SuppressMessage("Microsoft.Design", "CA1065:DoNotRaiseExceptionsInUnexpectedLocations", Justification = "Required for testing")]
-            [SuppressMessage("Microsoft.Usage", "CA2201:DoNotRaiseReservedExceptionTypes", Justification = "Required for testing")]
             public override string ToString()
             {
                 throw new Exception();

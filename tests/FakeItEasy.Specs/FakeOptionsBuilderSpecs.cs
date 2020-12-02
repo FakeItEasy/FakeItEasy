@@ -394,7 +394,7 @@ namespace FakeItEasy.Specs
 
     public class AWrappedType : WrapsAValidObject
     {
-        public bool WasCalled { get; private set; } = false;
+        public bool WasCalled { get; private set; }
 
         public override void AMethod() => this.WasCalled = true;
     }
