@@ -1,0 +1,13 @@
+[*.{cs,vb}]
+dotnet_diagnostic.CA1003.severity = none # Use generic event handler instances
+dotnet_diagnostic.CA1034.severity = none # Do not nest type
+dotnet_diagnostic.CA1051.severity = none # Do not declare visible instance fields
+dotnet_diagnostic.CA1062.severity = none # In externally visible method, validate parameter is non-null before using it
+dotnet_diagnostic.CA1707.severity = none # Remove the underscores from member name
+dotnet_diagnostic.CA1822.severity = none # Member does not access instance data and can be marked as static
+dotnet_diagnostic.CA2000.severity = none # Call System.IDisposable.Dispose on object
+dotnet_diagnostic.CA2201.severity = none # Do not raise reserved exception types
+dotnet_diagnostic.SA1201.severity = none # Members should be ordered correctly
+dotnet_diagnostic.SA1401.severity = none # Fields must be private
+dotnet_diagnostic.SA1402.severity = none # File may only contain a single type
+dotnet_diagnostic.SA1649.severity = none # File name should match first type name

@@ -6,9 +6,9 @@ namespace FakeItEasy
 
     /// <summary>
     /// Hides standard Object members to make fluent interfaces
-    /// easier to read. Found in the source of Autofac: <see cref="!:https://code.google.com/p/autofac/"/>
+    /// easier to read. Found in the source of Autofac: <see href="https://code.google.com/p/autofac/"/>
     /// Based on blog post here:
-    /// <see cref="!:http://blogs.clariusconsulting.net/kzu/how-to-hide-system-object-members-from-your-interfaces/"/>.
+    /// <see href="http://blogs.clariusconsulting.net/kzu/how-to-hide-system-object-members-from-your-interfaces/"/>.
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
     public interface IHideObjectMembers
@@ -21,11 +21,11 @@ namespace FakeItEasy
         string? ToString();
 
         /// <summary>
-        /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
+        /// Determines whether the specified <see cref="object"/> is equal to this instance.
         /// </summary>
-        /// <param name="o">The <see cref="System.Object"/> to compare with this instance.</param>
+        /// <param name="o">The <see cref="object"/> to compare with this instance.</param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+        /// <c>true</c> if the specified <see cref="object"/> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
         [EditorBrowsable(EditorBrowsableState.Never)]
         [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "o", Justification = "Uses the same name as the hidden method.")]

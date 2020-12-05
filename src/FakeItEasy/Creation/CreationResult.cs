@@ -195,7 +195,7 @@ namespace FakeItEasy.Creation
                 {
                     message
                         .Append("    (")
-                        .Append(resolvedConstructor.Arguments.ToCollectionString(x => x.WasResolved ? x.ArgumentType.ToString() : String.Concat("*", x.ArgumentType.ToString()), ", "))
+                        .Append(resolvedConstructor.Arguments.ToCollectionString(x => x.WasResolved ? x.ArgumentType.ToString() : string.Concat("*", x.ArgumentType.ToString()), ", "))
                         .AppendLine(")");
                 }
 

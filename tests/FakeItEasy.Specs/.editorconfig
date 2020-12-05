@@ -1,0 +1,5 @@
+[*.cs]
+dotnet_diagnostic.CA1032.severity = none # Implement standard exception constructors
+dotnet_diagnostic.CA1068.severity = none # Method should take CancellationToken as the last parameter
+dotnet_diagnostic.CA1711.severity = none # Identifiers should not have incorrect suffix
+dotnet_diagnostic.CA1716.severity = none # Identifiers should not match keywords

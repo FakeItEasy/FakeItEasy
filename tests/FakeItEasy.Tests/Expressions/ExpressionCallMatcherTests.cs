@@ -245,7 +245,6 @@ namespace FakeItEasy.Tests.Expressions
 
         public class Foo
         {
-            [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Required for testing.")]
             public IServiceProvider ServiceProvider = A.Dummy<IServiceProvider>();
         }
     }

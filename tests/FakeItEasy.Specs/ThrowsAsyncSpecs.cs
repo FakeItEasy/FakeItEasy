@@ -599,7 +599,6 @@ namespace FakeItEasy.Specs
                 .x(() => (task.AsTask().Exception?.InnerException).Should().BeAnExceptionOfType<MyException>());
         }
 
-        [SuppressMessage("Microsoft.Design", "CA1032:ImplementStandardExceptionConstructors", Justification = "Irrelevant for test purposes")]
         public class MyException : Exception
         {
         }

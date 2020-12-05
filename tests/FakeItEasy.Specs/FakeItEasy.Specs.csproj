@@ -3,7 +3,6 @@
   <PropertyGroup>
     <TargetFrameworks>$(SpecsTargetFrameworks)</TargetFrameworks>
     <AssemblyName>FakeItEasy.Specs</AssemblyName>
-    <CodeAnalysisRuleset>FakeItEasy.Specs.ruleset</CodeAnalysisRuleset>
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
 

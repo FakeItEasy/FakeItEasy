@@ -2,10 +2,6 @@ Imports System.Diagnostics.CodeAnalysis
 Imports FluentAssertions
 Imports Xunit
 
-<Assembly: SuppressMessage("Microsoft.Design", "CA1003:UseGenericEventHandlerInstances",
-    Scope:="type", Target:="FakeItEasy.IntegrationTests.VB.IHaveEvents+DerivedEventHanderEventHandler",
-    Justification:="Required to test nonstandard events.")>
-
 Public Interface IHaveEvents
 
     Event NonGenericEventHander As EventHandler

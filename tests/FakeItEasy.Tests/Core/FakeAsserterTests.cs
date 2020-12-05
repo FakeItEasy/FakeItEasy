@@ -25,7 +25,13 @@ namespace FakeItEasy.Tests.Core
             var asserter = this.CreateAsserter();
 
             // This will cause the call to be recorded after checking the count
-            var callCountConstraintThatSimulatesALateArrivingCall = new CallCountConstraint(n => { this.StubCalls(1); return false; }, "no match");
+            var callCountConstraintThatSimulatesALateArrivingCall = new CallCountConstraint(
+                n =>
+                {
+                    this.StubCalls(1);
+                    return false;
+                },
+                "no match");
 
             var exception = Record.Exception(() =>
                 asserter.AssertWasCalled(x => true, outputWriter => { }, callCountConstraintThatSimulatesALateArrivingCall));

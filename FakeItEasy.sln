@@ -25,7 +25,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{59466C4D-C40
 		src\CommonAssemblyInfo.cs = src\CommonAssemblyInfo.cs
 		src\Directory.Build.props = src\Directory.Build.props
 		src\FakeItEasy.Dictionary.xml = src\FakeItEasy.Dictionary.xml
-		src\FakeItEasy.ruleset = src\FakeItEasy.ruleset
 		src\FakeItEasy.snk = src\FakeItEasy.snk
 	EndProjectSection
 EndProject
@@ -49,15 +48,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Specs", "Specs", "{575A3C3B
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{AD790E7D-D664-4B5F-8BE8-01507A2A9F3B}"
 	ProjectSection(SolutionItems) = preProject
+		tests\.editorconfig = tests\.editorconfig
 		tests\Directory.Build.props = tests\Directory.Build.props
 		tests\FakeItEasy.Dictionary.Tests.xml = tests\FakeItEasy.Dictionary.Tests.xml
-		tests\FakeItEasy.Tests.ruleset = tests\FakeItEasy.Tests.ruleset
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{2EEDF4EB-ED06-4370-9C0A-59502DF1B7F6}"
 	ProjectSection(SolutionItems) = preProject
+		samples\.editorconfig = samples\.editorconfig
 		samples\Directory.Build.props = samples\Directory.Build.props
-		samples\FakeItEasy.Examples.ruleset = samples\FakeItEasy.Examples.ruleset
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{072853A5-377B-47C4-8644-AF1F4FD669E2}"
@@ -114,7 +113,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{9D99B251-FB4F-49BF-8405-F6E0DE46EB32}"
 	ProjectSection(SolutionItems) = preProject
 		tools\deploy.cmd = tools\deploy.cmd
-		tools\Directory.Build.props = tools\Directory.Build.props
 		tools\FakeItEasy.ToolPaths.targets = tools\FakeItEasy.ToolPaths.targets
 		tools\prepare_release.cmd = tools\prepare_release.cmd
 	EndProjectSection

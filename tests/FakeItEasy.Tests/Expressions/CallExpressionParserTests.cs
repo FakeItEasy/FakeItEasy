@@ -181,7 +181,6 @@ namespace FakeItEasy.Tests.Expressions
 
         private class TypeWithPublicField
         {
-            [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Required for testing.")]
             public int PublicField = 1;
         }
     }

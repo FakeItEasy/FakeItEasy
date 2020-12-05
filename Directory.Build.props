@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)src/FakeItEasy.snk</AssemblyOriginatorKeyFile>
-    <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)src/FakeItEasy.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <PropertyGroup>

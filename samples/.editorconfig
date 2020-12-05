@@ -1,0 +1,3 @@
+[*.{cs,vb}]
+dotnet_diagnostic.CA1707.severity = none # Remove the underscores from member name
+dotnet_diagnostic.CA1822.severity = none # Member does not access instance data and can be marked as static

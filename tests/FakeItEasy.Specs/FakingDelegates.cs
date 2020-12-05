@@ -52,7 +52,7 @@ namespace FakeItEasy.Specs
                 .x(() => fakedDelegate = A.Fake<Func<string, int>>());
 
             "And I configure it to return lazily"
-                .x(() => A.CallTo(() => fakedDelegate.Invoke(A<string>._)).ReturnsLazily((string s) => Int32.Parse(s)));
+                .x(() => A.CallTo(() => fakedDelegate.Invoke(A<string>._)).ReturnsLazily((string s) => int.Parse(s)));
 
             "When I invoke it"
                 .x(() => result = fakedDelegate.Invoke("-27"));
