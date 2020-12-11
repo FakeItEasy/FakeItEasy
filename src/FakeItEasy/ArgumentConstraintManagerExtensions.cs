@@ -2,6 +2,7 @@ namespace FakeItEasy
 {
     using System;
     using System.Collections;
+    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Linq.Expressions;
@@ -268,6 +269,24 @@ namespace FakeItEasy
 
             return manager.Matches(
                 x => object.Equals(value, x),
+                x => x.Write("equal to ").WriteArgumentValue(value));
+        }
+
+        /// <summary>
+        /// Tests that the passed in argument is equal to the specified value using provided equality comparer.
+        /// </summary>
+        /// <typeparam name="T">The type of the argument.</typeparam>
+        /// <param name="manager">The constraint manager to match the constraint.</param>
+        /// <param name="value">The value to compare to.</param>
+        /// <param name="comparer">The comparer to use for equality comparison.</param>
+        /// <returns>A dummy argument value.</returns>
+        public static T IsEqualTo<T>(this IArgumentConstraintManager<T> manager, T value, IEqualityComparer<T> comparer)
+        {
+            Guard.AgainstNull(manager, nameof(manager));
+            Guard.AgainstNull(comparer, nameof(comparer));
+
+            return manager.Matches(
+                x => comparer.Equals(value, x),
                 x => x.Write("equal to ").WriteArgumentValue(value));
         }
 
