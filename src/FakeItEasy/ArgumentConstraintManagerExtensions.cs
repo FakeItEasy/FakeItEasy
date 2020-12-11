@@ -283,6 +283,7 @@ namespace FakeItEasy
         public static T IsEqualTo<T>(this IArgumentConstraintManager<T> manager, T value, IEqualityComparer<T> comparer)
         {
             Guard.AgainstNull(manager, nameof(manager));
+            Guard.AgainstNull(comparer, nameof(comparer));
 
             return manager.Matches(
                 x => comparer.Equals(value, x),
