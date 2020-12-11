@@ -44,6 +44,7 @@ namespace FakeItEasy
         public static T IsEmpty<T>(this FakeItEasy.IArgumentConstraintManager<T> manager)
             where T : System.Collections.IEnumerable { }
         public static T IsEqualTo<T>(this FakeItEasy.IArgumentConstraintManager<T> manager, T value) { }
+        public static T IsEqualTo<T>(this FakeItEasy.IArgumentConstraintManager<T> manager, T value, System.Collections.Generic.IEqualityComparer<T> comparer) { }
         public static T IsGreaterThan<T>(this FakeItEasy.IArgumentConstraintManager<T> manager, T value)
             where T : System.IComparable { }
         public static T IsInstanceOf<T>(this FakeItEasy.IArgumentConstraintManager<T> manager, System.Type type) { }
