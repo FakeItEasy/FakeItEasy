@@ -117,6 +117,27 @@ namespace FakeItEasy.IntegrationTests
         }
 
         [Fact]
+        public void Should_be_able_to_get_types_from_referenced_but_not_loaded_assembly()
+        {
+            // Ideally, for this test, the FakeItEasy.Tests.ExtensionPoints assembly shouldn't be loaded
+            // in the AppDomain yet, so that we can ensure it's properly loaded by TypeCatalogue as a
+            // referenced assembly. But other tests running before this one cause it to be loaded earlier,
+            // because TypeCatalogue runs the first time FakeItEasy is used.
+            // Since FakeItEasy.Tests.ExtensionPoints is never actually used, the only reason for it to be
+            // loaded is because it's referenced by the current assembly. So this test *does* check that
+            // referenced assemblies are scanned, but it could have actually happened earlier than this test.
+
+            // Arrange
+            var catalogue = new TypeCatalogue();
+
+            // Act
+            CaptureConsoleOutput(() => catalogue.Load(Enumerable.Empty<string>()));
+
+            // Assert
+            catalogue.GetAvailableTypes().Should().Contain(t => t.FullName == "FakeItEasy.Tests.ExtensionPoints.DayOfWeekDummyFactory");
+        }
+
+        [Fact]
         public void Should_not_be_able_to_get_types_from_assembly_that_does_not_reference_fakeiteasy()
         {
             // Arrange

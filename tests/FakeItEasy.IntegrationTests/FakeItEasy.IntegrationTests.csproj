@@ -25,6 +25,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.Compilers" Version="3.8.0" />
     <ProjectReference Include="..\..\src\FakeItEasy\FakeItEasy.csproj" />
+    <ProjectReference Include="..\FakeItEasy.Tests.ExtensionPoints\FakeItEasy.Tests.ExtensionPoints.csproj" />
     <ProjectReference Include="..\FakeItEasy.Tests.TestHelpers\FakeItEasy.Tests.TestHelpers.csproj" />
   </ItemGroup>
 
