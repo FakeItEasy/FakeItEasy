@@ -88,9 +88,9 @@ namespace FakeItEasy.Core
 
                 foreach (var referencedAssemblyName in assembly.GetReferencedAssemblies())
                 {
-                    if (TryLoadAssemblyIfItReferencesFakeItEasy(referencedAssemblyName, out var referencedAssembly))
+                    if (TryLoadAssemblyIfItReferencesFakeItEasy(referencedAssemblyName, out var referencedAssembly) &&
+                        assembliesToScan.Add(referencedAssembly))
                     {
-                        assembliesToScan.Add(referencedAssembly);
                         if (!referencedAssembly.IsDynamic)
                         {
                             loadedAssemblyFiles.Add(referencedAssembly.Location);
@@ -132,11 +132,7 @@ namespace FakeItEasy.Core
             assembly = null;
             try
             {
-#if FEATURE_REFLECTIONONLYLOAD
-                assembly = Assembly.ReflectionOnlyLoadFrom(file);
-#else
                 assembly = Assembly.LoadFrom(file);
-#endif
             }
             catch (Exception ex)
             {
@@ -144,12 +140,7 @@ namespace FakeItEasy.Core
                 return false;
             }
 
-            if (!assembly.ReferencesFakeItEasy())
-            {
-                return false;
-            }
-
-            return TryFullyLoadAssembly(ref assembly);
+            return assembly.ReferencesFakeItEasy();
         }
 
         [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Appropriate in try methods.")]
@@ -158,11 +149,7 @@ namespace FakeItEasy.Core
             assembly = null;
             try
             {
-#if FEATURE_REFLECTIONONLYLOAD
-                assembly = Assembly.ReflectionOnlyLoad(assemblyName.ToString());
-#else
                 assembly = Assembly.Load(assemblyName);
-#endif
             }
             catch (Exception ex)
             {
@@ -170,35 +157,7 @@ namespace FakeItEasy.Core
                 return false;
             }
 
-            if (!assembly.ReferencesFakeItEasy())
-            {
-                return false;
-            }
-
-            return TryFullyLoadAssembly(ref assembly);
-        }
-
-        [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Appropriate in try methods.")]
-        [SuppressMessage("Microsoft.Design", "CA1801:ReviewUnusedParameters", Justification = "Only used when FEATURE_REFLECTIONONLYLOAD is set")]
-        private static bool TryFullyLoadAssembly([DisallowNull, NotNullWhen(true)] ref Assembly? assembly)
-        {
-#if FEATURE_REFLECTIONONLYLOAD
-            if (assembly.ReflectionOnly)
-            {
-                try
-                {
-                    assembly = Assembly.Load(assembly.GetName());
-                    return true;
-                }
-                catch (Exception ex)
-                {
-                    WarnFailedToLoadAssembly(assembly.GetName().ToString(), ex);
-                    assembly = null;
-                    return false;
-                }
-            }
-#endif
-            return true;
+            return assembly.ReferencesFakeItEasy();
         }
 
         private static void WarnFailedToLoadAssembly(string pathOrName, Exception ex)
