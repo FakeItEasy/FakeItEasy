@@ -16,12 +16,16 @@ Please see their individual documentation to learn how each of these is used.
 
 ## The scanning process
 
-On startup, FakeItEasy searches:
+On startup, FakeItEasy searches the following assemblies for classes that
+implement the various extensions points:
 
 * its own assembly,
-* assemblies already loaded in the current AppDomain and
+* assemblies already loaded in the current AppDomain, if they reference
+  FakeItEasy,
+* assemblies referenced by assemblies from the previous bullet point, if they
+  reference FakeItEasy,
 * additional assemblies identified by the [Bootstrapper](bootstrapper.md)'s
-  `GetAssemblyFileNamesToScanForExtensions` method
-  
-for classes that implement the various extensions points.  
+  `GetAssemblyFileNamesToScanForExtensions` method, if they reference
+  FakeItEasy.
+
 Any such classes found are added to a catalogue and used at need.

@@ -68,77 +68,103 @@ namespace FakeItEasy.Core
             return this.availableTypes;
         }
 
-        [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Appropriate in try methods.")]
         private static IEnumerable<Assembly> GetAllAssemblies(IEnumerable<string> extraAssemblyFiles)
         {
-            var loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies();
-            var loadedAssembliesReferencingFakeItEasy = loadedAssemblies.Where(assembly => assembly.ReferencesFakeItEasy());
+            var assembliesToScan = new HashSet<Assembly>();
+            var loadedAssemblyFiles = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-            // Find the paths of already loaded assemblies so we don't double scan them.
-            var loadedAssemblyFiles = new HashSet<string>(
-                loadedAssemblies
-#if FEATURE_REFLECTIONONLYLOAD
-                    // Exclude the ReflectionOnly assemblies because we may fully load them later.
-                    .Where(a => !a.ReflectionOnly)
-#endif
-                    .Where(a => !a.IsDynamic)
-                    .Select(a => a.Location),
-                StringComparer.OrdinalIgnoreCase);
-
-            // Skip assemblies that have already been loaded.
-            // This optimization can be fooled by test runners that make shadow copies of the assemblies but it's a start.
-            return GetAssemblies(extraAssemblyFiles.Except(loadedAssemblyFiles))
-                .Concat(loadedAssembliesReferencingFakeItEasy)
-                .Distinct();
-        }
-
-        [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Defensive and performed on best effort basis.")]
-        private static IEnumerable<Assembly> GetAssemblies(IEnumerable<string> files)
-        {
-            foreach (var file in files)
+            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
-                Assembly assembly;
-                try
-                {
-#if FEATURE_REFLECTIONONLYLOAD
-                    assembly = Assembly.ReflectionOnlyLoadFrom(file);
-#else
-                    assembly = Assembly.LoadFrom(file);
-#endif
-                }
-                catch (Exception ex)
-                {
-                    WarnFailedToLoadAssembly(file, ex);
-                    continue;
-                }
-
                 if (!assembly.ReferencesFakeItEasy())
                 {
                     continue;
                 }
 
-#if FEATURE_REFLECTIONONLYLOAD
-                // A reflection-only loaded assembly can't be scanned for types, so fully load it before returning it.
-                try
+                assembliesToScan.Add(assembly);
+                if (!assembly.IsDynamic)
                 {
-                    assembly = Assembly.Load(assembly.GetName());
+                    loadedAssemblyFiles.Add(assembly.Location);
                 }
-                catch (Exception ex)
+
+                foreach (var referencedAssemblyName in assembly.GetReferencedAssemblies())
                 {
-                    WarnFailedToLoadAssembly(file, ex);
+                    if (TryLoadAssemblyIfItReferencesFakeItEasy(referencedAssemblyName, out var referencedAssembly) &&
+                        assembliesToScan.Add(referencedAssembly))
+                    {
+                        if (!referencedAssembly.IsDynamic)
+                        {
+                            loadedAssemblyFiles.Add(referencedAssembly.Location);
+                        }
+                    }
+                }
+            }
+
+            // Skip assemblies that have already been loaded.
+            // This optimization can be fooled by test runners that make shadow copies of the assemblies but it's a start.
+            var extraAssemblies = GetAssemblies(extraAssemblyFiles.Except(loadedAssemblyFiles));
+            foreach (var assembly in extraAssemblies)
+            {
+                if (!assembly.ReferencesFakeItEasy())
+                {
                     continue;
                 }
-#endif
 
-                yield return assembly;
+                assembliesToScan.Add(assembly);
+            }
+
+            return assembliesToScan;
+        }
+
+        private static IEnumerable<Assembly> GetAssemblies(IEnumerable<string> files)
+        {
+            foreach (var file in files)
+            {
+                if (TryLoadAssemblyIfItReferencesFakeItEasy(file, out var assembly))
+                {
+                    yield return assembly;
+                }
             }
         }
 
-        private static void WarnFailedToLoadAssembly(string path, Exception ex)
+        [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Appropriate in try methods.")]
+        private static bool TryLoadAssemblyIfItReferencesFakeItEasy(string file, [NotNullWhen(true)] out Assembly? assembly)
+        {
+            assembly = null;
+            try
+            {
+                assembly = Assembly.LoadFrom(file);
+            }
+            catch (Exception ex)
+            {
+                WarnFailedToLoadAssembly(file, ex);
+                return false;
+            }
+
+            return assembly.ReferencesFakeItEasy();
+        }
+
+        [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Appropriate in try methods.")]
+        private static bool TryLoadAssemblyIfItReferencesFakeItEasy(AssemblyName assemblyName, [NotNullWhen(true)] out Assembly? assembly)
+        {
+            assembly = null;
+            try
+            {
+                assembly = Assembly.Load(assemblyName);
+            }
+            catch (Exception ex)
+            {
+                WarnFailedToLoadAssembly(assemblyName.ToString(), ex);
+                return false;
+            }
+
+            return assembly.ReferencesFakeItEasy();
+        }
+
+        private static void WarnFailedToLoadAssembly(string pathOrName, Exception ex)
         {
             Write(
                 ex,
-                $"Warning: FakeItEasy failed to load assembly '{path}' while scanning for extension points. Any IArgumentValueFormatters, IDummyFactories, and IFakeOptionsBuilders in that assembly will not be available.");
+                $"Warning: FakeItEasy failed to load assembly '{pathOrName}' while scanning for extension points. Any IArgumentValueFormatters, IDummyFactories, and IFakeOptionsBuilders in that assembly will not be available.");
         }
 
         private static void WarnFailedToGetTypes(Assembly assembly, Exception ex)
