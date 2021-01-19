@@ -50,6 +50,11 @@ namespace FakeItEasy.Configuration
         {
 <# GenerateMethodImplementations("IPropertySetterConfiguration"); #>
         }
+
+        private partial class PropertySetterAfterCallbackConfiguredAdapter
+        {
+<# GenerateMethodImplementations("IPropertySetterConfiguration"); #>
+        }
     }
 }
 <#+

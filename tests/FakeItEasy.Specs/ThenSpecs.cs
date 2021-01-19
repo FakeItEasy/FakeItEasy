@@ -18,6 +18,43 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
+        public static void VoidMethodWithInvokesAndDoesNothing(
+            IFoo foo,
+            Action action1,
+            Action action2)
+        {
+            "Given a fake"
+                .x(() => foo = A.Fake<IFoo>());
+
+            "And two delegates"
+                .x(() =>
+                {
+                    action1 = A.Fake<Action>();
+                    action2 = A.Fake<Action>();
+                });
+
+            // Before FakeItEasy 7, the Fluent API did not consider a call that had only Invokes applied to be
+            // "configured", so the DoesNothing action was required to enable the Once/Then operation. This test
+            // ensures we don't accidentally surprise clients by breaking their call chains.
+            "When a void method is configured to invoke a delegate once, do nothing, and then invoke another delegate"
+                .x(() =>
+                    A.CallTo(() => foo.Bar()).Invokes(action1).DoesNothing().Once()
+                        .Then.Invokes(action2));
+
+            "And the method is called 3 times"
+                .x(() =>
+                {
+                    foo.Bar();
+                    foo.Bar();
+                    foo.Bar();
+                });
+
+            "Then the first delegate is invoked once, and the second delegate is invoked twice"
+                .x(() => A.CallTo(() => action1()).MustHaveHappenedOnceExactly()
+                    .Then(A.CallTo(() => action2()).MustHaveHappenedTwiceExactly()));
+        }
+
+        [Scenario]
         public static void VoidMethodWithInvokes(
             IFoo foo,
             Action action1,
@@ -35,7 +72,7 @@ namespace FakeItEasy.Specs
 
             "When a void method is configured to invoke a delegate once then invoke another delegate"
                 .x(() =>
-                    A.CallTo(() => foo.Bar()).Invokes(action1).DoesNothing().Once()
+                    A.CallTo(() => foo.Bar()).Invokes(action1).Once()
                         .Then.Invokes(action2));
 
             "And the method is called 3 times"
@@ -65,7 +102,7 @@ namespace FakeItEasy.Specs
 
             "When a void method is configured to invoke a delegate twice then throw an exception"
                 .x(() =>
-                    A.CallTo(() => foo.Bar()).Invokes(action).DoesNothing().Twice()
+                    A.CallTo(() => foo.Bar()).Invokes(action).Twice()
                         .Then.Throws<InvalidOperationException>());
 
             "And the method is called 3 times"
@@ -135,8 +172,8 @@ namespace FakeItEasy.Specs
 
             "When any method is configured to invoke a delegate once, then another delegate twice, then throw an exception"
                 .x(() =>
-                    A.CallTo(foo).Invokes(action1).DoesNothing().Once()
-                        .Then.Invokes(action2).DoesNothing().Twice()
+                    A.CallTo(foo).Invokes(action1).Once()
+                        .Then.Invokes(action2).Twice()
                         .Then.Throws<InvalidOperationException>());
 
             "And 4 calls are made on the fake"

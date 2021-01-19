@@ -544,6 +544,36 @@ namespace FakeItEasy.Specs
                 .x(() => wasConfiguredBehaviorUsed.Should().BeTrue());
         }
 
+        [Scenario]
+        public static void ConfiguringSetterToInvokeACallbackAndThenAnother(IHaveInterestingProperties subject, bool wasFirstCallMade, bool wasSecondCallMade)
+        {
+            "Given an interface with a read/write property"
+                .See<IHaveInterestingProperties>();
+
+            "And a Fake created from interface"
+                .x(() => subject = A.Fake<IHaveInterestingProperties>());
+
+            "And assignment of the property is configured to invoke a callback once, then another"
+                .x(() => A.CallToSet(() => subject.ReadWriteProperty)
+                    .Invokes(() => wasFirstCallMade = true).Once().Then
+                    .Invokes(() => wasSecondCallMade = true));
+
+            "When I assign a value to the property"
+                .x(() => subject.ReadWriteProperty = 0);
+
+            "Then the first configured callback is executed"
+                .x(() => wasFirstCallMade.Should().BeTrue());
+
+            "And then the second configured callback is not executed"
+                .x(() => wasSecondCallMade.Should().BeFalse());
+
+            "And when I assign another value to the property"
+                .x(() => subject.ReadWriteProperty = 1);
+
+            "Then the second configured callback is executed"
+                .x(() => wasSecondCallMade.Should().BeTrue());
+        }
+
         public class ClassWithInterestingProperties
         {
 #pragma warning disable 649

@@ -127,7 +127,7 @@ namespace FakeItEasy.Tests.Configuration
             Action<IFakeObjectCall> invocation = x => { };
 
             var factoryConfig = this.StubVoidConfig();
-            var invokesConfig = A.Fake<IVoidConfiguration>();
+            var invokesConfig = A.Fake<IVoidAfterCallbackConfiguredConfiguration>();
 
             A.CallTo(() => factoryConfig.Invokes(invocation)).Returns(invokesConfig);
 
