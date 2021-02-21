@@ -48,12 +48,12 @@ namespace FakeItEasy.Configuration
 <# GenerateMethodImplementations("IPropertySetterConfiguration"); #>
         private partial class PropertySetterAdapter
         {
-<# GenerateMethodImplementations("IPropertySetterConfiguration"); #>
+<# GenerateMethodImplementations("IPropertySetterConfiguration", "    "); #>
         }
 
         private partial class PropertySetterAfterCallbackConfiguredAdapter
         {
-<# GenerateMethodImplementations("IPropertySetterConfiguration"); #>
+<# GenerateMethodImplementations("IPropertySetterConfiguration", "    "); #>
         }
     }
 }
