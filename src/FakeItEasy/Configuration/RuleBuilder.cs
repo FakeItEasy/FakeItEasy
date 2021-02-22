@@ -9,6 +9,7 @@ namespace FakeItEasy.Configuration
 
     internal partial class RuleBuilder
         : IAnyCallConfigurationWithVoidReturnType,
+          IVoidAfterCallbackConfiguredConfiguration,
           IAfterCallConfiguredWithOutAndRefParametersConfiguration<IVoidConfiguration>,
           IThenConfiguration<IVoidConfiguration>
     {
@@ -93,7 +94,7 @@ namespace FakeItEasy.Configuration
             return this;
         }
 
-        public virtual IVoidConfiguration Invokes(Action<IFakeObjectCall> action)
+        public virtual IVoidAfterCallbackConfiguredConfiguration Invokes(Action<IFakeObjectCall> action)
         {
             Guard.AgainstNull(action, nameof(action));
 

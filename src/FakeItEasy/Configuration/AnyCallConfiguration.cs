@@ -48,7 +48,7 @@ namespace FakeItEasy.Configuration
         public IAfterCallConfiguredConfiguration<IVoidConfiguration> Throws<T>() where T : Exception, new() =>
             this.Throws<IVoidConfiguration, T>();
 
-        public IVoidConfiguration Invokes(Action<IFakeObjectCall> action) => this.VoidConfiguration.Invokes(action);
+        public IVoidAfterCallbackConfiguredConfiguration Invokes(Action<IFakeObjectCall> action) => this.VoidConfiguration.Invokes(action);
 
         public IAfterCallConfiguredConfiguration<IVoidConfiguration> CallsBaseMethod() =>
             this.VoidConfiguration.CallsBaseMethod();

@@ -40,12 +40,12 @@ namespace FakeItEasy.Configuration
         public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> Throws<T>() where T : Exception, new() =>
             this.Throws<IPropertySetterConfiguration, T>();
 
-        public IPropertySetterConfiguration Invokes(Action<IFakeObjectCall> action)
+        public IPropertySetterAfterCallbackConfiguredConfiguration Invokes(Action<IFakeObjectCall> action)
         {
             var voidConfiguration = this.CreateArgumentValidationConfiguration(this.parsedSetterExpression)
                 .Invokes(action);
 
-            return AsPropertySetterConfiguration(voidConfiguration);
+            return AsPropertySetterAfterCallbackConfiguredConfiguration(voidConfiguration);
         }
 
         public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> CallsBaseMethod() =>
@@ -85,6 +85,10 @@ namespace FakeItEasy.Configuration
         private static IPropertySetterConfiguration AsPropertySetterConfiguration(
                 IVoidConfiguration voidArgumentValidationConfiguration) =>
             new PropertySetterAdapter(voidArgumentValidationConfiguration);
+
+        private static IPropertySetterAfterCallbackConfiguredConfiguration AsPropertySetterAfterCallbackConfiguredConfiguration(
+                IVoidAfterCallbackConfiguredConfiguration voidArgumentValidationConfiguration) =>
+            new PropertySetterAfterCallbackConfiguredAdapter(voidArgumentValidationConfiguration);
 
         private ParsedCallExpression CreateSetterExpressionWithNewValue(Expression<Func<TValue>> valueExpression)
         {
@@ -145,11 +149,42 @@ namespace FakeItEasy.Configuration
             public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> DoesNothing() =>
                 new PropertySetterAfterCallConfiguredAdapter(this.voidConfiguration.DoesNothing());
 
-            public IPropertySetterConfiguration Invokes(Action<IFakeObjectCall> action)
+            public IPropertySetterAfterCallbackConfiguredConfiguration Invokes(Action<IFakeObjectCall> action) =>
+                AsPropertySetterAfterCallbackConfiguredConfiguration(this.voidConfiguration.Invokes(action));
+        }
+
+        private partial class PropertySetterAfterCallbackConfiguredAdapter : IPropertySetterAfterCallbackConfiguredConfiguration
+        {
+            private IVoidAfterCallbackConfiguredConfiguration voidConfiguration;
+
+            public PropertySetterAfterCallbackConfiguredAdapter(IVoidAfterCallbackConfiguredConfiguration voidArgumentValidationConfiguration)
+            {
+                this.voidConfiguration = voidArgumentValidationConfiguration;
+            }
+
+            public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> Throws(Func<IFakeObjectCall, Exception> exceptionFactory) =>
+                new PropertySetterAfterCallConfiguredAdapter(this.voidConfiguration.Throws(exceptionFactory));
+
+            public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> Throws<T>() where T : Exception, new() =>
+                this.Throws<IPropertySetterConfiguration, T>();
+
+            public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> CallsBaseMethod() =>
+                new PropertySetterAfterCallConfiguredAdapter(this.voidConfiguration.CallsBaseMethod());
+
+            public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> CallsWrappedMethod() =>
+                new PropertySetterAfterCallConfiguredAdapter(this.voidConfiguration.CallsWrappedMethod());
+
+            public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> DoesNothing() =>
+                new PropertySetterAfterCallConfiguredAdapter(this.voidConfiguration.DoesNothing());
+
+            public IPropertySetterAfterCallbackConfiguredConfiguration Invokes(Action<IFakeObjectCall> action)
             {
                 this.voidConfiguration = this.voidConfiguration.Invokes(action);
                 return this;
             }
+
+            public IThenConfiguration<IPropertySetterConfiguration> NumberOfTimes(int numberOfTimes) =>
+                new PropertySetterThenAdapter(this.voidConfiguration.NumberOfTimes(numberOfTimes));
         }
 
         private class PropertySetterAfterCallConfiguredAdapter : IAfterCallConfiguredConfiguration<IPropertySetterConfiguration>
