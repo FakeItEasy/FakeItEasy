@@ -32,6 +32,13 @@ namespace FakeItEasy
         [System.CLSCompliant(false)]
         public static T _ { get; }
     }
+    public static class An<T>
+    {
+        public static T Ignored { get; }
+        public static FakeItEasy.INegatableArgumentConstraintManager<T> That { get; }
+        [System.CLSCompliant(false)]
+        public static T _ { get; }
+    }
     public static class ArgumentConstraintManagerExtensions
     {
         public static string Contains(this FakeItEasy.IArgumentConstraintManager<string> manager, string value) { }
