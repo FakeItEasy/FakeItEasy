@@ -8,7 +8,7 @@ namespace FakeItEasy
     /// Provides an API entry point for constraining arguments of fake object calls.
     /// </summary>
     /// <typeparam name="T">The type of argument to validate.</typeparam>
-    /// <remarks>This is a synonym of <see cref="A{T}"/>, to enable proper grammar when the type of T starts with a vowel sound.</remarks>
+    /// <remarks>If desired, <see cref="A{T}"/> may be used to specify constraints on types whose names begin with a consonant sound.</remarks>
     public static class An<T>
     {
         /// <summary>
