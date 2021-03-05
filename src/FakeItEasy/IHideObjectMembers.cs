@@ -28,7 +28,6 @@ namespace FakeItEasy
         /// <c>true</c> if the specified <see cref="object"/> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "o", Justification = "Uses the same name as the hidden method.")]
         bool Equals(object? o);
 
         /// <summary>

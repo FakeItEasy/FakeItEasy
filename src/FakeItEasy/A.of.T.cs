@@ -8,7 +8,6 @@ namespace FakeItEasy
     /// Provides an API entry point for constraining arguments of fake object calls.
     /// </summary>
     /// <typeparam name="T">The type of argument to validate.</typeparam>
-    [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = nameof(A), Justification = "It is spelled correctly.")]
     public static class A<T>
     {
         /// <summary>
@@ -23,7 +22,6 @@ namespace FakeItEasy
         /// </summary>
         /// <remarks>This is a shortcut for the "Ignored"-property.</remarks>
         [SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes", Justification = "This is a special case where the type parameter acts as an entry point into the fluent api.")]
-        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "_", Justification = "Some trickery is allowed, isn't it?")]
         [SuppressMessage("Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores", Justification = "But it's kinda cool right?")]
         [EditorBrowsable(EditorBrowsableState.Never)]
         [CLSCompliant(false)]

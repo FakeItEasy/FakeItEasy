@@ -12,7 +12,6 @@ namespace FakeItEasy
     /// <summary>
     /// Provides methods for generating fake objects.
     /// </summary>
-    [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = nameof(A), Justification = "Is spelled correctly.")]
     public static class A
     {
         private static FakeAndDummyManager FakeAndDummyManager =>
