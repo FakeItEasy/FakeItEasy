@@ -53,7 +53,7 @@ An underscore (`_`) can be used as a shorthand for `Ignored` as well:
 A.CallTo(() => foo.Bar("hello", A<int>._)).MustHaveHappened();
 ```
 
-# More convenience matchers
+## More convenience matchers
 
 If more complicated constraints are needed, the `That` method can be
 used. There are a few built-in matchers:
@@ -110,6 +110,20 @@ events in the context of an `A.CallTo`.
 
 So, tempting as it might be to save one of the constraints away in a
 handy variable, don't do it.
+
+## Using correct grammar
+
+FakeItEasy's API attempts to imitate the English language, so that call
+configurations and assertions read naturally. In that spirit, it's
+possible to use `An<T>` instead of `A<T>` for types whose name starts
+with a vowel sound. For instance:
+
+```csharp
+An<Apple>.That.Matches(a => a.Color == "Red")
+```
+
+`A<T>` and `An<T>` are exact synonyms and can be used exactly the same
+way.
 
 # `out` parameters
 

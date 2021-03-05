@@ -3,14 +3,12 @@ namespace FakeItEasy.Sdk
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using FakeItEasy.Creation;
 
     /// <summary>
     /// Provides methods for generating fake objects.
     /// </summary>
-    [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = nameof(A), Justification = "Is spelled correctly.")]
     public static class Create
     {
         private static FakeAndDummyManager FakeAndDummyManager =>
