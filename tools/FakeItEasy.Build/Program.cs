@@ -1,16 +1,16 @@
 namespace FakeItEasy.Build
 {
+    using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Text;
-    using System.Text.RegularExpressions;
     using System.Xml.Linq;
     using SimpleExec;
     using static Bullseye.Targets;
     using static SimpleExec.Command;
 
-    public class Program
+    public static class Program
     {
         private static readonly Project[] ProjectsToPack =
         {
@@ -68,7 +68,7 @@ namespace FakeItEasy.Build
                     {
                         foreach (var received in Directory.EnumerateFiles("tests/FakeItEasy.Tests.Approval/ApprovedApi", "*.received.txt", SearchOption.AllDirectories))
                         {
-                            File.Copy(received, received.Replace(".received.txt", ".approved.txt"), overwrite: true);
+                            File.Copy(received, received.Replace(".received.txt", ".approved.txt", StringComparison.OrdinalIgnoreCase), overwrite: true);
                         }
                     });
 
