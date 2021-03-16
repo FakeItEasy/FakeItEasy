@@ -130,7 +130,7 @@ namespace FakeItEasy
         {
             configuration.ReturnsLazily(x =>
             {
-                queue.TryDequeue(out T returnValue);
+                queue.TryDequeue(out T? returnValue);
                 return returnValue!;
             }).NumberOfTimes(queue.Count);
         }

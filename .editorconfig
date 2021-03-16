@@ -36,6 +36,7 @@ indent_size = 2
 
 [*.cs]
 dotnet_diagnostic.CA1305.severity = none    # The behavior of parsing or formatting method could vary based on the current user's locale settings
+dotnet_diagnostic.CA2237.severity = none    # Mark ISerializable types with SerializableAttribute
 dotnet_diagnostic.SA1124.severity = warning # Do not use regions
 dotnet_diagnostic.SA1127.severity = none    # Generic type constraints should be on their own line
 dotnet_diagnostic.SA1413.severity = none    # Use trailing comma in multi-line initializers
