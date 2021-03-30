@@ -79,23 +79,30 @@ namespace FakeItEasy.Expressions
 
         private static LambdaExpression ReplaceParameterWithFake(LambdaExpression callExpression, object fake)
         {
-            var visitor = new ParameterValueReplacementVisitor(fake);
+            var visitor = new ParameterValueReplacementVisitor(callExpression.Parameters[0], fake);
             return Expression.Lambda(visitor.Visit(callExpression.Body));
         }
 
         private class ParameterValueReplacementVisitor : ExpressionVisitor
         {
+            private readonly ParameterExpression parameterToReplace;
             private readonly object fake;
 
-            public ParameterValueReplacementVisitor(object fake)
+            public ParameterValueReplacementVisitor(ParameterExpression parameterToReplace, object fake)
             {
+                this.parameterToReplace = parameterToReplace;
                 this.fake = fake;
             }
 
             [SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", MessageId = "0", Justification = "It's not public, and will never be called with a null value")]
             protected override Expression VisitParameter(ParameterExpression node)
             {
-                return Expression.Constant(this.fake, node.Type);
+                if (Equals(node, this.parameterToReplace))
+                {
+                    return Expression.Constant(this.fake, node.Type);
+                }
+
+                return node;
             }
         }
     }
