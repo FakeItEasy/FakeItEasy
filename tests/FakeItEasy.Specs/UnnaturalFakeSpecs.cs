@@ -16,6 +16,8 @@
             void VoidMethod();
 
             int MethodWithResult();
+
+            int MethodThatTakesAnInt(int i);
         }
 
         [Scenario]
@@ -266,6 +268,22 @@
                 .x(() => exception
                         .Should().BeAnExceptionOfType<ArgumentException>()
                         .And.Message.Should().Be("The target of this call is not the fake object being configured."));
+        }
+
+        [Scenario]
+        public static void ArgumentConstraintMatches(Fake<IFoo> fake, int result)
+        {
+            "Given an unnatural fake"
+                .x(() => fake = new Fake<IFoo>());
+
+            "And I configure method to return a value using That.Matches"
+                .x(() => fake.CallsTo(f => f.MethodThatTakesAnInt(A<int>.That.Matches(i => i % 2 == 1))).Returns(9));
+
+            "When I call the method on the faked object with a matching argument"
+                .x(() => result = fake.FakedObject.MethodThatTakesAnInt(1111));
+
+            "Then it returns the configured value"
+                .x(() => result.Should().Be(9));
         }
 
         public class AClass
