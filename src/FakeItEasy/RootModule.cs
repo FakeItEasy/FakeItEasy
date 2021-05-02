@@ -67,6 +67,8 @@ namespace FakeItEasy
 
             var configurationFactory = new ConfigurationFactory(RuleBuilderFactory);
 
+            var proxyOptionsFactory = new ProxyOptionsFactory(implicitOptionsBuilderCatalogue);
+
             registrar.Register<IExpressionCallMatcherFactory>(new ExpressionCallMatcherFactory(expressionArgumentConstraintFactory, methodInfoManager));
 
             registrar.Register(expressionArgumentConstraintFactory);
@@ -75,7 +77,7 @@ namespace FakeItEasy
                 new FakeAndDummyManager(
                     new DummyValueResolver(new DynamicDummyFactory(dummyFactories), fakeObjectCreator),
                     fakeObjectCreator,
-                    implicitOptionsBuilderCatalogue));
+                    proxyOptionsFactory));
 
             registrar.Register<IArgumentConstraintManagerFactory>(new ArgumentConstraintManagerFactory());
 
