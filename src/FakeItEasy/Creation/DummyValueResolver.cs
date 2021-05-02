@@ -20,7 +20,8 @@ namespace FakeItEasy.Creation
         /// </summary>
         /// <param name="dummyFactory">The dummy factory.</param>
         /// <param name="fakeObjectCreator">The fake object creator.</param>
-        public DummyValueResolver(DynamicDummyFactory dummyFactory, IFakeObjectCreator fakeObjectCreator)
+        /// <param name="proxyOptionsFactory">The proxy options factory.</param>
+        public DummyValueResolver(DynamicDummyFactory dummyFactory, IFakeObjectCreator fakeObjectCreator, IProxyOptionsFactory proxyOptionsFactory)
         {
             this.strategyCache = new ConcurrentDictionary<Type, ResolveStrategy>();
             this.strategies = new ResolveStrategy[]
@@ -30,7 +31,7 @@ namespace FakeItEasy.Creation
                     new ResolveByCreatingLazyStrategy(),
                     new ResolveByCreatingTupleStrategy(),
                     new ResolveByActivatingValueTypeStrategy(),
-                    new ResolveByCreatingFakeStrategy(fakeObjectCreator),
+                    new ResolveByCreatingFakeStrategy(fakeObjectCreator, proxyOptionsFactory),
                     new ResolveByInstantiatingClassUsingDummyValuesAsConstructorArgumentsStrategy()
                 };
         }
@@ -102,21 +103,25 @@ namespace FakeItEasy.Creation
 
         private class ResolveByCreatingFakeStrategy : ResolveStrategy
         {
-            public ResolveByCreatingFakeStrategy(IFakeObjectCreator fakeCreator)
+            public ResolveByCreatingFakeStrategy(IFakeObjectCreator fakeCreator, IProxyOptionsFactory proxyOptionsFactory)
             {
                 this.FakeCreator = fakeCreator;
+                this.ProxyOptionsFactory = proxyOptionsFactory;
             }
 
             private IFakeObjectCreator FakeCreator { get; }
+
+            private IProxyOptionsFactory ProxyOptionsFactory { get; }
 
             public override CreationResult TryCreateDummyValue(
                 Type typeOfDummy,
                 IDummyValueResolver resolver,
                 LoopDetectingResolutionContext resolutionContext)
             {
+                var proxyOptions = this.ProxyOptionsFactory.BuildProxyOptions(typeOfDummy, null);
                 return this.FakeCreator.CreateFakeWithoutLoopDetection(
                     typeOfDummy,
-                    new ProxyOptions(),
+                    proxyOptions,
                     resolver,
                     resolutionContext);
             }

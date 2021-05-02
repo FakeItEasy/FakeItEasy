@@ -75,7 +75,7 @@ namespace FakeItEasy
 
             registrar.Register<FakeAndDummyManager>(
                 new FakeAndDummyManager(
-                    new DummyValueResolver(new DynamicDummyFactory(dummyFactories), fakeObjectCreator),
+                    new DummyValueResolver(new DynamicDummyFactory(dummyFactories), fakeObjectCreator, proxyOptionsFactory),
                     fakeObjectCreator,
                     proxyOptionsFactory));
 
