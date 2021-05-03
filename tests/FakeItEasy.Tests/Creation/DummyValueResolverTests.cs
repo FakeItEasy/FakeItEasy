@@ -13,10 +13,12 @@ namespace FakeItEasy.Tests.Creation
     public class DummyValueResolverTests
     {
         private readonly IFakeObjectCreator fakeObjectCreator;
+        private readonly IProxyOptionsFactory proxyOptionsFactory;
 
         public DummyValueResolverTests()
         {
             this.fakeObjectCreator = A.Fake<IFakeObjectCreator>();
+            this.proxyOptionsFactory = A.Fake<IProxyOptionsFactory>();
             A.CallTo(() => this.fakeObjectCreator.CreateFakeWithoutLoopDetection(
                     A<Type>._,
                     A<IProxyOptions>._,
@@ -47,7 +49,8 @@ namespace FakeItEasy.Tests.Creation
             // Arrange
             var resolver = new DummyValueResolver(
                 this.CreateDummyFactoryThatMakes(dummyForContainer),
-                this.fakeObjectCreator);
+                this.fakeObjectCreator,
+                this.proxyOptionsFactory);
 
             // Act
             var result = resolver.TryResolveDummyValue(dummyForContainer.GetType(), new LoopDetectingResolutionContext());
@@ -63,7 +66,8 @@ namespace FakeItEasy.Tests.Creation
             // Arrange
             var resolver = new DummyValueResolver(
                 this.CreateDummyFactoryThatMakesNoDummy(),
-                this.fakeObjectCreator);
+                this.fakeObjectCreator,
+                this.proxyOptionsFactory);
 
             // Act
             var result = resolver.TryResolveDummyValue(
@@ -82,7 +86,8 @@ namespace FakeItEasy.Tests.Creation
             this.StubFakeObjectCreatorWithValue(fake);
             var resolver = new DummyValueResolver(
                 this.CreateDummyFactoryThatMakesNoDummy(),
-                this.fakeObjectCreator);
+                this.fakeObjectCreator,
+                this.proxyOptionsFactory);
 
             // Act
             var result = resolver.TryResolveDummyValue(typeof(IFoo), new LoopDetectingResolutionContext());
@@ -98,7 +103,8 @@ namespace FakeItEasy.Tests.Creation
             // Arrange
             var resolver = new DummyValueResolver(
                 this.CreateDummyFactoryThatMakesNoDummy(),
-                this.fakeObjectCreator);
+                this.fakeObjectCreator,
+                this.proxyOptionsFactory);
 
             // Act
             var result = resolver.TryResolveDummyValue(typeof(int), new LoopDetectingResolutionContext());
@@ -114,7 +120,8 @@ namespace FakeItEasy.Tests.Creation
             // Arrange
             var resolver = new DummyValueResolver(
                 this.CreateDummyFactoryThatMakesNoDummy(),
-                this.fakeObjectCreator);
+                this.fakeObjectCreator,
+                this.proxyOptionsFactory);
 
             // Act
             var result = resolver.TryResolveDummyValue(
@@ -133,7 +140,8 @@ namespace FakeItEasy.Tests.Creation
             this.StubFakeObjectCreatorWithValue(A.Fake<IFoo>());
             var resolver = new DummyValueResolver(
                 this.CreateDummyFactoryThatMakes("dummy string"),
-                this.fakeObjectCreator);
+                this.fakeObjectCreator,
+                this.proxyOptionsFactory);
 
             // Act
             var result = resolver.TryResolveDummyValue(
@@ -151,7 +159,8 @@ namespace FakeItEasy.Tests.Creation
             // Arrange
             var resolver = new DummyValueResolver(
                 this.CreateDummyFactoryThatMakesNoDummy(),
-                this.fakeObjectCreator);
+                this.fakeObjectCreator,
+                this.proxyOptionsFactory);
 
             // Act
             var result = resolver.TryResolveDummyValue(
@@ -168,7 +177,8 @@ namespace FakeItEasy.Tests.Creation
             // Arrange
             var resolver = new DummyValueResolver(
                 this.CreateDummyFactoryThatMakes("dummy value"),
-                this.fakeObjectCreator);
+                this.fakeObjectCreator,
+                this.proxyOptionsFactory);
 
             resolver.TryResolveDummyValue(typeof(string), new LoopDetectingResolutionContext());
 
@@ -186,7 +196,8 @@ namespace FakeItEasy.Tests.Creation
             // Arrange
             var resolver = new DummyValueResolver(
                 this.CreateDummyFactoryThatMakesNoDummy(),
-                this.fakeObjectCreator);
+                this.fakeObjectCreator,
+                this.proxyOptionsFactory);
 
             // Act
             var result = resolver.TryResolveDummyValue(
@@ -203,7 +214,8 @@ namespace FakeItEasy.Tests.Creation
             // Arrange
             var resolver = new DummyValueResolver(
                 this.CreateDummyFactoryThatMakes("dummy value"),
-                this.fakeObjectCreator);
+                this.fakeObjectCreator,
+                this.proxyOptionsFactory);
 
             // Act
             var result = resolver.TryResolveDummyValue(
@@ -225,7 +237,8 @@ namespace FakeItEasy.Tests.Creation
             // Arrange
             var resolver = new DummyValueResolver(
                 this.CreateDummyFactoryThatMakesNoDummy(),
-                this.fakeObjectCreator);
+                this.fakeObjectCreator,
+                this.proxyOptionsFactory);
 
             // Act
             var result = resolver.TryResolveDummyValue(restrictedType, new LoopDetectingResolutionContext());
@@ -242,7 +255,8 @@ namespace FakeItEasy.Tests.Creation
             this.StubFakeObjectCreatorWithValue(fake);
             var resolver = new DummyValueResolver(
                 this.CreateDummyFactoryThatMakesNoDummy(),
-                this.fakeObjectCreator);
+                this.fakeObjectCreator,
+                this.proxyOptionsFactory);
 
             // Act
             var result = resolver.TryResolveDummyValue(typeof(Lazy<IFoo>), new LoopDetectingResolutionContext());

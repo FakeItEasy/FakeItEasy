@@ -8,6 +8,7 @@ namespace FakeItEasy.Specs
     using System.Threading;
     using System.Threading.Tasks;
     using FakeItEasy.Core;
+    using FakeItEasy.Creation;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using Xbehave;
@@ -664,6 +665,25 @@ namespace FakeItEasy.Specs
                 .x(() => dummy.Should().NotBeNull());
         }
 
+        [Scenario]
+        public void CreateDummyFakeWithCreationOptions(IDummyInterfaceWithFakeCreationOptions dummy)
+        {
+            "Given a fakeable interface type"
+                .See<IDummyInterfaceWithFakeCreationOptions>();
+
+            "And a fake options builder for that type"
+                .See<DummyInterfaceOptionsBuilder>();
+
+            "When a dummy of that type is requested"
+                .x(() => dummy = this.CreateDummy<IDummyInterfaceWithFakeCreationOptions>());
+
+            "Then it returns a fake of that type"
+                .x(() => dummy.Should().BeAFake());
+
+            "And the implicit creation options are applied to that fake"
+                .x(() => dummy.GetValue().Should().Be(42));
+        }
+
         public class ClassWithNoPublicConstructors
         {
             private ClassWithNoPublicConstructors()
@@ -851,6 +871,22 @@ namespace FakeItEasy.Specs
             [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "unused", Justification = "This is just a dummy argument.")]
             public ClassThatRequiresClassWhoseDummyIsNull(ClassWhoseDummyIsNull unused)
             {
+            }
+        }
+
+        public interface IDummyInterfaceWithFakeCreationOptions
+        {
+            int GetValue();
+        }
+
+        public class DummyInterfaceOptionsBuilder : FakeOptionsBuilder<IDummyInterfaceWithFakeCreationOptions>
+        {
+            protected override void BuildOptions(IFakeOptions<IDummyInterfaceWithFakeCreationOptions> options)
+            {
+                options.ConfigureFake(fake =>
+                {
+                    A.CallTo(() => fake.GetValue()).Returns(42);
+                });
             }
         }
     }
