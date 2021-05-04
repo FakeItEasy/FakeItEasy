@@ -118,5 +118,8 @@ namespace FakeItEasy
 
         public static string NotAnInterface(Type interfaceType) =>
             $"The specified type {interfaceType} is not an interface";
+
+        public static string FailedToFakeValueType(Type fakeType) =>
+            $"Failed to create Fake of type {fakeType} because it's a value type.";
     }
 }
