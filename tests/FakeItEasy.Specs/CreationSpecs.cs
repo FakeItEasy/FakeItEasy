@@ -807,10 +807,8 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Should().BeOfType<FakeCreationException>());
 
             "And the exception message indicates the reason for failure"
-                .x(() => exception.Message.Should().StartWithModuloLineEndings(@"
-  Failed to create fake of type FakeItEasy.Specs.CreationSpecsBase+Struct:
-    The type of proxy must be an interface or a class but it was FakeItEasy.Specs.CreationSpecsBase+Struct.
-"));
+                .x(() => exception.Message.Should()
+                    .Be("Failed to create Fake of type FakeItEasy.Specs.CreationSpecsBase+Struct because it's a value type."));
         }
 
         [Scenario]
@@ -826,10 +824,8 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Should().BeOfType<FakeCreationException>());
 
             "And the exception message indicates the reason for failure"
-                .x(() => exception.Message.Should().StartWithModuloLineEndings(@"
-  Failed to create fake of type FakeItEasy.Specs.CreationSpecsBase+Struct:
-    The type of proxy must be an interface or a class but it was FakeItEasy.Specs.CreationSpecsBase+Struct.
-"));
+                .x(() => exception.Message.Should()
+                    .Be("Failed to create Fake of type FakeItEasy.Specs.CreationSpecsBase+Struct because it's a value type."));
         }
 
         protected override T CreateFake<T>()

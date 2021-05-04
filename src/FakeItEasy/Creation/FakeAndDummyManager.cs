@@ -1,6 +1,7 @@
 namespace FakeItEasy.Creation
 {
     using System;
+    using FakeItEasy.Core;
 
     internal class FakeAndDummyManager
     {
@@ -32,6 +33,11 @@ namespace FakeItEasy.Creation
             Action<IFakeOptions> optionsBuilder,
             LoopDetectingResolutionContext resolutionContext)
         {
+            if (typeOfFake.IsValueType)
+            {
+                throw new FakeCreationException(ExceptionMessages.FailedToFakeValueType(typeOfFake));
+            }
+
             var proxyOptions = this.proxyOptionsFactory.BuildProxyOptions(typeOfFake, optionsBuilder);
             return this.fakeCreator.CreateFake(typeOfFake, proxyOptions, this.dummyValueResolver, resolutionContext).Result !;
         }
