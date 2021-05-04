@@ -813,6 +813,25 @@ namespace FakeItEasy.Specs
 "));
         }
 
+        [Scenario]
+        public void StructCannotBeFakedWithOptions(Exception exception)
+        {
+            "Given a struct"
+                .See<Struct>();
+
+            "When I create a fake of the struct supplying fake creation options"
+                .x(() => exception = Record.Exception(() => (Struct)Sdk.Create.Fake(typeof(Struct), options => { })));
+
+            "Then it throws a fake creation exception"
+                .x(() => exception.Should().BeOfType<FakeCreationException>());
+
+            "And the exception message indicates the reason for failure"
+                .x(() => exception.Message.Should().StartWithModuloLineEndings(@"
+  Failed to create fake of type FakeItEasy.Specs.CreationSpecsBase+Struct:
+    The type of proxy must be an interface or a class but it was FakeItEasy.Specs.CreationSpecsBase+Struct.
+"));
+        }
+
         protected override T CreateFake<T>()
         {
             return (T)Sdk.Create.Fake(typeof(T));
