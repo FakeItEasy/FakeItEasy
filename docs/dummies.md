@@ -79,7 +79,6 @@ of approaches in turn, until one succeeds:
 1. If `T` is a tuple type (`Tuple<>` or `ValueTuple<>`), the Dummy will
 be a tuple whose elements are dummies, or default values when dummies
 can't be made.
-  `Activator.CreateInstance`.
 1. If `T` is a value type, the Dummy will be a `T` created via
   `Activator.CreateInstance`.
 1. If `T` is [fakeable](what-can-be-faked.md), the Dummy will be a
