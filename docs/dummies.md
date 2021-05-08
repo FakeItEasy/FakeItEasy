@@ -79,16 +79,15 @@ of approaches in turn, until one succeeds:
 1. If `T` is a tuple type (`Tuple<>` or `ValueTuple<>`), the Dummy will
 be a tuple whose elements are dummies, or default values when dummies
 can't be made.
-1. If `T` is a value type, the Dummy will be a `T` created via
-  `Activator.CreateInstance`.
+1. If `T` is a value type, the Dummy will be the default value for that type (i.e. `new T()`).
 1. If `T` is [fakeable](what-can-be-faked.md), the Dummy will be a
   Fake `T`.
 1. If nothing above matched, then `T` is a class. Loop over all its
   public constructors in _descending order of argument list length_.
   For each constructor, attempt to get Dummies to satisfy the argument
-  list. If the Dummies can be found, use `Activator.CreateInstance` to
-  create the Dummy, supplying the Dummies as the argument list. If the
-  argument list can't be satisfied, then try the next constructor.
+  list. If the Dummies can be found, create an instance using that constructor,
+  supplying the Dummies as the argument list. If the argument list can't be satisfied,
+  then try the next constructor.
 
 If none of these strategies yield a viable Dummy, then FakeItEasy
 can't make a Dummy of type `T`.
