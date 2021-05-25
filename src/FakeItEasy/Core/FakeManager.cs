@@ -31,6 +31,8 @@ namespace FakeItEasy.Core
 
         private EventCallHandler? eventCallHandler;
 
+        private CallRuleMetadata[]? initialUserRules;
+
         private ConcurrentQueue<CompletedFakeObjectCall> recordedCalls;
 
         private int lastSequenceNumber = -1;
@@ -210,6 +212,21 @@ namespace FakeItEasy.Core
         }
 
         /// <summary>
+        /// Restore user rules to those present when the fake was first created.
+        /// </summary>
+        internal virtual void ResetToInitialUserRules()
+        {
+            lock (this.allUserRules)
+            {
+                this.allUserRules.Clear();
+                foreach (var rule in this.initialUserRules!)
+                {
+                    this.allUserRules.AddLast(rule);
+                }
+            }
+        }
+
+        /// <summary>
         /// Removes any recorded calls.
         /// </summary>
         internal virtual void ClearRecordedCalls()
@@ -233,6 +250,22 @@ namespace FakeItEasy.Core
                 }
 
                 this.allUserRules.AddAfter(previousNode, CallRuleMetadata.NeverCalled(newRule));
+            }
+        }
+
+        /// <summary>
+        /// Take a snapshot of the current user rules, recording them as the "initial" user rules.
+        /// </summary>
+        /// <remarks>
+        /// Should only be called once, immediately after the FakeManager has been initialized.
+        /// Provides the rules that will be used by <see cref="ResetToInitialUserRules" />.
+        /// </remarks>
+        internal void SnapshotInitialUserRules()
+        {
+            lock (this.allUserRules)
+            {
+                this.initialUserRules = new CallRuleMetadata[this.allUserRules.Count];
+                this.allUserRules.CopyTo(this.initialUserRules, 0);
             }
         }
 

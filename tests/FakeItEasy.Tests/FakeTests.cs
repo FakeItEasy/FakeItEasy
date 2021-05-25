@@ -58,6 +58,18 @@ namespace FakeItEasy.Tests
         }
 
         [Fact]
+        public void ResetToInitialConfiguration_should_be_guarded()
+        {
+            // Arrange
+
+            // Act
+
+            // Assert
+            Expression<Action> call = () => Fake.ResetToInitialConfiguration(A.Dummy<object>());
+            call.Should().BeNullGuarded();
+        }
+
+        [Fact]
         public void TryGetFakeManager_should_be_guarded()
         {
             // Arrange

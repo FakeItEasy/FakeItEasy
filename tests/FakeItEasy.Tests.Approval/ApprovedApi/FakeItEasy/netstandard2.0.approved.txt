@@ -191,12 +191,13 @@ namespace FakeItEasy
     public static class Fake
     {
         [System.Obsolete("ClearConfiguration will be removed in version 8.0.0. Prefer to discard the fake a" +
-            "nd create a new one.")]
+            "nd create a new one. If that\'s not feasible, use ResetToInitialConfiguration.")]
         public static void ClearConfiguration(object fakedObject) { }
         public static void ClearRecordedCalls(object fakedObject) { }
         public static System.Collections.Generic.IEnumerable<FakeItEasy.Core.ICompletedFakeObjectCall> GetCalls(object fakedObject) { }
         public static FakeItEasy.Core.FakeManager GetFakeManager(object fakedObject) { }
         public static bool IsFake(object potentialFake) { }
+        public static void ResetToInitialConfiguration(object fakedObject) { }
         public static bool TryGetFakeManager(object potentialFake, [System.Diagnostics.CodeAnalysis.NotNullWhen(true)] out FakeItEasy.Core.FakeManager? fakeManager) { }
     }
     public static class FakeObjectCallExtensions

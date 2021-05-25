@@ -55,14 +55,18 @@ namespace FakeItEasy.Creation
             IDummyValueResolver resolver,
             LoopDetectingResolutionContext resolutionContext)
         {
-            if (typeOfFake.IsInterface)
+            var creationResult = typeOfFake.IsInterface
+                ? this.defaultCreationStrategy.CreateFakeInterface(typeOfFake, proxyOptions)
+                : (DelegateCreationStrategy.IsResponsibleForCreating(typeOfFake)
+                    ? this.delegateCreationStrategy.CreateFake(typeOfFake, proxyOptions)
+                    : this.defaultCreationStrategy.CreateFake(typeOfFake, proxyOptions, resolver, resolutionContext));
+            if (creationResult.WasSuccessful)
             {
-                return this.defaultCreationStrategy.CreateFakeInterface(typeOfFake, proxyOptions);
+                var fake = creationResult.Result!;
+                Fake.GetFakeManager(fake).SnapshotInitialUserRules();
             }
 
-            return DelegateCreationStrategy.IsResponsibleForCreating(typeOfFake)
-                ? this.delegateCreationStrategy.CreateFake(typeOfFake, proxyOptions)
-                : this.defaultCreationStrategy.CreateFake(typeOfFake, proxyOptions, resolver, resolutionContext);
+            return creationResult;
         }
 
         [SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "2#", Justification = "Seems appropriate here.")]

@@ -2,13 +2,30 @@
 
 FakeItEasy exposes a few APIs that aren't commonly needed, but can be useful in certain scenarios.
 
-## Clearing the configuration of a fake
+## Restoring a fake's configuration to its initial state.
 
-To "unconfigure" a fake so it has default behavior, discard the fake and create
-a new one. If this is not feasible, for example because you wish to remove the
-configuration in the middle of a test and the system under test already holds
-the fake, see
+It's generally better to discard a fake and create a new one than to
+"unconfigure" a fake so it has the behavior it did when first created.
+If this is not feasible, consider one of the following approaches.
+
+To alter the behavior of a fake in the middle of a test, it's usually best to
+explicitly indicate how you want the behavior to change. See
 [Changing behavior between calls](changing-behavior-between-calls.md).
+
+If you wish to restore the configuration between tests, but the fake cannot be
+replaced, perhaps because it is held by a dependency injection container, use
+`Fake.ResetToInitialConfiguration`, which will restore the fake to its initial
+configuration, preserving
+
+* [strictness](strict-fakes.md),
+* [object wrapping](calling-wrapped-methods.md),
+* [redirecting to base methods](calling-base-methods.md), and
+* other [explicit](creating-fakes.md#explicit-creation-options) or
+  [implicit](implicit-creation-options.md) creation options.
+
+`Fake.ResetToInitialConfiguration` will also restore
+[read/write property](default-fake-behavior.md#readwrite-properties) values
+to those set during the fake's creation.
 
 ## Clearing a fake's recorded calls
 
