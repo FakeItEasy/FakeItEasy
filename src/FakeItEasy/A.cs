@@ -172,5 +172,16 @@ namespace FakeItEasy
         {
             return ConfigurationManager.CallToSet(propertySpecification);
         }
+
+        /// <summary>
+        /// Configures subscription to or unsubscription from an event of a faked object.
+        /// </summary>
+        /// <param name="fake">The fake to configure.</param>
+        /// <param name="action">An <see cref="EventAction"/> that represents the action to configure.</param>
+        /// <returns>A configuration object.</returns>
+        public static IAnyCallConfigurationWithVoidReturnType CallTo(object fake, EventAction action)
+        {
+            return CallTo(fake).MatchingEventAction(fake, action);
+        }
     }
 }
