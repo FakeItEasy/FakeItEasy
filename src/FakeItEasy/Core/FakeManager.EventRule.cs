@@ -53,7 +53,7 @@ namespace FakeItEasy.Core
 
             private void HandleEventCall(EventCall eventCall)
             {
-                if (eventCall.IsEventRegistration())
+                if (eventCall.IsEventSubscription())
                 {
                     if (eventCall.TryTakeEventRaiserArgumentProvider(out var argumentProvider))
                     {
