@@ -1,4 +1,4 @@
-﻿# EditorConfig is awesome: https://editorconfig.org
+# EditorConfig is awesome: https://editorconfig.org
 
 # Top-most EditorConfig file
 root = true
@@ -45,3 +45,44 @@ dotnet_diagnostic.SA1601.severity = none    # Partial elements should be documen
 dotnet_diagnostic.SA1628.severity = warning # Documentation text must begin with a capital letter
 dotnet_diagnostic.SA1629.severity = warning # Documentation text must end with a period
 dotnet_diagnostic.SA1633.severity = none    # Files should have file headers
+
+csharp_using_directive_placement = inside_namespace
+
+dotnet_style_qualification_for_field = true
+dotnet_style_qualification_for_property = true
+dotnet_style_qualification_for_method = true
+dotnet_style_qualification_for_event = true
+
+# Naming rules
+
+## Symbols
+
+dotnet_naming_symbols.non_field_members.applicable_kinds = property, method, event
+dotnet_naming_symbols.non_field_members.applicable_accessibilities = *
+
+
+dotnet_naming_symbols.static_fields.applicable_kinds = field
+dotnet_naming_symbols.static_fields.applicable_accessibilities = *
+dotnet_naming_symbols.static_fields.required_modifiers = static
+
+dotnet_naming_symbols.private_instance_field.applicable_kinds = field
+dotnet_naming_symbols.private_instance_field.applicable_accessibilities = private
+
+## Styles
+
+dotnet_naming_style.camel_case.capitalization = camel_case
+dotnet_naming_style.pascal_case.capitalization = pascal_case
+
+## Rules
+
+dotnet_naming_rule.non_field_members_pascal_case.symbols = non_field_members
+dotnet_naming_rule.non_field_members_pascal_case.style = pascal_case
+dotnet_naming_rule.non_field_members_pascal_case.severity = warning
+
+dotnet_naming_rule.static_fields.symbols = non_field_members
+dotnet_naming_rule.static_fields.style = pascal_case
+dotnet_naming_rule.static_fields.severity = warning
+
+dotnet_naming_rule.private_instance_field.symbols = non_field_members
+dotnet_naming_rule.private_instance_field.style = camel_case
+dotnet_naming_rule.private_instance_field.severity = warning
