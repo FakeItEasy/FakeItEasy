@@ -100,7 +100,10 @@ Similarly, strict fakes don't handle any call unless explicitly configured,
 including event subscription or unsubscription, so FakeItEasy also can't raise
 events on strict fakes.
 
-To work around this limitation, you have two options:
+To work around this limitation, you have three options:
+
+- For a strict fake, you can [enable the default event behavior on the fake at
+creation time](strict-fakes.md#events).
 
 - You can explicitly enable the default event behavior on the fake, for a
 specific event or for all events of the fake:

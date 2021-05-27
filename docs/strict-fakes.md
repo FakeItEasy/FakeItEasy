@@ -45,3 +45,15 @@ var foo = A.Fake<IFoo>(x => x.Strict(StrictFakeOptions.AllowToString));
 // Allow calls to Equals and GetHashCode
 var foo = A.Fake<IFoo>(x => x.Strict(StrictFakeOptions.AllowEquals | StrictFakeOptions.AllowGetHashCode));
 ```
+
+## Events
+
+By default, calls to event accessors of a strict fake will fail if the
+calls are not configured. Although you can [manually handle event subscription
+or unsubscription](raising-events.md#limitations), there's often not much value
+in doing this manually. You can allow a strict fake to manage events
+automatically by passing the `AllowEvents` flag to the `Strict` method:
+
+```csharp
+var foo = A.Fake<IFoo>(x => x.Strict(StrictFakeOptions.AllowEvents));
+```
