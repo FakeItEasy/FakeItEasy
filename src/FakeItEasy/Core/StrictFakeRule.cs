@@ -30,6 +30,11 @@ namespace FakeItEasy.Core
                 return !this.HasOption(StrictFakeOptions.AllowToString);
             }
 
+            if (EventCall.TryGetEventCall(fakeObjectCall, out _))
+            {
+                return !this.HasOption(StrictFakeOptions.AllowEvents);
+            }
+
             return true;
         }
 

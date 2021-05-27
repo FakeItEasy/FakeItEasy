@@ -32,6 +32,11 @@ namespace FakeItEasy
         /// <summary>
         /// Calls to all methods inherited from <see cref="object"/> are allowed, and behave as if the fake weren't strict.
         /// </summary>
-        AllowObjectMethods = AllowEquals | AllowGetHashCode | AllowToString
+        AllowObjectMethods = AllowEquals | AllowGetHashCode | AllowToString,
+
+        /// <summary>
+        /// Calls to event accessors are allowed, and behave as if the fake weren't not strict.
+        /// </summary>
+        AllowEvents = 8
     }
 }

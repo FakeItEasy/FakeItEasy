@@ -13,6 +13,8 @@ namespace FakeItEasy.Specs
             void DoIt(Guid id);
 
             Guid MakeIt(string name);
+
+            event EventHandler Event;
         }
 
         [Scenario]
@@ -135,6 +137,46 @@ namespace FakeItEasy.Specs
                     () => fake.ToString()));
 
             "Then it should throw an exception"
+                .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>());
+        }
+
+        [Scenario]
+        public static void EventsManaged(IMyInterface fake, EventHandler handler)
+        {
+            "Given a strict fake that manages events"
+                .x(() => fake = A.Fake<IMyInterface>(options =>
+                    options.Strict(StrictFakeOptions.AllowEvents)));
+
+            "And an event handler"
+                .x(() => handler = A.Fake<EventHandler>());
+
+            "When the handler is subscribed to the fake's event"
+                .x(() => fake.Event += handler);
+
+            "And the event is raised using Raise"
+                .x(() => fake.Event += Raise.WithEmpty());
+
+            "Then the handler is called"
+                .x(() => A.CallTo(handler).MustHaveHappened());
+        }
+
+        [Scenario]
+        public static void EventsNotManaged(
+            IMyInterface fake,
+            EventHandler handler,
+            Exception exception)
+        {
+            "Given a strict fake that doesn't manages events"
+                .x(() => fake = A.Fake<IMyInterface>(options =>
+                    options.Strict(StrictFakeOptions.None)));
+
+            "And an event handler"
+                .x(() => handler = A.Fake<EventHandler>());
+
+            "When the handler is subscribed to the fake's event"
+                .x(() => exception = Record.Exception(() => fake.Event += handler));
+
+            "Then an exception is thrown"
                 .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>());
         }
 
