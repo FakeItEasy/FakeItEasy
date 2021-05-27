@@ -281,6 +281,11 @@ namespace FakeItEasy
         FakeItEasy.IOutputWriter Write(string value);
         FakeItEasy.IOutputWriter WriteArgumentValue(object? value);
     }
+    public static class Manage
+    {
+        public static FakeItEasy.Configuration.IManageEventConfiguration AllEvents { get; }
+        public static FakeItEasy.Configuration.IManageEventConfiguration Event(string eventName) { }
+    }
     public static class OutAndRefParametersConfigurationExtensions
     {
         public static FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParameters<TInterface>(this FakeItEasy.Configuration.IOutAndRefParametersConfiguration<TInterface> configuration, params object?[] values) { }
@@ -485,6 +490,10 @@ namespace FakeItEasy.Configuration
         FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface> Throws<T1, T2, T3, T4, T5, T6>(System.Func<T1, T2, T3, T4, T5, T6, System.Exception> exceptionFactory);
         FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface> Throws<T1, T2, T3, T4, T5, T6, T7>(System.Func<T1, T2, T3, T4, T5, T6, T7, System.Exception> exceptionFactory);
         FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface> Throws<T1, T2, T3, T4, T5, T6, T7, T8>(System.Func<T1, T2, T3, T4, T5, T6, T7, T8, System.Exception> exceptionFactory);
+    }
+    public interface IManageEventConfiguration
+    {
+        void Of(object fake);
     }
     public interface IOrderableCallAssertion : FakeItEasy.IHideObjectMembers
     {
