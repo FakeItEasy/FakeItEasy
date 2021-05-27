@@ -100,9 +100,18 @@ Similarly, strict fakes don't handle any call unless explicitly configured,
 including event subscription or unsubscription, so FakeItEasy also can't raise
 events on strict fakes.
 
-To work around this limitation, you will need to explicitly configure the calls
-to the event accessors to handle event subscription yourself, as in the example
-below:
+To work around this limitation, you have two options:
+
+- You can explicitly enable the default event behavior on the fake, for a
+specific event or for all events of the fake:
+
+```csharp
+Manage.Event("FellInLove").Of(robot);
+Manage.AllEvents.Of(robot);
+```
+
+- If you need more control, you can explicitly configure the calls to the event
+accessors to handle event subscription yourself, as in the example below:
 
 ```csharp
 // Declare a delegate to store the event handlers
