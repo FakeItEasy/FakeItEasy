@@ -31,9 +31,8 @@ namespace FakeItEasy.IntegrationTests
         public void Should_warn_of_duplicate_input_assemblies_with_different_paths()
         {
             // Arrange
-            var expectedMessageFormat =
-@"*Warning: FakeItEasy failed to load assembly '*{0}' while scanning for extension points. Any IArgumentValueFormatters, IDummyFactories, and IFakeOptionsBuilders in that assembly will not be available.*";
-            var expectedMessage = string.Format(expectedMessageFormat, this.externalAssemblyGenerator.AssemblyCopyPath);
+            var expectedMessage =
+@"*Warning: FakeItEasy failed to load assembly 'FakeItEasy.ExtensionPoints.External*' while scanning for extension points. Any IArgumentValueFormatters, IDummyFactories, and IFakeOptionsBuilders in that assembly will not be available.*";
 
             var catalogue = new TypeCatalogue();
 
