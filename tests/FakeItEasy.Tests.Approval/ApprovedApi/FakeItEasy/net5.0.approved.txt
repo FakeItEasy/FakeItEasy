@@ -362,6 +362,7 @@ namespace FakeItEasy
         AllowGetHashCode = 2,
         AllowToString = 4,
         AllowObjectMethods = 7,
+        AllowEvents = 8,
     }
     public abstract class Times
     {
