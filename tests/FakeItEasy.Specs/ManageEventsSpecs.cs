@@ -111,5 +111,30 @@ namespace FakeItEasy.Specs
             "And the handler for Baz is called"
                 .x(() => A.CallTo(() => bazHandler(fake, 2)).MustHaveHappened());
         }
+
+        [Scenario]
+        public void MultipleCallsToManageEvent(IFoo fake, EventHandler<int> handler)
+        {
+            "Given a strict fake"
+                .x(() => fake = A.Fake<IFoo>(o => o.Strict()));
+
+            "And an event handler"
+                .x(() => handler = A.Fake<EventHandler<int>>());
+
+            "When the fake is configured to manage the Bar event"
+                .x(() => Manage.Event(nameof(IFoo.Bar)).Of(fake));
+
+            "And the handler is subscribed to the Bar event"
+                .x(() => fake.Bar += handler);
+
+            "And the fake is configured again to manage the Bar event"
+                .x(() => Manage.Event(nameof(IFoo.Bar)).Of(fake));
+
+            "And the Bar event is raised using Raise"
+                .x(() => fake.Bar += Raise.With(1));
+
+            "Then the handler is called"
+                .x(() => A.CallTo(() => handler(fake, 1)).MustHaveHappened());
+        }
     }
 }

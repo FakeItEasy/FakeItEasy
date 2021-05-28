@@ -7,16 +7,12 @@ namespace FakeItEasy.Core
         {
             private readonly FakeManager fakeManager;
 
-            private EventCallHandler? handler;
-
             public EventRule(FakeManager fakeManager)
             {
                 this.fakeManager = fakeManager;
             }
 
             public int? NumberOfTimesToCall => null;
-
-            private EventCallHandler Handler => this.handler ??= new EventCallHandler(this.fakeManager);
 
             public bool IsApplicableTo(IFakeObjectCall fakeObjectCall)
             {
@@ -29,7 +25,7 @@ namespace FakeItEasy.Core
             {
                 if (EventCall.TryGetEventCall(fakeObjectCall, out var eventCall))
                 {
-                    this.Handler.HandleEventCall(eventCall);
+                    this.fakeManager.EventCallHandler.HandleEventCall(eventCall);
                 }
             }
         }

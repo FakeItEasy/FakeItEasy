@@ -28,7 +28,7 @@ namespace FakeItEasy
         {
             Guard.AgainstNull(fake, nameof(fake));
 
-            var handler = new EventCallHandler(Fake.GetFakeManager(fake));
+            var manager = Fake.GetFakeManager(fake);
             A.CallTo(fake)
                 .WithVoidReturnType()
                 .Where(
@@ -38,7 +38,7 @@ namespace FakeItEasy
                 {
                     if (EventCall.TryGetEventCall(call, out var eventCall))
                     {
-                        handler.HandleEventCall(eventCall);
+                        manager.EventCallHandler.HandleEventCall(eventCall);
                     }
                 });
         }

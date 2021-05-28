@@ -8,24 +8,12 @@
     {
         private readonly FakeManager fakeManager;
 
-        private Dictionary<object, Delegate>? registeredEventHandlersField;
+        private readonly Dictionary<object, Delegate> registeredEventHandlers;
 
         public EventCallHandler(FakeManager fakeManager)
         {
             this.fakeManager = fakeManager;
-        }
-
-        private Dictionary<object, Delegate> RegisteredEventHandlers
-        {
-            get
-            {
-                if (this.registeredEventHandlersField is null)
-                {
-                    this.registeredEventHandlersField = new Dictionary<object, Delegate>();
-                }
-
-                return this.registeredEventHandlersField;
-            }
+            this.registeredEventHandlers = new Dictionary<object, Delegate>();
         }
 
         public void HandleEventCall(EventCall eventCall)
@@ -59,7 +47,7 @@
 
         private void AddHandler(object key, Delegate handler)
         {
-            if (this.RegisteredEventHandlers.TryGetValue(key, out var result))
+            if (this.registeredEventHandlers.TryGetValue(key, out var result))
             {
                 result = Delegate.Combine(result, handler);
             }
@@ -68,29 +56,29 @@
                 result = handler;
             }
 
-            this.RegisteredEventHandlers[key] = result;
+            this.registeredEventHandlers[key] = result;
         }
 
         private void RemoveHandler(object key, Delegate handler)
         {
-            if (this.RegisteredEventHandlers.TryGetValue(key, out var registration))
+            if (this.registeredEventHandlers.TryGetValue(key, out var registration))
             {
                 registration = Delegate.Remove(registration, handler);
 
                 if (registration is not null)
                 {
-                    this.RegisteredEventHandlers[key] = registration;
+                    this.registeredEventHandlers[key] = registration;
                 }
                 else
                 {
-                    this.RegisteredEventHandlers.Remove(key);
+                    this.registeredEventHandlers.Remove(key);
                 }
             }
         }
 
         private void RaiseEvent(EventCall call, IEventRaiserArgumentProvider argumentProvider)
         {
-            if (this.RegisteredEventHandlers.TryGetValue(call.Event, out var raiseMethod))
+            if (this.registeredEventHandlers.TryGetValue(call.Event, out var raiseMethod))
             {
                 var arguments = argumentProvider.GetEventArguments(this.fakeManager.Object!);
 
