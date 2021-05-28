@@ -1,5 +1,6 @@
 namespace FakeItEasy.Core
 {
+    using System;
     using static FakeItEasy.ObjectMembers;
 
     internal class StrictFakeRule : IFakeObjectCallRule
@@ -40,7 +41,14 @@ namespace FakeItEasy.Core
 
         public void Apply(IInterceptedFakeObjectCall fakeObjectCall)
         {
-            throw new ExpectationException(ExceptionMessages.CallToUnconfiguredMethodOfStrictFake(fakeObjectCall));
+            string message = ExceptionMessages.CallToUnconfiguredMethodOfStrictFake(fakeObjectCall);
+
+            if (EventCall.TryGetEventCall(fakeObjectCall, out _))
+            {
+                message += Environment.NewLine + ExceptionMessages.HandleEventsOnStrictFakes;
+            }
+
+            throw new ExpectationException(message);
         }
 
         private bool HasOption(StrictFakeOptions flag) => (flag & this.options) == flag;

@@ -178,6 +178,9 @@ namespace FakeItEasy.Specs
 
             "Then an exception is thrown"
                 .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>());
+
+            "And the exception message directs the user to Manage.Event"
+                .x(() => exception.Message.Should().Contain("Manage.Event"));
         }
 
         [Scenario]
