@@ -35,7 +35,7 @@ namespace FakeItEasy
         /// Creates a fake object of the type T.
         /// </summary>
         /// <typeparam name="T">The type of fake object to create.</typeparam>
-        /// <param name="optionsBuilder">A lambda where options for the built fake object can be specified.</param>
+        /// <param name="optionsBuilder">A function that specifies options for the fake object.</param>
         /// <returns>A fake object.</returns>
         [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design when using the Expression-, Action- and Func-types.")]
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "Used to specify the type of fake.")]
@@ -66,7 +66,7 @@ namespace FakeItEasy
         /// </summary>
         /// <typeparam name="T">The type of fakes to create.</typeparam>
         /// <param name="numberOfFakes">The number of fakes in the collection.</param>
-        /// <param name="optionsBuilder">A lambda where options for the built fake object can be specified.</param>
+        /// <param name="optionsBuilder">A function that specifies options for each fake object.</param>
         /// <returns>A collection of fake objects of the specified type.</returns>
         [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design when using the Expression-, Action- and Func-types.")]
         public static IList<T> CollectionOfFake<T>(int numberOfFakes, Action<IFakeOptions<T>> optionsBuilder) where T : class
@@ -79,7 +79,10 @@ namespace FakeItEasy
         /// </summary>
         /// <typeparam name="T">The type of fakes to create.</typeparam>
         /// <param name="numberOfFakes">The number of fakes in the collection.</param>
-        /// <param name="optionsBuilder">A lambda where options for the built fake object can be specified.</param>
+        /// <param name="optionsBuilder">
+        /// A function that specifies options for each fake object;
+        /// the second parameter of the function represents the 1-based index of the source element.
+        /// </param>
         /// <returns>A collection of fake objects of the specified type.</returns>
         public static IList<T> CollectionOfFake<T>(int numberOfFakes, Action<IFakeOptions<T>, int> optionsBuilder)
             where T : class

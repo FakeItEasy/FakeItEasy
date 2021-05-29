@@ -30,7 +30,7 @@ namespace FakeItEasy.Sdk
         /// Creates a fake object of the specified type.
         /// </summary>
         /// <param name="typeOfFake">The type of fake object to create.</param>
-        /// <param name="optionsBuilder">A lambda where options for the built fake object can be specified.</param>
+        /// <param name="optionsBuilder">A function that specifies options for the fake object.</param>
         /// <returns>A fake object.</returns>
         public static object Fake(Type typeOfFake, Action<IFakeOptions> optionsBuilder)
         {
@@ -56,7 +56,7 @@ namespace FakeItEasy.Sdk
         /// </summary>
         /// <param name="typeOfFake">The type of fakes to create.</param>
         /// <param name="numberOfFakes">The number of fakes in the collection.</param>
-        /// <param name="optionsBuilder">A lambda where options for the built fake object can be specified.</param>
+        /// <param name="optionsBuilder">A function that specifies options for each fake object.</param>
         /// <returns>A collection of fake objects of the specified type.</returns>
         public static IList<object> CollectionOfFake(Type typeOfFake, int numberOfFakes, Action<IFakeOptions> optionsBuilder)
         {
@@ -68,7 +68,10 @@ namespace FakeItEasy.Sdk
         /// </summary>
         /// <param name="typeOfFake">The type of fakes to create.</param>
         /// <param name="numberOfFakes">The number of fakes in the collection.</param>
-        /// <param name="optionsBuilder">A lambda where options for the built fake object can be specified.</param>
+        /// <param name="optionsBuilder">
+        /// A function that specifies options for each fake object;
+        /// the second parameter of the function represents the 1-based index of the source element.
+        /// </param>
         /// <returns>A collection of fake objects of the specified type.</returns>
         public static IList<object> CollectionOfFake(Type typeOfFake, int numberOfFakes, Action<IFakeOptions, int> optionsBuilder)
         {
