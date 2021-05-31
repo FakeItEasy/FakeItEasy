@@ -70,12 +70,12 @@ namespace FakeItEasy.Sdk
         /// <param name="numberOfFakes">The number of fakes in the collection.</param>
         /// <param name="optionsBuilder">
         /// A function that specifies options for each fake object;
-        /// the second parameter of the function represents the 1-based index of the source element.
+        /// the second parameter of the function represents the 0-based index of the source element.
         /// </param>
         /// <returns>A collection of fake objects of the specified type.</returns>
         public static IList<object> CollectionOfFake(Type typeOfFake, int numberOfFakes, Action<IFakeOptions, int> optionsBuilder)
         {
-            return Enumerable.Range(1, numberOfFakes).Select(i => Fake(typeOfFake, options => optionsBuilder(options, i))).ToList();
+            return Enumerable.Range(0, numberOfFakes).Select(i => Fake(typeOfFake, options => optionsBuilder(options, i))).ToList();
         }
 
         /// <summary>

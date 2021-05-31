@@ -306,7 +306,7 @@ namespace FakeItEasy.Specs
                 .x(() => fakes.Should().ContainItemsAssignableTo<ICollectionItem>());
 
             "And all items are properly named"
-                .x(() => fakes.Select(item => item.ToString()).Should().Equal(Enumerable.Range(1, count).Select(i => $"Item{i}")));
+                .x(() => fakes.Select(item => item.ToString()).Should().Equal(Enumerable.Range(0, count).Select(i => $"Item{i}")));
 
             "And all items are fakes"
                 .x(() => fakes.Should().OnlyContain(item => Fake.GetFakeManager(item) is object));
