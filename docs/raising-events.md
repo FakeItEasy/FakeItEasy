@@ -87,6 +87,7 @@ This method may also be used from C# if you don't want to rely on late binding.
 ## Limitations
 
 The approach described above for raising events doesn't work in some situations:
+
 - Wrapping fakes
 - Fakes configured to call base methods
 
@@ -95,17 +96,33 @@ forwarded to another implementation (wrapped object or base class) that
 FakeItEasy has no control over, so the fake doesn't know about the handlers and
 cannot call them.
 
-To work around this limitation, you will need to explicitly configure the calls
-to the event accessors to handle event subscription yourself, as in the example
-below:
+Similarly, strict fakes don't handle any call unless explicitly configured,
+including event subscription or unsubscription, so FakeItEasy also can't raise
+events on strict fakes.
+
+To work around this limitation, you have three options:
+
+- For a strict fake, you can [enable the default event behavior on the fake at
+creation time](strict-fakes.md#events).
+
+- You can explicitly enable the default event behavior on the fake, for a
+specific event or for all events of the fake:
+
+```csharp
+Manage.Event("FellInLove").Of(robot);
+Manage.AllEvents.Of(robot);
+```
+
+- If you need more control, you can explicitly configure the calls to the event
+accessors to handle event subscription yourself, as in the example below:
 
 ```csharp
 // Declare a delegate to store the event handlers
 EventHandler handlers = null;
 
 // Configure event subscription on the fake
-A.CallTo(robot).Where(call => call.Method.Name == "add_FellInLove").Invokes((EventHandler h) => handlers += h);
-A.CallTo(robot).Where(call => call.Method.Name == "remove_FellInLove").Invokes((EventHandler h) => handlers -= h);
+A.CallTo(robot, EventAction.Add("FellInLove")).Invokes((EventHandler h) => handlers += h);
+A.CallTo(robot, EventAction.Remove("FellInLove")).Invokes((EventHandler h) => handlers -= h);
 
 // Raise the event
 handlers?.Invoke(robot, EventArgs.Empty);

@@ -105,6 +105,16 @@ namespace FakeItEasy
             return this.StartConfiguration.AnyCall();
         }
 
+        /// <summary>
+        /// Configures subscription to or unsubscription from an event of the fake object.
+        /// </summary>
+        /// <param name="action">An <see cref="EventAction"/> that represents the action to configure.</param>
+        /// <returns>A configuration object.</returns>
+        public IAnyCallConfigurationWithVoidReturnType CallsTo(EventAction action)
+        {
+            return this.AnyCall().MatchingEventAction(this.FakedObject, action);
+        }
+
         private static T CreateFake(Action<IFakeOptions<T>> optionsBuilder)
         {
             Guard.AgainstNull(optionsBuilder, nameof(optionsBuilder));

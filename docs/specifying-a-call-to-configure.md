@@ -110,6 +110,23 @@ A.CallTo(fakeShop).Where(call => call.Method.Name == "set_Address")
                   .Throws(new Exception("we can't move"));
 ```
 
+## Specifying a call to an event accessor
+
+Although calls to event accessors can be specified using the approach described
+in the previous section, FakeItEasy also provides helper methods to make this
+easier:
+
+```csharp
+// Specifies a call to the add accessor of the MyEvent event of the fake
+A.CallTo(fake, EventAction.Add("MyEvent")).Invokes((EventHandler h) => ...);
+// Specifies a call to the remove accessor of the MyEvent event of the fake
+A.CallTo(fake, EventAction.Remove("MyEvent")).Invokes((EventHandler h) => ...);
+// Specifies a call to the add accessor of any event of the fake
+A.CallTo(fake, EventAction.Add()).Invokes(...);
+// Specifies a call to the remove accessor of any event of the fake
+A.CallTo(fake, EventAction.Remove()).Invokes(...);
+```
+
 ## VB.Net
 Special syntax is provided to specify `Func`s and `Sub`s in VB, using their respective keywords:
 

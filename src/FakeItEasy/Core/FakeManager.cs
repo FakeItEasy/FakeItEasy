@@ -29,6 +29,8 @@ namespace FakeItEasy.Core
 
         private readonly LinkedList<CallRuleMetadata> allUserRules;
 
+        private EventCallHandler? eventCallHandler;
+
         private ConcurrentQueue<CompletedFakeObjectCall> recordedCalls;
 
         private int lastSequenceNumber = -1;
@@ -100,6 +102,8 @@ namespace FakeItEasy.Core
             string.IsNullOrEmpty(this.FakeObjectName)
                 ? "Faked " + this.FakeObjectType
                 : this.FakeObjectName!;
+
+        internal EventCallHandler EventCallHandler => this.eventCallHandler ??= new EventCallHandler(this);
 
         /// <summary>
         /// Adds a call rule to the fake object.

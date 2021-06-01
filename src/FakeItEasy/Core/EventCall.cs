@@ -38,9 +38,14 @@ namespace FakeItEasy.Core
             return true;
         }
 
-        public bool IsEventRegistration()
+        public bool IsEventSubscription()
         {
             return GetAddMethod(this.Event).Equals(this.CallingMethod);
+        }
+
+        public bool IsEventUnsubscription()
+        {
+            return GetRemoveMethod(this.Event).Equals(this.CallingMethod);
         }
 
         public bool TryTakeEventRaiserArgumentProvider([NotNullWhen(true)] out IEventRaiserArgumentProvider? argumentProvider)

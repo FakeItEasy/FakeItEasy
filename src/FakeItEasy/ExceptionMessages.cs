@@ -2,6 +2,7 @@ namespace FakeItEasy
 {
     using System;
     using System.Text;
+    using FakeItEasy.Configuration;
     using FakeItEasy.Core;
 
     internal static class ExceptionMessages
@@ -62,6 +63,12 @@ namespace FakeItEasy
 
         public static string CannotRaiseEventWhenCallingBaseMethod =>
             "The fake cannot raise the event because event subscription calls the base implementation.";
+
+        public static string HandleEventsOnStrictFakes =>
+            $@"Strict fakes don't handle calls to event accessors unless configured to do so. If you want the fake to handle these calls, you can either:
+- configure the calls explicitly;
+- create the fake with the {nameof(StrictFakeOptions)}.{nameof(StrictFakeOptions.AllowEvents)} flag;
+- or use {nameof(Manage)}.{nameof(Manage.Event)}(eventName).{nameof(IManageEventConfiguration.Of)}(fake) or {nameof(Manage)}.{nameof(Manage.AllEvents)}.{nameof(IManageEventConfiguration.Of)}(fake) to enable automatic event management.";
 
         public static string WrongConstructorExpressionType(Type actualConstructorType, Type expectedConstructorType) =>
             $"Supplied constructor is for type {actualConstructorType}, but must be for {expectedConstructorType}.";

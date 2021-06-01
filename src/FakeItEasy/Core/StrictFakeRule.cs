@@ -1,5 +1,6 @@
 namespace FakeItEasy.Core
 {
+    using System;
     using static FakeItEasy.ObjectMembers;
 
     internal class StrictFakeRule : IFakeObjectCallRule
@@ -30,12 +31,24 @@ namespace FakeItEasy.Core
                 return !this.HasOption(StrictFakeOptions.AllowToString);
             }
 
+            if (EventCall.TryGetEventCall(fakeObjectCall, out _))
+            {
+                return !this.HasOption(StrictFakeOptions.AllowEvents);
+            }
+
             return true;
         }
 
         public void Apply(IInterceptedFakeObjectCall fakeObjectCall)
         {
-            throw new ExpectationException(ExceptionMessages.CallToUnconfiguredMethodOfStrictFake(fakeObjectCall));
+            string message = ExceptionMessages.CallToUnconfiguredMethodOfStrictFake(fakeObjectCall);
+
+            if (EventCall.TryGetEventCall(fakeObjectCall, out _))
+            {
+                message += Environment.NewLine + ExceptionMessages.HandleEventsOnStrictFakes;
+            }
+
+            throw new ExpectationException(message);
         }
 
         private bool HasOption(StrictFakeOptions flag) => (flag & this.options) == flag;

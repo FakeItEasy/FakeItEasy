@@ -12,6 +12,7 @@ namespace FakeItEasy
     {
         public static FakeItEasy.Configuration.IVoidArgumentValidationConfiguration CallTo(System.Linq.Expressions.Expression<System.Action> callSpecification) { }
         public static FakeItEasy.Configuration.IAnyCallConfigurationWithNoReturnTypeSpecified CallTo(object fake) { }
+        public static FakeItEasy.Configuration.IAnyCallConfigurationWithVoidReturnType CallTo(object fake, FakeItEasy.EventAction action) { }
         public static FakeItEasy.Configuration.IReturnValueArgumentValidationConfiguration<T> CallTo<T>(System.Linq.Expressions.Expression<System.Func<T>> callSpecification) { }
         public static FakeItEasy.Configuration.IPropertySetterAnyValueConfiguration<TValue> CallToSet<TValue>(System.Linq.Expressions.Expression<System.Func<TValue>> propertySpecification) { }
         public static System.Collections.Generic.IList<T> CollectionOfDummy<T>(int numberOfDummies) { }
@@ -169,6 +170,13 @@ namespace FakeItEasy
         protected abstract T Create();
         public object? Create(System.Type type) { }
     }
+    public abstract class EventAction
+    {
+        public static FakeItEasy.EventAction Add() { }
+        public static FakeItEasy.EventAction Add(string eventName) { }
+        public static FakeItEasy.EventAction Remove() { }
+        public static FakeItEasy.EventAction Remove(string eventName) { }
+    }
     public static class ExceptionThrowerConfigurationExtensions
     {
         public static FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface> Throws<TInterface>(this FakeItEasy.Configuration.IExceptionThrowerConfiguration<TInterface> configuration, System.Exception exception) { }
@@ -225,6 +233,7 @@ namespace FakeItEasy
         public T FakedObject { get; }
         public System.Collections.Generic.IEnumerable<FakeItEasy.Core.ICompletedFakeObjectCall> RecordedCalls { get; }
         public FakeItEasy.Configuration.IAnyCallConfigurationWithNoReturnTypeSpecified AnyCall() { }
+        public FakeItEasy.Configuration.IAnyCallConfigurationWithVoidReturnType CallsTo(FakeItEasy.EventAction action) { }
         public FakeItEasy.Configuration.IVoidArgumentValidationConfiguration CallsTo(System.Linq.Expressions.Expression<System.Action<T>> callSpecification) { }
         public FakeItEasy.Configuration.IReturnValueArgumentValidationConfiguration<TMember> CallsTo<TMember>(System.Linq.Expressions.Expression<System.Func<T, TMember>> callSpecification) { }
         public FakeItEasy.Configuration.IPropertySetterAnyValueConfiguration<TValue> CallsToSet<TValue>(System.Linq.Expressions.Expression<System.Func<T, TValue>> propertySpecification) { }
@@ -271,6 +280,11 @@ namespace FakeItEasy
         System.IDisposable Indent();
         FakeItEasy.IOutputWriter Write(string value);
         FakeItEasy.IOutputWriter WriteArgumentValue(object? value);
+    }
+    public static class Manage
+    {
+        public static FakeItEasy.Configuration.IManageEventConfiguration AllEvents { get; }
+        public static FakeItEasy.Configuration.IManageEventConfiguration Event(string eventName) { }
     }
     public static class OutAndRefParametersConfigurationExtensions
     {
@@ -348,6 +362,7 @@ namespace FakeItEasy
         AllowGetHashCode = 2,
         AllowToString = 4,
         AllowObjectMethods = 7,
+        AllowEvents = 8,
     }
     public abstract class Times
     {
@@ -437,6 +452,10 @@ namespace FakeItEasy.Configuration
         FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface> Throws<T1, T2, T3, T4, T5, T6>(System.Func<T1, T2, T3, T4, T5, T6, System.Exception> exceptionFactory);
         FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface> Throws<T1, T2, T3, T4, T5, T6, T7>(System.Func<T1, T2, T3, T4, T5, T6, T7, System.Exception> exceptionFactory);
         FakeItEasy.Configuration.IAfterCallConfiguredConfiguration<TInterface> Throws<T1, T2, T3, T4, T5, T6, T7, T8>(System.Func<T1, T2, T3, T4, T5, T6, T7, T8, System.Exception> exceptionFactory);
+    }
+    public interface IManageEventConfiguration
+    {
+        void Of(object fake);
     }
     public interface IOrderableCallAssertion : FakeItEasy.IHideObjectMembers
     {
