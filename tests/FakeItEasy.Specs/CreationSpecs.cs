@@ -290,6 +290,29 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
+        [Example(2)]
+        [Example(10)]
+        public void CollectionOfFakeWithOptionBuilderCounter(
+            int count,
+            IList<ICollectionItem> fakes)
+        {
+            "When I create a collection of {0} fakes with unique names"
+                .x(() => fakes = this.CreateCollectionOfFake<ICollectionItem>(count, (options, i) => options.Named($"Item{i}")));
+
+            "Then {0} items are created"
+                .x(() => fakes.Should().HaveCount(count));
+
+            "And all items extend the specified type"
+                .x(() => fakes.Should().ContainItemsAssignableTo<ICollectionItem>());
+
+            "And all items are properly named"
+                .x(() => fakes.Select(item => item.ToString()).Should().Equal(Enumerable.Range(0, count).Select(i => $"Item{i}")));
+
+            "And all items are fakes"
+                .x(() => fakes.Should().OnlyContain(item => Fake.GetFakeManager(item) is object));
+        }
+
+        [Scenario]
         public void InterfaceWithAlikeGenericMethod(IInterfaceWithSimilarMethods fake)
         {
             "Given an interface with an overloaded methods containing generic arguments"
@@ -632,6 +655,8 @@ namespace FakeItEasy.Specs
 
         protected abstract IList<T> CreateCollectionOfFake<T>(int numberOfFakes, Action<IFakeOptions<T>> optionsBuilder) where T : class;
 
+        protected abstract IList<T> CreateCollectionOfFake<T>(int numberOfFakes, Action<IFakeOptions<T>, int> optionsBuilder) where T : class;
+
         public class ClassWhoseConstructorThrows
         {
             public ClassWhoseConstructorThrows()
@@ -790,6 +815,11 @@ namespace FakeItEasy.Specs
         {
             return A.CollectionOfFake(numberOfFakes, optionsBuilder);
         }
+
+        protected override IList<T> CreateCollectionOfFake<T>(int numberOfFakes, Action<IFakeOptions<T>, int> optionsBuilder)
+        {
+            return A.CollectionOfFake(numberOfFakes, optionsBuilder);
+        }
     }
 
     public class NonGenericCreationSpecs : CreationSpecsBase
@@ -846,6 +876,11 @@ namespace FakeItEasy.Specs
         protected override IList<T> CreateCollectionOfFake<T>(int numberOfFakes, Action<IFakeOptions<T>> optionsBuilder)
         {
             return Sdk.Create.CollectionOfFake(typeof(T), numberOfFakes, options => optionsBuilder((IFakeOptions<T>)options)).Cast<T>().ToList();
+        }
+
+        protected override IList<T> CreateCollectionOfFake<T>(int numberOfFakes, Action<IFakeOptions<T>, int> optionsBuilder)
+        {
+            return Sdk.Create.CollectionOfFake(typeof(T), numberOfFakes, (options, i) => optionsBuilder((IFakeOptions<T>)options, i)).Cast<T>().ToList();
         }
     }
 }

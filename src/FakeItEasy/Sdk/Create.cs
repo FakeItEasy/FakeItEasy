@@ -30,7 +30,7 @@ namespace FakeItEasy.Sdk
         /// Creates a fake object of the specified type.
         /// </summary>
         /// <param name="typeOfFake">The type of fake object to create.</param>
-        /// <param name="optionsBuilder">A lambda where options for the built fake object can be specified.</param>
+        /// <param name="optionsBuilder">A function that specifies options for the fake object.</param>
         /// <returns>A fake object.</returns>
         public static object Fake(Type typeOfFake, Action<IFakeOptions> optionsBuilder)
         {
@@ -48,7 +48,7 @@ namespace FakeItEasy.Sdk
         /// <returns>A collection of fake objects of the specified type.</returns>
         public static IList<object> CollectionOfFake(Type typeOfFake, int numberOfFakes)
         {
-            return Enumerable.Range(0, numberOfFakes).Select(_ => Fake(typeOfFake)).ToList();
+            return CollectionOfFake(typeOfFake, numberOfFakes, (o, i) => { });
         }
 
         /// <summary>
@@ -56,11 +56,26 @@ namespace FakeItEasy.Sdk
         /// </summary>
         /// <param name="typeOfFake">The type of fakes to create.</param>
         /// <param name="numberOfFakes">The number of fakes in the collection.</param>
-        /// <param name="optionsBuilder">A lambda where options for the built fake object can be specified.</param>
+        /// <param name="optionsBuilder">A function that specifies options for each fake object.</param>
         /// <returns>A collection of fake objects of the specified type.</returns>
         public static IList<object> CollectionOfFake(Type typeOfFake, int numberOfFakes, Action<IFakeOptions> optionsBuilder)
         {
-            return Enumerable.Range(0, numberOfFakes).Select(_ => Fake(typeOfFake, optionsBuilder)).ToList();
+            return CollectionOfFake(typeOfFake, numberOfFakes, (options, i) => optionsBuilder(options));
+        }
+
+        /// <summary>
+        /// Creates a collection of fakes of the specified type.
+        /// </summary>
+        /// <param name="typeOfFake">The type of fakes to create.</param>
+        /// <param name="numberOfFakes">The number of fakes in the collection.</param>
+        /// <param name="optionsBuilder">
+        /// A function that specifies options for each fake object;
+        /// the second parameter of the function represents the 0-based index of the source element.
+        /// </param>
+        /// <returns>A collection of fake objects of the specified type.</returns>
+        public static IList<object> CollectionOfFake(Type typeOfFake, int numberOfFakes, Action<IFakeOptions, int> optionsBuilder)
+        {
+            return Enumerable.Range(0, numberOfFakes).Select(i => Fake(typeOfFake, options => optionsBuilder(options, i))).ToList();
         }
 
         /// <summary>

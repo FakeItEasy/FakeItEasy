@@ -19,6 +19,8 @@ namespace FakeItEasy
             where T :  class { }
         public static System.Collections.Generic.IList<T> CollectionOfFake<T>(int numberOfFakes, System.Action<FakeItEasy.Creation.IFakeOptions<T>> optionsBuilder)
             where T :  class { }
+        public static System.Collections.Generic.IList<T> CollectionOfFake<T>(int numberOfFakes, System.Action<FakeItEasy.Creation.IFakeOptions<T>, int> optionsBuilder)
+            where T :  class { }
         public static T Dummy<T>() { }
         public static T Fake<T>()
             where T :  class { }
@@ -611,6 +613,7 @@ namespace FakeItEasy.Sdk
         public static System.Collections.Generic.IList<object?> CollectionOfDummy(System.Type typeOfDummy, int numberOfDummies) { }
         public static System.Collections.Generic.IList<object> CollectionOfFake(System.Type typeOfFake, int numberOfFakes) { }
         public static System.Collections.Generic.IList<object> CollectionOfFake(System.Type typeOfFake, int numberOfFakes, System.Action<FakeItEasy.Creation.IFakeOptions> optionsBuilder) { }
+        public static System.Collections.Generic.IList<object> CollectionOfFake(System.Type typeOfFake, int numberOfFakes, System.Action<FakeItEasy.Creation.IFakeOptions, int> optionsBuilder) { }
         public static object? Dummy(System.Type typeOfDummy) { }
         public static object Fake(System.Type typeOfFake) { }
         public static object Fake(System.Type typeOfFake, System.Action<FakeItEasy.Creation.IFakeOptions> optionsBuilder) { }
