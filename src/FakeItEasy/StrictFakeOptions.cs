@@ -35,7 +35,7 @@ namespace FakeItEasy
         AllowObjectMethods = AllowEquals | AllowGetHashCode | AllowToString,
 
         /// <summary>
-        /// Calls to event accessors are allowed, and behave as if the fake weren't not strict.
+        /// Calls to event accessors are allowed, and behave as if the fake weren't strict.
         /// </summary>
         AllowEvents = 8
     }
