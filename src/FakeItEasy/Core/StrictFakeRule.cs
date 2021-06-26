@@ -16,17 +16,17 @@ namespace FakeItEasy.Core
 
         public bool IsApplicableTo(IFakeObjectCall fakeObjectCall)
         {
-            if (fakeObjectCall.Method.IsSameMethodAs(EqualsMethod))
+            if (fakeObjectCall.Method.HasSameBaseMethodAs(EqualsMethod))
             {
                 return !this.HasOption(StrictFakeOptions.AllowEquals);
             }
 
-            if (fakeObjectCall.Method.IsSameMethodAs(GetHashCodeMethod))
+            if (fakeObjectCall.Method.HasSameBaseMethodAs(GetHashCodeMethod))
             {
                 return !this.HasOption(StrictFakeOptions.AllowGetHashCode);
             }
 
-            if (fakeObjectCall.Method.IsSameMethodAs(ToStringMethod))
+            if (fakeObjectCall.Method.HasSameBaseMethodAs(ToStringMethod))
             {
                 return !this.HasOption(StrictFakeOptions.AllowToString);
             }

@@ -56,20 +56,20 @@ namespace FakeItEasy
             return builder.ToString();
         }
 
-        public static bool IsSameMethodAs(this MethodInfo method, MethodInfo otherMethod)
-        {
-            return method.DeclaringType == otherMethod.DeclaringType
-                && method.MetadataToken == otherMethod.MetadataToken
-                && method.Module == otherMethod.Module
-                && method.GetGenericArguments().SequenceEqual(otherMethod.GetGenericArguments());
-        }
-
         public static bool HasSameBaseMethodAs(this MethodInfo first, MethodInfo second)
         {
             var baseOfFirst = GetBaseDefinition(first);
             var baseOfSecond = GetBaseDefinition(second);
 
             return baseOfFirst.IsSameMethodAs(baseOfSecond);
+        }
+
+        private static bool IsSameMethodAs(this MethodInfo method, MethodInfo otherMethod)
+        {
+            return method.DeclaringType == otherMethod.DeclaringType
+                && method.MetadataToken == otherMethod.MetadataToken
+                && method.Module == otherMethod.Module
+                && method.GetGenericArguments().SequenceEqual(otherMethod.GetGenericArguments());
         }
 
         private static MethodInfo GetBaseDefinition(MethodInfo method)

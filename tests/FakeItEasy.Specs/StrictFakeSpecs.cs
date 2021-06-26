@@ -59,6 +59,26 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
+        public static void CallToOverriddenEqualsAllowed(
+            OverridingObject fake,
+            Exception exception)
+        {
+            "Given a type that overrides Equals"
+                .See<OverridingObject>();
+
+            "And a strict fake of that type that allows calls to Equals"
+                .x(() => fake = A.Fake<OverridingObject>(options =>
+                    options.Strict(StrictFakeOptions.AllowEquals)));
+
+            "When I call Equals on the fake"
+                .x(() => exception = Record.Exception(
+                    () => fake.Equals(default)));
+
+            "Then it shouldn't throw an exception"
+                .x(() => exception.Should().BeNull());
+        }
+
+        [Scenario]
         [InlineData(StrictFakeOptions.AllowGetHashCode)]
         [InlineData(StrictFakeOptions.AllowObjectMethods)]
         public static void CallToGetHashCodeAllowed(
@@ -100,6 +120,26 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
+        public static void CallToOverriddenGetHashCodeAllowed(
+            OverridingObject fake,
+            Exception exception)
+        {
+            "Given a type that overrides GetHashCode"
+                .See<OverridingObject>();
+
+            "And a strict fake of that type that allows calls to GetHashCode"
+                .x(() => fake = A.Fake<OverridingObject>(options =>
+                    options.Strict(StrictFakeOptions.AllowGetHashCode)));
+
+            "When I call Equals on the fake"
+                .x(() => exception = Record.Exception(
+                    () => fake.GetHashCode()));
+
+            "Then it shouldn't throw an exception"
+                .x(() => exception.Should().BeNull());
+        }
+
+        [Scenario]
         [InlineData(StrictFakeOptions.AllowToString)]
         [InlineData(StrictFakeOptions.AllowObjectMethods)]
         public static void CallToToStringAllowed(
@@ -138,6 +178,26 @@ namespace FakeItEasy.Specs
 
             "Then it should throw an exception"
                 .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>());
+        }
+
+        [Scenario]
+        public static void CallToOverriddenToStringAllowed(
+            OverridingObject fake,
+            Exception exception)
+        {
+            "Given a type that overrides ToString"
+                .See<OverridingObject>();
+
+            "And a strict fake of that type that allows calls to ToString"
+                .x(() => fake = A.Fake<OverridingObject>(options =>
+                    options.Strict(StrictFakeOptions.AllowToString)));
+
+            "When I call Equals on the fake"
+                .x(() => exception = Record.Exception(
+                    () => fake.ToString()));
+
+            "Then it shouldn't throw an exception"
+                .x(() => exception.Should().BeNull());
         }
 
         [Scenario]
@@ -253,5 +313,14 @@ namespace FakeItEasy.Specs
             "And the exception message names the method"
                 .x(() => exception.Message.Should().Contain("DoIt"));
         }
+    }
+
+    public class OverridingObject
+    {
+        public override bool Equals(object? obj) => base.Equals(obj);
+
+        public override int GetHashCode() => base.GetHashCode();
+
+        public override string? ToString() => base.ToString();
     }
 }
