@@ -209,6 +209,44 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
+        public static void FakeClassEqualsWrappedObjectWithOverriddenReferenceSemantics(
+            ClassThatOverrideEqualsForNoReason realObject,
+            ClassThatOverrideEqualsForNoReason wrapper,
+            bool equals)
+        {
+            "Given a real object that overrides Equals but keeps reference semantics"
+                .x(() => realObject = new ClassThatOverrideEqualsForNoReason());
+
+            "And a faked class of the same type that wraps the real object"
+                .x(() => wrapper = A.Fake<ClassThatOverrideEqualsForNoReason>(o => o.Wrapping(realObject)));
+
+            "When Equals is called on the fake with itself as the argument"
+                .x(() => equals = wrapper.Equals(wrapper));
+
+            "Then it should return true"
+                .x(() => equals.Should().BeTrue());
+        }
+
+        [Scenario]
+        public static void FakeObjectEqualsWrappedObjectWithOverriddenReferenceSemantics(
+            ClassThatOverrideEqualsForNoReason realObject,
+            object wrapper,
+            bool equals)
+        {
+            "Given a real object that overrides Equals but keeps reference semantics"
+                .x(() => realObject = new ClassThatOverrideEqualsForNoReason());
+
+            "And a faked Object type that wraps the real object"
+                .x(() => wrapper = A.Fake<object>(o => o.Wrapping(realObject)));
+
+            "When Equals is called on the fake with itself as the argument"
+                .x(() => equals = wrapper.Equals(wrapper));
+
+            "Then it should return true"
+                .x(() => equals.Should().BeTrue());
+        }
+
+        [Scenario]
         public static void VoidCallsWrappedMethod(Foo realObject, IFoo wrapper, bool callbackWasCalled)
         {
             "Given a real object"
@@ -406,6 +444,13 @@ namespace FakeItEasy.Specs
             {
                 return this.Id.GetHashCode();
             }
+        }
+
+        public class ClassThatOverrideEqualsForNoReason
+        {
+            public override bool Equals(object? obj) => base.Equals(obj);
+
+            public override int GetHashCode() => base.GetHashCode();
         }
     }
 }

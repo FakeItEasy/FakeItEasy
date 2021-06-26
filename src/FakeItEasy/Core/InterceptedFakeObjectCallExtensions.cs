@@ -22,7 +22,7 @@ namespace FakeItEasy.Core
             object? returnValue;
             try
             {
-                if (fakeObjectCall.Method.IsSameMethodAs(EqualsMethod))
+                if (fakeObjectCall.Method.HasSameBaseMethodAs(EqualsMethod))
                 {
                     var arg = parameters[0];
                     if (ReferenceEquals(arg, fakeObjectCall.FakedObject))
