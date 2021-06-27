@@ -1,6 +1,6 @@
 namespace FakeItEasy.Core
 {
-    using static FakeItEasy.ObjectMembers;
+    using static FakeItEasy.ObjectMethod;
 
     /// <content>Object member rule.</content>
     public partial class FakeManager
@@ -9,60 +9,39 @@ namespace FakeItEasy.Core
             : SharedFakeObjectCallRule
         {
             public override bool IsApplicableTo(IFakeObjectCall fakeObjectCall) =>
-                fakeObjectCall.Method.HasSameBaseMethodAs(EqualsMethod) ||
-                fakeObjectCall.Method.HasSameBaseMethodAs(ToStringMethod) ||
-                fakeObjectCall.Method.HasSameBaseMethodAs(GetHashCodeMethod);
+                fakeObjectCall.Method.GetObjectMethod() != None;
 
             public override void Apply(IInterceptedFakeObjectCall fakeObjectCall)
             {
                 var fakeManager = Fake.GetFakeManager(fakeObjectCall.FakedObject);
-                if (TryHandleToString(fakeObjectCall, fakeManager))
+                switch (fakeObjectCall.Method.GetObjectMethod())
                 {
-                    return;
-                }
+                    case ToStringMethod:
+                        HandleToString(fakeObjectCall, fakeManager);
+                        return;
 
-                if (TryHandleGetHashCode(fakeObjectCall, fakeManager))
-                {
-                    return;
-                }
+                    case GetHashCodeMethod:
+                        HandleGetHashCode(fakeObjectCall, fakeManager);
+                        return;
 
-                if (TryHandleEquals(fakeObjectCall, fakeManager))
-                {
-                    return;
+                    case EqualsMethod:
+                        HandleEquals(fakeObjectCall, fakeManager);
+                        return;
                 }
             }
 
-            private static bool TryHandleGetHashCode(IInterceptedFakeObjectCall fakeObjectCall, FakeManager fakeManager)
+            private static void HandleGetHashCode(IInterceptedFakeObjectCall fakeObjectCall, FakeManager fakeManager)
             {
-                if (!fakeObjectCall.Method.HasSameBaseMethodAs(GetHashCodeMethod))
-                {
-                    return false;
-                }
-
                 fakeObjectCall.SetReturnValue(fakeManager.GetHashCode());
-
-                return true;
             }
 
-            private static bool TryHandleToString(IInterceptedFakeObjectCall fakeObjectCall, FakeManager fakeManager)
+            private static void HandleToString(IInterceptedFakeObjectCall fakeObjectCall, FakeManager fakeManager)
             {
-                if (!fakeObjectCall.Method.HasSameBaseMethodAs(ToStringMethod))
-                {
-                    return false;
-                }
-
                 fakeObjectCall.SetReturnValue(fakeManager.FakeObjectDisplayName);
-
-                return true;
             }
 
-            private static bool TryHandleEquals(IInterceptedFakeObjectCall fakeObjectCall, FakeManager fakeManager)
+            private static void HandleEquals(IInterceptedFakeObjectCall fakeObjectCall, FakeManager fakeManager)
             {
-                if (!fakeObjectCall.Method.HasSameBaseMethodAs(EqualsMethod))
-                {
-                    return false;
-                }
-
                 var argument = fakeObjectCall.Arguments[0];
                 if (argument is not null)
                 {
@@ -74,8 +53,6 @@ namespace FakeItEasy.Core
                 {
                     fakeObjectCall.SetReturnValue(false);
                 }
-
-                return true;
             }
         }
     }

@@ -2,7 +2,7 @@ namespace FakeItEasy.Core
 {
     using System.Reflection;
     using FakeItEasy.Creation;
-    using static FakeItEasy.ObjectMembers;
+    using static FakeItEasy.ObjectMethod;
 
     internal static class InterceptedFakeObjectCallExtensions
     {
@@ -22,7 +22,7 @@ namespace FakeItEasy.Core
             object? returnValue;
             try
             {
-                if (fakeObjectCall.Method.HasSameBaseMethodAs(EqualsMethod))
+                if (fakeObjectCall.Method.GetObjectMethod() == EqualsMethod)
                 {
                     var arg = parameters[0];
                     if (ReferenceEquals(arg, fakeObjectCall.FakedObject))
