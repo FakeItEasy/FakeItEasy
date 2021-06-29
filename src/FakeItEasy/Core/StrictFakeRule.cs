@@ -1,7 +1,7 @@
 namespace FakeItEasy.Core
 {
     using System;
-    using static FakeItEasy.ObjectMembers;
+    using static FakeItEasy.ObjectMethod;
 
     internal class StrictFakeRule : IFakeObjectCallRule
     {
@@ -16,17 +16,19 @@ namespace FakeItEasy.Core
 
         public bool IsApplicableTo(IFakeObjectCall fakeObjectCall)
         {
-            if (fakeObjectCall.Method.HasSameBaseMethodAs(EqualsMethod))
+            var objectMethod = fakeObjectCall.Method.GetObjectMethod();
+
+            if (objectMethod == EqualsMethod)
             {
                 return !this.HasOption(StrictFakeOptions.AllowEquals);
             }
 
-            if (fakeObjectCall.Method.HasSameBaseMethodAs(GetHashCodeMethod))
+            if (objectMethod == GetHashCodeMethod)
             {
                 return !this.HasOption(StrictFakeOptions.AllowGetHashCode);
             }
 
-            if (fakeObjectCall.Method.HasSameBaseMethodAs(ToStringMethod))
+            if (objectMethod == ToStringMethod)
             {
                 return !this.HasOption(StrictFakeOptions.AllowToString);
             }

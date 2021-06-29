@@ -1,8 +1,6 @@
 namespace FakeItEasy.Core
 {
     using System;
-    using System.Reflection;
-    using static FakeItEasy.ObjectMembers;
 
     /// <summary>
     /// A call rule that applies to any call and just delegates the

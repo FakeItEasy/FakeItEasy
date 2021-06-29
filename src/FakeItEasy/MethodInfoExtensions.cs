@@ -1,6 +1,7 @@
 namespace FakeItEasy
 {
     using System;
+    using System.Collections.Concurrent;
     using System.Linq;
     using System.Reflection;
     using System.Text;
@@ -10,6 +11,8 @@ namespace FakeItEasy
     /// </summary>
     internal static class MethodInfoExtensions
     {
+        private static readonly ConcurrentDictionary<MethodInfo, ObjectMethod> ObjectMethodMap = new();
+
         public static string GetGenericArgumentsString(this MethodInfo method)
         {
             var genericArguments = method.GetGenericArguments();
@@ -62,6 +65,32 @@ namespace FakeItEasy
             var baseOfSecond = GetBaseDefinition(second);
 
             return baseOfFirst.IsSameMethodAs(baseOfSecond);
+        }
+
+        public static ObjectMethod GetObjectMethod(this MethodInfo method)
+        {
+            return ObjectMethodMap.GetOrAdd(method, CalculateObjectMethod);
+
+            static ObjectMethod CalculateObjectMethod(MethodInfo method)
+            {
+                var baseDefinition = GetBaseDefinition(method);
+                if (IsSameMethodAs(baseDefinition, ObjectMembers.EqualsMethod))
+                {
+                    return ObjectMethod.EqualsMethod;
+                }
+
+                if (IsSameMethodAs(baseDefinition, ObjectMembers.ToStringMethod))
+                {
+                    return ObjectMethod.ToStringMethod;
+                }
+
+                if (IsSameMethodAs(baseDefinition, ObjectMembers.GetHashCodeMethod))
+                {
+                    return ObjectMethod.GetHashCodeMethod;
+                }
+
+                return ObjectMethod.None;
+            }
         }
 
         private static bool IsSameMethodAs(this MethodInfo method, MethodInfo otherMethod)
