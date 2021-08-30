@@ -43,9 +43,11 @@ When creating fakes you can, through a fluent interface, specify options for how
 Examples:
 
 ```csharp
-// Specifying arguments for constructor using expression. This is refactoring friendly!
-// The constructor seen here is never actually invoked. It is an expression and it's purpose
-// is purely to communicate the constructor arguments which will be extracted from it
+// Specifying arguments for constructor using an expression. This is refactoring friendly!
+// Since the constructor call seen here is an expression, it is not invoked. Instead, the
+// constructor arguments will be extracted from the expression and provided to
+// the fake class's constructor. (Of course the fake class, being a subclass of `FooClass`,
+// ultimately invokes `FooClass`'s constructor with these arguments.)
 var foo = A.Fake<FooClass>(x => x.WithArgumentsForConstructor(() => new FooClass("foo", "bar")));
 
 // Specifying arguments for constructor using IEnumerable<object>.
