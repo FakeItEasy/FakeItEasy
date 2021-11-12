@@ -1,8 +1,8 @@
 version: '{build}'
 
 image:
-  - Visual Studio 2019
-  - Ubuntu1804
+  - Visual Studio 2022
+  - Ubuntu2004
 
 pull_requests:
   do_not_increment_build_number: true
@@ -13,14 +13,14 @@ install:
 for:
 - matrix:
     only:
-      - image: Visual Studio 2019
+      - image: Visual Studio 2022
   build_script:
     - cmd: build.cmd
   deploy_script:
     - cmd: tools\deploy.cmd
 - matrix:
     only:
-      - image: Ubuntu1804
+      - image: Ubuntu2004
   build_script:
     - sh: ./build.sh
 
