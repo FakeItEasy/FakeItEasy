@@ -27,8 +27,8 @@ namespace FakeItEasy
             this IReturnValueConfiguration<ValueTask> configuration,
             Func<T1, Exception> exceptionFactory)
         {
-            Guard.AgainstNull(configuration, nameof(configuration));
-            Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+            Guard.AgainstNull(configuration);
+            Guard.AgainstNull(exceptionFactory);
 
             return
                 configuration.ReturnsLazily(
@@ -48,8 +48,8 @@ namespace FakeItEasy
             this IReturnValueConfiguration<ValueTask<T>> configuration,
             Func<T1, Exception> exceptionFactory)
         {
-            Guard.AgainstNull(configuration, nameof(configuration));
-            Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+            Guard.AgainstNull(configuration);
+            Guard.AgainstNull(exceptionFactory);
 
             return configuration.ReturnsLazily((T1 arg1) => new ValueTask<T>(TaskHelper.FromException<T>(exceptionFactory(arg1))));
         }
@@ -67,8 +67,8 @@ namespace FakeItEasy
             this IReturnValueConfiguration<ValueTask> configuration,
             Func<T1, T2, Exception> exceptionFactory)
         {
-            Guard.AgainstNull(configuration, nameof(configuration));
-            Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+            Guard.AgainstNull(configuration);
+            Guard.AgainstNull(exceptionFactory);
 
             return
                 configuration.ReturnsLazily(
@@ -89,8 +89,8 @@ namespace FakeItEasy
             this IReturnValueConfiguration<ValueTask<T>> configuration,
             Func<T1, T2, Exception> exceptionFactory)
         {
-            Guard.AgainstNull(configuration, nameof(configuration));
-            Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+            Guard.AgainstNull(configuration);
+            Guard.AgainstNull(exceptionFactory);
 
             return configuration.ReturnsLazily((T1 arg1, T2 arg2) => new ValueTask<T>(TaskHelper.FromException<T>(exceptionFactory(arg1, arg2))));
         }
@@ -109,8 +109,8 @@ namespace FakeItEasy
             this IReturnValueConfiguration<ValueTask> configuration,
             Func<T1, T2, T3, Exception> exceptionFactory)
         {
-            Guard.AgainstNull(configuration, nameof(configuration));
-            Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+            Guard.AgainstNull(configuration);
+            Guard.AgainstNull(exceptionFactory);
 
             return
                 configuration.ReturnsLazily(
@@ -132,8 +132,8 @@ namespace FakeItEasy
             this IReturnValueConfiguration<ValueTask<T>> configuration,
             Func<T1, T2, T3, Exception> exceptionFactory)
         {
-            Guard.AgainstNull(configuration, nameof(configuration));
-            Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+            Guard.AgainstNull(configuration);
+            Guard.AgainstNull(exceptionFactory);
 
             return configuration.ReturnsLazily((T1 arg1, T2 arg2, T3 arg3) => new ValueTask<T>(TaskHelper.FromException<T>(exceptionFactory(arg1, arg2, arg3))));
         }
@@ -153,8 +153,8 @@ namespace FakeItEasy
             this IReturnValueConfiguration<ValueTask> configuration,
             Func<T1, T2, T3, T4, Exception> exceptionFactory)
         {
-            Guard.AgainstNull(configuration, nameof(configuration));
-            Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+            Guard.AgainstNull(configuration);
+            Guard.AgainstNull(exceptionFactory);
 
             return
                 configuration.ReturnsLazily(
@@ -177,8 +177,8 @@ namespace FakeItEasy
             this IReturnValueConfiguration<ValueTask<T>> configuration,
             Func<T1, T2, T3, T4, Exception> exceptionFactory)
         {
-            Guard.AgainstNull(configuration, nameof(configuration));
-            Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+            Guard.AgainstNull(configuration);
+            Guard.AgainstNull(exceptionFactory);
 
             return configuration.ReturnsLazily((T1 arg1, T2 arg2, T3 arg3, T4 arg4) => new ValueTask<T>(TaskHelper.FromException<T>(exceptionFactory(arg1, arg2, arg3, arg4))));
         }
@@ -199,8 +199,8 @@ namespace FakeItEasy
             this IReturnValueConfiguration<ValueTask> configuration,
             Func<T1, T2, T3, T4, T5, Exception> exceptionFactory)
         {
-            Guard.AgainstNull(configuration, nameof(configuration));
-            Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+            Guard.AgainstNull(configuration);
+            Guard.AgainstNull(exceptionFactory);
 
             return
                 configuration.ReturnsLazily(
@@ -224,8 +224,8 @@ namespace FakeItEasy
             this IReturnValueConfiguration<ValueTask<T>> configuration,
             Func<T1, T2, T3, T4, T5, Exception> exceptionFactory)
         {
-            Guard.AgainstNull(configuration, nameof(configuration));
-            Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+            Guard.AgainstNull(configuration);
+            Guard.AgainstNull(exceptionFactory);
 
             return configuration.ReturnsLazily((T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5) => new ValueTask<T>(TaskHelper.FromException<T>(exceptionFactory(arg1, arg2, arg3, arg4, arg5))));
         }
@@ -247,8 +247,8 @@ namespace FakeItEasy
             this IReturnValueConfiguration<ValueTask> configuration,
             Func<T1, T2, T3, T4, T5, T6, Exception> exceptionFactory)
         {
-            Guard.AgainstNull(configuration, nameof(configuration));
-            Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+            Guard.AgainstNull(configuration);
+            Guard.AgainstNull(exceptionFactory);
 
             return
                 configuration.ReturnsLazily(
@@ -273,8 +273,8 @@ namespace FakeItEasy
             this IReturnValueConfiguration<ValueTask<T>> configuration,
             Func<T1, T2, T3, T4, T5, T6, Exception> exceptionFactory)
         {
-            Guard.AgainstNull(configuration, nameof(configuration));
-            Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+            Guard.AgainstNull(configuration);
+            Guard.AgainstNull(exceptionFactory);
 
             return configuration.ReturnsLazily((T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6) => new ValueTask<T>(TaskHelper.FromException<T>(exceptionFactory(arg1, arg2, arg3, arg4, arg5, arg6))));
         }
@@ -297,8 +297,8 @@ namespace FakeItEasy
             this IReturnValueConfiguration<ValueTask> configuration,
             Func<T1, T2, T3, T4, T5, T6, T7, Exception> exceptionFactory)
         {
-            Guard.AgainstNull(configuration, nameof(configuration));
-            Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+            Guard.AgainstNull(configuration);
+            Guard.AgainstNull(exceptionFactory);
 
             return
                 configuration.ReturnsLazily(
@@ -324,8 +324,8 @@ namespace FakeItEasy
             this IReturnValueConfiguration<ValueTask<T>> configuration,
             Func<T1, T2, T3, T4, T5, T6, T7, Exception> exceptionFactory)
         {
-            Guard.AgainstNull(configuration, nameof(configuration));
-            Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+            Guard.AgainstNull(configuration);
+            Guard.AgainstNull(exceptionFactory);
 
             return configuration.ReturnsLazily((T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7) => new ValueTask<T>(TaskHelper.FromException<T>(exceptionFactory(arg1, arg2, arg3, arg4, arg5, arg6, arg7))));
         }
@@ -349,8 +349,8 @@ namespace FakeItEasy
             this IReturnValueConfiguration<ValueTask> configuration,
             Func<T1, T2, T3, T4, T5, T6, T7, T8, Exception> exceptionFactory)
         {
-            Guard.AgainstNull(configuration, nameof(configuration));
-            Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+            Guard.AgainstNull(configuration);
+            Guard.AgainstNull(exceptionFactory);
 
             return
                 configuration.ReturnsLazily(
@@ -377,8 +377,8 @@ namespace FakeItEasy
             this IReturnValueConfiguration<ValueTask<T>> configuration,
             Func<T1, T2, T3, T4, T5, T6, T7, T8, Exception> exceptionFactory)
         {
-            Guard.AgainstNull(configuration, nameof(configuration));
-            Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+            Guard.AgainstNull(configuration);
+            Guard.AgainstNull(exceptionFactory);
 
             return configuration.ReturnsLazily((T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8) => new ValueTask<T>(TaskHelper.FromException<T>(exceptionFactory(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8))));
         }

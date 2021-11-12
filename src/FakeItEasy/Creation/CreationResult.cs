@@ -83,7 +83,7 @@ namespace FakeItEasy.Creation
 
             public override CreationResult MergeIntoDummyResult(CreationResult other)
             {
-                Guard.AgainstNull(other, "other");
+                Guard.AgainstNull(other);
 
                 if (other.WasSuccessful)
                 {

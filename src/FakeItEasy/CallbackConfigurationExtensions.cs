@@ -19,8 +19,8 @@ namespace FakeItEasy
         /// <returns>The fake object.</returns>
         public static TInterface Invokes<TInterface>(this ICallbackConfiguration<TInterface> configuration, Action actionToInvoke)
         {
-            Guard.AgainstNull(configuration, nameof(configuration));
-            Guard.AgainstNull(actionToInvoke, nameof(actionToInvoke));
+            Guard.AgainstNull(configuration);
+            Guard.AgainstNull(actionToInvoke);
 
             return configuration.Invokes(call => actionToInvoke());
         }

@@ -21,7 +21,7 @@ namespace FakeItEasy.Sdk
         /// <returns>A fake object.</returns>
         public static object Fake(Type typeOfFake)
         {
-            Guard.AgainstNull(typeOfFake, nameof(typeOfFake));
+            Guard.AgainstNull(typeOfFake);
 
             return FakeAndDummyManager.CreateFake(typeOfFake, new LoopDetectingResolutionContext());
         }
@@ -34,8 +34,8 @@ namespace FakeItEasy.Sdk
         /// <returns>A fake object.</returns>
         public static object Fake(Type typeOfFake, Action<IFakeOptions> optionsBuilder)
         {
-            Guard.AgainstNull(typeOfFake, nameof(typeOfFake));
-            Guard.AgainstNull(optionsBuilder, nameof(optionsBuilder));
+            Guard.AgainstNull(typeOfFake);
+            Guard.AgainstNull(optionsBuilder);
 
             return FakeAndDummyManager.CreateFake(typeOfFake, optionsBuilder, new LoopDetectingResolutionContext());
         }
@@ -91,7 +91,7 @@ namespace FakeItEasy.Sdk
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         public static object? Dummy(Type typeOfDummy)
         {
-            Guard.AgainstNull(typeOfDummy, nameof(typeOfDummy));
+            Guard.AgainstNull(typeOfDummy);
 
             return FakeAndDummyManager.CreateDummy(typeOfDummy, new LoopDetectingResolutionContext());
         }

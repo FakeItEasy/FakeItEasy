@@ -15,8 +15,8 @@ namespace FakeItEasy.Core
 
         public static void CallWrappedMethod(this IInterceptedFakeObjectCall fakeObjectCall, object wrappedObject)
         {
-            Guard.AgainstNull(fakeObjectCall, nameof(fakeObjectCall));
-            Guard.AgainstNull(wrappedObject, nameof(wrappedObject));
+            Guard.AgainstNull(fakeObjectCall);
+            Guard.AgainstNull(wrappedObject);
 
             var parameters = fakeObjectCall.Arguments.GetUnderlyingArgumentsArray();
             object? returnValue;

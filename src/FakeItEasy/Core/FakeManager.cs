@@ -43,8 +43,8 @@ namespace FakeItEasy.Core
         /// <param name="fakeObjectName">The name of the fake object.</param>
         internal FakeManager(Type fakeObjectType, object proxy, string? fakeObjectName)
         {
-            Guard.AgainstNull(fakeObjectType, nameof(fakeObjectType));
-            Guard.AgainstNull(proxy, nameof(proxy));
+            Guard.AgainstNull(fakeObjectType);
+            Guard.AgainstNull(proxy);
 
             this.objectReference = new WeakReference(proxy);
             this.FakeObjectType = fakeObjectType;
@@ -111,7 +111,7 @@ namespace FakeItEasy.Core
         /// <param name="rule">The rule to add.</param>
         public virtual void AddRuleFirst(IFakeObjectCallRule rule)
         {
-            Guard.AgainstNull(rule, nameof(rule));
+            Guard.AgainstNull(rule);
 
             lock (this.allUserRules)
             {
@@ -125,7 +125,7 @@ namespace FakeItEasy.Core
         /// <param name="rule">The rule to add.</param>
         public virtual void AddRuleLast(IFakeObjectCallRule rule)
         {
-            Guard.AgainstNull(rule, nameof(rule));
+            Guard.AgainstNull(rule);
 
             lock (this.allUserRules)
             {
@@ -139,7 +139,7 @@ namespace FakeItEasy.Core
         /// <param name="rule">The rule to remove.</param>
         public virtual void RemoveRule(IFakeObjectCallRule rule)
         {
-            Guard.AgainstNull(rule, nameof(rule));
+            Guard.AgainstNull(rule);
 
             lock (this.allUserRules)
             {
@@ -157,7 +157,7 @@ namespace FakeItEasy.Core
         /// <param name="listener">The listener to add.</param>
         public void AddInterceptionListener(IInterceptionListener listener)
         {
-            Guard.AgainstNull(listener, nameof(listener));
+            Guard.AgainstNull(listener);
 
             this.interceptionListeners.AddFirst(listener);
         }

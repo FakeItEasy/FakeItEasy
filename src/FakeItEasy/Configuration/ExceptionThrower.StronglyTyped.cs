@@ -139,7 +139,7 @@ namespace FakeItEasy.Configuration
         /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="exceptionFactory"/> do not match.</exception>
         public IAfterCallConfiguredConfiguration<IVoidConfiguration> Throws<T1>(Func<T1, Exception> exceptionFactory)
         {
-            Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+            Guard.AgainstNull(exceptionFactory);
 
             return this.Throws((IFakeObjectCall call) =>
             {
@@ -160,7 +160,7 @@ namespace FakeItEasy.Configuration
         /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="exceptionFactory"/> do not match.</exception>
         public IAfterCallConfiguredConfiguration<IVoidConfiguration> Throws<T1, T2>(Func<T1, T2, Exception> exceptionFactory)
         {
-            Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+            Guard.AgainstNull(exceptionFactory);
 
             return this.Throws((IFakeObjectCall call) =>
             {
@@ -182,7 +182,7 @@ namespace FakeItEasy.Configuration
         /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="exceptionFactory"/> do not match.</exception>
         public IAfterCallConfiguredConfiguration<IVoidConfiguration> Throws<T1, T2, T3>(Func<T1, T2, T3, Exception> exceptionFactory)
         {
-            Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+            Guard.AgainstNull(exceptionFactory);
 
             return this.Throws((IFakeObjectCall call) =>
             {
@@ -205,7 +205,7 @@ namespace FakeItEasy.Configuration
         /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="exceptionFactory"/> do not match.</exception>
         public IAfterCallConfiguredConfiguration<IVoidConfiguration> Throws<T1, T2, T3, T4>(Func<T1, T2, T3, T4, Exception> exceptionFactory)
         {
-            Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+            Guard.AgainstNull(exceptionFactory);
 
             return this.Throws((IFakeObjectCall call) =>
             {
@@ -229,7 +229,7 @@ namespace FakeItEasy.Configuration
         /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="exceptionFactory"/> do not match.</exception>
         public IAfterCallConfiguredConfiguration<IVoidConfiguration> Throws<T1, T2, T3, T4, T5>(Func<T1, T2, T3, T4, T5, Exception> exceptionFactory)
         {
-            Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+            Guard.AgainstNull(exceptionFactory);
 
             return this.Throws((IFakeObjectCall call) =>
             {
@@ -254,7 +254,7 @@ namespace FakeItEasy.Configuration
         /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="exceptionFactory"/> do not match.</exception>
         public IAfterCallConfiguredConfiguration<IVoidConfiguration> Throws<T1, T2, T3, T4, T5, T6>(Func<T1, T2, T3, T4, T5, T6, Exception> exceptionFactory)
         {
-            Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+            Guard.AgainstNull(exceptionFactory);
 
             return this.Throws((IFakeObjectCall call) =>
             {
@@ -280,7 +280,7 @@ namespace FakeItEasy.Configuration
         /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="exceptionFactory"/> do not match.</exception>
         public IAfterCallConfiguredConfiguration<IVoidConfiguration> Throws<T1, T2, T3, T4, T5, T6, T7>(Func<T1, T2, T3, T4, T5, T6, T7, Exception> exceptionFactory)
         {
-            Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+            Guard.AgainstNull(exceptionFactory);
 
             return this.Throws((IFakeObjectCall call) =>
             {
@@ -307,7 +307,7 @@ namespace FakeItEasy.Configuration
         /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="exceptionFactory"/> do not match.</exception>
         public IAfterCallConfiguredConfiguration<IVoidConfiguration> Throws<T1, T2, T3, T4, T5, T6, T7, T8>(Func<T1, T2, T3, T4, T5, T6, T7, T8, Exception> exceptionFactory)
         {
-            Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+            Guard.AgainstNull(exceptionFactory);
 
             return this.Throws((IFakeObjectCall call) =>
             {
@@ -329,7 +329,7 @@ namespace FakeItEasy.Configuration
             /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="exceptionFactory"/> do not match.</exception>
             public IAfterCallConfiguredConfiguration<IReturnValueConfiguration<TMember>> Throws<T1>(Func<T1, Exception> exceptionFactory)
             {
-                Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+                Guard.AgainstNull(exceptionFactory);
     
                 return this.Throws((IFakeObjectCall call) =>
                 {
@@ -350,7 +350,7 @@ namespace FakeItEasy.Configuration
             /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="exceptionFactory"/> do not match.</exception>
             public IAfterCallConfiguredConfiguration<IReturnValueConfiguration<TMember>> Throws<T1, T2>(Func<T1, T2, Exception> exceptionFactory)
             {
-                Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+                Guard.AgainstNull(exceptionFactory);
     
                 return this.Throws((IFakeObjectCall call) =>
                 {
@@ -372,7 +372,7 @@ namespace FakeItEasy.Configuration
             /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="exceptionFactory"/> do not match.</exception>
             public IAfterCallConfiguredConfiguration<IReturnValueConfiguration<TMember>> Throws<T1, T2, T3>(Func<T1, T2, T3, Exception> exceptionFactory)
             {
-                Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+                Guard.AgainstNull(exceptionFactory);
     
                 return this.Throws((IFakeObjectCall call) =>
                 {
@@ -395,7 +395,7 @@ namespace FakeItEasy.Configuration
             /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="exceptionFactory"/> do not match.</exception>
             public IAfterCallConfiguredConfiguration<IReturnValueConfiguration<TMember>> Throws<T1, T2, T3, T4>(Func<T1, T2, T3, T4, Exception> exceptionFactory)
             {
-                Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+                Guard.AgainstNull(exceptionFactory);
     
                 return this.Throws((IFakeObjectCall call) =>
                 {
@@ -419,7 +419,7 @@ namespace FakeItEasy.Configuration
             /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="exceptionFactory"/> do not match.</exception>
             public IAfterCallConfiguredConfiguration<IReturnValueConfiguration<TMember>> Throws<T1, T2, T3, T4, T5>(Func<T1, T2, T3, T4, T5, Exception> exceptionFactory)
             {
-                Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+                Guard.AgainstNull(exceptionFactory);
     
                 return this.Throws((IFakeObjectCall call) =>
                 {
@@ -444,7 +444,7 @@ namespace FakeItEasy.Configuration
             /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="exceptionFactory"/> do not match.</exception>
             public IAfterCallConfiguredConfiguration<IReturnValueConfiguration<TMember>> Throws<T1, T2, T3, T4, T5, T6>(Func<T1, T2, T3, T4, T5, T6, Exception> exceptionFactory)
             {
-                Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+                Guard.AgainstNull(exceptionFactory);
     
                 return this.Throws((IFakeObjectCall call) =>
                 {
@@ -470,7 +470,7 @@ namespace FakeItEasy.Configuration
             /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="exceptionFactory"/> do not match.</exception>
             public IAfterCallConfiguredConfiguration<IReturnValueConfiguration<TMember>> Throws<T1, T2, T3, T4, T5, T6, T7>(Func<T1, T2, T3, T4, T5, T6, T7, Exception> exceptionFactory)
             {
-                Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+                Guard.AgainstNull(exceptionFactory);
     
                 return this.Throws((IFakeObjectCall call) =>
                 {
@@ -497,7 +497,7 @@ namespace FakeItEasy.Configuration
             /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="exceptionFactory"/> do not match.</exception>
             public IAfterCallConfiguredConfiguration<IReturnValueConfiguration<TMember>> Throws<T1, T2, T3, T4, T5, T6, T7, T8>(Func<T1, T2, T3, T4, T5, T6, T7, T8, Exception> exceptionFactory)
             {
-                Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+                Guard.AgainstNull(exceptionFactory);
     
                 return this.Throws((IFakeObjectCall call) =>
                 {
@@ -524,7 +524,7 @@ namespace FakeItEasy.Configuration
         /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="exceptionFactory"/> do not match.</exception>
         public IAfterCallConfiguredConfiguration<IVoidConfiguration> Throws<T1>(Func<T1, Exception> exceptionFactory)
         {
-            Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+            Guard.AgainstNull(exceptionFactory);
 
             return this.Throws((IFakeObjectCall call) =>
             {
@@ -545,7 +545,7 @@ namespace FakeItEasy.Configuration
         /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="exceptionFactory"/> do not match.</exception>
         public IAfterCallConfiguredConfiguration<IVoidConfiguration> Throws<T1, T2>(Func<T1, T2, Exception> exceptionFactory)
         {
-            Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+            Guard.AgainstNull(exceptionFactory);
 
             return this.Throws((IFakeObjectCall call) =>
             {
@@ -567,7 +567,7 @@ namespace FakeItEasy.Configuration
         /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="exceptionFactory"/> do not match.</exception>
         public IAfterCallConfiguredConfiguration<IVoidConfiguration> Throws<T1, T2, T3>(Func<T1, T2, T3, Exception> exceptionFactory)
         {
-            Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+            Guard.AgainstNull(exceptionFactory);
 
             return this.Throws((IFakeObjectCall call) =>
             {
@@ -590,7 +590,7 @@ namespace FakeItEasy.Configuration
         /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="exceptionFactory"/> do not match.</exception>
         public IAfterCallConfiguredConfiguration<IVoidConfiguration> Throws<T1, T2, T3, T4>(Func<T1, T2, T3, T4, Exception> exceptionFactory)
         {
-            Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+            Guard.AgainstNull(exceptionFactory);
 
             return this.Throws((IFakeObjectCall call) =>
             {
@@ -614,7 +614,7 @@ namespace FakeItEasy.Configuration
         /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="exceptionFactory"/> do not match.</exception>
         public IAfterCallConfiguredConfiguration<IVoidConfiguration> Throws<T1, T2, T3, T4, T5>(Func<T1, T2, T3, T4, T5, Exception> exceptionFactory)
         {
-            Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+            Guard.AgainstNull(exceptionFactory);
 
             return this.Throws((IFakeObjectCall call) =>
             {
@@ -639,7 +639,7 @@ namespace FakeItEasy.Configuration
         /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="exceptionFactory"/> do not match.</exception>
         public IAfterCallConfiguredConfiguration<IVoidConfiguration> Throws<T1, T2, T3, T4, T5, T6>(Func<T1, T2, T3, T4, T5, T6, Exception> exceptionFactory)
         {
-            Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+            Guard.AgainstNull(exceptionFactory);
 
             return this.Throws((IFakeObjectCall call) =>
             {
@@ -665,7 +665,7 @@ namespace FakeItEasy.Configuration
         /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="exceptionFactory"/> do not match.</exception>
         public IAfterCallConfiguredConfiguration<IVoidConfiguration> Throws<T1, T2, T3, T4, T5, T6, T7>(Func<T1, T2, T3, T4, T5, T6, T7, Exception> exceptionFactory)
         {
-            Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+            Guard.AgainstNull(exceptionFactory);
 
             return this.Throws((IFakeObjectCall call) =>
             {
@@ -692,7 +692,7 @@ namespace FakeItEasy.Configuration
         /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="exceptionFactory"/> do not match.</exception>
         public IAfterCallConfiguredConfiguration<IVoidConfiguration> Throws<T1, T2, T3, T4, T5, T6, T7, T8>(Func<T1, T2, T3, T4, T5, T6, T7, T8, Exception> exceptionFactory)
         {
-            Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+            Guard.AgainstNull(exceptionFactory);
 
             return this.Throws((IFakeObjectCall call) =>
             {
@@ -718,7 +718,7 @@ namespace FakeItEasy.Configuration
         /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="exceptionFactory"/> do not match.</exception>
         public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> Throws<T1>(Func<T1, Exception> exceptionFactory)
         {
-            Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+            Guard.AgainstNull(exceptionFactory);
 
             return this.Throws((IFakeObjectCall call) =>
             {
@@ -739,7 +739,7 @@ namespace FakeItEasy.Configuration
         /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="exceptionFactory"/> do not match.</exception>
         public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> Throws<T1, T2>(Func<T1, T2, Exception> exceptionFactory)
         {
-            Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+            Guard.AgainstNull(exceptionFactory);
 
             return this.Throws((IFakeObjectCall call) =>
             {
@@ -761,7 +761,7 @@ namespace FakeItEasy.Configuration
         /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="exceptionFactory"/> do not match.</exception>
         public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> Throws<T1, T2, T3>(Func<T1, T2, T3, Exception> exceptionFactory)
         {
-            Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+            Guard.AgainstNull(exceptionFactory);
 
             return this.Throws((IFakeObjectCall call) =>
             {
@@ -784,7 +784,7 @@ namespace FakeItEasy.Configuration
         /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="exceptionFactory"/> do not match.</exception>
         public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> Throws<T1, T2, T3, T4>(Func<T1, T2, T3, T4, Exception> exceptionFactory)
         {
-            Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+            Guard.AgainstNull(exceptionFactory);
 
             return this.Throws((IFakeObjectCall call) =>
             {
@@ -808,7 +808,7 @@ namespace FakeItEasy.Configuration
         /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="exceptionFactory"/> do not match.</exception>
         public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> Throws<T1, T2, T3, T4, T5>(Func<T1, T2, T3, T4, T5, Exception> exceptionFactory)
         {
-            Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+            Guard.AgainstNull(exceptionFactory);
 
             return this.Throws((IFakeObjectCall call) =>
             {
@@ -833,7 +833,7 @@ namespace FakeItEasy.Configuration
         /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="exceptionFactory"/> do not match.</exception>
         public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> Throws<T1, T2, T3, T4, T5, T6>(Func<T1, T2, T3, T4, T5, T6, Exception> exceptionFactory)
         {
-            Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+            Guard.AgainstNull(exceptionFactory);
 
             return this.Throws((IFakeObjectCall call) =>
             {
@@ -859,7 +859,7 @@ namespace FakeItEasy.Configuration
         /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="exceptionFactory"/> do not match.</exception>
         public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> Throws<T1, T2, T3, T4, T5, T6, T7>(Func<T1, T2, T3, T4, T5, T6, T7, Exception> exceptionFactory)
         {
-            Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+            Guard.AgainstNull(exceptionFactory);
 
             return this.Throws((IFakeObjectCall call) =>
             {
@@ -886,7 +886,7 @@ namespace FakeItEasy.Configuration
         /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="exceptionFactory"/> do not match.</exception>
         public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> Throws<T1, T2, T3, T4, T5, T6, T7, T8>(Func<T1, T2, T3, T4, T5, T6, T7, T8, Exception> exceptionFactory)
         {
-            Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+            Guard.AgainstNull(exceptionFactory);
 
             return this.Throws((IFakeObjectCall call) =>
             {
@@ -908,7 +908,7 @@ namespace FakeItEasy.Configuration
             /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="exceptionFactory"/> do not match.</exception>
             public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> Throws<T1>(Func<T1, Exception> exceptionFactory)
             {
-                Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+                Guard.AgainstNull(exceptionFactory);
     
                 return this.Throws((IFakeObjectCall call) =>
                 {
@@ -929,7 +929,7 @@ namespace FakeItEasy.Configuration
             /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="exceptionFactory"/> do not match.</exception>
             public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> Throws<T1, T2>(Func<T1, T2, Exception> exceptionFactory)
             {
-                Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+                Guard.AgainstNull(exceptionFactory);
     
                 return this.Throws((IFakeObjectCall call) =>
                 {
@@ -951,7 +951,7 @@ namespace FakeItEasy.Configuration
             /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="exceptionFactory"/> do not match.</exception>
             public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> Throws<T1, T2, T3>(Func<T1, T2, T3, Exception> exceptionFactory)
             {
-                Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+                Guard.AgainstNull(exceptionFactory);
     
                 return this.Throws((IFakeObjectCall call) =>
                 {
@@ -974,7 +974,7 @@ namespace FakeItEasy.Configuration
             /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="exceptionFactory"/> do not match.</exception>
             public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> Throws<T1, T2, T3, T4>(Func<T1, T2, T3, T4, Exception> exceptionFactory)
             {
-                Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+                Guard.AgainstNull(exceptionFactory);
     
                 return this.Throws((IFakeObjectCall call) =>
                 {
@@ -998,7 +998,7 @@ namespace FakeItEasy.Configuration
             /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="exceptionFactory"/> do not match.</exception>
             public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> Throws<T1, T2, T3, T4, T5>(Func<T1, T2, T3, T4, T5, Exception> exceptionFactory)
             {
-                Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+                Guard.AgainstNull(exceptionFactory);
     
                 return this.Throws((IFakeObjectCall call) =>
                 {
@@ -1023,7 +1023,7 @@ namespace FakeItEasy.Configuration
             /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="exceptionFactory"/> do not match.</exception>
             public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> Throws<T1, T2, T3, T4, T5, T6>(Func<T1, T2, T3, T4, T5, T6, Exception> exceptionFactory)
             {
-                Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+                Guard.AgainstNull(exceptionFactory);
     
                 return this.Throws((IFakeObjectCall call) =>
                 {
@@ -1049,7 +1049,7 @@ namespace FakeItEasy.Configuration
             /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="exceptionFactory"/> do not match.</exception>
             public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> Throws<T1, T2, T3, T4, T5, T6, T7>(Func<T1, T2, T3, T4, T5, T6, T7, Exception> exceptionFactory)
             {
-                Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+                Guard.AgainstNull(exceptionFactory);
     
                 return this.Throws((IFakeObjectCall call) =>
                 {
@@ -1076,7 +1076,7 @@ namespace FakeItEasy.Configuration
             /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="exceptionFactory"/> do not match.</exception>
             public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> Throws<T1, T2, T3, T4, T5, T6, T7, T8>(Func<T1, T2, T3, T4, T5, T6, T7, T8, Exception> exceptionFactory)
             {
-                Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+                Guard.AgainstNull(exceptionFactory);
     
                 return this.Throws((IFakeObjectCall call) =>
                 {
@@ -1100,7 +1100,7 @@ namespace FakeItEasy.Configuration
             /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="exceptionFactory"/> do not match.</exception>
             public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> Throws<T1>(Func<T1, Exception> exceptionFactory)
             {
-                Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+                Guard.AgainstNull(exceptionFactory);
     
                 return this.Throws((IFakeObjectCall call) =>
                 {
@@ -1121,7 +1121,7 @@ namespace FakeItEasy.Configuration
             /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="exceptionFactory"/> do not match.</exception>
             public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> Throws<T1, T2>(Func<T1, T2, Exception> exceptionFactory)
             {
-                Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+                Guard.AgainstNull(exceptionFactory);
     
                 return this.Throws((IFakeObjectCall call) =>
                 {
@@ -1143,7 +1143,7 @@ namespace FakeItEasy.Configuration
             /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="exceptionFactory"/> do not match.</exception>
             public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> Throws<T1, T2, T3>(Func<T1, T2, T3, Exception> exceptionFactory)
             {
-                Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+                Guard.AgainstNull(exceptionFactory);
     
                 return this.Throws((IFakeObjectCall call) =>
                 {
@@ -1166,7 +1166,7 @@ namespace FakeItEasy.Configuration
             /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="exceptionFactory"/> do not match.</exception>
             public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> Throws<T1, T2, T3, T4>(Func<T1, T2, T3, T4, Exception> exceptionFactory)
             {
-                Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+                Guard.AgainstNull(exceptionFactory);
     
                 return this.Throws((IFakeObjectCall call) =>
                 {
@@ -1190,7 +1190,7 @@ namespace FakeItEasy.Configuration
             /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="exceptionFactory"/> do not match.</exception>
             public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> Throws<T1, T2, T3, T4, T5>(Func<T1, T2, T3, T4, T5, Exception> exceptionFactory)
             {
-                Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+                Guard.AgainstNull(exceptionFactory);
     
                 return this.Throws((IFakeObjectCall call) =>
                 {
@@ -1215,7 +1215,7 @@ namespace FakeItEasy.Configuration
             /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="exceptionFactory"/> do not match.</exception>
             public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> Throws<T1, T2, T3, T4, T5, T6>(Func<T1, T2, T3, T4, T5, T6, Exception> exceptionFactory)
             {
-                Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+                Guard.AgainstNull(exceptionFactory);
     
                 return this.Throws((IFakeObjectCall call) =>
                 {
@@ -1241,7 +1241,7 @@ namespace FakeItEasy.Configuration
             /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="exceptionFactory"/> do not match.</exception>
             public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> Throws<T1, T2, T3, T4, T5, T6, T7>(Func<T1, T2, T3, T4, T5, T6, T7, Exception> exceptionFactory)
             {
-                Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+                Guard.AgainstNull(exceptionFactory);
     
                 return this.Throws((IFakeObjectCall call) =>
                 {
@@ -1268,7 +1268,7 @@ namespace FakeItEasy.Configuration
             /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="exceptionFactory"/> do not match.</exception>
             public IAfterCallConfiguredConfiguration<IPropertySetterConfiguration> Throws<T1, T2, T3, T4, T5, T6, T7, T8>(Func<T1, T2, T3, T4, T5, T6, T7, T8, Exception> exceptionFactory)
             {
-                Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+                Guard.AgainstNull(exceptionFactory);
     
                 return this.Throws((IFakeObjectCall call) =>
                 {

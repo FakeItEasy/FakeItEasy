@@ -7,7 +7,7 @@ namespace FakeItEasy.Tests
     {
         protected override string GetStringValue(Action<IOutputWriter> argumentValue)
         {
-            Guard.AgainstNull(argumentValue, nameof(argumentValue));
+            Guard.AgainstNull(argumentValue);
 
             var writer = ServiceLocator.Resolve<StringBuilderOutputWriter.Factory>().Invoke();
             argumentValue.Invoke(writer);

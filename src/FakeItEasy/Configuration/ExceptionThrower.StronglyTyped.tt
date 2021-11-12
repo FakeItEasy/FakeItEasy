@@ -115,7 +115,7 @@ void GenerateMethodImplementations(string configurationInterface, string indent 
         /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="exceptionFactory"/> do not match.</exception>
         public IAfterCallConfiguredConfiguration<<#= configurationInterface #>> Throws<<#= typeParamList #>>(Func<<#= typeParamList #>, Exception> exceptionFactory)
         {
-            Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+            Guard.AgainstNull(exceptionFactory);
 
             return this.Throws((IFakeObjectCall call) =>
             {

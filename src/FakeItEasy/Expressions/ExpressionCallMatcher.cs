@@ -55,7 +55,7 @@ namespace FakeItEasy.Expressions
         /// <returns>True if the call is matched by the expression.</returns>
         public virtual bool Matches(IFakeObjectCall call)
         {
-            Guard.AgainstNull(call, nameof(call));
+            Guard.AgainstNull(call);
 
             return this.InvokesSameMethodOnTarget(call.FakedObject.GetType(), call.Method, this.Method)
                 && this.ArgumentsMatches(call.Arguments);

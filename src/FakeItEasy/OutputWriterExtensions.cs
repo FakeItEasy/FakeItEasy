@@ -16,7 +16,7 @@ namespace FakeItEasy
         /// <returns>The writer.</returns>
         public static IOutputWriter WriteLine(this IOutputWriter writer)
         {
-            Guard.AgainstNull(writer, nameof(writer));
+            Guard.AgainstNull(writer);
 
             writer.Write(Environment.NewLine);
             return writer;
@@ -31,9 +31,9 @@ namespace FakeItEasy
         /// <returns>The writer.</returns>
         public static IOutputWriter Write(this IOutputWriter writer, string format, params object?[] args)
         {
-            Guard.AgainstNull(writer, nameof(writer));
-            Guard.AgainstNull(format, nameof(format));
-            Guard.AgainstNull(args, nameof(args));
+            Guard.AgainstNull(writer);
+            Guard.AgainstNull(format);
+            Guard.AgainstNull(args);
 
             writer.Write(string.Format(format, args));
             return writer;
@@ -47,8 +47,8 @@ namespace FakeItEasy
         /// <returns>The writer.</returns>
         public static IOutputWriter Write(this IOutputWriter writer, object value)
         {
-            Guard.AgainstNull(writer, nameof(writer));
-            Guard.AgainstNull(value, nameof(value));
+            Guard.AgainstNull(writer);
+            Guard.AgainstNull(value);
 
             writer.Write(value.ToString() ?? string.Empty);
             return writer;
@@ -62,8 +62,8 @@ namespace FakeItEasy
         /// <returns>The writer.</returns>
         internal static IOutputWriter WriteArgumentValues(this IOutputWriter writer, IEnumerable values)
         {
-            Guard.AgainstNull(writer, nameof(writer));
-            Guard.AgainstNull(values, nameof(values));
+            Guard.AgainstNull(writer);
+            Guard.AgainstNull(values);
 
             var list = values.AsList();
             if (list.Count <= 5)

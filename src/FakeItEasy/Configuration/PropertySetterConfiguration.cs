@@ -26,7 +26,7 @@ namespace FakeItEasy.Configuration
 
         public IPropertySetterConfiguration To(Expression<Func<TValue>> valueConstraint)
         {
-            Guard.AgainstNull(valueConstraint, nameof(valueConstraint));
+            Guard.AgainstNull(valueConstraint);
 
             var newSetterExpression = this.CreateSetterExpressionWithNewValue(valueConstraint);
             var voidArgumentValidationConfiguration = this.CreateArgumentValidationConfiguration(newSetterExpression);
@@ -58,14 +58,14 @@ namespace FakeItEasy.Configuration
 
         public UnorderedCallAssertion MustHaveHappened(int numberOfTimes, Times timesOption)
         {
-            Guard.AgainstNull(timesOption, nameof(timesOption));
+            Guard.AgainstNull(timesOption);
 
             return this.CreateArgumentValidationConfiguration(this.parsedSetterExpression).MustHaveHappened(numberOfTimes, timesOption);
         }
 
         public UnorderedCallAssertion MustHaveHappenedANumberOfTimesMatching(Expression<Func<int, bool>> predicate)
         {
-            Guard.AgainstNull(predicate, nameof(predicate));
+            Guard.AgainstNull(predicate);
 
             return this.CreateArgumentValidationConfiguration(this.parsedSetterExpression).MustHaveHappenedANumberOfTimesMatching(predicate);
         }
@@ -134,14 +134,14 @@ namespace FakeItEasy.Configuration
 
             public UnorderedCallAssertion MustHaveHappened(int numberOfTimes, Times timesOption)
             {
-                Guard.AgainstNull(timesOption, nameof(timesOption));
+                Guard.AgainstNull(timesOption);
 
                 return this.voidConfiguration.MustHaveHappened(numberOfTimes, timesOption);
             }
 
             public UnorderedCallAssertion MustHaveHappenedANumberOfTimesMatching(Expression<Func<int, bool>> predicate)
             {
-                Guard.AgainstNull(predicate, nameof(predicate));
+                Guard.AgainstNull(predicate);
 
                 return this.voidConfiguration.MustHaveHappenedANumberOfTimesMatching(predicate);
             }

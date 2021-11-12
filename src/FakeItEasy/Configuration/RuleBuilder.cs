@@ -69,7 +69,7 @@ namespace FakeItEasy.Configuration
 
         public virtual IAfterCallConfiguredConfiguration<IVoidConfiguration> Throws(Func<IFakeObjectCall, Exception> exceptionFactory)
         {
-            Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+            Guard.AgainstNull(exceptionFactory);
 
             this.AddRuleIfNeeded();
             this.RuleBeingBuilt.UseApplicator(call => throw exceptionFactory(call));
@@ -81,7 +81,7 @@ namespace FakeItEasy.Configuration
 
         public IVoidConfiguration WhenArgumentsMatch(Func<ArgumentCollection, bool> argumentsPredicate)
         {
-            Guard.AgainstNull(argumentsPredicate, nameof(argumentsPredicate));
+            Guard.AgainstNull(argumentsPredicate);
 
             this.RuleBeingBuilt.UsePredicateToValidateArguments(argumentsPredicate);
             return this;
@@ -96,7 +96,7 @@ namespace FakeItEasy.Configuration
 
         public virtual IVoidAfterCallbackConfiguredConfiguration Invokes(Action<IFakeObjectCall> action)
         {
-            Guard.AgainstNull(action, nameof(action));
+            Guard.AgainstNull(action);
 
             this.AddRuleIfNeeded();
             this.RuleBeingBuilt.Actions.Add(action);
@@ -131,7 +131,7 @@ namespace FakeItEasy.Configuration
 
         public virtual IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily(Func<IFakeObjectCall, ICollection<object?>> valueProducer)
         {
-            Guard.AgainstNull(valueProducer, nameof(valueProducer));
+            Guard.AgainstNull(valueProducer);
 
             this.AddRuleIfNeeded();
             this.RuleBeingBuilt.SetOutAndRefParametersValueProducer(valueProducer);
@@ -141,22 +141,22 @@ namespace FakeItEasy.Configuration
 
         public UnorderedCallAssertion MustHaveHappened(int numberOfTimes, Times timesOption)
         {
-            Guard.AgainstNull(timesOption, nameof(timesOption));
+            Guard.AgainstNull(timesOption);
 
             return this.MustHaveHappened(timesOption.ToCallCountConstraint(numberOfTimes));
         }
 
         public UnorderedCallAssertion MustHaveHappenedANumberOfTimesMatching(Expression<Func<int, bool>> predicate)
         {
-            Guard.AgainstNull(predicate, nameof(predicate));
+            Guard.AgainstNull(predicate);
 
             return this.MustHaveHappened(new CallCountConstraint(predicate.Compile(), $"a number of times matching the predicate '{predicate}'"));
         }
 
         public IAnyCallConfigurationWithVoidReturnType Where(Func<IFakeObjectCall, bool> predicate, Action<IOutputWriter> descriptionWriter)
         {
-            Guard.AgainstNull(predicate, nameof(predicate));
-            Guard.AgainstNull(descriptionWriter, nameof(descriptionWriter));
+            Guard.AgainstNull(predicate);
+            Guard.AgainstNull(descriptionWriter);
 
             this.RuleBeingBuilt.ApplyWherePredicate(predicate, descriptionWriter);
             return this;
@@ -218,7 +218,7 @@ namespace FakeItEasy.Configuration
 
             public IAfterCallConfiguredWithOutAndRefParametersConfiguration<IReturnValueConfiguration<TMember>> ReturnsLazily(Func<IFakeObjectCall, TMember> valueProducer)
             {
-                Guard.AgainstNull(valueProducer, nameof(valueProducer));
+                Guard.AgainstNull(valueProducer);
 
                 this.ParentConfiguration.AddRuleIfNeeded();
                 this.ParentConfiguration.RuleBeingBuilt.UseApplicator(call => call.SetReturnValue(valueProducer(call)));
@@ -257,8 +257,8 @@ namespace FakeItEasy.Configuration
 
             public IAnyCallConfigurationWithReturnTypeSpecified<TMember> Where(Func<IFakeObjectCall, bool> predicate, Action<IOutputWriter> descriptionWriter)
             {
-                Guard.AgainstNull(predicate, nameof(predicate));
-                Guard.AgainstNull(descriptionWriter, nameof(descriptionWriter));
+                Guard.AgainstNull(predicate);
+                Guard.AgainstNull(descriptionWriter);
 
                 this.ParentConfiguration.RuleBeingBuilt.ApplyWherePredicate(predicate, descriptionWriter);
                 return this;
@@ -289,7 +289,7 @@ namespace FakeItEasy.Configuration
 
             public bool Matches(IFakeObjectCall call)
             {
-                Guard.AgainstNull(call, nameof(call));
+                Guard.AgainstNull(call);
 
                 return this.builder.RuleBeingBuilt.IsApplicableTo(call) &&
                        ReferenceEquals(this.builder.manager.Object, call.FakedObject);

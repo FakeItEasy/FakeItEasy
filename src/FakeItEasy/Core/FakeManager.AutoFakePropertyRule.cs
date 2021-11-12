@@ -10,14 +10,14 @@ namespace FakeItEasy.Core
         {
             public override bool IsApplicableTo(IFakeObjectCall fakeObjectCall)
             {
-                Guard.AgainstNull(fakeObjectCall, nameof(fakeObjectCall));
+                Guard.AgainstNull(fakeObjectCall);
 
                 return PropertyBehaviorRule.IsPropertyGetter(fakeObjectCall.Method);
             }
 
             public override void Apply(IInterceptedFakeObjectCall fakeObjectCall)
             {
-                Guard.AgainstNull(fakeObjectCall, nameof(fakeObjectCall));
+                Guard.AgainstNull(fakeObjectCall);
 
                 var newRule = CallRuleMetadata.CalledOnce(
                     new PropertyBehaviorRule(fakeObjectCall.Method)

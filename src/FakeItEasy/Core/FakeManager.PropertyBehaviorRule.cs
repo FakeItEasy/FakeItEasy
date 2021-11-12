@@ -47,7 +47,7 @@ namespace FakeItEasy.Core
 
             public void Apply(IInterceptedFakeObjectCall fakeObjectCall)
             {
-                Guard.AgainstNull(fakeObjectCall, nameof(fakeObjectCall));
+                Guard.AgainstNull(fakeObjectCall);
 
                 fakeObjectCall.SetReturnValue(this.Value);
             }

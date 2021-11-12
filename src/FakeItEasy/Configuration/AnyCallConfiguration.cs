@@ -61,21 +61,21 @@ namespace FakeItEasy.Configuration
 
         public UnorderedCallAssertion MustHaveHappened(int numberOfTimes, Times timesOption)
         {
-            Guard.AgainstNull(timesOption, nameof(timesOption));
+            Guard.AgainstNull(timesOption);
 
             return this.VoidConfiguration.MustHaveHappened(numberOfTimes, timesOption);
         }
 
         public UnorderedCallAssertion MustHaveHappenedANumberOfTimesMatching(Expression<Func<int, bool>> predicate)
         {
-            Guard.AgainstNull(predicate, nameof(predicate));
+            Guard.AgainstNull(predicate);
 
             return this.VoidConfiguration.MustHaveHappenedANumberOfTimesMatching(predicate);
         }
 
         public IAnyCallConfigurationWithNoReturnTypeSpecified Where(Func<IFakeObjectCall, bool> predicate, Action<IOutputWriter> descriptionWriter)
         {
-            Guard.AgainstNull(predicate, nameof(predicate));
+            Guard.AgainstNull(predicate);
 
             this.configuredRule.ApplyWherePredicate(predicate, descriptionWriter);
             return this;
@@ -83,7 +83,7 @@ namespace FakeItEasy.Configuration
 
         public IVoidConfiguration WhenArgumentsMatch(Func<ArgumentCollection, bool> argumentsPredicate)
         {
-            Guard.AgainstNull(argumentsPredicate, nameof(argumentsPredicate));
+            Guard.AgainstNull(argumentsPredicate);
 
             this.configuredRule.UsePredicateToValidateArguments(argumentsPredicate);
             return this;

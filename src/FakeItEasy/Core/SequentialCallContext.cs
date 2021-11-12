@@ -14,7 +14,7 @@ namespace FakeItEasy.Core
 
         public SequentialCallContext(CallWriter callWriter, StringBuilderOutputWriter.Factory outputWriterFactory)
         {
-            Guard.AgainstNull(callWriter, nameof(callWriter));
+            Guard.AgainstNull(callWriter);
             this.callWriter = callWriter;
             this.outputWriterFactory = outputWriterFactory;
             this.fakeManagers = new HashSet<FakeManager>();
@@ -30,10 +30,10 @@ namespace FakeItEasy.Core
             Action<IOutputWriter> callDescriber,
             CallCountConstraint callCountConstraint)
         {
-            Guard.AgainstNull(fakeManager, nameof(fakeManager));
-            Guard.AgainstNull(callPredicate, nameof(callPredicate));
-            Guard.AgainstNull(callDescriber, nameof(callDescriber));
-            Guard.AgainstNull(callCountConstraint, nameof(callCountConstraint));
+            Guard.AgainstNull(fakeManager);
+            Guard.AgainstNull(callPredicate);
+            Guard.AgainstNull(callDescriber);
+            Guard.AgainstNull(callCountConstraint);
             this.fakeManagers.Add(fakeManager);
             this.assertedCalls.Add(
                 new AssertedCall { CallDescriber = callDescriber, MatchingCountDescription = callCountConstraint.ToString() });

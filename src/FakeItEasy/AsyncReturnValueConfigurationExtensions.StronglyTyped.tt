@@ -46,8 +46,8 @@ namespace FakeItEasy
             this IReturnValueConfiguration<Task> configuration,
             Func<<#= typeParamList #>, Exception> exceptionFactory)
         {
-            Guard.AgainstNull(configuration, nameof(configuration));
-            Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+            Guard.AgainstNull(configuration);
+            Guard.AgainstNull(exceptionFactory);
 
             return
                 configuration.ReturnsLazily(
@@ -74,8 +74,8 @@ namespace FakeItEasy
             this IReturnValueConfiguration<Task<T>> configuration,
             Func<<#= typeParamList #>, Exception> exceptionFactory)
         {
-            Guard.AgainstNull(configuration, nameof(configuration));
-            Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+            Guard.AgainstNull(configuration);
+            Guard.AgainstNull(exceptionFactory);
 
             return configuration.ReturnsLazily((<#= lambdaParamList #>) => TaskHelper.FromException<T>(exceptionFactory(<#= argumentList #>)));
         }

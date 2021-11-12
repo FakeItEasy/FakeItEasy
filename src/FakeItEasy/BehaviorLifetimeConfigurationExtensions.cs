@@ -15,7 +15,7 @@ namespace FakeItEasy
         /// <returns>A configuration object that lets you define the subsequent behavior.</returns>
         public static IThenConfiguration<TInterface> Once<TInterface>(this IBehaviorLifetimeConfiguration<TInterface> configuration)
         {
-            Guard.AgainstNull(configuration, nameof(configuration));
+            Guard.AgainstNull(configuration);
 
             return configuration.NumberOfTimes(1);
         }
@@ -28,7 +28,7 @@ namespace FakeItEasy
         /// <returns>A configuration object that lets you define the subsequent behavior.</returns>
         public static IThenConfiguration<TInterface> Twice<TInterface>(this IBehaviorLifetimeConfiguration<TInterface> configuration)
         {
-            Guard.AgainstNull(configuration, nameof(configuration));
+            Guard.AgainstNull(configuration);
 
             return configuration.NumberOfTimes(2);
         }

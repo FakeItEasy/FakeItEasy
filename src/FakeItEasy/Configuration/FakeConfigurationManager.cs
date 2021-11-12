@@ -24,7 +24,7 @@ namespace FakeItEasy.Configuration
 
         public IVoidArgumentValidationConfiguration CallTo(Expression<Action> callSpecification)
         {
-            Guard.AgainstNull(callSpecification, nameof(callSpecification));
+            Guard.AgainstNull(callSpecification);
 
             var parsedCallExpression = this.callExpressionParser.Parse(callSpecification);
             GuardAgainstNonFake(parsedCallExpression.CallTarget);
@@ -39,7 +39,7 @@ namespace FakeItEasy.Configuration
         [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design when using the Expression-, Action- and Func-types.")]
         public IReturnValueArgumentValidationConfiguration<T> CallTo<T>(Expression<Func<T>> callSpecification)
         {
-            Guard.AgainstNull(callSpecification, nameof(callSpecification));
+            Guard.AgainstNull(callSpecification);
 
             var parsedCallExpression = this.callExpressionParser.Parse(callSpecification);
             GuardAgainstNonFake(parsedCallExpression.CallTarget);
@@ -62,7 +62,7 @@ namespace FakeItEasy.Configuration
 
         public IPropertySetterAnyValueConfiguration<TValue> CallToSet<TValue>(Expression<Func<TValue>> propertySpecification)
         {
-            Guard.AgainstNull(propertySpecification, nameof(propertySpecification));
+            Guard.AgainstNull(propertySpecification);
             var parsedCallExpression = this.callExpressionParser.Parse(propertySpecification);
             GuardAgainstNonFake(parsedCallExpression.CallTarget);
             this.AssertThatMemberCanBeIntercepted(parsedCallExpression);

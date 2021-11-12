@@ -17,7 +17,7 @@ namespace FakeItEasy.Creation
 
         IFakeOptions IFakeOptions.ConfigureFake(Action<object> action)
         {
-            Guard.AgainstNull(action, nameof(action));
+            Guard.AgainstNull(action);
 
             return (IFakeOptions)this.ConfigureFake(fake => action(fake));
         }
@@ -49,14 +49,14 @@ namespace FakeItEasy.Creation
 
         public IFakeOptions<T> WithArgumentsForConstructor(Expression<Func<T>> constructorCall)
         {
-            Guard.AgainstNull(constructorCall, nameof(constructorCall));
+            Guard.AgainstNull(constructorCall);
 
             return this.WithArgumentsForConstructor(GetConstructorArgumentsFromExpression(constructorCall));
         }
 
         IFakeOptions IFakeOptions.WithArgumentsForConstructor<TConstructor>(Expression<Func<TConstructor>> constructorCall)
         {
-            Guard.AgainstNull(constructorCall, nameof(constructorCall));
+            Guard.AgainstNull(constructorCall);
 
             return (IFakeOptions)this.WithArgumentsForConstructor(GetConstructorArgumentsFromExpression(constructorCall));
         }
@@ -68,7 +68,7 @@ namespace FakeItEasy.Creation
 
         public IFakeOptions<T> WithArgumentsForConstructor(IEnumerable<object?> argumentsForConstructor)
         {
-            Guard.AgainstNull(argumentsForConstructor, nameof(argumentsForConstructor));
+            Guard.AgainstNull(argumentsForConstructor);
 
             this.proxyOptions.ArgumentsForConstructor = argumentsForConstructor;
             return this;
@@ -77,7 +77,7 @@ namespace FakeItEasy.Creation
         public IFakeOptions<T> WithAttributes(
             params Expression<Func<Attribute>>[] attributes)
         {
-            Guard.AgainstNull(attributes, nameof(attributes));
+            Guard.AgainstNull(attributes);
 
             foreach (var attribute in attributes)
             {
@@ -89,7 +89,7 @@ namespace FakeItEasy.Creation
 
         public IFakeOptions<T> Wrapping(T wrappedInstance)
         {
-            Guard.AgainstNull(wrappedInstance, nameof(wrappedInstance));
+            Guard.AgainstNull(wrappedInstance);
 
             this.ConfigureFake(fake => ConfigureFakeToWrap(fake, wrappedInstance));
             return this;
@@ -97,7 +97,7 @@ namespace FakeItEasy.Creation
 
         public IFakeOptions<T> Implements(Type interfaceType)
         {
-            Guard.AgainstNull(interfaceType, nameof(interfaceType));
+            Guard.AgainstNull(interfaceType);
 
             this.proxyOptions.AddInterfaceToImplement(interfaceType);
             return this;
@@ -105,7 +105,7 @@ namespace FakeItEasy.Creation
 
         public IFakeOptions<T> ConfigureFake(Action<T> action)
         {
-            Guard.AgainstNull(action, nameof(action));
+            Guard.AgainstNull(action);
 
             this.proxyOptions.AddProxyConfigurationAction(proxy => action((T)proxy));
             return this;
@@ -113,7 +113,7 @@ namespace FakeItEasy.Creation
 
         public IFakeOptions<T> Named(string name)
         {
-            Guard.AgainstNull(name, nameof(name));
+            Guard.AgainstNull(name);
 
             this.proxyOptions.Name = name;
             return this;

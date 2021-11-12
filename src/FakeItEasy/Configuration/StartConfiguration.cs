@@ -24,7 +24,7 @@ namespace FakeItEasy.Configuration
 
         public IReturnValueArgumentValidationConfiguration<TMember> CallsTo<TMember>(Expression<Func<TFake, TMember>> callSpecification)
         {
-            Guard.AgainstNull(callSpecification, nameof(callSpecification));
+            Guard.AgainstNull(callSpecification);
 
             var parsedCallExpression = this.expressionParser.Parse(callSpecification, this.manager.Object!);
             this.GuardAgainstWrongFake(parsedCallExpression.CallTarget);
@@ -36,7 +36,7 @@ namespace FakeItEasy.Configuration
 
         public IVoidArgumentValidationConfiguration CallsTo(Expression<Action<TFake>> callSpecification)
         {
-            Guard.AgainstNull(callSpecification, nameof(callSpecification));
+            Guard.AgainstNull(callSpecification);
 
             var parsedCallExpression = this.expressionParser.Parse(callSpecification, this.manager.Object!);
             this.GuardAgainstWrongFake(parsedCallExpression.CallTarget);
@@ -48,7 +48,7 @@ namespace FakeItEasy.Configuration
 
         public IPropertySetterAnyValueConfiguration<TValue> CallsToSet<TValue>(Expression<Func<TFake, TValue>> propertySpecification)
         {
-            Guard.AgainstNull(propertySpecification, nameof(propertySpecification));
+            Guard.AgainstNull(propertySpecification);
 
             var parsedCallExpression = this.expressionParser.Parse(propertySpecification, this.manager.Object!);
             this.GuardAgainstWrongFake(parsedCallExpression.CallTarget);

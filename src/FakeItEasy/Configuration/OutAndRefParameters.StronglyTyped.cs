@@ -174,7 +174,7 @@ namespace FakeItEasy.Configuration
         /// </exception>
         public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1>(Func<T1, object?[]> valueProducer)
         {
-            Guard.AgainstNull(valueProducer, nameof(valueProducer));
+            Guard.AgainstNull(valueProducer);
 
             return this.AssignsOutAndRefParametersLazily(call =>
             {
@@ -200,7 +200,7 @@ namespace FakeItEasy.Configuration
         /// </exception>
         public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2>(Func<T1, T2, object?[]> valueProducer)
         {
-            Guard.AgainstNull(valueProducer, nameof(valueProducer));
+            Guard.AgainstNull(valueProducer);
 
             return this.AssignsOutAndRefParametersLazily(call =>
             {
@@ -227,7 +227,7 @@ namespace FakeItEasy.Configuration
         /// </exception>
         public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3>(Func<T1, T2, T3, object?[]> valueProducer)
         {
-            Guard.AgainstNull(valueProducer, nameof(valueProducer));
+            Guard.AgainstNull(valueProducer);
 
             return this.AssignsOutAndRefParametersLazily(call =>
             {
@@ -255,7 +255,7 @@ namespace FakeItEasy.Configuration
         /// </exception>
         public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3, T4>(Func<T1, T2, T3, T4, object?[]> valueProducer)
         {
-            Guard.AgainstNull(valueProducer, nameof(valueProducer));
+            Guard.AgainstNull(valueProducer);
 
             return this.AssignsOutAndRefParametersLazily(call =>
             {
@@ -284,7 +284,7 @@ namespace FakeItEasy.Configuration
         /// </exception>
         public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5>(Func<T1, T2, T3, T4, T5, object?[]> valueProducer)
         {
-            Guard.AgainstNull(valueProducer, nameof(valueProducer));
+            Guard.AgainstNull(valueProducer);
 
             return this.AssignsOutAndRefParametersLazily(call =>
             {
@@ -314,7 +314,7 @@ namespace FakeItEasy.Configuration
         /// </exception>
         public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5, T6>(Func<T1, T2, T3, T4, T5, T6, object?[]> valueProducer)
         {
-            Guard.AgainstNull(valueProducer, nameof(valueProducer));
+            Guard.AgainstNull(valueProducer);
 
             return this.AssignsOutAndRefParametersLazily(call =>
             {
@@ -345,7 +345,7 @@ namespace FakeItEasy.Configuration
         /// </exception>
         public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5, T6, T7>(Func<T1, T2, T3, T4, T5, T6, T7, object?[]> valueProducer)
         {
-            Guard.AgainstNull(valueProducer, nameof(valueProducer));
+            Guard.AgainstNull(valueProducer);
 
             return this.AssignsOutAndRefParametersLazily(call =>
             {
@@ -377,7 +377,7 @@ namespace FakeItEasy.Configuration
         /// </exception>
         public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5, T6, T7, T8>(Func<T1, T2, T3, T4, T5, T6, T7, T8, object?[]> valueProducer)
         {
-            Guard.AgainstNull(valueProducer, nameof(valueProducer));
+            Guard.AgainstNull(valueProducer);
 
             return this.AssignsOutAndRefParametersLazily(call =>
             {
@@ -405,7 +405,7 @@ namespace FakeItEasy.Configuration
             /// </exception>
             public IAfterCallConfiguredConfiguration<IReturnValueConfiguration<TMember>> AssignsOutAndRefParametersLazily<T1>(Func<T1, object?[]> valueProducer)
             {
-                Guard.AgainstNull(valueProducer, nameof(valueProducer));
+                Guard.AgainstNull(valueProducer);
     
                 return this.AssignsOutAndRefParametersLazily(call =>
                 {
@@ -431,7 +431,7 @@ namespace FakeItEasy.Configuration
             /// </exception>
             public IAfterCallConfiguredConfiguration<IReturnValueConfiguration<TMember>> AssignsOutAndRefParametersLazily<T1, T2>(Func<T1, T2, object?[]> valueProducer)
             {
-                Guard.AgainstNull(valueProducer, nameof(valueProducer));
+                Guard.AgainstNull(valueProducer);
     
                 return this.AssignsOutAndRefParametersLazily(call =>
                 {
@@ -458,7 +458,7 @@ namespace FakeItEasy.Configuration
             /// </exception>
             public IAfterCallConfiguredConfiguration<IReturnValueConfiguration<TMember>> AssignsOutAndRefParametersLazily<T1, T2, T3>(Func<T1, T2, T3, object?[]> valueProducer)
             {
-                Guard.AgainstNull(valueProducer, nameof(valueProducer));
+                Guard.AgainstNull(valueProducer);
     
                 return this.AssignsOutAndRefParametersLazily(call =>
                 {
@@ -486,7 +486,7 @@ namespace FakeItEasy.Configuration
             /// </exception>
             public IAfterCallConfiguredConfiguration<IReturnValueConfiguration<TMember>> AssignsOutAndRefParametersLazily<T1, T2, T3, T4>(Func<T1, T2, T3, T4, object?[]> valueProducer)
             {
-                Guard.AgainstNull(valueProducer, nameof(valueProducer));
+                Guard.AgainstNull(valueProducer);
     
                 return this.AssignsOutAndRefParametersLazily(call =>
                 {
@@ -515,7 +515,7 @@ namespace FakeItEasy.Configuration
             /// </exception>
             public IAfterCallConfiguredConfiguration<IReturnValueConfiguration<TMember>> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5>(Func<T1, T2, T3, T4, T5, object?[]> valueProducer)
             {
-                Guard.AgainstNull(valueProducer, nameof(valueProducer));
+                Guard.AgainstNull(valueProducer);
     
                 return this.AssignsOutAndRefParametersLazily(call =>
                 {
@@ -545,7 +545,7 @@ namespace FakeItEasy.Configuration
             /// </exception>
             public IAfterCallConfiguredConfiguration<IReturnValueConfiguration<TMember>> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5, T6>(Func<T1, T2, T3, T4, T5, T6, object?[]> valueProducer)
             {
-                Guard.AgainstNull(valueProducer, nameof(valueProducer));
+                Guard.AgainstNull(valueProducer);
     
                 return this.AssignsOutAndRefParametersLazily(call =>
                 {
@@ -576,7 +576,7 @@ namespace FakeItEasy.Configuration
             /// </exception>
             public IAfterCallConfiguredConfiguration<IReturnValueConfiguration<TMember>> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5, T6, T7>(Func<T1, T2, T3, T4, T5, T6, T7, object?[]> valueProducer)
             {
-                Guard.AgainstNull(valueProducer, nameof(valueProducer));
+                Guard.AgainstNull(valueProducer);
     
                 return this.AssignsOutAndRefParametersLazily(call =>
                 {
@@ -608,7 +608,7 @@ namespace FakeItEasy.Configuration
             /// </exception>
             public IAfterCallConfiguredConfiguration<IReturnValueConfiguration<TMember>> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5, T6, T7, T8>(Func<T1, T2, T3, T4, T5, T6, T7, T8, object?[]> valueProducer)
             {
-                Guard.AgainstNull(valueProducer, nameof(valueProducer));
+                Guard.AgainstNull(valueProducer);
     
                 return this.AssignsOutAndRefParametersLazily(call =>
                 {
@@ -640,7 +640,7 @@ namespace FakeItEasy.Configuration
         /// </exception>
         public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1>(Func<T1, object?[]> valueProducer)
         {
-            Guard.AgainstNull(valueProducer, nameof(valueProducer));
+            Guard.AgainstNull(valueProducer);
 
             return this.AssignsOutAndRefParametersLazily(call =>
             {
@@ -666,7 +666,7 @@ namespace FakeItEasy.Configuration
         /// </exception>
         public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2>(Func<T1, T2, object?[]> valueProducer)
         {
-            Guard.AgainstNull(valueProducer, nameof(valueProducer));
+            Guard.AgainstNull(valueProducer);
 
             return this.AssignsOutAndRefParametersLazily(call =>
             {
@@ -693,7 +693,7 @@ namespace FakeItEasy.Configuration
         /// </exception>
         public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3>(Func<T1, T2, T3, object?[]> valueProducer)
         {
-            Guard.AgainstNull(valueProducer, nameof(valueProducer));
+            Guard.AgainstNull(valueProducer);
 
             return this.AssignsOutAndRefParametersLazily(call =>
             {
@@ -721,7 +721,7 @@ namespace FakeItEasy.Configuration
         /// </exception>
         public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3, T4>(Func<T1, T2, T3, T4, object?[]> valueProducer)
         {
-            Guard.AgainstNull(valueProducer, nameof(valueProducer));
+            Guard.AgainstNull(valueProducer);
 
             return this.AssignsOutAndRefParametersLazily(call =>
             {
@@ -750,7 +750,7 @@ namespace FakeItEasy.Configuration
         /// </exception>
         public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5>(Func<T1, T2, T3, T4, T5, object?[]> valueProducer)
         {
-            Guard.AgainstNull(valueProducer, nameof(valueProducer));
+            Guard.AgainstNull(valueProducer);
 
             return this.AssignsOutAndRefParametersLazily(call =>
             {
@@ -780,7 +780,7 @@ namespace FakeItEasy.Configuration
         /// </exception>
         public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5, T6>(Func<T1, T2, T3, T4, T5, T6, object?[]> valueProducer)
         {
-            Guard.AgainstNull(valueProducer, nameof(valueProducer));
+            Guard.AgainstNull(valueProducer);
 
             return this.AssignsOutAndRefParametersLazily(call =>
             {
@@ -811,7 +811,7 @@ namespace FakeItEasy.Configuration
         /// </exception>
         public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5, T6, T7>(Func<T1, T2, T3, T4, T5, T6, T7, object?[]> valueProducer)
         {
-            Guard.AgainstNull(valueProducer, nameof(valueProducer));
+            Guard.AgainstNull(valueProducer);
 
             return this.AssignsOutAndRefParametersLazily(call =>
             {
@@ -843,7 +843,7 @@ namespace FakeItEasy.Configuration
         /// </exception>
         public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5, T6, T7, T8>(Func<T1, T2, T3, T4, T5, T6, T7, T8, object?[]> valueProducer)
         {
-            Guard.AgainstNull(valueProducer, nameof(valueProducer));
+            Guard.AgainstNull(valueProducer);
 
             return this.AssignsOutAndRefParametersLazily(call =>
             {

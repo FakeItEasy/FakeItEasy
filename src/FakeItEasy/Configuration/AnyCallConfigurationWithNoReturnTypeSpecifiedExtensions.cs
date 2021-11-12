@@ -7,9 +7,9 @@ namespace FakeItEasy.Configuration
             object fake,
             EventAction action)
         {
-            Guard.AgainstNull(configuration, nameof(configuration));
-            Guard.AgainstNull(fake, nameof(fake));
-            Guard.AgainstNull(action, nameof(action));
+            Guard.AgainstNull(configuration);
+            Guard.AgainstNull(fake);
+            Guard.AgainstNull(action);
             return configuration.WithVoidReturnType().Where(action.Matches, writer => action.WriteDescription(fake, writer));
         }
     }

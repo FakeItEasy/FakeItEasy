@@ -107,7 +107,7 @@ void GenerateMethodImplementations(string configurationInterface, string indent 
         /// </exception>
         public IAfterCallConfiguredConfiguration<<#= configurationInterface #>> AssignsOutAndRefParametersLazily<<#= typeParamList #>>(Func<<#= typeParamList #>, object?[]> valueProducer)
         {
-            Guard.AgainstNull(valueProducer, nameof(valueProducer));
+            Guard.AgainstNull(valueProducer);
 
             return this.AssignsOutAndRefParametersLazily(call =>
             {

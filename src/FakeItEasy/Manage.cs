@@ -26,7 +26,7 @@ namespace FakeItEasy
 
         private static void ManageEvents(object fake, Func<EventCall, bool> eventCallPredicate)
         {
-            Guard.AgainstNull(fake, nameof(fake));
+            Guard.AgainstNull(fake);
 
             var manager = Fake.GetFakeManager(fake);
             A.CallTo(fake)
@@ -49,7 +49,7 @@ namespace FakeItEasy
 
             public ManageNamedEventConfiguration(string eventName)
             {
-                Guard.AgainstNull(eventName, nameof(eventName));
+                Guard.AgainstNull(eventName);
                 this.eventName = eventName;
             }
 

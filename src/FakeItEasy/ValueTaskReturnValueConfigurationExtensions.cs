@@ -23,7 +23,7 @@ namespace FakeItEasy
         [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Necessary to support special handling of ValueTask<T> return values.")]
         public static IAfterCallConfiguredWithOutAndRefParametersConfiguration<IReturnValueConfiguration<ValueTask<T>>> Returns<T>(this IReturnValueConfiguration<ValueTask<T>> configuration, T value)
         {
-            Guard.AgainstNull(configuration, nameof(configuration));
+            Guard.AgainstNull(configuration);
 
             return configuration.ReturnsLazily(() => value);
         }
@@ -40,8 +40,8 @@ namespace FakeItEasy
         [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Necessary to support special handling of ValueTask<T> return values.")]
         public static IAfterCallConfiguredWithOutAndRefParametersConfiguration<IReturnValueConfiguration<ValueTask<T>>> ReturnsLazily<T>(this IReturnValueConfiguration<ValueTask<T>> configuration, Func<T> valueProducer)
         {
-            Guard.AgainstNull(configuration, nameof(configuration));
-            Guard.AgainstNull(valueProducer, nameof(valueProducer));
+            Guard.AgainstNull(configuration);
+            Guard.AgainstNull(valueProducer);
 
             return configuration.ReturnsLazily(x => new ValueTask<T>(valueProducer()));
         }
@@ -58,8 +58,8 @@ namespace FakeItEasy
         [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Necessary to support special handling of ValueTask<T> return values.")]
         public static void ReturnsNextFromSequence<T>(this IReturnValueConfiguration<ValueTask<T>> configuration, params T[] values)
         {
-            Guard.AgainstNull(configuration, nameof(configuration));
-            Guard.AgainstNull(values, nameof(values));
+            Guard.AgainstNull(configuration);
+            Guard.AgainstNull(values);
 
             configuration.ReturnsNextFromQueue(new ConcurrentQueue<ValueTask<T>>(values.Select(value => new ValueTask<T>(value))));
         }
