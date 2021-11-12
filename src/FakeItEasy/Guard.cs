@@ -3,6 +3,7 @@ namespace FakeItEasy
     using System;
     using System.Diagnostics;
     using System.Diagnostics.CodeAnalysis;
+    using System.Runtime.CompilerServices;
 
     /// <summary>
     /// Provides methods for guarding method arguments.
@@ -16,7 +17,7 @@ namespace FakeItEasy
         /// <param name="argumentName">Name of the argument.</param>
         /// <exception cref="ArgumentNullException">The specified argument was null.</exception>
         [DebuggerStepThrough]
-        public static void AgainstNull([ValidatedNotNull, NotNull] object? argument, string argumentName)
+        public static void AgainstNull([ValidatedNotNull, NotNull] object? argument, [CallerArgumentExpression("argument")] string argumentName = null!)
         {
             if (argument is null)
             {

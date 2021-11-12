@@ -25,7 +25,7 @@
   <!-- .NET 5.0 -->
 
   <PropertyGroup Condition="'$(TargetFramework)' == 'net5.0'">
-    <DefineConstants>$(DefineConstants);FEATURE_STRING_CONTAINS_COMPARISONTYPE</DefineConstants>
+    <DefineConstants>$(DefineConstants);FEATURE_STRING_CONTAINS_COMPARISONTYPE;FEATURE_CALLERARGUMENTEXPRESSION</DefineConstants>
   </PropertyGroup>
 
   <!-- .NET Standard 2.1 -->
