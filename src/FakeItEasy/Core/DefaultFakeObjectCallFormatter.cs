@@ -78,7 +78,9 @@ namespace FakeItEasy.Core
         {
             if (method.IsPropertyGetterOrSetter())
             {
+#pragma warning disable CA1846 // Prefer 'AsSpan' over 'Substring'
                 builder.Append(method.Name.Substring(4));
+#pragma warning restore CA1846 // Prefer 'AsSpan' over 'Substring'
             }
             else
             {
