@@ -7,7 +7,7 @@ namespace FakeItEasy.Creation.DelegateProxies
     {
         public virtual bool MethodCanBeInterceptedOnInstance(MethodInfo method, object? callTarget, [NotNullWhen(false)]out string? failReason)
         {
-            Guard.AgainstNull(method, nameof(method));
+            Guard.AgainstNull(method);
 
             if (method.Name != "Invoke")
             {

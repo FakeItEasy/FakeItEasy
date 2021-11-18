@@ -10,7 +10,7 @@ namespace FakeItEasy.Core
 
             public override void Apply(IInterceptedFakeObjectCall fakeObjectCall)
             {
-                Guard.AgainstNull(fakeObjectCall, nameof(fakeObjectCall));
+                Guard.AgainstNull(fakeObjectCall);
 
                 fakeObjectCall.SetReturnValue(fakeObjectCall.GetDefaultReturnValue());
             }

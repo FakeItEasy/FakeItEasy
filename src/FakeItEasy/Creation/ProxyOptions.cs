@@ -27,7 +27,7 @@ namespace FakeItEasy.Creation
 
         public void AddInterfaceToImplement(Type interfaceType)
         {
-            Guard.AgainstNull(interfaceType, nameof(interfaceType));
+            Guard.AgainstNull(interfaceType);
 
             if (!interfaceType.IsInterface)
             {

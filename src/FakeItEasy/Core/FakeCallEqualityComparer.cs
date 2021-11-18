@@ -8,8 +8,8 @@ namespace FakeItEasy.Core
     {
         public bool Equals(IFakeObjectCall? x, IFakeObjectCall? y)
         {
-            Guard.AgainstNull(x, nameof(x));
-            Guard.AgainstNull(y, nameof(y));
+            Guard.AgainstNull(x);
+            Guard.AgainstNull(y);
 
             return x.Method.Equals(y.Method)
                 && object.ReferenceEquals(x.FakedObject, y.FakedObject)
@@ -19,7 +19,7 @@ namespace FakeItEasy.Core
         // NOTE (adamralph): based on https://stackoverflow.com/a/263416/49241
         public int GetHashCode(IFakeObjectCall obj)
         {
-            Guard.AgainstNull(obj, nameof(obj));
+            Guard.AgainstNull(obj);
 
             var hash = 17;
             unchecked

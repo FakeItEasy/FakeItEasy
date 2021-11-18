@@ -26,8 +26,8 @@ namespace FakeItEasy
             this IArgumentValidationConfiguration<TInterface> configuration,
             Func<T1, bool> argumentsPredicate)
         {
-            Guard.AgainstNull(configuration, nameof(configuration));
-            Guard.AgainstNull(argumentsPredicate, nameof(argumentsPredicate));
+            Guard.AgainstNull(configuration);
+            Guard.AgainstNull(argumentsPredicate);
 
             return configuration.WhenArgumentsMatch(args =>
             {
@@ -53,8 +53,8 @@ namespace FakeItEasy
             this IArgumentValidationConfiguration<TInterface> configuration,
             Func<T1, T2, bool> argumentsPredicate)
         {
-            Guard.AgainstNull(configuration, nameof(configuration));
-            Guard.AgainstNull(argumentsPredicate, nameof(argumentsPredicate));
+            Guard.AgainstNull(configuration);
+            Guard.AgainstNull(argumentsPredicate);
 
             return configuration.WhenArgumentsMatch(args =>
             {
@@ -81,8 +81,8 @@ namespace FakeItEasy
             this IArgumentValidationConfiguration<TInterface> configuration,
             Func<T1, T2, T3, bool> argumentsPredicate)
         {
-            Guard.AgainstNull(configuration, nameof(configuration));
-            Guard.AgainstNull(argumentsPredicate, nameof(argumentsPredicate));
+            Guard.AgainstNull(configuration);
+            Guard.AgainstNull(argumentsPredicate);
 
             return configuration.WhenArgumentsMatch(args =>
             {
@@ -110,8 +110,8 @@ namespace FakeItEasy
             this IArgumentValidationConfiguration<TInterface> configuration,
             Func<T1, T2, T3, T4, bool> argumentsPredicate)
         {
-            Guard.AgainstNull(configuration, nameof(configuration));
-            Guard.AgainstNull(argumentsPredicate, nameof(argumentsPredicate));
+            Guard.AgainstNull(configuration);
+            Guard.AgainstNull(argumentsPredicate);
 
             return configuration.WhenArgumentsMatch(args =>
             {
@@ -140,8 +140,8 @@ namespace FakeItEasy
             this IArgumentValidationConfiguration<TInterface> configuration,
             Func<T1, T2, T3, T4, T5, bool> argumentsPredicate)
         {
-            Guard.AgainstNull(configuration, nameof(configuration));
-            Guard.AgainstNull(argumentsPredicate, nameof(argumentsPredicate));
+            Guard.AgainstNull(configuration);
+            Guard.AgainstNull(argumentsPredicate);
 
             return configuration.WhenArgumentsMatch(args =>
             {
@@ -171,8 +171,8 @@ namespace FakeItEasy
             this IArgumentValidationConfiguration<TInterface> configuration,
             Func<T1, T2, T3, T4, T5, T6, bool> argumentsPredicate)
         {
-            Guard.AgainstNull(configuration, nameof(configuration));
-            Guard.AgainstNull(argumentsPredicate, nameof(argumentsPredicate));
+            Guard.AgainstNull(configuration);
+            Guard.AgainstNull(argumentsPredicate);
 
             return configuration.WhenArgumentsMatch(args =>
             {
@@ -203,8 +203,8 @@ namespace FakeItEasy
             this IArgumentValidationConfiguration<TInterface> configuration,
             Func<T1, T2, T3, T4, T5, T6, T7, bool> argumentsPredicate)
         {
-            Guard.AgainstNull(configuration, nameof(configuration));
-            Guard.AgainstNull(argumentsPredicate, nameof(argumentsPredicate));
+            Guard.AgainstNull(configuration);
+            Guard.AgainstNull(argumentsPredicate);
 
             return configuration.WhenArgumentsMatch(args =>
             {
@@ -236,8 +236,8 @@ namespace FakeItEasy
             this IArgumentValidationConfiguration<TInterface> configuration,
             Func<T1, T2, T3, T4, T5, T6, T7, T8, bool> argumentsPredicate)
         {
-            Guard.AgainstNull(configuration, nameof(configuration));
-            Guard.AgainstNull(argumentsPredicate, nameof(argumentsPredicate));
+            Guard.AgainstNull(configuration);
+            Guard.AgainstNull(argumentsPredicate);
 
             return configuration.WhenArgumentsMatch(args =>
             {

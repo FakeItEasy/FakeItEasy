@@ -19,8 +19,8 @@ namespace FakeItEasy
         /// <returns>Configuration object.</returns>
         public static IAfterCallConfiguredConfiguration<TInterface> Throws<TInterface>(this IExceptionThrowerConfiguration<TInterface> configuration, Exception exception)
         {
-            Guard.AgainstNull(configuration, nameof(configuration));
-            Guard.AgainstNull(exception, nameof(exception));
+            Guard.AgainstNull(configuration);
+            Guard.AgainstNull(exception);
 
             return configuration.Throws(_ => exception);
         }
@@ -35,8 +35,8 @@ namespace FakeItEasy
         /// <returns>Configuration object.</returns>
         public static IAfterCallConfiguredConfiguration<TInterface> Throws<TInterface>(this IExceptionThrowerConfiguration<TInterface> configuration, Func<Exception> exceptionFactory)
         {
-            Guard.AgainstNull(configuration, nameof(configuration));
-            Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+            Guard.AgainstNull(configuration);
+            Guard.AgainstNull(exceptionFactory);
 
             return configuration.Throws(_ => exceptionFactory());
         }
@@ -52,7 +52,7 @@ namespace FakeItEasy
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "By design.")]
         internal static IAfterCallConfiguredConfiguration<TInterface> Throws<TInterface, T>(this IExceptionThrowerConfiguration<TInterface> configuration) where T : Exception, new()
         {
-            Guard.AgainstNull(configuration, nameof(configuration));
+            Guard.AgainstNull(configuration);
 
             return configuration.Throws(_ => new T());
         }

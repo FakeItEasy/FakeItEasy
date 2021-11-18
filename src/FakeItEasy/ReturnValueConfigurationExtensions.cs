@@ -24,7 +24,7 @@ namespace FakeItEasy
         [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design to support the fluent API.")]
         public static IAfterCallConfiguredWithOutAndRefParametersConfiguration<IReturnValueConfiguration<T>> Returns<T>(this IReturnValueConfiguration<T> configuration, T value)
         {
-            Guard.AgainstNull(configuration, nameof(configuration));
+            Guard.AgainstNull(configuration);
 
             return configuration.ReturnsLazily(x => value);
         }
@@ -40,7 +40,7 @@ namespace FakeItEasy
         [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Necessary to support special handling of Task<T> return values.")]
         public static IAfterCallConfiguredWithOutAndRefParametersConfiguration<IReturnValueConfiguration<Task<T>>> Returns<T>(this IReturnValueConfiguration<Task<T>> configuration, T value)
         {
-            Guard.AgainstNull(configuration, nameof(configuration));
+            Guard.AgainstNull(configuration);
 
             return configuration.ReturnsLazily(() => value);
         }
@@ -57,8 +57,8 @@ namespace FakeItEasy
         [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "This is by design to support the fluent API.")]
         public static IAfterCallConfiguredWithOutAndRefParametersConfiguration<IReturnValueConfiguration<T>> ReturnsLazily<T>(this IReturnValueConfiguration<T> configuration, Func<T> valueProducer)
         {
-            Guard.AgainstNull(configuration, nameof(configuration));
-            Guard.AgainstNull(valueProducer, nameof(valueProducer));
+            Guard.AgainstNull(configuration);
+            Guard.AgainstNull(valueProducer);
 
             return configuration.ReturnsLazily(x => valueProducer());
         }
@@ -75,8 +75,8 @@ namespace FakeItEasy
         [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Necessary to support special handling of Task<T> return values.")]
         public static IAfterCallConfiguredWithOutAndRefParametersConfiguration<IReturnValueConfiguration<Task<T>>> ReturnsLazily<T>(this IReturnValueConfiguration<Task<T>> configuration, Func<T> valueProducer)
         {
-            Guard.AgainstNull(configuration, nameof(configuration));
-            Guard.AgainstNull(valueProducer, nameof(valueProducer));
+            Guard.AgainstNull(configuration);
+            Guard.AgainstNull(valueProducer);
 
             return configuration.ReturnsLazily(x => TaskHelper.FromResult(valueProducer()));
         }
@@ -90,8 +90,8 @@ namespace FakeItEasy
         /// <param name="values">The values to return in sequence.</param>
         public static void ReturnsNextFromSequence<T>(this IReturnValueConfiguration<T> configuration, params T[] values)
         {
-            Guard.AgainstNull(configuration, nameof(configuration));
-            Guard.AgainstNull(values, nameof(values));
+            Guard.AgainstNull(configuration);
+            Guard.AgainstNull(values);
 
             configuration.ReturnsNextFromQueue(new ConcurrentQueue<T>(values));
         }
@@ -108,8 +108,8 @@ namespace FakeItEasy
         [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Necessary to support special handling of Task<T> return values.")]
         public static void ReturnsNextFromSequence<T>(this IReturnValueConfiguration<Task<T>> configuration, params T[] values)
         {
-            Guard.AgainstNull(configuration, nameof(configuration));
-            Guard.AgainstNull(values, nameof(values));
+            Guard.AgainstNull(configuration);
+            Guard.AgainstNull(values);
 
             configuration.ReturnsNextFromQueue(new ConcurrentQueue<Task<T>>(values.Select(TaskHelper.FromResult)));
         }
@@ -121,7 +121,7 @@ namespace FakeItEasy
         /// <returns>A configuration object.</returns>
         public static IAfterCallConfiguredConfiguration<IReturnValueConfiguration<Task>> DoesNothing(this IReturnValueConfiguration<Task> configuration)
         {
-            Guard.AgainstNull(configuration, nameof(configuration));
+            Guard.AgainstNull(configuration);
 
             return configuration.Returns(TaskHelper.CompletedTask);
         }

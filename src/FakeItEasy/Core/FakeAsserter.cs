@@ -14,8 +14,8 @@ namespace FakeItEasy.Core
 
         public FakeAsserter(IEnumerable<CompletedFakeObjectCall> calls, int lastSequenceNumber, CallWriter callWriter, StringBuilderOutputWriter.Factory outputWriterFactory)
         {
-            Guard.AgainstNull(calls, nameof(calls));
-            Guard.AgainstNull(callWriter, nameof(callWriter));
+            Guard.AgainstNull(calls);
+            Guard.AgainstNull(callWriter);
 
             this.calls = calls;
             this.lastSequenceNumber = lastSequenceNumber;

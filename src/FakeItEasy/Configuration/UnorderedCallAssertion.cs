@@ -29,7 +29,7 @@ namespace FakeItEasy.Configuration
         /// <exception cref="ExpectationException">The call was not made in the expected order.</exception>
         public IOrderableCallAssertion Then(UnorderedCallAssertion nextAssertion)
         {
-            Guard.AgainstNull(nextAssertion, nameof(nextAssertion));
+            Guard.AgainstNull(nextAssertion);
 
             var context = ServiceLocator.Resolve<SequentialCallContext.Factory>().Invoke();
             this.CheckCallHappenedInOrder(context);
@@ -52,7 +52,7 @@ namespace FakeItEasy.Configuration
 
             public IOrderableCallAssertion Then(UnorderedCallAssertion nextAssertion)
             {
-                Guard.AgainstNull(nextAssertion, nameof(nextAssertion));
+                Guard.AgainstNull(nextAssertion);
 
                 nextAssertion.CheckCallHappenedInOrder(this.context);
                 return this;

@@ -18,7 +18,7 @@ namespace FakeItEasy.Creation
         /// </param>
         public ProxyGeneratorResult(string reasonForFailure)
         {
-            Guard.AgainstNull(reasonForFailure, nameof(reasonForFailure));
+            Guard.AgainstNull(reasonForFailure);
 
             this.ReasonForFailure = reasonForFailure;
         }
@@ -36,8 +36,8 @@ namespace FakeItEasy.Creation
         /// </param>
         public ProxyGeneratorResult(string reasonForFailure, Exception exception)
         {
-            Guard.AgainstNull(reasonForFailure, nameof(reasonForFailure));
-            Guard.AgainstNull(exception, nameof(exception));
+            Guard.AgainstNull(reasonForFailure);
+            Guard.AgainstNull(exception);
 
             if (exception is TargetInvocationException && exception.InnerException is not null)
             {
@@ -64,7 +64,7 @@ namespace FakeItEasy.Creation
         /// </param>
         public ProxyGeneratorResult(object generatedProxy)
         {
-            Guard.AgainstNull(generatedProxy, nameof(generatedProxy));
+            Guard.AgainstNull(generatedProxy);
 
             this.GeneratedProxy = generatedProxy;
         }

@@ -22,10 +22,10 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
             IEnumerable<Expression<Func<Attribute>>> attributes,
             IFakeCallProcessorProvider fakeCallProcessorProvider)
         {
-            Guard.AgainstNull(typeOfProxy, nameof(typeOfProxy));
-            Guard.AgainstNull(additionalInterfacesToImplement, nameof(additionalInterfacesToImplement));
-            Guard.AgainstNull(attributes, nameof(attributes));
-            Guard.AgainstNull(fakeCallProcessorProvider, nameof(fakeCallProcessorProvider));
+            Guard.AgainstNull(typeOfProxy);
+            Guard.AgainstNull(additionalInterfacesToImplement);
+            Guard.AgainstNull(attributes);
+            Guard.AgainstNull(fakeCallProcessorProvider);
 
             var options = CreateProxyGenerationOptions();
             foreach (var attribute in attributes)
@@ -64,11 +64,11 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
             IEnumerable<Expression<Func<Attribute>>> attributes,
             IFakeCallProcessorProvider fakeCallProcessorProvider)
         {
-            Guard.AgainstNull(typeOfProxy, nameof(typeOfProxy));
-            Guard.AgainstNull(additionalInterfacesToImplement, nameof(additionalInterfacesToImplement));
-            Guard.AgainstNull(attributes, nameof(attributes));
-            Guard.AgainstNull(argumentsForConstructor, nameof(argumentsForConstructor));
-            Guard.AgainstNull(fakeCallProcessorProvider, nameof(fakeCallProcessorProvider));
+            Guard.AgainstNull(typeOfProxy);
+            Guard.AgainstNull(additionalInterfacesToImplement);
+            Guard.AgainstNull(attributes);
+            Guard.AgainstNull(argumentsForConstructor);
+            Guard.AgainstNull(fakeCallProcessorProvider);
 
             if (!CanGenerateProxy(typeOfProxy, out string? failReason))
             {
@@ -181,7 +181,7 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
 
             public void Intercept(IInvocation invocation)
             {
-                Guard.AgainstNull(invocation, nameof(invocation));
+                Guard.AgainstNull(invocation);
                 var call = new CastleInvocationCallAdapter(invocation);
                 this.fakeCallProcessorProvider.Fetch(invocation.Proxy).Process(call);
             }

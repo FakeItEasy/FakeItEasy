@@ -49,8 +49,8 @@ namespace FakeItEasy
         public static IAfterCallConfiguredWithOutAndRefParametersConfiguration<IReturnValueConfiguration<TReturnType>>
             ReturnsLazily<TReturnType, <#= typeParamList #>>(this IReturnValueConfiguration<TReturnType> configuration, Func<<#= typeParamList #>, TReturnType> valueProducer)
         {
-            Guard.AgainstNull(configuration, nameof(configuration));
-            Guard.AgainstNull(valueProducer, nameof(valueProducer));
+            Guard.AgainstNull(configuration);
+            Guard.AgainstNull(valueProducer);
 
             return configuration.ReturnsLazily(call =>
                 {
@@ -82,8 +82,8 @@ namespace FakeItEasy
         public static IAfterCallConfiguredWithOutAndRefParametersConfiguration<IReturnValueConfiguration<Task<TReturnType>>>
             ReturnsLazily<TReturnType, <#= typeParamList #>>(this IReturnValueConfiguration<Task<TReturnType>> configuration, Func<<#= typeParamList #>, TReturnType> valueProducer)
         {
-            Guard.AgainstNull(configuration, nameof(configuration));
-            Guard.AgainstNull(valueProducer, nameof(valueProducer));
+            Guard.AgainstNull(configuration);
+            Guard.AgainstNull(valueProducer);
 
             return configuration.ReturnsLazily(call =>
             {

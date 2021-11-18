@@ -28,10 +28,10 @@ namespace FakeItEasy.Core
                 Type typeOfFake,
                 IProxyOptions proxyOptions)
         {
-            Guard.AgainstNull(fakeManagerFactory, nameof(fakeManagerFactory));
-            Guard.AgainstNull(fakeManagerAccessor, nameof(fakeManagerAccessor));
-            Guard.AgainstNull(typeOfFake, nameof(typeOfFake));
-            Guard.AgainstNull(proxyOptions, nameof(proxyOptions));
+            Guard.AgainstNull(fakeManagerFactory);
+            Guard.AgainstNull(fakeManagerAccessor);
+            Guard.AgainstNull(typeOfFake);
+            Guard.AgainstNull(proxyOptions);
 
             this.fakeManagerFactory = fakeManagerFactory;
             this.fakeManagerAccessor = fakeManagerAccessor;
@@ -41,7 +41,7 @@ namespace FakeItEasy.Core
 
         public IFakeCallProcessor Fetch(object proxy)
         {
-            Guard.AgainstNull(proxy, nameof(proxy));
+            Guard.AgainstNull(proxy);
 
             lock (this.initializedFakeManagerLock)
             {
@@ -53,7 +53,7 @@ namespace FakeItEasy.Core
 
         public void EnsureInitialized(object proxy)
         {
-            Guard.AgainstNull(proxy, nameof(proxy));
+            Guard.AgainstNull(proxy);
 
             lock (this.initializedFakeManagerLock)
             {

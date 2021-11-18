@@ -25,7 +25,7 @@ namespace FakeItEasy.Tests
 
             internal NullGuardedConstraint(Expression<Action> call)
             {
-                Guard.AgainstNull(call, nameof(call));
+                Guard.AgainstNull(call);
                 this.call = call;
             }
 

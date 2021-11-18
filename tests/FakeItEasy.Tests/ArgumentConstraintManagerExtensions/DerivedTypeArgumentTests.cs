@@ -40,7 +40,7 @@ namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
 
         protected override void CreateConstraint(INegatableArgumentConstraintManager<string> scope)
         {
-            Guard.AgainstNull(scope, nameof(scope));
+            Guard.AgainstNull(scope);
 
             scope.Matches(x => x is null || x == "foo", x => x.Write("string that is \"foo\" or is empty"));
         }

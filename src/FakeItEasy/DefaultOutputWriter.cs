@@ -23,7 +23,7 @@ namespace FakeItEasy
 
         public IOutputWriter Write(string value)
         {
-            Guard.AgainstNull(value, nameof(value));
+            Guard.AgainstNull(value);
 
             foreach (var character in value)
             {

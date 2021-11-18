@@ -94,7 +94,7 @@ namespace FakeItEasy.Core
 
             protected override string GetStringValue(object argumentValue)
             {
-                Guard.AgainstNull(argumentValue, nameof(argumentValue));
+                Guard.AgainstNull(argumentValue);
 
                 return Fake.TryGetFakeManager(argumentValue, out var manager)
                     ? manager.FakeObjectDisplayName
@@ -116,7 +116,7 @@ namespace FakeItEasy.Core
 
             protected override string GetStringValue(IEnumerable argumentValue)
             {
-                Guard.AgainstNull(argumentValue, nameof(argumentValue));
+                Guard.AgainstNull(argumentValue);
 
                 var writer = new StringBuilderOutputWriter(this.formatter);
                 writer.Write("[");
@@ -133,7 +133,7 @@ namespace FakeItEasy.Core
 
             protected override string GetStringValue(string argumentValue)
             {
-                Guard.AgainstNull(argumentValue, nameof(argumentValue));
+                Guard.AgainstNull(argumentValue);
 
                 if (argumentValue.Length == 0)
                 {

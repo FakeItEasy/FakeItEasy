@@ -32,7 +32,7 @@ namespace FakeItEasy
         /// <returns>An options object.</returns>
         public static IFakeOptions<T> Strict<T>(this IFakeOptions<T> options, StrictFakeOptions strictOptions) where T : class
         {
-            Guard.AgainstNull(options, nameof(options));
+            Guard.AgainstNull(options);
 
             return options.ConfigureFake(fake =>
             {
@@ -63,7 +63,7 @@ namespace FakeItEasy
         /// <returns>An options object.</returns>
         public static IFakeOptions Strict(this IFakeOptions options, StrictFakeOptions strictOptions)
         {
-            Guard.AgainstNull(options, nameof(options));
+            Guard.AgainstNull(options);
 
             return options.ConfigureFake(fake =>
             {
@@ -80,7 +80,7 @@ namespace FakeItEasy
         /// <returns>An options object.</returns>
         public static IFakeOptions<T> CallsBaseMethods<T>(this IFakeOptions<T> options) where T : class
         {
-            Guard.AgainstNull(options, nameof(options));
+            Guard.AgainstNull(options);
 
             return options.ConfigureFake(fake => A.CallTo(fake)
                                                   .Where(call => !call.Method.IsAbstract)
@@ -94,7 +94,7 @@ namespace FakeItEasy
         /// <returns>An options object.</returns>
         public static IFakeOptions CallsBaseMethods(this IFakeOptions options)
         {
-            Guard.AgainstNull(options, nameof(options));
+            Guard.AgainstNull(options);
 
             return options.ConfigureFake(fake => A.CallTo(fake)
                                                   .Where(call => !call.Method.IsAbstract)

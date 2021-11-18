@@ -29,8 +29,8 @@ namespace FakeItEasy.Configuration
         [DebuggerStepThrough]
         internal ArgumentCollection(object?[] arguments, MethodInfo method)
         {
-            Guard.AgainstNull(arguments, nameof(arguments));
-            Guard.AgainstNull(method, nameof(method));
+            Guard.AgainstNull(arguments);
+            Guard.AgainstNull(method);
 
             if (arguments.Length != method.GetParameters().Length)
             {
@@ -114,7 +114,7 @@ namespace FakeItEasy.Configuration
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "Used to cast the argument to the specified type.")]
         public T Get<T>(string argumentName)
         {
-            Guard.AgainstNull(argumentName, nameof(argumentName));
+            Guard.AgainstNull(argumentName);
 
             var index = this.GetArgumentIndex(argumentName);
             return this.Get<T>(index);

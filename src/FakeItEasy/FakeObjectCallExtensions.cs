@@ -21,7 +21,7 @@ namespace FakeItEasy
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "Generic argument is used to cast the result.")]
         public static T GetArgument<T>(this IFakeObjectCall call, int argumentIndex)
         {
-            Guard.AgainstNull(call, nameof(call));
+            Guard.AgainstNull(call);
 
             return call.Arguments.Get<T>(argumentIndex);
         }
@@ -38,8 +38,8 @@ namespace FakeItEasy
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "Generic argument is used to cast the result.")]
         public static T GetArgument<T>(this IFakeObjectCall call, string argumentName)
         {
-            Guard.AgainstNull(call, nameof(call));
-            Guard.AgainstNull(argumentName, nameof(argumentName));
+            Guard.AgainstNull(call);
+            Guard.AgainstNull(argumentName);
 
             return call.Arguments.Get<T>(argumentName);
         }

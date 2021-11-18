@@ -44,8 +44,8 @@ namespace FakeItEasy
             this IArgumentValidationConfiguration<TInterface> configuration,
             Func<<#= typeParamList #>, bool> argumentsPredicate)
         {
-            Guard.AgainstNull(configuration, nameof(configuration));
-            Guard.AgainstNull(argumentsPredicate, nameof(argumentsPredicate));
+            Guard.AgainstNull(configuration);
+            Guard.AgainstNull(argumentsPredicate);
 
             return configuration.WhenArgumentsMatch(args =>
             {

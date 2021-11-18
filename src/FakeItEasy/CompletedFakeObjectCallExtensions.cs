@@ -25,8 +25,8 @@ namespace FakeItEasy
         [SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters", Justification = "The compiler would not be able to figure out the type.")]
         public static IEnumerable<ICompletedFakeObjectCall> Matching<TFake>(this IEnumerable<ICompletedFakeObjectCall> calls, Expression<Action<TFake>> callSpecification)
         {
-            Guard.AgainstNull(calls, nameof(calls));
-            Guard.AgainstNull(callSpecification, nameof(callSpecification));
+            Guard.AgainstNull(calls);
+            Guard.AgainstNull(callSpecification);
 
             var factory = ServiceLocator.Resolve<IExpressionCallMatcherFactory>();
             var callExpressionParser = ServiceLocator.Resolve<ICallExpressionParser>();

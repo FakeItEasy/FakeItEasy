@@ -12,7 +12,7 @@ namespace FakeItEasy.Core
         /// <returns>Whether or not the assembly references FakeItEasy.</returns>
         public static bool ReferencesFakeItEasy(this Assembly assembly)
         {
-            Guard.AgainstNull(assembly, nameof(assembly));
+            Guard.AgainstNull(assembly);
 
             return assembly.GetReferencedAssemblies().Any(r => r.FullName == TypeCatalogue.FakeItEasyAssembly.FullName);
         }

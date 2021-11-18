@@ -22,8 +22,8 @@ namespace FakeItEasy
             this IReturnValueConfiguration<ValueTask> configuration,
             Exception exception)
         {
-            Guard.AgainstNull(configuration, nameof(configuration));
-            Guard.AgainstNull(exception, nameof(exception));
+            Guard.AgainstNull(configuration);
+            Guard.AgainstNull(exception);
 
             return configuration.ReturnsLazily(call => new ValueTask(TaskHelper.FromException(exception)));
         }
@@ -39,8 +39,8 @@ namespace FakeItEasy
             this IReturnValueConfiguration<ValueTask> configuration,
             Func<IFakeObjectCall, Exception> exceptionFactory)
         {
-            Guard.AgainstNull(configuration, nameof(configuration));
-            Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+            Guard.AgainstNull(configuration);
+            Guard.AgainstNull(exceptionFactory);
 
             return configuration.ReturnsLazily(call => new ValueTask(TaskHelper.FromException(exceptionFactory(call))));
         }
@@ -56,8 +56,8 @@ namespace FakeItEasy
             this IReturnValueConfiguration<ValueTask> configuration,
             Func<Exception> exceptionFactory)
         {
-            Guard.AgainstNull(configuration, nameof(configuration));
-            Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+            Guard.AgainstNull(configuration);
+            Guard.AgainstNull(exceptionFactory);
 
             return configuration.ReturnsLazily(call => new ValueTask(TaskHelper.FromException(exceptionFactory())));
         }
@@ -74,8 +74,8 @@ namespace FakeItEasy
             this IReturnValueConfiguration<ValueTask<T>> configuration,
             Exception exception)
         {
-            Guard.AgainstNull(configuration, nameof(configuration));
-            Guard.AgainstNull(exception, nameof(exception));
+            Guard.AgainstNull(configuration);
+            Guard.AgainstNull(exception);
 
             return configuration.ReturnsLazily(call => new ValueTask<T>(TaskHelper.FromException<T>(exception)));
         }
@@ -92,8 +92,8 @@ namespace FakeItEasy
             this IReturnValueConfiguration<ValueTask<T>> configuration,
             Func<IFakeObjectCall, Exception> exceptionFactory)
         {
-            Guard.AgainstNull(configuration, nameof(configuration));
-            Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+            Guard.AgainstNull(configuration);
+            Guard.AgainstNull(exceptionFactory);
 
             return configuration.ReturnsLazily(call => new ValueTask<T>(TaskHelper.FromException<T>(exceptionFactory(call))));
         }
@@ -110,8 +110,8 @@ namespace FakeItEasy
             this IReturnValueConfiguration<ValueTask<T>> configuration,
             Func<Exception> exceptionFactory)
         {
-            Guard.AgainstNull(configuration, nameof(configuration));
-            Guard.AgainstNull(exceptionFactory, nameof(exceptionFactory));
+            Guard.AgainstNull(configuration);
+            Guard.AgainstNull(exceptionFactory);
 
             return configuration.ReturnsLazily(call => new ValueTask<T>(TaskHelper.FromException<T>(exceptionFactory())));
         }

@@ -17,7 +17,7 @@ namespace FakeItEasy.Expressions
         /// <param name="expressionMatcher">The expression matcher to use.</param>
         public ExpressionCallRule(ExpressionCallMatcher expressionMatcher)
         {
-            Guard.AgainstNull(expressionMatcher, nameof(expressionMatcher));
+            Guard.AgainstNull(expressionMatcher);
 
             this.ExpressionMatcher = expressionMatcher;
             this.OutAndRefParametersValueProducer = expressionMatcher.GetOutAndRefParametersValueProducer();

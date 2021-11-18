@@ -21,7 +21,7 @@ namespace FakeItEasy.Creation.DelegateProxies
             Type typeOfProxy,
             IFakeCallProcessorProvider fakeCallProcessorProvider)
         {
-            Guard.AgainstNull(typeOfProxy, nameof(typeOfProxy));
+            Guard.AgainstNull(typeOfProxy);
 
             var invokeMethod = typeOfProxy.GetMethod("Invoke")!;
 

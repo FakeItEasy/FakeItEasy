@@ -14,7 +14,7 @@ namespace FakeItEasy.Core
 
             public override void Apply(IInterceptedFakeObjectCall fakeObjectCall)
             {
-                Guard.AgainstNull(fakeObjectCall, nameof(fakeObjectCall));
+                Guard.AgainstNull(fakeObjectCall);
 
                 var returnType = fakeObjectCall.Method.ReturnType;
                 if (typeof(Task).IsAssignableFrom(returnType))

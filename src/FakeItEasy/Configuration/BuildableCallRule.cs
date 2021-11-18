@@ -92,7 +92,7 @@ namespace FakeItEasy.Configuration
 
         public virtual void Apply(IInterceptedFakeObjectCall fakeObjectCall)
         {
-            Guard.AgainstNull(fakeObjectCall, nameof(fakeObjectCall));
+            Guard.AgainstNull(fakeObjectCall);
 
             foreach (var action in this.Actions)
             {
@@ -134,7 +134,7 @@ namespace FakeItEasy.Configuration
         /// <param name="writer">The writer to write the description to.</param>
         public void WriteDescriptionOfValidCall(IOutputWriter writer)
         {
-            Guard.AgainstNull(writer, nameof(writer));
+            Guard.AgainstNull(writer);
 
             this.DescribeCallOn(writer);
 

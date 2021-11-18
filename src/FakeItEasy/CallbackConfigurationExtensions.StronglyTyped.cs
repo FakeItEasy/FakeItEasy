@@ -25,8 +25,8 @@ namespace FakeItEasy
         /// <returns>The configuration object.</returns>
         public static TInterface Invokes<TInterface, T1>(this ICallbackConfiguration<TInterface> configuration, Action<T1> actionToInvoke)
         {
-            Guard.AgainstNull(configuration, nameof(configuration));
-            Guard.AgainstNull(actionToInvoke, nameof(actionToInvoke));
+            Guard.AgainstNull(configuration);
+            Guard.AgainstNull(actionToInvoke);
 
             return configuration.Invokes(call =>
                 {
@@ -48,8 +48,8 @@ namespace FakeItEasy
         /// <returns>The configuration object.</returns>
         public static TInterface Invokes<TInterface, T1, T2>(this ICallbackConfiguration<TInterface> configuration, Action<T1, T2> actionToInvoke)
         {
-            Guard.AgainstNull(configuration, nameof(configuration));
-            Guard.AgainstNull(actionToInvoke, nameof(actionToInvoke));
+            Guard.AgainstNull(configuration);
+            Guard.AgainstNull(actionToInvoke);
 
             return configuration.Invokes(call =>
                 {
@@ -72,8 +72,8 @@ namespace FakeItEasy
         /// <returns>The configuration object.</returns>
         public static TInterface Invokes<TInterface, T1, T2, T3>(this ICallbackConfiguration<TInterface> configuration, Action<T1, T2, T3> actionToInvoke)
         {
-            Guard.AgainstNull(configuration, nameof(configuration));
-            Guard.AgainstNull(actionToInvoke, nameof(actionToInvoke));
+            Guard.AgainstNull(configuration);
+            Guard.AgainstNull(actionToInvoke);
 
             return configuration.Invokes(call =>
                 {
@@ -97,8 +97,8 @@ namespace FakeItEasy
         /// <returns>The configuration object.</returns>
         public static TInterface Invokes<TInterface, T1, T2, T3, T4>(this ICallbackConfiguration<TInterface> configuration, Action<T1, T2, T3, T4> actionToInvoke)
         {
-            Guard.AgainstNull(configuration, nameof(configuration));
-            Guard.AgainstNull(actionToInvoke, nameof(actionToInvoke));
+            Guard.AgainstNull(configuration);
+            Guard.AgainstNull(actionToInvoke);
 
             return configuration.Invokes(call =>
                 {
@@ -123,8 +123,8 @@ namespace FakeItEasy
         /// <returns>The configuration object.</returns>
         public static TInterface Invokes<TInterface, T1, T2, T3, T4, T5>(this ICallbackConfiguration<TInterface> configuration, Action<T1, T2, T3, T4, T5> actionToInvoke)
         {
-            Guard.AgainstNull(configuration, nameof(configuration));
-            Guard.AgainstNull(actionToInvoke, nameof(actionToInvoke));
+            Guard.AgainstNull(configuration);
+            Guard.AgainstNull(actionToInvoke);
 
             return configuration.Invokes(call =>
                 {
@@ -150,8 +150,8 @@ namespace FakeItEasy
         /// <returns>The configuration object.</returns>
         public static TInterface Invokes<TInterface, T1, T2, T3, T4, T5, T6>(this ICallbackConfiguration<TInterface> configuration, Action<T1, T2, T3, T4, T5, T6> actionToInvoke)
         {
-            Guard.AgainstNull(configuration, nameof(configuration));
-            Guard.AgainstNull(actionToInvoke, nameof(actionToInvoke));
+            Guard.AgainstNull(configuration);
+            Guard.AgainstNull(actionToInvoke);
 
             return configuration.Invokes(call =>
                 {
@@ -178,8 +178,8 @@ namespace FakeItEasy
         /// <returns>The configuration object.</returns>
         public static TInterface Invokes<TInterface, T1, T2, T3, T4, T5, T6, T7>(this ICallbackConfiguration<TInterface> configuration, Action<T1, T2, T3, T4, T5, T6, T7> actionToInvoke)
         {
-            Guard.AgainstNull(configuration, nameof(configuration));
-            Guard.AgainstNull(actionToInvoke, nameof(actionToInvoke));
+            Guard.AgainstNull(configuration);
+            Guard.AgainstNull(actionToInvoke);
 
             return configuration.Invokes(call =>
                 {
@@ -207,8 +207,8 @@ namespace FakeItEasy
         /// <returns>The configuration object.</returns>
         public static TInterface Invokes<TInterface, T1, T2, T3, T4, T5, T6, T7, T8>(this ICallbackConfiguration<TInterface> configuration, Action<T1, T2, T3, T4, T5, T6, T7, T8> actionToInvoke)
         {
-            Guard.AgainstNull(configuration, nameof(configuration));
-            Guard.AgainstNull(actionToInvoke, nameof(actionToInvoke));
+            Guard.AgainstNull(configuration);
+            Guard.AgainstNull(actionToInvoke);
 
             return configuration.Invokes(call =>
                 {

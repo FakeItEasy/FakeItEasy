@@ -21,8 +21,8 @@ namespace FakeItEasy
         public static IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParameters<TInterface>(
             this IOutAndRefParametersConfiguration<TInterface> configuration, params object?[] values)
         {
-            Guard.AgainstNull(configuration, nameof(configuration));
-            Guard.AgainstNull(values, nameof(values));
+            Guard.AgainstNull(configuration);
+            Guard.AgainstNull(values);
 
             return configuration.AssignsOutAndRefParametersLazily(x => values);
         }

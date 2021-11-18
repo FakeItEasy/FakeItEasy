@@ -23,7 +23,7 @@ namespace FakeItEasy
         [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "object", Justification = "The term fake object does not refer to the type System.Object.")]
         public static FakeManager GetFakeManager(object fakedObject)
         {
-            Guard.AgainstNull(fakedObject, nameof(fakedObject));
+            Guard.AgainstNull(fakedObject);
 
             return FakeManagerAccessor.GetFakeManager(fakedObject);
         }
@@ -37,7 +37,7 @@ namespace FakeItEasy
         [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "object", Justification = "The term fake object does not refer to the type System.Object.")]
         public static IEnumerable<ICompletedFakeObjectCall> GetCalls(object fakedObject)
         {
-            Guard.AgainstNull(fakedObject, nameof(fakedObject));
+            Guard.AgainstNull(fakedObject);
 
             return FakeManagerAccessor.GetFakeManager(fakedObject).GetRecordedCalls();
         }
@@ -50,7 +50,7 @@ namespace FakeItEasy
         [Obsolete("ClearConfiguration will be removed in version 8.0.0. Prefer to discard the fake and create a new one.")]
         public static void ClearConfiguration(object fakedObject)
         {
-            Guard.AgainstNull(fakedObject, nameof(fakedObject));
+            Guard.AgainstNull(fakedObject);
 
             var manager = FakeManagerAccessor.GetFakeManager(fakedObject);
             manager.ClearUserRules();
@@ -63,7 +63,7 @@ namespace FakeItEasy
         [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "object", Justification = "The term fake object does not refer to the type System.Object.")]
         public static void ClearRecordedCalls(object fakedObject)
         {
-            Guard.AgainstNull(fakedObject, nameof(fakedObject));
+            Guard.AgainstNull(fakedObject);
 
             var manager = FakeManagerAccessor.GetFakeManager(fakedObject);
             manager.ClearRecordedCalls();
@@ -78,7 +78,7 @@ namespace FakeItEasy
         [DebuggerStepThrough]
         public static bool TryGetFakeManager(object potentialFake, [NotNullWhen(true)] out FakeManager? fakeManager)
         {
-            Guard.AgainstNull(potentialFake, nameof(potentialFake));
+            Guard.AgainstNull(potentialFake);
 
             fakeManager = FakeManagerAccessor.TryGetFakeManager(potentialFake);
             return fakeManager is not null;
@@ -92,7 +92,7 @@ namespace FakeItEasy
         [DebuggerStepThrough]
         public static bool IsFake(object potentialFake)
         {
-            Guard.AgainstNull(potentialFake, nameof(potentialFake));
+            Guard.AgainstNull(potentialFake);
 
             return TryGetFakeManager(potentialFake, out _);
         }

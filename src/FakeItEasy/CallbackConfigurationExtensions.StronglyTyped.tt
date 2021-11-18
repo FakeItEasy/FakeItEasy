@@ -43,8 +43,8 @@ namespace FakeItEasy
         /// <returns>The configuration object.</returns>
         public static TInterface Invokes<TInterface, <#= typeParamList #>>(this ICallbackConfiguration<TInterface> configuration, Action<<#= typeParamList #>> actionToInvoke)
         {
-            Guard.AgainstNull(configuration, nameof(configuration));
-            Guard.AgainstNull(actionToInvoke, nameof(actionToInvoke));
+            Guard.AgainstNull(configuration);
+            Guard.AgainstNull(actionToInvoke);
 
             return configuration.Invokes(call =>
                 {
