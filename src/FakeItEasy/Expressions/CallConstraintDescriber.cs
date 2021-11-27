@@ -1,5 +1,6 @@
 namespace FakeItEasy.Expressions
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
@@ -15,15 +16,23 @@ namespace FakeItEasy.Expressions
         /// matcher to the supplied writer.
         /// </summary>
         /// <param name="writer">The writer on which to describe the call.</param>
+        /// <param name="callTarget">The object on which the method was called.</param>
         /// <param name="method">The method to describe.</param>
         /// <param name="argumentConstraints">The argument constraints applied to the method.</param>
-        public static void DescribeCallOn(IOutputWriter writer, MethodInfo method, IEnumerable<IArgumentConstraint> argumentConstraints)
+        public static void DescribeCallOn(IOutputWriter writer, object? callTarget, MethodInfo method, IEnumerable<IArgumentConstraint> argumentConstraints)
         {
-            writer.Write(method.DeclaringType!);
-            writer.Write(".");
+            WriteObjectType(writer, method.DeclaringType!);
             WriteMethodName(writer, method);
 
             WriteArgumentsListString(writer, method, argumentConstraints);
+
+            WriteObjectName(writer, callTarget);
+        }
+
+        private static void WriteObjectType(IOutputWriter writer, Type type)
+        {
+            writer.Write(type.ToString());
+            writer.Write(".");
         }
 
         private static void WriteMethodName(IOutputWriter writer, MethodInfo method)
@@ -80,6 +89,25 @@ namespace FakeItEasy.Expressions
                 var valueConstraint = argumentConstraints.Last();
                 valueConstraint.WriteDescription(writer);
             }
+        }
+
+        private static void WriteObjectName(IOutputWriter writer, object? callTarget)
+        {
+            if (callTarget == null)
+            {
+                return;
+            }
+
+            Fake.TryGetFakeManager(callTarget!, out var fake);
+
+            var objectName = fake?.FakeObjectName;
+
+            if (string.IsNullOrEmpty(objectName))
+            {
+                return;
+            }
+
+            writer.Write($" on {objectName}");
         }
     }
 }

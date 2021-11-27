@@ -152,7 +152,8 @@ namespace FakeItEasy.Tests.Expressions
 
             A.CallTo(() => this.constraintFactory.GetArgumentConstraint(A<ParsedArgumentExpression>._)).Returns(constraint);
 
-            var matcher = this.CreateMatcher<IFoo>(x => x.Bar(1, 2));
+            var foo = A.Fake<IFoo>();
+            var matcher = this.CreateMatcher(() => foo.Bar(1, 2));
 
             var writer = ServiceLocator.Resolve<StringBuilderOutputWriter.Factory>().Invoke();
             matcher.DescribeCallOn(writer);
@@ -199,7 +200,8 @@ namespace FakeItEasy.Tests.Expressions
         [Fact]
         public void DescriptionOfMatchingCall_should_write_predicate_when_predicate_is_used_to_validate_arguments()
         {
-            var matcher = this.CreateMatcher<IFoo>(x => x.Bar(string.Empty, string.Empty));
+            var foo = A.Fake<IFoo>();
+            var matcher = this.CreateMatcher(() => foo.Bar(string.Empty, string.Empty));
 
             matcher.UsePredicateToValidateArguments(x => true);
 
@@ -228,6 +230,11 @@ namespace FakeItEasy.Tests.Expressions
         }
 
         private ExpressionCallMatcher CreateMatcher<TFake>(Expression<Action<TFake>> callSpecification)
+        {
+            return this.CreateMatcher(this.parser.Parse(callSpecification));
+        }
+
+        private ExpressionCallMatcher CreateMatcher(Expression<Action> callSpecification)
         {
             return this.CreateMatcher(this.parser.Parse(callSpecification));
         }

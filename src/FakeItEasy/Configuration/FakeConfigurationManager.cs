@@ -54,8 +54,8 @@ namespace FakeItEasy.Configuration
         public IAnyCallConfigurationWithNoReturnTypeSpecified CallTo(object fakeObject)
         {
             GuardAgainstNonFake(fakeObject);
-            var rule = new AnyCallCallRule();
             var manager = Fake.GetFakeManager(fakeObject);
+            var rule = new AnyCallCallRule(manager);
 
             return this.configurationFactory.CreateAnyCallConfiguration(manager, rule);
         }

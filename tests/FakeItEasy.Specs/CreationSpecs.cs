@@ -615,6 +615,19 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
+        public void NamedFakeExceptionMessage(Action fake, Exception exception)
+        {
+            "Given a named delegate fake"
+                .x(() => fake = A.Fake<Action>(o => o.Named("Foo1")));
+
+            "When I assert that the fake action was called"
+                .x(() => exception = Record.Exception(() => A.CallTo(() => fake()).MustHaveHappened()));
+
+            "Then the exception message describes the named fake by its name"
+                .x(() => exception.Message.Should().Contain("System.Action.Invoke() on Foo1"));
+        }
+
+        [Scenario]
         public void AvoidLongSelfReferentialConstructor(
             ClassWithLongSelfReferentialConstructor fake1,
             ClassWithLongSelfReferentialConstructor fake2)

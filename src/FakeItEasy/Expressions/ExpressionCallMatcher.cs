@@ -15,6 +15,7 @@ namespace FakeItEasy.Expressions
         : ICallMatcher
     {
         private readonly MethodInfoManager methodInfoManager;
+        private readonly ParsedCallExpression parsedExpression;
         private IArgumentConstraint[] argumentConstraints;
         private Func<ArgumentCollection, bool> argumentsPredicate;
         private bool useExplicitArgumentsPredicate;
@@ -27,8 +28,8 @@ namespace FakeItEasy.Expressions
         /// <param name="methodInfoManager">The method info manager to use.</param>
         public ExpressionCallMatcher(ParsedCallExpression parsedExpression, ExpressionArgumentConstraintFactory constraintFactory, MethodInfoManager methodInfoManager)
         {
+            this.parsedExpression = parsedExpression;
             this.methodInfoManager = methodInfoManager;
-            this.Method = parsedExpression.CalledMethod;
 
             var constraints = new IArgumentConstraint[parsedExpression.ArgumentsExpressions.Length];
             for (var i = 0; i < constraints.Length; i++)
@@ -40,13 +41,15 @@ namespace FakeItEasy.Expressions
             this.argumentsPredicate = this.ArgumentsMatchesArgumentConstraints;
         }
 
-        private MethodInfo Method { get; }
+        private MethodInfo Method => this.parsedExpression.CalledMethod;
+
+        private object? CallTarget => this.parsedExpression.CallTarget;
 
         /// <summary>
         /// Writes a description of calls the rule is applicable to.
         /// </summary>
         /// <param name="writer">The writer on which to describe the call.</param>
-        public virtual void DescribeCallOn(IOutputWriter writer) => CallConstraintDescriber.DescribeCallOn(writer, this.Method, this.argumentConstraints);
+        public virtual void DescribeCallOn(IOutputWriter writer) => CallConstraintDescriber.DescribeCallOn(writer, this.CallTarget, this.Method, this.argumentConstraints);
 
         /// <summary>
         /// Matches the specified call against the expression.
