@@ -37,15 +37,6 @@ namespace FakeItEasy.Tests.Expressions
         }
 
         [Fact]
-        public void Constructor_should_throw_if_expression_is_not_property_or_method()
-        {
-            var exception = Record.Exception(() =>
-                this.CreateMatcher<Foo, IServiceProvider>(x => x.ServiceProvider));
-
-            exception.Should().BeAnExceptionOfType<ArgumentException>();
-        }
-
-        [Fact]
         public void Matches_should_return_true_when_MethodInfoManager_returns_true()
         {
             var call = CreateFakeCall<IFoo>(x => x.Bar());

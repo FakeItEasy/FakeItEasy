@@ -59,6 +59,22 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
+        public static void CallToAField(ClassWithAField fake, Exception exception)
+        {
+            "Given a faked class with a field"
+                .x(() => fake = A.Fake<ClassWithAField>());
+
+            "When a call to the field is begun to be configured"
+                .x(() => exception = Record.Exception(() => A.CallTo(() => fake.Field)));
+
+            "Then the configuration should fail"
+                .x(() => exception.Should().BeAnExceptionOfType<ArgumentException>());
+
+            @"And the exception message should tell say that the ""call"" was neither a method nor property"
+                .x(() => exception.Message.Should().Be("The specified expression is not a method call or property getter."));
+        }
+
+        [Scenario]
         public static void ParameterArrays(
             ITypeWithParameterArray fake)
         {
@@ -1001,6 +1017,11 @@ namespace FakeItEasy.Specs
                 ++this.InvocationCount;
                 return A<int>._;
             }
+        }
+
+        public class ClassWithAField
+        {
+            public int Field;
         }
     }
 }
