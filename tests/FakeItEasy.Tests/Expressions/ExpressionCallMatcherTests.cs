@@ -189,20 +189,6 @@ namespace FakeItEasy.Tests.Expressions
         }
 
         [Fact]
-        public void DescriptionOfMatchingCall_should_write_predicate_when_predicate_is_used_to_validate_arguments()
-        {
-            var foo = A.Fake<IFoo>();
-            var matcher = this.CreateMatcher(() => foo.Bar(string.Empty, string.Empty));
-
-            matcher.UsePredicateToValidateArguments(x => true);
-
-            var writer = ServiceLocator.Resolve<StringBuilderOutputWriter.Factory>().Invoke();
-            matcher.DescribeCallOn(writer);
-
-            writer.Builder.ToString().Should().Be("FakeItEasy.Tests.IFoo.Bar(argument: <Predicated>, argument2: <Predicated>)");
-        }
-
-        [Fact]
         public void Matches_should_call_MethodInfoManager_with_property_getter_method_when_call_is_internal_property_access()
         {
             var call = CreateFakeCall<TypeWithInternalProperty, bool>(x => x.InternalProperty);

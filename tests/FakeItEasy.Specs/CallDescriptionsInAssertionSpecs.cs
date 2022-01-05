@@ -42,6 +42,26 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
+        public void AssertedCallDescriptionForMethodWhenArgumentsMatch(IFoo fake, Exception exception)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IFoo>());
+
+            "And no call is made to the fake"
+                .x(() => { });
+
+            "When I assert that a method was called using WhenArgumentsMatch"
+                .x(() => exception = Record.Exception(() => A.CallTo(() => fake.Bar(0)).WhenArgumentsMatch((int a) => a == 53).MustHaveHappened()));
+
+            "Then the assertion should fail"
+                .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>());
+
+            "And the exception should correctly describe the asserted call"
+                .x(() => exception.Message.Should().MatchModuloLineEndings(
+                    "*\r\n    FakeItEasy.Specs.CallDescriptionsInAssertionSpecs+IFoo.Bar(i: <Predicated>)\r\n*"));
+        }
+
+        [Scenario]
         public void ActualCallDescriptionForMethod(IFoo fake, Exception exception)
         {
             "Given a fake"
