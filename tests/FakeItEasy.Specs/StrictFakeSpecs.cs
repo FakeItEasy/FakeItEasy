@@ -313,6 +313,24 @@ namespace FakeItEasy.Specs
             "And the exception message names the method"
                 .x(() => exception.Message.Should().Contain("DoIt"));
         }
+
+        [Scenario]
+        public static void NameIncludedInExpectationException(
+            IMyInterface fake,
+            Exception exception)
+        {
+            "Given a named strict fake"
+                .x(() => fake = A.Fake<IMyInterface>(o => o.Strict().Named("Foo1")));
+
+            "And I call an unconfigured method"
+                .x(() => exception = Record.Exception(() => fake.MakeIt("argument")));
+
+            "Then it should include configured name in the thrown exception"
+                .x(() => exception
+                    .Should()
+                    .BeAnExceptionOfType<ExpectationException>()
+                    .WithMessage(@"Call to unconfigured method of strict fake: FakeItEasy.Specs.StrictFakeSpecs+IMyInterface.MakeIt(name: ""argument"") on Foo1."));
+        }
     }
 
     public class OverridingObject

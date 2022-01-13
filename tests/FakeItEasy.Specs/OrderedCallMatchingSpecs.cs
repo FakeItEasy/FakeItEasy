@@ -161,6 +161,43 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
+        public static void OrderedAssertionsOnDifferentNamedObjectsOutOfOrder(IFoo fake1, IFoo fake2, Exception exception)
+        {
+            "Given a named Fake"
+                .x(() => fake1 = A.Fake<IFoo>(o => o.Named("Foo1")));
+
+            "And another named Fake of the same type"
+                .x(() => fake2 = A.Fake<IFoo>(o => o.Named("Foo2")));
+
+            "And a call on the second Fake, passing argument 1"
+                .x(() => fake2.Bar(1));
+
+            "And a call on the first Fake, passing argument 1"
+                .x(() => fake1.Bar(1));
+
+            "And a call on the first Fake, passing argument 2"
+                .x(() => fake1.Bar(2));
+
+            "When I assert that a call with argument 1 was made on the first Fake, then on the second, and then that a call with argument 2 was made on the first Fake"
+                .x(() => exception = Record.Exception(() =>
+                    A.CallTo(() => fake1.Bar(1)).MustHaveHappened()
+                        .Then(A.CallTo(() => fake2.Bar(1)).MustHaveHappened())
+                        .Then(A.CallTo(() => fake1.Bar(2)).MustHaveHappened())));
+
+            "Then the assertion should fail"
+                .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>().WithMessageModuloLineEndings(@"
+
+  Assertion failed for the following calls:
+    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1) on Foo1' once or more
+    'FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1) on Foo2' once or more
+  The calls were found but not in the correct order among the calls:
+    1: FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1) on Foo2
+    2: FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 1) on Foo1
+    3: FakeItEasy.Specs.OrderedCallMatchingSpecs+IFoo.Bar(baz: 2) on Foo1
+"));
+        }
+
+        [Scenario]
         public static void MultistepOrderedAssertionsInOrder(
             IFoo fake,
             Exception exception,

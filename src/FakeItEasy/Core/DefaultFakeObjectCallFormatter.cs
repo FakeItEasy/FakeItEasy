@@ -1,5 +1,6 @@
 namespace FakeItEasy.Core
 {
+    using System;
     using System.Linq;
     using System.Reflection;
     using System.Text;
@@ -29,15 +30,24 @@ namespace FakeItEasy.Core
         {
             var builder = new StringBuilder();
 
-            builder
-                .Append(this.fakeManagerAccessor.GetFakeManager(call.FakedObject).FakeObjectType)
-                .Append('.');
+            var fakeManager = this.fakeManagerAccessor.GetFakeManager(call.FakedObject);
+
+            AppendObjectType(builder, fakeManager.FakeObjectType);
 
             AppendMethodName(builder, call.Method);
 
             this.AppendArgumentsList(builder, call);
 
+            AppendObjectName(builder, fakeManager.FakeObjectName);
+
             return builder.ToString();
+        }
+
+        private static void AppendObjectType(StringBuilder builder, Type type)
+        {
+            builder
+                .Append(type.ToString())
+                .Append('.');
         }
 
         private static ArgumentValueInfo[] GetArgumentsForArgumentsList(ArgumentValueInfo[] allArguments, MethodInfo method)
@@ -88,6 +98,16 @@ namespace FakeItEasy.Core
             }
 
             builder.Append(method.GetGenericArgumentsString());
+        }
+
+        private static void AppendObjectName(StringBuilder builder, string? objectName)
+        {
+            if (string.IsNullOrEmpty(objectName))
+            {
+                return;
+            }
+
+            builder.Append($" on {objectName}");
         }
 
         private static void AppendArgumentSeparator(StringBuilder builder, int argumentIndex, int totalNumberOfArguments)

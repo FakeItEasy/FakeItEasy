@@ -165,5 +165,21 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>()
                 .WithMessage("*Any call made to the fake object.*"));
         }
+
+        [Scenario]
+        public static void AnyCallNamedFakeDescription(
+            IFoo fake,
+            Exception exception)
+        {
+            "Given a named fake"
+                .x(() => fake = A.Fake<IFoo>(o => o.Named("Foo1")));
+
+            "When an assertion is made that any method was called"
+                .x(() => exception = Record.Exception(() => A.CallTo(fake).MustHaveHappened()));
+
+            "Then an exception that includes fake name is thrown"
+                .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>()
+                .WithMessage("*Any call made to the fake object Foo1.*"));
+        }
     }
 }
