@@ -12,7 +12,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		build.cmd = build.cmd
 		CONTRIBUTING.md = CONTRIBUTING.md
 		Directory.Build.props = Directory.Build.props
-		global.json = global.json
 		how_to_build.md = how_to_build.md
 		License.txt = License.txt
 		mkdocs.yml = mkdocs.yml
@@ -113,7 +112,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{9D99B251-FB4F-49BF-8405-F6E0DE46EB32}"
 	ProjectSection(SolutionItems) = preProject
 		tools\deploy.cmd = tools\deploy.cmd
-		tools\FakeItEasy.ToolPaths.targets = tools\FakeItEasy.ToolPaths.targets
 		tools\prepare_release.cmd = tools\prepare_release.cmd
 	EndProjectSection
 EndProject
@@ -128,6 +126,16 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FakeItEasy.Tests.TestHelpers", "tests\FakeItEasy.Tests.TestHelpers\FakeItEasy.Tests.TestHelpers.csproj", "{458FBDA4-91F9-4A69-BFBC-5AC3D85D4A03}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeItEasy.Tests.ExtensionPoints", "tests\FakeItEasy.Tests.ExtensionPoints\FakeItEasy.Tests.ExtensionPoints.csproj", "{55451191-0521-41E1-BCCF-6D135D646589}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shared", "shared", "{101E0992-8233-42C8-9CAF-FEC799BF5DDB}"
+	ProjectSection(SolutionItems) = preProject
+		tools-shared\.githubtoken = tools-shared\.githubtoken
+		tools-shared\Directory.Build.props = tools-shared\Directory.Build.props
+		tools-shared\FakeItEasy.ToolPaths.targets = tools-shared\FakeItEasy.ToolPaths.targets
+		tools-shared\README.md = tools-shared\README.md
+		tools-shared\.editorconfig = tools-shared\.editorconfig
+		tools-shared\.gitignore = tools-shared\.gitignore
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -209,6 +217,7 @@ Global
 		{17B22C7C-9ECB-4D05-A238-48B40DDA06E8} = {59466C4D-C407-4DD9-B77B-D99162B9FC7C}
 		{458FBDA4-91F9-4A69-BFBC-5AC3D85D4A03} = {AD790E7D-D664-4B5F-8BE8-01507A2A9F3B}
 		{55451191-0521-41E1-BCCF-6D135D646589} = {AD790E7D-D664-4B5F-8BE8-01507A2A9F3B}
+		{101E0992-8233-42C8-9CAF-FEC799BF5DDB} = {9D99B251-FB4F-49BF-8405-F6E0DE46EB32}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E70BBF50-5920-49F2-835D-4A2DBD73F0E1}
