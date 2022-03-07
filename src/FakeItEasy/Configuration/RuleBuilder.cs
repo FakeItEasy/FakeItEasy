@@ -124,6 +124,7 @@ namespace FakeItEasy.Configuration
                 throw new FakeConfigurationException(ExceptionMessages.NotAWrappingFake);
             }
 
+            this.AddRuleIfNeeded();
             this.RuleBeingBuilt.UseApplicator(x => { });
             this.RuleBeingBuilt.CallWrappedMethodOn = wrappedObjectRule.WrappedObject;
             return this;

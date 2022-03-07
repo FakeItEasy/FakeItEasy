@@ -298,6 +298,29 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
+        public static void CallWrappedMethodOnStrictWrappingFake(Foo realObject, IFoo wrapper, int returnValue)
+        {
+            "Given a real object"
+                .x(() => realObject = new Foo());
+
+            "And a strict fake wrapping this object"
+                .x(() => wrapper = A.Fake<IFoo>(o => o.Wrapping(realObject).Strict()));
+
+            "When a method on the fake is configured to call the wrapped method"
+                .x(() => A.CallTo(() => wrapper.NonVoidMethod("hello"))
+                    .CallsWrappedMethod());
+
+            "And the configured method is called on the fake"
+                .x(() => returnValue = wrapper.NonVoidMethod("hello"));
+
+            "Then the real object's method is called"
+                .x(() => realObject.NonVoidMethodCalled.Should().BeTrue());
+
+            "And the wrapper returns the value returned by the real object's method"
+                .x(() => returnValue.Should().Be(5));
+        }
+
+        [Scenario]
         public static void NotAWrappingFakeCallsWrappedMethod(IFoo fake, Exception exception)
         {
             "Given a non-wrapping fake"
