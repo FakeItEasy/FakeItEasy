@@ -1,4 +1,4 @@
-﻿#if !FEATURE_CALLERARGUMENTEXPRESSION
+﻿#if LACKS_CALLERARGUMENTEXPRESSION
 namespace System.Runtime.CompilerServices
 {
     [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false, Inherited = false)]
