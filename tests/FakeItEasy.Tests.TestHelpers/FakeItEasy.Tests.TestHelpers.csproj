@@ -6,11 +6,11 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-      <DefineConstants>$(DefineConstants);LACKS_STRING_CONTAINS_COMPARISONTYPE</DefineConstants>
+    <DefineConstants>$(DefineConstants);LACKS_STRING_CONTAINS_COMPARISONTYPE</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(TargetFramework)' == 'net461'">
-      <DefineConstants>$(DefineConstants);LACKS_STRING_CONTAINS_COMPARISONTYPE</DefineConstants>
+    <DefineConstants>$(DefineConstants);LACKS_STRING_CONTAINS_COMPARISONTYPE</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
