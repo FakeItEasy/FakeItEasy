@@ -32,10 +32,10 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
 
             if (method.IsFinal)
             {
-#if FEATURE_STRING_CONTAINS_COMPARISONTYPE
-                var explicitImplementation = method.Name.Contains('.', StringComparison.Ordinal);
-#else
+#if LACKS_STRING_CONTAINS_COMPARISONTYPE
                 var explicitImplementation = method.Name.Contains('.');
+#else
+                var explicitImplementation = method.Name.Contains('.', StringComparison.Ordinal);
 #endif
                 if (explicitImplementation)
                 {

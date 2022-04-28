@@ -25,25 +25,19 @@
   <!-- .NET 5.0 -->
 
   <PropertyGroup Condition="'$(TargetFramework)' == 'net5.0'">
-    <DefineConstants>$(DefineConstants);FEATURE_STRING_CONTAINS_COMPARISONTYPE;FEATURE_CALLERARGUMENTEXPRESSION</DefineConstants>
-  </PropertyGroup>
-
-  <!-- .NET Standard 2.1 -->
-
-  <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
-    <DefineConstants>$(DefineConstants);FEATURE_STRING_CONTAINS_COMPARISONTYPE</DefineConstants>
+    <DefineConstants>$(DefineConstants);FEATURE_CALLERARGUMENTEXPRESSION</DefineConstants>
   </PropertyGroup>
 
   <!-- .NET Standard 2.0 -->
 
   <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <DefineConstants>$(DefineConstants);LACKS_NULLABLE_ATTRIBUTES</DefineConstants>
+    <DefineConstants>$(DefineConstants);LACKS_NULLABLE_ATTRIBUTES;LACKS_STRING_CONTAINS_COMPARISONTYPE</DefineConstants>
   </PropertyGroup>
 
   <!-- .NET Framework 4.5 -->
 
   <PropertyGroup Condition="'$(TargetFramework)' == 'net45'">
-    <DefineConstants>$(DefineConstants);LACKS_NULLABLE_ATTRIBUTES;LACKS_ARRAY_EMPTY</DefineConstants>
+    <DefineConstants>$(DefineConstants);LACKS_NULLABLE_ATTRIBUTES;LACKS_ARRAY_EMPTY;LACKS_STRING_CONTAINS_COMPARISONTYPE</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>

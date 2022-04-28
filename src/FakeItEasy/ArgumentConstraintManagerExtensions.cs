@@ -90,10 +90,10 @@ namespace FakeItEasy
             Guard.AgainstNull(manager);
             Guard.AgainstNull(value);
 
-#if FEATURE_STRING_CONTAINS_COMPARISONTYPE
-            return manager.NullCheckedMatches(x => x.Contains(value, comparisonType), x => x.Write("string that contains ").WriteArgumentValue(value));
-#else
+#if LACKS_STRING_CONTAINS_COMPARISONTYPE
             return manager.NullCheckedMatches(x => x.IndexOf(value, comparisonType) >= 0, x => x.Write("string that contains ").WriteArgumentValue(value));
+#else
+            return manager.NullCheckedMatches(x => x.Contains(value, comparisonType), x => x.Write("string that contains ").WriteArgumentValue(value));
 #endif
         }
 
