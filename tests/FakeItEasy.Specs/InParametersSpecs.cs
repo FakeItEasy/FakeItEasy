@@ -77,6 +77,7 @@ namespace FakeItEasy.Specs
                     .Be("The number of values for out and ref parameters specified does not match the number of out and ref parameters in the call."));
         }
 
+#if LACKS_FAKEABLE_GENERIC_IN_PARAMETERS
         // A characterization test, representing the current capabilities of the code, not the desired state.
         // If it start failing, update it and fix the "What can be faked" documentation page.
         //
@@ -93,5 +94,22 @@ namespace FakeItEasy.Specs
             "Then it throws"
                 .x(() => exception.Should().BeAnExceptionOfType<FakeCreationException>());
         }
+#else
+        [Scenario]
+        public void FakingGenericInParam(IGenericInParam<bool> fake, int argument, int result)
+        {
+            "Given a faked generic interface with a method that takes an 'in' parameter"
+                .x(() => fake = A.Fake<IGenericInParam<bool>>());
+
+            "And a call to this method is configured to return a value"
+                .x(() => A.CallTo(() => fake.Foo(in argument)).Returns(42));
+
+            "When the method is called"
+                .x(() => result = fake.Foo(in argument));
+
+            "Then it returns the configured value"
+                .x(() => result.Should().Be(42));
+        }
+#endif
     }
 }

@@ -6,6 +6,27 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
 
+
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net6.0'">
+      <DefineConstants>$(DefineConstants);MISMATCH_COMPILE_AND_RUNTIME_FRAMEWORKS</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net5.0'">
+      <DefineConstants>$(DefineConstants);LACKS_FAKEABLE_GENERIC_IN_PARAMETERS</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
+      <DefineConstants>$(DefineConstants);LACKS_FAKEABLE_GENERIC_IN_PARAMETERS</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework)' == 'netcoreapp2.1'">
+      <DefineConstants>$(DefineConstants);LACKS_FAKEABLE_GENERIC_IN_PARAMETERS</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net461'">
+      <DefineConstants>$(DefineConstants);LACKS_FAKEABLE_GENERIC_IN_PARAMETERS</DefineConstants>
+  </PropertyGroup>
+
   <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>

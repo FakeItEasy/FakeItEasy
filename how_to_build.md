@@ -15,17 +15,17 @@ The build requires that a few pieces of software be installed on the host comput
 
 ### On Windows
 
-The default [build profile](#building-only-a-subset-of-the-supported-target-frameworks) on Windows builds FakeItEasy for .NET Framework 4.5, .NET Standard 2.0, .NET Standard 2.1 and .NET 5.0, and runs the tests on .NET Framework 4.6.1, .NET Core 2.1, .NET Core 3.1 and .NET 5.0.
+The default [build profile](#building-only-a-subset-of-the-supported-target-frameworks) on Windows builds FakeItEasy for .NET Framework 4.5, .NET Standard 2.0, .NET Standard 2.1, and .NET 5.0, and runs the tests on .NET Framework 4.6.1, .NET Core 2.1, .NET Core 3.1, .NET 5.0, and .NET 6.0.
 
 Ensure that the following are installed:
 
 1. The .NET Core 2.1 and 3.1 runtimes
 
-2. The .NET 5.0 runtime
+2. The .NET 5.0 and 6.0 runtimes
 
 3. The .NET Framework 4.6.1 or higher
 
-4. An up-to-date version of the .NET 6.0 SDK (currently this means 6.0.100 or later)
+4. An up-to-date version of the .NET 6.0 SDK (currently this means 6.0.202 or later)
 
 You might not need everything to run a [partial build](#building-only-a-subset-of-the-supported-target-frameworks).
 
@@ -39,13 +39,13 @@ In order to build from Visual Studio, you will also need:
 
 ### On Linux
 
-The default [build profile](#building-only-a-subset-of-the-supported-target-frameworks) on Linux builds FakeItEasy for .NET Standard 2.0, .NET Standard 2.1 and .NET 5.0, and runs the tests on .NET Core 2.1, .NET Core 3.1 and .NET 5.0 (the .NET Framework isn't supported on Linux).
+The default [build profile](#building-only-a-subset-of-the-supported-target-frameworks) on Linux builds FakeItEasy for .NET Standard 2.0, .NET Standard 2.1, and .NET 5.0, and runs the tests on .NET Core 2.1, .NET Core 3.1, .NET 5.0, and .NET 6.0 (the .NET Framework isn't supported on Linux).
 
 Ensure the following are installed:
 
 1. The .NET Core 2.1 and 3.1 runtimes
 
-2. The .NET 5.0 runtime
+2. The .NET 5.0 and 6.0 runtimes
 
 3. An up-to-date version of the .NET 6.0 SDK (currently this means 6.0.100 or later)
 
@@ -92,8 +92,8 @@ After the build has completed, the build artifacts will be located in `artifacts
 ### Building only a subset of the supported target frameworks
 
 FakeItEasy targets multiple versions of .NET (.NET Framework 4.5, .NET
-Standard 2.0 and 2.1, .NET 5.0), and the tests also run on multiple frameworks (.NET
-Framework 4.6.1, .NET Core 2.1 and 3.1, .NET 5.0). A consequence is that a full
+Standard 2.0 and 2.1, and .NET 5.0), and the tests also run on multiple frameworks (.NET
+Framework 4.6.1, .NET Core 2.1 and 3.1, and .NET 5.0, and 6.0). A consequence is that a full
 build can take a significant amount of time. When working on the code, you might
 want a faster feedback loop. To this end, FakeItEasy's build infrastructure has
 the concept of "build profiles", which makes it possible to build only a subset
@@ -106,6 +106,7 @@ available:
 * `netcore2.1`: builds only .NET Core 2.1 / .NET Standard 2.0 target frameworks
 * `netcore3.1`: builds only .NET Core 3.1 / .NET Standard 2.1 target frameworks
 * `net5.0`: builds only the .NET 5.0 target framework
+* `net6.0`: builds only the .NET 5.0 target framework, but tests on .NET 6.0
 
 In order to select a profile, create a `FakeItEasy.user.props` file at the root
 of the repository by running

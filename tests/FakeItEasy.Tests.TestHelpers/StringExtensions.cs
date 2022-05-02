@@ -12,10 +12,10 @@ namespace FakeItEasy.Tests.TestHelpers
                 return s;
             }
 
-#if FEATURE_STRING_CONTAINS_COMPARISONTYPE
-            if (!s.Contains('\n', StringComparison.Ordinal))
-#else
+#if LACKS_STRING_CONTAINS_COMPARISONTYPE
             if (s.IndexOf('\n') < 0)
+#else
+            if (!s.Contains('\n', StringComparison.Ordinal))
 #endif
             {
                 return s;
