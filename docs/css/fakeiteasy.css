@@ -1,0 +1,11 @@
+#logo {
+    background-image: url("../img/large-logo-for-dark.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 256px;
+    height: 163px;
+}
+
+[data-md-color-scheme="default"] #logo {
+    background-image: url("../img/large-logo-for-light.png");
+}

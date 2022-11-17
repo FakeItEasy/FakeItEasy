@@ -1,4 +1,4 @@
-![FakeItEasy](https://fakeiteasy.github.io/img/fakeiteasy_logo_256.png)
+<div id="logo"></div>
 
 FakeItEasy is a .NET dynamic fake library for creating all types of fake objects, mocks, stubs etc.
 
