@@ -1,0 +1,1202 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-8.5.10">
+    
+    
+      
+        <title>Formatting Argument Values - FakeItEasy</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.472b142f.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.08040f6c.min.css">
+        
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../css/extra-highlight.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent="">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#formatting-argument-values" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="FakeItEasy" class="md-header__button md-logo" aria-label="FakeItEasy" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            FakeItEasy
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Formatting Argument Values
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          
+          
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
+            </label>
+          
+        
+          
+          
+          
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12c0-2.42-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/FakeItEasy/FakeItEasy" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="FakeItEasy" class="md-nav__button md-logo" aria-label="FakeItEasy" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    FakeItEasy
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/FakeItEasy/FakeItEasy" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        FakeItEasy
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../quickstart/" class="md-nav__link">
+        Quickstart
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          Creating Fakes
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Creating Fakes" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Creating Fakes
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../creating-fakes/" class="md-nav__link">
+        Creating Fakes
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../what-can-be-faked/" class="md-nav__link">
+        What can be faked
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../default-fake-behavior/" class="md-nav__link">
+        Default fake behavior
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../how-to-fake-internal-types/" class="md-nav__link">
+        How to fake internal (Friend in VB) types
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          Specifying Fakes’ Behavior
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Specifying Fakes’ Behavior" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Specifying Fakes’ Behavior
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../specifying-a-call-to-configure/" class="md-nav__link">
+        Specifying a Call to Configure
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../specifying-return-values/" class="md-nav__link">
+        Specifying Return Values
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../throwing-exceptions/" class="md-nav__link">
+        Throwing Exceptions
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../doing-nothing/" class="md-nav__link">
+        Doing Nothing
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../assigning-out-and-ref-parameters/" class="md-nav__link">
+        Assigning out and ref parameters
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../invoking-custom-code/" class="md-nav__link">
+        Invoking Custom Code
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../calling-base-methods/" class="md-nav__link">
+        Calling base methods
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../calling-wrapped-methods/" class="md-nav__link">
+        Calling wrapped methods
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../changing-behavior-between-calls/" class="md-nav__link">
+        Changing behavior between calls
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../argument-constraints/" class="md-nav__link">
+        Argument constraints
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6">
+          Assertion
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Assertion" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          Assertion
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../assertion/" class="md-nav__link">
+        Assertion
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ordered-assertions/" class="md-nav__link">
+        Ordered assertions
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faking-async-methods/" class="md-nav__link">
+        Faking async methods
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../raising-events/" class="md-nav__link">
+        Raising events
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../strict-fakes/" class="md-nav__link">
+        Strict fakes
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_10" type="checkbox" id="__nav_10" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_10">
+          Dummies
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Dummies" data-md-level="1">
+        <label class="md-nav__title" for="__nav_10">
+          <span class="md-nav__icon md-icon"></span>
+          Dummies
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dummies/" class="md-nav__link">
+        Dummies
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../custom-dummy-creation/" class="md-nav__link">
+        Custom Dummy Creation
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../implicit-creation-options/" class="md-nav__link">
+        Implicit Creation Options
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Formatting Argument Values
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Formatting Argument Values
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#writing-a-custom-argument-value-formatter" class="md-nav__link">
+    Writing a custom argument value formatter
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-it-works" class="md-nav__link">
+    How it works
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fakeiteasys-default-formatter-behavior" class="md-nav__link">
+    FakeItEasy's default formatter behavior
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resolving-formatter-collisions" class="md-nav__link">
+    Resolving formatter collisions
+  </a>
+  
+    <nav class="md-nav" aria-label="Resolving formatter collisions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lowest-distance" class="md-nav__link">
+    Lowest distance
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#highest-priority" class="md-nav__link">
+    Highest priority
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-does-fakeiteasy-find-argument-value-formatters" class="md-nav__link">
+    How does FakeItEasy find Argument Value Formatters?
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scanning-for-extension-points/" class="md-nav__link">
+        Scanning for Extension Points
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bootstrapper/" class="md-nav__link">
+        Bootstrapper
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../advanced-usage/" class="md-nav__link">
+        Advanced usage
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="/projects/analyzers/" class="md-nav__link">
+        Analyzer Packages
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../platform-support/" class="md-nav__link">
+        Platform support
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../source-stepping/" class="md-nav__link">
+        Source Stepping
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../why-was-fakeiteasy-created/" class="md-nav__link">
+        Why was FakeItEasy created?
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../external-resources/" class="md-nav__link">
+        External Resources
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#writing-a-custom-argument-value-formatter" class="md-nav__link">
+    Writing a custom argument value formatter
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-it-works" class="md-nav__link">
+    How it works
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fakeiteasys-default-formatter-behavior" class="md-nav__link">
+    FakeItEasy's default formatter behavior
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resolving-formatter-collisions" class="md-nav__link">
+    Resolving formatter collisions
+  </a>
+  
+    <nav class="md-nav" aria-label="Resolving formatter collisions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lowest-distance" class="md-nav__link">
+    Lowest distance
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#highest-priority" class="md-nav__link">
+    Highest priority
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-does-fakeiteasy-find-argument-value-formatters" class="md-nav__link">
+    How does FakeItEasy find Argument Value Formatters?
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  <a href="https://github.com/FakeItEasy/FakeItEasy/edit/master/docs/formatting-argument-values.md" title="Edit this page" class="md-content__button md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
+  </a>
+
+
+<h1 id="formatting-argument-values">Formatting Argument Values</h1>
+<p>FakeItEasy tries to provide helpful error messages when an
+<a href="../assertion/">Assertion</a> isn't met. For example, when an expected call to a fake
+method isn't made, or when an unexpected call <em>is</em> made. Often these
+messages are adequate, but sometimes there's a need to improve upon
+them, which can be done by writing custom argument value formatters.</p>
+<h2 id="writing-a-custom-argument-value-formatter">Writing a custom argument value formatter</h2>
+<p>Just define a class that extends <code>FakeItEasy.ArgumentValueFormatter&lt;T&gt;</code>. Here's a sample that formats argument values of type <code>Book</code>:</p>
+<pre><code class="language-csharp">class BookArgumentValueFormatter : ArgumentValueFormatter&lt;Book&gt;
+{
+    protected override string GetStringValue(Book argumentValue)
+    {
+        return string.Format(&quot;'{0}' published on {1:yyyy-MM-dd}&quot;,
+            argumentValue.Title, argumentValue.PublishedOn);
+    }
+}
+</code></pre>
+<p>This would help FakeItEasy display this error message:</p>
+<pre>
+Assertion failed for the following call:
+  SampleTests.ILibrary.Checkout(<Ignored>)
+Expected to find it never but found it once among the calls:
+  1: SampleTests.ILibrary.Checkout(<b>book: 'The Ocean at the End of the Lane', published on 2013-06-18</b>)
+</pre>
+<p>which could make tracking down any failures a little easier.</p>
+<p>Compare to the original behavior:</p>
+<pre>
+Assertion failed for the following call:
+  SampleTests.ILibrary.Checkout(<Ignored>)
+Expected to find it never but found it once among the calls:
+  1: SampleTests.ILibrary.Checkout(<b>book: SampleTests.Book</b>)
+</pre>
+
+<p>In the original form of the message, the Book argument is just
+formatted using <code>Book.ToString()</code> because FakeItEasy doesn't know any
+better.</p>
+<h2 id="how-it-works">How it works</h2>
+<p>FakeItEasy uses classes that implement the following interface to format argument values:</p>
+<pre><code class="language-csharp">public interface IArgumentValueFormatter
+{
+    string GetArgumentValueAsString(object argumentValue);
+    Type ForType { get; }
+    Priority Priority { get; }
+}
+</code></pre>
+<p><code>GetArgumentValueAsString</code> does the work, transforming an argument into its formatted representation.<br />
+<code>ForType</code> indicates what type of argument a formatter can format.<br />
+<code>Priority</code> is discussed below.</p>
+<p>Above, we wrote a formatter in the preferred way, by extending
+<code>abstract class ArgumentValueFormatter&lt;T&gt;:
+IArgumentValueFormatter</code>. <code>ArgumentValueFormatter&lt;T&gt;</code> defines a
+<code>GetArgumentValueAsString</code> method that defers to <code>GetStringValue</code>, and
+its <code>ForType</code> method simply returns <code>T</code>. The default implementation of
+<code>Priority</code> returns <code>Priority.Default</code> (equivalent to value <code>0</code>), but
+this can be overridden.  It's possible to write a formatter from
+scratch, but there's no advantage to doing so over extending
+<code>ArgumentValueFormatter&lt;T&gt;</code>.</p>
+<p>It's possible to create formatters for any type, including concrete
+types, abstract types, and interfaces. Formatters defined for base
+types and interfaces will be used when formatting values whose types
+extend or implement the formatter's type.</p>
+<h2 id="fakeiteasys-default-formatter-behavior">FakeItEasy's default formatter behavior</h2>
+<p>Unless custom formatters are provided, FakeItEasy formats argument
+values like so:</p>
+<ul>
+<li>the <code>null</code> value is formatted as <code>NULL</code>,</li>
+<li>the empty <code>string</code> is formatted as <code>string.Empty</code>,</li>
+<li>other <code>string</code> values are formatted as <code>"the string value"</code>, including the quotation marks, and</li>
+<li>any other value is formatted as its <code>ToString()</code> result</li>
+</ul>
+<p>There is no way to change FakeItEasy's behavior when formatting
+<code>null</code>, but the other behavior can be overridden by user-defined
+formatters.</p>
+<h2 id="resolving-formatter-collisions">Resolving formatter collisions</h2>
+<p>It's possible for a solution to contain multiple formatters that would
+apply to the same types of arguments. In fact, it's guaranteed to
+happen, since FakeItEasy itself defines a formatter that applies to
+<code>object</code>s and one that applies to <code>string</code>s. Any user-defined
+formatter will conflict with at least the built-in object formatter,
+and maybe others. When there is more than one candidate for formatting
+an argument, FakeItEasy picks the best one based on two factors:</p>
+<ul>
+<li>the distance between the argument's type (hereafter <em>ArgType</em>) and the type each formatter knows about (hereafter <em>ForType</em>), and</li>
+<li>the value of each formatter's <code>Priority</code> property</li>
+</ul>
+<h3 id="lowest-distance">Lowest distance</h3>
+<p>When an argument value needs to be formatted, FakeItEasy examines all
+known formatters whose ForType is in ArgType's inheritance tree, or
+whose ForType is an interface that ArgType implements. The <em>distance</em>
+between ForType and ArgType is calculated as follows:</p>
+<ul>
+<li>0 if ForType and ArgType are the same</li>
+<li>1 if ForType is an interface that ArgType implements</li>
+<li>2 if <code>ForType == ArgType.BaseType</code>, </li>
+<li>3 if <code>ForType == ArgType.BaseType.BaseType</code>, and so on, adding one for every step in the inheritance chain</li>
+</ul>
+<p>The formatter whose ForType has the smallest distance to ArgType is used to format the argument.</p>
+<h3 id="highest-priority">Highest priority</h3>
+<p>Sometimes more than one formatter is found the same distance from
+ArgType. Maybe two formatters actually specify the same <code>ForType</code>
+property value, or there's a formatter defined for ArgType as well as
+for an interface that ArgType implements.</p>
+<p>When multiple formatters have the same distance from the argument,
+FakeItEasy will select the one with the highest <code>Priority</code> property
+value. If multiple formatters have the same distance <em>and</em> the same
+priority, the behavior is undefined.</p>
+<p>All classes that extend <code>ArgumentValueFormatter&lt;T&gt;</code> have a <code>Priority</code>
+property that returns <code>Priority.Default</code>, unless they explicitly
+override it.  However, the formatters that FakeItEasy includes have a
+<code>Priority</code> lower than <code>Priority.Default</code>, so unless two user-supplied
+formatters apply to the same types, and yield the same distance when
+applied to a type, there's no need to override the <code>Priority</code>
+property.</p>
+<h3 id="how-does-fakeiteasy-find-argument-value-formatters">How does FakeItEasy find Argument Value Formatters?</h3>
+<p>On initialization, FakeItEasy
+<a href="../scanning-for-extension-points/">looks for Discoverable Extension Points</a>,
+including Argument Value Formatters.</p>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+    <nav class="md-footer__inner md-grid" aria-label="Footer" >
+      
+        
+        <a href="../implicit-creation-options/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Implicit Creation Options" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Implicit Creation Options
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../scanning-for-extension-points/" class="md-footer__link md-footer__link--next" aria-label="Next: Scanning for Extension Points" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Scanning for Extension Points
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.16e2a7d4.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d6c3db9e.min.js"></script>
+      
+    
+  </body>
+</html>
