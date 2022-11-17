@@ -1,8 +1,36 @@
 site_name: FakeItEasy
 site_dir: artifacts/docs
-theme: readthedocs
+theme: material
+
 repo_url: https://github.com/FakeItEasy/FakeItEasy
 extra_css: [css/extra-highlight.css]
+
+extra:
+  version:
+    provider: mike
+
+theme:
+  name: material
+  palette:
+
+    # Palette toggle for light mode
+    - scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+
+    # Palette toggle for dark mode
+    - scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+plugins:
+  - mike:
+      canonical_version: null
+      css_dir: css
+      javascript_dir: js
+      version_selector: true
 
 nav:
 - FakeItEasy: index.md
