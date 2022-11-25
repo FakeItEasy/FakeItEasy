@@ -4,13 +4,13 @@ namespace FakeItEasy.Tests.Approval
     using System.IO;
     using System.Reflection;
     using System.Runtime.CompilerServices;
-    using ApprovalTests;
-    using ApprovalTests.Core;
-    using ApprovalTests.Reporters;
-    using ApprovalTests.Writers;
+    using System.Threading.Tasks;
     using PublicApiGenerator;
+    using VerifyTests;
+    using VerifyXunit;
     using Xunit;
 
+    [UsesVerify]
     public class ApiApproval
     {
         [SkippableTheory]
@@ -20,9 +20,8 @@ namespace FakeItEasy.Tests.Approval
         [InlineData("FakeItEasy", "net5.0")]
         [InlineData("FakeItEasy.Extensions.ValueTask", "net45")]
         [InlineData("FakeItEasy.Extensions.ValueTask", "netstandard2.0")]
-        [UseReporter(typeof(DiffReporter))]
         [MethodImpl(MethodImplOptions.NoInlining)]
-        public void ApproveApi(string projectName, string frameworkVersion)
+        public async Task ApproveApiAsync(string projectName, string frameworkVersion)
         {
             string codeBase = Assembly.GetExecutingAssembly().Location!;
             UriBuilder uri = new UriBuilder(new Uri(codeBase));
@@ -39,23 +38,17 @@ namespace FakeItEasy.Tests.Approval
             var assembly = Assembly.LoadFile(Path.GetFullPath(assemblyFile));
             var publicApi = ApiGenerator.GeneratePublicApi(assembly, options: null);
 
-            Approvals.Verify(
-                WriterFactory.CreateTextWriter(publicApi),
-                new ApprovalNamer(projectName, frameworkVersion),
-                Approvals.GetReporter());
-        }
+            var settings = new VerifySettings();
+            settings.UseDirectory("ApprovedApi/" + projectName);
+            settings.UseFileName(frameworkVersion);
 
-        private class ApprovalNamer : IApprovalNamer
-        {
-            public ApprovalNamer(string projectName, string frameworkVersion)
-            {
-                this.Name = frameworkVersion;
-                this.SourcePath = Path.Combine(GetSourceDirectory(), "ApprovedApi", projectName);
-            }
-
-            public string SourcePath { get; }
-
-            public string Name { get; }
+            // If this starts failing for non-obvious reasons, or especially if
+            // there's differing behavior on the build server and a contributor's
+            // own machine, ensure that the same versions of the SDK are used to
+            // build, and clear all generated files (e.g. the obj directories)
+            // from the entire solution and try again.
+            // See https://github.com/dotnet/sdk/issues/10774#issuecomment-973973378
+            await Verifier.Verify(publicApi, settings);
         }
 
         private static string GetSourceDirectory([CallerFilePath] string path = "") => Path.GetDirectoryName(path)!;
