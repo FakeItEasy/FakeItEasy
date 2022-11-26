@@ -7,12 +7,15 @@ namespace FakeItEasy.Tests.Approval
     using System.Threading.Tasks;
     using PublicApiGenerator;
     using VerifyTests;
+    using VerifyTests.DiffPlex;
     using VerifyXunit;
     using Xunit;
 
     [UsesVerify]
     public class ApiApproval
     {
+        static ApiApproval() => VerifyDiffPlex.Initialize(OutputType.Compact);
+
         [SkippableTheory]
         [InlineData("FakeItEasy", "net45")]
         [InlineData("FakeItEasy", "netstandard2.0")]
