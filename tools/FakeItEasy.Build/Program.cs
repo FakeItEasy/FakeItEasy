@@ -58,7 +58,7 @@ Target(
     {
         foreach (var received in Directory.EnumerateFiles("tests/FakeItEasy.Tests.Approval/ApprovedApi", "*.received.txt", SearchOption.AllDirectories))
         {
-            File.Copy(received, received.Replace(".received.txt", ".approved.txt", StringComparison.OrdinalIgnoreCase), overwrite: true);
+            File.Copy(received, received.Replace(".received.txt", ".verified.txt", StringComparison.OrdinalIgnoreCase), overwrite: true);
         }
     });
 
