@@ -55,6 +55,7 @@ Using a command prompt, navigate to your clone root folder and execute:
 
 - `build.cmd` on Windows
 - `./build.sh` on Linux
+- `./build.ps1` on Windows or Linux, if Powershell is installed
 
 This executes the default build targets to produce .NET Standard and/or .NET Framework artifacts, depending on the selected [build profile](#building-only-a-subset-of-the-supported-target-frameworks).
 
@@ -87,7 +88,7 @@ After the build has completed, the build artifacts will be located in `artifacts
 
     `build.cmd -?`
 
-(On Linux, just replace `build.cmd` with `./build.sh`)
+(On Linux, just replace `build.cmd` with `./build.sh` or `./build.ps1`)
 
 ### Building only a subset of the supported target frameworks
 
