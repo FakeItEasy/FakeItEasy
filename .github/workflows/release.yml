@@ -1,0 +1,39 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "*"
+  workflow_dispatch:
+    inputs:
+      dry-run:
+        type: boolean
+        default: true
+        description: "Dry run (doesn't actually publish anything)"
+
+env:
+  NUGET_SERVER_URL: https://www.nuget.org/api/v2/package
+  NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+
+jobs:
+
+  build:
+    uses: ./.github/workflows/ci.yml
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: windows-artifacts
+          path: /tmp/artifacts
+      - name: Set DRY_RUN_OPTION env variable
+        if: github.event.inputs.dry-run
+        run: echo "DRY_RUN_OPTION=--dry-run" >> $GITHUB_ENV
+      - name: Deploy
+        run: dotnet run --project tools-shared/FakeItEasy.Deploy -- $DRY_RUN_OPTION -r "FakeItEasy/FakeItEasy" -t "${{ github.ref_name }}" -a "/tmp/artifacts/output"
