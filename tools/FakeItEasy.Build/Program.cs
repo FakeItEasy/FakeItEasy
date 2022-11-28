@@ -50,7 +50,7 @@ Target(
     "pack",
     DependsOn("build"),
     forEach: projectsToPack,
-    action: project => Run("dotnet", $"pack {project.Path} --configuration Release --no-build --nologo --output {Path.GetFullPath("artifacts/output")}"));
+    action: project => Run("dotnet", $"pack {project.Path} --configuration Release --no-build --nologo --output \"{Path.GetFullPath("artifacts/output")}\""));
 
 Target(
     "force-approve",
