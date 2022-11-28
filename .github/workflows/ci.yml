@@ -1,0 +1,74 @@
+name: CI build
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+      - support/*
+  workflow_dispatch:
+  workflow_call:
+
+env:
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  DOTNET_GENERATE_ASPNET_CERTIFICATE: false
+  DOTNET_NOLOGO: true
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+
+jobs:
+
+  build:
+    name: Build on ${{ matrix.os-name }}
+    strategy:
+      matrix:
+        os: [windows, ubuntu]
+        include:
+          - os: windows
+            os-image: windows-2022
+            os-name: Windows
+            artifact-name: windows-artifacts
+          - os: ubuntu
+            os-image: ubuntu-22.04
+            os-name: Ubuntu
+            artifact-name: ubuntu-artifacts
+    runs-on: ${{ matrix.os-image }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v3
+        if: matrix.os == 'ubuntu'
+        with:
+          dotnet-version: |
+            5.0
+            3.1
+            2.1
+      - name: Run build script
+        run: ./build.ps1
+        shell: pwsh
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: ${{ matrix.artifact-name }}
+          path: artifacts/**/*
+
+  build-docs:
+    name: Build documentation
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: false
+      - name: Setup Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: 3.7
+          architecture: x64
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install --requirement docs/requirements.txt
+      - name: Build docs
+        run: python -m mkdocs build --clean --site-dir artifacts/docs --config-file mkdocs.yml --strict
