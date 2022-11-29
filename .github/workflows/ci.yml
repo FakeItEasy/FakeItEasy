@@ -62,9 +62,9 @@ jobs:
         with:
           submodules: false
       - name: Setup Python
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v4
         with:
-          python-version: 3.7
+          python-version: 3.11
           architecture: x64
       - name: Install dependencies
         run: |
@@ -72,3 +72,8 @@ jobs:
           python -m pip install --requirement docs/requirements.txt
       - name: Build docs
         run: python -m mkdocs build --clean --site-dir artifacts/docs --config-file mkdocs.yml --strict
+      - name: Upload docs
+        uses: actions/upload-artifact@v3
+        with:
+          name: documentation
+          path: artifacts/docs
