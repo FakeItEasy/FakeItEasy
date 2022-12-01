@@ -6,6 +6,20 @@ method isn't made, or when an unexpected call _is_ made. Often these
 messages are adequate, but sometimes there's a need to improve upon
 them, which can be done by writing custom argument value formatters.
 
+## FakeItEasy's default formatter behavior
+
+Unless custom formatters are provided, FakeItEasy formats argument
+values like so:
+
+- the `null` value is formatted as `NULL`,
+- the empty `string` is formatted as `string.Empty`,
+- other `string` values are formatted as `"the string value"`, including the quotation marks, and
+- any other value is formatted as its `ToString()` result
+
+There is no way to change FakeItEasy's behavior when formatting
+`null`, but the other behavior can be overridden by user-defined
+formatters.
+
 ## Writing a custom argument value formatter
 Just define a class that extends `FakeItEasy.ArgumentValueFormatter<T>`. Here's a sample that formats argument values of type `Book`:
 ```csharp
@@ -72,20 +86,6 @@ types, abstract types, and interfaces. Formatters defined for base
 types and interfaces will be used when formatting values whose types
 extend or implement the formatter's type.
 
-## FakeItEasy's default formatter behavior
-
-Unless custom formatters are provided, FakeItEasy formats argument
-values like so:
-
-- the `null` value is formatted as `NULL`,
-- the empty `string` is formatted as `string.Empty`,
-- other `string` values are formatted as `"the string value"`, including the quotation marks, and
-- any other value is formatted as its `ToString()` result
-
-There is no way to change FakeItEasy's behavior when formatting
-`null`, but the other behavior can be overridden by user-defined
-formatters.
-
 ## Resolving formatter collisions
 
 It's possible for a solution to contain multiple formatters that would
@@ -133,7 +133,7 @@ formatters apply to the same types, and yield the same distance when
 applied to a type, there's no need to override the `Priority`
 property.
 
-###How does FakeItEasy find Argument Value Formatters?
+### How does FakeItEasy find Argument Value Formatters?
 
 On initialization, FakeItEasy
 [looks for Discoverable Extension Points](scanning-for-extension-points.md),
