@@ -33,8 +33,8 @@ A.CallTo(() => shop.BuyCandy(lollipop)).MustHaveHappened();
 ## Resources
 
 * [Website](https://fakeiteasy.github.io/)
-* [Quickstart](https://fakeiteasy.readthedocs.io/en/stable/quickstart/)
-* [Documentation](https://fakeiteasy.readthedocs.io/en/stable/)
+* [Quickstart](https://fakeiteasy.github.io/docs/stable/quickstart/)
+* [Documentation](https://fakeiteasy.github.io/docs/stable/)
 * [Chat](https://gitter.im/FakeItEasy/FakeItEasy)
 * [NuGet packages on NuGet.org](https://www.nuget.org/profiles/FakeItEasy "FakeItEasy's packages on NuGet.org"), targeting:
   * .NET Standard 2.0
