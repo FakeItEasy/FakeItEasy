@@ -51,7 +51,7 @@ myFake.SaveList(aList);
 aList.Add(4);
 
 A.CallTo(() => myFake.SaveList(A<List<int>>.That.IsThisSequence(1, 2, 3)))
-    .MustHaveHappend();
+    .MustHaveHappened();
 ```
 
 The `MustHaveHappened` will fail, because at the time the
