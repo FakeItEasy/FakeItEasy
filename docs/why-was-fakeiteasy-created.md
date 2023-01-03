@@ -1,6 +1,6 @@
 # Why was FakeItEasy created?
 
-#Introduction
+# Introduction
 
 There was a good question on Stack Overflow that asks what
 distinguishes FakeItEasy from other libraries. Creator of FakeItEasy,
@@ -12,7 +12,7 @@ been renamed in newer versions of FakeItEasy.
 The question on Stack Overflow:
 "[Are fakes better than Mocks?](https://stackoverflow.com/questions/4001101/are-fakes-better-than-mocks)"
 
-#Patrik H&auml;gne's answer
+# Patrik H&auml;gne's answer
 
 To be clear, I created FakeItEasy so I'll definitely not say whether
 one framework is better than the other, what I can do is point out
