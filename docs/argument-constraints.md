@@ -5,7 +5,7 @@ the arguments of the call can be constrained so that only calls to the
 configured method where the arguments matches the constraint are
 selected.
 
-# Matching values exactly
+## Matching values exactly
 
 Assume the following interface exists:
 ```csharp
@@ -35,8 +35,8 @@ be _the same object_ in order to match, and this sometimes produces
 unexpected results. When in doubt, verify the type's `Equals`
 behavior manually.
 
-# Other matchers
-## Ignoring arguments
+## Other matchers
+### Ignoring arguments
 
 Suppose the value of the integer in the `Bar` call wasn't important,
 but the string was. Then the following constraint could be used:
@@ -53,7 +53,7 @@ An underscore (`_`) can be used as a shorthand for `Ignored` as well:
 A.CallTo(() => foo.Bar("hello", A<int>._)).MustHaveHappened();
 ```
 
-## More convenience matchers
+### More convenience matchers
 
 If more complicated constraints are needed, the `That` method can be
 used. There are a few built-in matchers:
@@ -79,7 +79,7 @@ used. There are a few built-in matchers:
 |IsSameSequenceAs(value1, value2, ...)|sequence equality, like `System.Linq.Enumerable.SequenceEqual`|
 |Not|inverts the sense of the matcher|
 
-## Custom matching
+### Custom matching
 
 If none of the canned matchers are sufficient, you can provide a
 predicate to perform custom matching using `That.Matches`. Like in
@@ -99,7 +99,7 @@ a `Func`.
 For another example of using `That.Matches`, see Jonathan Channon's
 [Comparing object instances with FakeItEasy](https://blog.jonathanchannon.com/2013/09/11/comparing-object-instances-with-fakeiteasy).
 
-## Always place `Ignored` and `That` inside `A.CallTo`
+### Always place `Ignored` and `That` inside `A.CallTo`
 
 The `Ignored` (and `_`) and `That` matchers must be placed within the
 expression inside the `A.CallTo` call. This is because these special
@@ -125,7 +125,7 @@ An<Apple>.That.Matches(a => a.Color == "Red")
 `A<T>` and `An<T>` are exact synonyms and can be used exactly the same
 way.
 
-# `out` parameters
+## `out` parameters
 
 The incoming argument value of `out` parameters is ignored when matching
 calls. The incoming value of an `out` parameter can't be seen by the
@@ -148,7 +148,7 @@ See
 [Implicitly Assigning `out` Parameter Values](assigning-out-and-ref-parameters#implicitly-assigning-out-parameter-values)
 to learn how the initial `configurationValue` is used in this case.
 
-# `ref` parameters
+## `ref` parameters
 
 Due to the limitations of working with `ref` parameters in C#, only exact-value matching is possible using argument constraints,
 and the argument value must be compared against a local variable or a field:
@@ -164,7 +164,7 @@ or `WhenArgumentsMatch`, described below.
 In addition to constraining by `ref` argument values, calls can be explicitly configured to
 [assign outgoing `ref` argument values](assigning-out-and-ref-parameters).
 
-# Overriding argument matchers
+## Overriding argument matchers
 
 Sometimes individually constraining arguments isn't sufficient. In
 such a case, other methods may be used to determine which calls match
@@ -208,7 +208,7 @@ A.CallTo(() => fake.Bar(null, 0))
     .Throws<Exception>();
 ```
 
-# Nested argument constraints
+## Nested argument constraints
 
 Note that an argument constraint cannot be "nested" in an argument; the
 constraint has to be the whole argument. For instance, the following call

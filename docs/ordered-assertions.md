@@ -6,7 +6,7 @@ should be used frequently but there are times when it's really needed.
 Using FakeItEasy you can assert that calls happened in a specific order
 on _one or more_ fake objects.
 
-# Details
+## Details
 
 One area where ordered asserts are useful is when you need to test
 that a call to a fake has happened between two other calls, such as

@@ -59,7 +59,7 @@ The `IFakeObjectCall` object provides access to
 * the `Arguments`, accessed by position or name, and
 * the original `FakedObject`
 
-# Implicitly Assigning `out` Parameter Values
+## Implicitly Assigning `out` Parameter Values
 
 Any `Expression`-based `A.CallTo` configuration that's made on a
 method that has an `out` parameter will cause the value of the variable
