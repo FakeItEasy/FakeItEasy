@@ -136,7 +136,7 @@ by running
 
 ```
 python -m pip install --upgrade pip
-python -m pip install --requirement docs/requirements.txt
+python -m pip install --requirement requirements.txt
 ```
 
 from the root of the repository. After this, you can generate the docs by running
@@ -159,11 +159,11 @@ If you wish to update the packages used, install pip-tools:
 python -m pip install --upgrade pip-tools
 ```
 
-Then edit `docs/requirements.in`, specifying the new requirements, and run
+Then edit `requirements.in`, specifying the new requirements, and run
 
 ```
-pip-compile docs/requirements.in
+pip-compile requirements.in
 ```
 
 from the root of the repository. After verifying the generated documentation, you can commit both
-`docs/requirements.*` files.
+`requirements.*` files.
