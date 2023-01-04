@@ -1,6 +1,6 @@
 # Creating Fakes
 
-##Natural fakes
+## Natural fakes
 The common way to create a fake object is by using the `A.Fake` syntax, for example:
 
 ```csharp
@@ -27,7 +27,7 @@ object fake = Create.Fake(type);
 IList<object> fakes = Create.CollectionOfFake(type, 10);
 ```
 
-##Explicit Creation Options
+## Explicit Creation Options
 When creating fakes you can, through a fluent interface, specify options for how the fake should be created, depending on the type of fake being made:
 
 | Option                                                                                            | Applies to    |
@@ -74,13 +74,13 @@ var foo = A.Fake<IFoo>(x => x.Wrapping(wrapped));
 var foo = A.Fake<IFoo>(x => x.Named("Foo #1"));
 ```
 
-##Implicit Creation Options
+## Implicit Creation Options
 
 [Implicit creation options](implicit-creation-options.md) are
 available, equivalent in power to the explicit creation options
 mentioned above.
 
-##Unnatural fakes
+## Unnatural fakes
 
 For those accustomed to [Moq](https://www.moqthis.com/) there is an
 alternative way of creating fakes through the `new Fake<T>`

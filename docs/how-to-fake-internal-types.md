@@ -3,14 +3,14 @@
 This guide will show you how to set up your project in order to be
 able to fake internal types in your tested system.
 
-#Details
+## Details
 
 The assembly that generates the proxy instances must have access to
 your internal types, therefore a `InternalsVisibleTo` attribute must
 be added to your tested assembly. Note that it is the assembly under
 test, not your test-assembly that needs this attribute.
 
-##Unsigned assemblies
+### Unsigned assemblies
 
 If your assembly is not signed with a strong name it's as easy as
 adding the equivalent of the following to your AssemblyInfo.cs/vb
@@ -20,7 +20,7 @@ file:
 [assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
 ```
 
-##Signed assemblies
+### Signed assemblies
 
 For signed assemblies you have to specify the strong name of the
 proxy-generating assembly:

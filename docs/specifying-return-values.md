@@ -17,7 +17,7 @@ A `get` property on a Fake can be configured similarly:
 A.CallTo(() => fakeShop.Address).Returns("123 Fake Street");
 ```
 
-##Return Values Calculated at Call Time
+## Return Values Calculated at Call Time
 
 Sometimes a desired return value won't be known at the time the call
 is configured. `ReturnsNextFromSequence` and `ReturnsLazily` can help

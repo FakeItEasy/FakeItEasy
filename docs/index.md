@@ -1,3 +1,7 @@
+---
+hide:
+  - toc
+---
 <div id="logo"></div>
 
 FakeItEasy is a .NET dynamic fake library for creating all types of fake objects, mocks, stubs etc.

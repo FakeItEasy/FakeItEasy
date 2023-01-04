@@ -12,7 +12,7 @@ Arguments are constrained using
 [Argument Constraints](argument-constraints.md) just like when
 configuring calls.
 
-# Syntax
+## Syntax
 
 ```csharp
 A.CallTo(() => foo.Bar()).MustHaveHappened();
@@ -33,7 +33,7 @@ A.CallTo(() => foo.Bar()).MustHaveHappened(7, Times.OrLess);
 A.CallTo(() => foo.Bar()).MustHaveHappenedANumberOfTimesMatching(n => n % 2 == 0);
 ```
 
-# Asserting Calls Made with Mutable Arguments
+## Asserting Calls Made with Mutable Arguments
 
 When FakeItEasy records a method (or property) call, it remembers
 which objects were used as argument, but does not take a snapshot of
@@ -81,11 +81,11 @@ aList.Add(4);
 Assert.That(capturedList, Is.EqualTo(new List<int> {1, 2, 3}));
 ```
 
-# More advanced assertions
+## More advanced assertions
 
 If the built-in assertion API isn't sufficient, you can also examine the list of recorded calls directly, as described in [Getting the list of calls made on a fake](advanced-usage.md#getting-the-list-of-calls-made-on-a-fake).
 
-# VB.NET
+## VB.NET
 
 ```
 ' Functions and Subs can be asserted using their respective keywords
