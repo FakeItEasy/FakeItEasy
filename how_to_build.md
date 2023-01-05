@@ -1,7 +1,7 @@
 # How to build
 
 These instructions are *only* for building from the command line, which includes compilation, test execution and packaging. This is the simplest way to build.
-It also replicates the build on the Continuous Integration build server and is the best indicator of whether a pull request will build.
+It also replicates the build on the Continuous Integration (CI) build server and is the best indicator of whether a pull request will build.
 
 You can also build the solution using Visual Studio 2022 17.0 or later, but this doesn't provide the same assurances as the command line build.
 
@@ -127,3 +127,43 @@ build.cmd use-profile-net5.0
 
 Note that Visual Studio will not reflect a change of build profile until you
 reload the solution. The command line build will reflect the change immediately.
+
+### Building the documentation
+
+The CI workflow uses [mkdocs](https://www.mkdocs.org/) to build the documentation. To replicate this process,
+install a recent [Python version](https://www.python.org/downloads/), and then install all the requirements
+by running
+
+```
+python -m pip install --upgrade pip
+python -m pip install --requirement requirements.txt
+```
+
+from the root of the repository. After this, you can generate the docs by running
+
+```
+python -m mkdocs build --clean --site-dir artifacts/docs --config-file mkdocs.yml --strict
+```
+
+The documentation will be built in `artifacts/docs` and can be viewed directly in a web
+browser or served using a number of tools such as [dotnet-serve](https://github.com/natemcmaster/dotnet-serve) or [http.server](https://docs.python.org/3/library/http.server.html).
+
+### Updating the documentation-building packages
+
+The versions of the packages used to build the documentation are frozen using
+[pip-compile](https://github.com/jazzband/pip-tools#example-usage-for-pip-compile) from the pip-tools project.
+
+If you wish to update the packages used, install pip-tools:
+
+```
+python -m pip install --upgrade pip-tools
+```
+
+Then edit `requirements.in`, specifying the new requirements, and run
+
+```
+pip-compile requirements.in
+```
+
+from the root of the repository. After verifying the generated documentation, you can commit both
+`requirements.*` files.
