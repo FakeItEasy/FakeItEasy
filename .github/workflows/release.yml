@@ -12,7 +12,7 @@ on:
         description: "Dry run (doesn't actually publish anything)"
 
 env:
-  NUGET_SERVER_URL: https://www.nuget.org/api/v2/package
+  NUGET_SERVER_URL: https://www.nuget.org/
   NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
 
 jobs:
@@ -36,4 +36,6 @@ jobs:
         if: github.event.inputs.dry-run
         run: echo "DRY_RUN_OPTION=--dry-run" >> $GITHUB_ENV
       - name: Deploy
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: dotnet run --project tools-shared/FakeItEasy.Deploy -- $DRY_RUN_OPTION -r "FakeItEasy/FakeItEasy" -t "${{ github.ref_name }}" -a "/tmp/artifacts/output"

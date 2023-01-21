@@ -4,7 +4,6 @@
 [Oo]bj
 [Bb]in
 artifacts
-tools/*/ToolPaths.cs
 FakeItEasy.user.props
 
 *.*proj.user

@@ -132,7 +132,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shared", "shared", "{101E09
 	ProjectSection(SolutionItems) = preProject
 		tools-shared\.githubtoken = tools-shared\.githubtoken
 		tools-shared\Directory.Build.props = tools-shared\Directory.Build.props
-		tools-shared\FakeItEasy.ToolPaths.targets = tools-shared\FakeItEasy.ToolPaths.targets
 		tools-shared\README.md = tools-shared\README.md
 		tools-shared\.editorconfig = tools-shared\.editorconfig
 		tools-shared\.gitignore = tools-shared\.gitignore
