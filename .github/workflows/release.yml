@@ -11,10 +11,6 @@ on:
         default: true
         description: "Dry run (doesn't actually publish anything)"
 
-env:
-  NUGET_SERVER_URL: https://www.nuget.org/
-  NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
-
 jobs:
 
   build:
@@ -24,18 +20,14 @@ jobs:
     needs: build
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v3
-        with:
-          submodules: true
-      - name: Download artifacts
-        uses: actions/download-artifact@v3
-        with:
-          name: windows-artifacts
-          path: /tmp/artifacts
-      - name: Set DRY_RUN_OPTION env variable
-        if: github.event.inputs.dry-run
-        run: echo "DRY_RUN_OPTION=--dry-run" >> $GITHUB_ENV
-      - name: Deploy
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: dotnet run --project tools-shared/FakeItEasy.Deploy -- $DRY_RUN_OPTION -r "FakeItEasy/FakeItEasy" -t "${{ github.ref_name }}" -a "/tmp/artifacts/output"
+    - uses: actions/checkout@v3
+      with:
+        submodules: true
+    - name: Deploy
+      uses: ./tools-shared/.github/actions/deploy
+      with:
+        artifact-name: windows-artifacts
+        nuget-api-key: ${{ secrets.NUGET_API_KEY }}
+        docs-output-prefix: "docs"
+        docs-workflow-token: ${{ secrets.BOT_GITHUB_TOKEN }}
+        dry-run: ${{ github.event.inputs.dry-run || false }}
