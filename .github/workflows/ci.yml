@@ -31,19 +31,21 @@ jobs:
             os-image: ubuntu-22.04
             os-name: Ubuntu
             artifact-name: ubuntu-artifacts
+            dotnet-versions-to-install: |
+              5.0
+              3.1
+              2.1
     runs-on: ${{ matrix.os-image }}
     steps:
       - uses: actions/checkout@v3
         with:
           submodules: true
           fetch-depth: 0
-      - uses: actions/setup-dotnet@v3
-        if: matrix.os == 'ubuntu'
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        if: ${{ matrix.dotnet-versions-to-install }}
         with:
-          dotnet-version: |
-            5.0
-            3.1
-            2.1
+          dotnet-version: ${{ matrix.dotnet-versions-to-install }}
       - name: Run build script
         run: ./build.ps1
         shell: pwsh
