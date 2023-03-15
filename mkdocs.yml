@@ -41,8 +41,11 @@ plugins:
 markdown_extensions:
   - pymdownx.highlight:
       anchor_linenums: true
+  - pymdownx.details
   - pymdownx.inlinehilite
-  - pymdownx.snippets
+  - pymdownx.snippets:
+      check_paths: true
+      dedent_subsections: true
   - pymdownx.superfences
   - pymdownx.tilde
 
@@ -80,6 +83,8 @@ nav:
 - Bootstrapper: bootstrapper.md
 - Advanced usage: advanced-usage.md
 - Analyzer Packages: https://fakeiteasy.github.io/docs/analyzers/
+- Recipes:
+  - Faking HttpClient: Recipes/faking-http-client.md
 - Platform support: platform-support.md
 - Source Stepping: source-stepping.md
 - Why was FakeItEasy created?: why-was-fakeiteasy-created.md

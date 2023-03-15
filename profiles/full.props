@@ -9,6 +9,7 @@
     <UnitTestsTargetFrameworks>net461;netcoreapp2.1;netcoreapp3.1;net6.0</UnitTestsTargetFrameworks>
     <TestHelpersTargetFrameworks>net461;netstandard2.0;netstandard2.1;net6.0</TestHelpersTargetFrameworks>
     <ApprovalTestsTargetFrameworks>net6.0</ApprovalTestsTargetFrameworks>
+    <RecipesTargetFrameworks>net461;netcoreapp2.1;netcoreapp3.1;net6.0</RecipesTargetFrameworks>
   </PropertyGroup>
   <PropertyGroup Condition="'$(OS)' != 'Windows_NT'">
     <FakeItEasyTargetFrameworks>netstandard2.0;netstandard2.1;net5.0</FakeItEasyTargetFrameworks>
@@ -19,5 +20,6 @@
     <UnitTestsTargetFrameworks>netcoreapp2.1;netcoreapp3.1;net6.0</UnitTestsTargetFrameworks>
     <TestHelpersTargetFrameworks>netstandard2.0;netstandard2.1;net6.0</TestHelpersTargetFrameworks>
     <ApprovalTestsTargetFrameworks>net6.0</ApprovalTestsTargetFrameworks>
+    <RecipesTargetFrameworks>netcoreapp2.1;netcoreapp3.1;net6.0</RecipesTargetFrameworks>
   </PropertyGroup>
 </Project>

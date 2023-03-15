@@ -1,0 +1,4 @@
+[*.{cs,vb}]
+dotnet_diagnostic.CA1034.severity = none # Nested types should not be visible
+dotnet_diagnostic.CA2007.severity = none # Consider calling ConfigureAwait on the awaited task
+dotnet_diagnostic.CA2234.severity = none # Call 'HttpClient.GetAsync(Uri)' instead of 'HttpClient.GetAsync(string)'

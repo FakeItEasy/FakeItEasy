@@ -9,5 +9,6 @@
     <UnitTestsTargetFrameworks>net6.0</UnitTestsTargetFrameworks>
     <TestHelpersTargetFrameworks>net6.0</TestHelpersTargetFrameworks>
     <ApprovalTestsTargetFrameworks>net6.0</ApprovalTestsTargetFrameworks>
+    <RecipesTargetFrameworks>net6.0</RecipesTargetFrameworks>
   </PropertyGroup>
 </Project>

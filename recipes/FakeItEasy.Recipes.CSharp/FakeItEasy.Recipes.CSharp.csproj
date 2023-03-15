@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>$(RecipesTargetFrameworks)</TargetFrameworks>
+    <AssemblyName>FakeItEasy.Recipes.CSharp</AssemblyName>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net461'">
+      <DefineConstants>$(DefineConstants);LACKS_RETAINED_REQUEST_CONTENT</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../src/FakeItEasy/FakeItEasy.csproj" />
+    <Reference Include="System.Net.Http" />
+  </ItemGroup>
+
+</Project>

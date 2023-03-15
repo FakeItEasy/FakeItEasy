@@ -9,5 +9,6 @@
     <UnitTestsTargetFrameworks>netcoreapp2.1</UnitTestsTargetFrameworks>
     <TestHelpersTargetFrameworks>netstandard2.0</TestHelpersTargetFrameworks>
     <ApprovalTestsTargetFrameworks>netcoreapp2.1</ApprovalTestsTargetFrameworks>
+    <RecipesTargetFrameworks>netcoreapp2.1</RecipesTargetFrameworks>
   </PropertyGroup>
 </Project>
