@@ -11,6 +11,8 @@ theme:
   name: material
   favicon: img/favicon.ico
   logo: img/icon.svg
+  features:
+    - navigation.footer
 
   palette:
 
