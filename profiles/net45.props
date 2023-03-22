@@ -9,5 +9,6 @@
     <UnitTestsTargetFrameworks>net461</UnitTestsTargetFrameworks>
     <TestHelpersTargetFrameworks>net461</TestHelpersTargetFrameworks>
     <ApprovalTestsTargetFrameworks>net461</ApprovalTestsTargetFrameworks>
+    <RecipesTargetFrameworks>net461</RecipesTargetFrameworks>
   </PropertyGroup>
 </Project>

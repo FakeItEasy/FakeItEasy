@@ -25,13 +25,17 @@ var testSuites = new Dictionary<string, string[]>
     {
         "tests/FakeItEasy.Specs"
     },
+    ["recipes"] = new[]
+    {
+        "recipes/FakeItEasy.Recipes.CSharp"
+    },
     ["approve"] = new[]
     {
         "tests/FakeItEasy.Tests.Approval"
     }
 };
 
-Target("default", DependsOn("unit", "integ", "spec", "approve", "pack"));
+Target("default", DependsOn("unit", "integ", "spec", "recipes", "approve", "pack"));
 
 Target(
     "build",
