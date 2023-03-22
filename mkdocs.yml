@@ -44,6 +44,7 @@ markdown_extensions:
   - pymdownx.details
   - pymdownx.inlinehilite
   - pymdownx.snippets:
+      base_path: !ENV [SNIPPETS_REPO_ROOT, '.']
       check_paths: true
       dedent_subsections: true
   - pymdownx.superfences
