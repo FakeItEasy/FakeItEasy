@@ -1,9 +1,0 @@
-<Project>
-
-  <Import Project="../Directory.Build.props" />
-
-  <PropertyGroup>
-    <NoWarn>$(NoWarn),SA0001,CA1014</NoWarn>
-  </PropertyGroup>
-
-</Project>
