@@ -3,7 +3,6 @@
   <PropertyGroup>
     <FakeItEasyTargetFrameworks>net45</FakeItEasyTargetFrameworks>
     <ValueTaskExtensionsTargetFrameworks>net45</ValueTaskExtensionsTargetFrameworks>
-    <ExampleTargetFrameworks>net45</ExampleTargetFrameworks>
     <SpecsTargetFrameworks>net461</SpecsTargetFrameworks>
     <IntegrationTestsTargetFrameworks>net461</IntegrationTestsTargetFrameworks>
     <UnitTestsTargetFrameworks>net461</UnitTestsTargetFrameworks>

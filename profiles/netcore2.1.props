@@ -3,7 +3,6 @@
   <PropertyGroup>
     <FakeItEasyTargetFrameworks>netstandard2.0</FakeItEasyTargetFrameworks>
     <ValueTaskExtensionsTargetFrameworks>netstandard2.0</ValueTaskExtensionsTargetFrameworks>
-    <ExampleTargetFrameworks>netcoreapp2.1</ExampleTargetFrameworks>
     <SpecsTargetFrameworks>netcoreapp2.1</SpecsTargetFrameworks>
     <IntegrationTestsTargetFrameworks>netcoreapp2.1</IntegrationTestsTargetFrameworks>
     <UnitTestsTargetFrameworks>netcoreapp2.1</UnitTestsTargetFrameworks>
