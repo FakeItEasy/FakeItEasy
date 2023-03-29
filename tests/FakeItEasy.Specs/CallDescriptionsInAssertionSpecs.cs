@@ -2,6 +2,7 @@ namespace FakeItEasy.Specs
 {
     using System;
     using FakeItEasy.Tests.TestHelpers;
+    using FakeItEasy.Tests.TestHelpers.FSharp;
     using FluentAssertions;
     using Xbehave;
     using Xunit;
@@ -39,6 +40,26 @@ namespace FakeItEasy.Specs
             "And the exception should correctly describe the asserted call"
                 .x(() => exception.Message.Should().MatchModuloLineEndings(
                     "*\r\n    FakeItEasy.Specs.CallDescriptionsInAssertionSpecs+IFoo.Bar(i: 42)\r\n*"));
+        }
+
+        [Scenario]
+        public void AssertedCallDescriptionForMethodWithAnonymousParameter(IHaveAMethodWithAnAnonymousParameter fake, Exception exception)
+        {
+            "Given a fake that has a method with an anonymous parameter"
+                .x(() => fake = A.Fake<IHaveAMethodWithAnAnonymousParameter>());
+
+            "And no call is made to the fake"
+                .x(() => { });
+
+            "When I assert that a method was called"
+                .x(() => exception = Record.Exception(() => A.CallTo(() => fake.Save(42)).MustHaveHappened()));
+
+            "Then the assertion should fail"
+                .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>());
+
+            "And the exception should correctly describe the asserted call"
+                .x(() => exception.Message.Should().MatchModuloLineEndings(
+                    "*\r\n    FakeItEasy.Tests.TestHelpers.FSharp.IHaveAMethodWithAnAnonymousParameter.Save(param1: 42)\r\n*"));
         }
 
         [Scenario]
