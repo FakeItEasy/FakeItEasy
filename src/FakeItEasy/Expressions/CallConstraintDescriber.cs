@@ -74,10 +74,15 @@ namespace FakeItEasy.Expressions
                         writer.Write(", ");
                     }
 
-                    var parameter = parameters[index];
-                    writer.Write(parameter.Name!).Write(": ");
+                    var parameter = parameters[index++];
+
+                    // Incremented index above to get 1-based parameter name output.
+                    // Usually parameters will be named, but in F# (at least) it's possible
+                    // to declare a method with anonymous parameters. In that case, we try to
+                    // help the user by outputting names like "param1", "param2", …
+                    string parameterName = parameter.Name ?? $"param{index}";
+                    writer.Write(parameterName).Write(": ");
                     constraint.WriteDescription(writer);
-                    index++;
                 }
 
                 WriteArgumentListSuffix(writer, method);

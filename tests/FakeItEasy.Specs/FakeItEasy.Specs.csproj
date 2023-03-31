@@ -34,6 +34,7 @@
     <ProjectReference Include="..\..\src\FakeItEasy\FakeItEasy.csproj" />
     <ProjectReference Include="..\..\src\FakeItEasy.Extensions.ValueTask\FakeItEasy.Extensions.ValueTask.csproj" />
     <ProjectReference Include="..\FakeItEasy.Tests.TestHelpers\FakeItEasy.Tests.TestHelpers.csproj" />
+    <ProjectReference Include="..\FakeItEasy.Tests.TestHelpers.FSharp\FakeItEasy.Tests.TestHelpers.FSharp.fsproj" />
   </ItemGroup>
 
 </Project>
