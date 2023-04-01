@@ -19,7 +19,7 @@ namespace FakeItEasy.Configuration
         ///   The arguments this collection contains.
         /// </summary>
         private readonly object?[] arguments;
-        private readonly Lazy<string[]> argumentNames;
+        private readonly Lazy<string?[]> argumentNames;
 
         /// <summary>
         ///   Initializes a new instance of the <see cref = "ArgumentCollection" /> class.
@@ -39,7 +39,7 @@ namespace FakeItEasy.Configuration
 
             this.arguments = arguments;
             this.Method = method;
-            this.argumentNames = new Lazy<string[]>(this.GetArgumentNames);
+            this.argumentNames = new Lazy<string?[]>(this.GetArgumentNames);
         }
 
         /// <summary>
@@ -53,8 +53,10 @@ namespace FakeItEasy.Configuration
 
         /// <summary>
         ///   Gets the names of the arguments in the list.
+        ///   It's possible to declare methods with anonymous parameters (for example, in F#),
+        ///   in which case the argument names will be <c>null</c>.
         /// </summary>
-        public IEnumerable<string> ArgumentNames => this.argumentNames.Value;
+        public IEnumerable<string?> ArgumentNames => this.argumentNames.Value;
 
         internal MethodInfo Method { get; }
 
@@ -125,14 +127,14 @@ namespace FakeItEasy.Configuration
             return this.arguments;
         }
 
-        private string[] GetArgumentNames() => this.Method.GetParameters().Select(x => x.Name!).ToArray();
+        private string?[] GetArgumentNames() => this.Method.GetParameters().Select(x => x.Name).ToArray();
 
         private int GetArgumentIndex(string argumentName)
         {
             var names = this.argumentNames.Value;
             for (int index = 0; index < names.Length; ++index)
             {
-                if (names[index].Equals(argumentName, StringComparison.Ordinal))
+                if (string.Equals(names[index], argumentName, StringComparison.Ordinal))
                 {
                     return index;
                 }
