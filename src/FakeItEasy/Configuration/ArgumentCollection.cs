@@ -11,7 +11,6 @@ namespace FakeItEasy.Configuration
     /// <summary>
     ///   A collection of method arguments.
     /// </summary>
-    [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "Best name to describe the type.")]
     public class ArgumentCollection
         : IEnumerable<object?>
     {
@@ -96,7 +95,6 @@ namespace FakeItEasy.Configuration
         /// The argument at the specified index. Note that the value is taken from method's arguments and so may be <c>null</c>,
         /// even if <typeparamref name="T"/> is non-nullable.
         /// </returns>
-        [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "Used to cast the argument to the specified type.")]
         [return: MaybeNull]
         public T Get<T>(int index)
         {
@@ -113,7 +111,6 @@ namespace FakeItEasy.Configuration
         /// even if <typeparamref name="T"/> is non-nullable.
         /// </returns>
         [return: MaybeNull]
-        [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "Used to cast the argument to the specified type.")]
         public T Get<T>(string argumentName)
         {
             Guard.AgainstNull(argumentName);
