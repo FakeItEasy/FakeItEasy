@@ -4,6 +4,7 @@ namespace FakeItEasy.Specs
     using System.Collections.Generic;
     using System.Linq;
     using FakeItEasy.Core;
+    using FakeItEasy.Tests.TestHelpers.FSharp;
     using FluentAssertions;
     using Xbehave;
 
@@ -177,6 +178,24 @@ namespace FakeItEasy.Specs
 
             "Then the recorded call's return value should be the value that was actually returned"
                 .x(() => recordedCall.ReturnValue.Should().Be(returnValue));
+        }
+
+        [Scenario]
+        public static void RecordedCallWithAnonymousParameterHasNullArgumentName(
+            IHaveAMethodWithAnAnonymousParameter fake,
+            ICompletedFakeObjectCall recordedCall)
+        {
+            "Given a fake with a method that has an anonymous parameter"
+                .x(() => fake = A.Fake<IHaveAMethodWithAnAnonymousParameter>());
+
+            "When I invoke the fake method"
+                .x(() => fake.Save(918));
+
+            "And I retrieve the call from the recorded calls"
+                .x(() => recordedCall = Fake.GetCalls(fake).Single());
+
+            "Then the recorded call's argument name should be null"
+                .x(() => recordedCall.Arguments.ArgumentNames.Single().Should().BeNull());
         }
 
         [Scenario]

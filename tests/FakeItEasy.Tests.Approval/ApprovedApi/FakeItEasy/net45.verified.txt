@@ -385,7 +385,7 @@ namespace FakeItEasy.Configuration
 {
     public class ArgumentCollection : System.Collections.Generic.IEnumerable<object?>, System.Collections.IEnumerable
     {
-        public System.Collections.Generic.IEnumerable<string> ArgumentNames { get; }
+        public System.Collections.Generic.IEnumerable<string?> ArgumentNames { get; }
         public int Count { get; }
         public object? this[int argumentIndex] { get; }
         [return: System.Diagnostics.CodeAnalysis.MaybeNull]
