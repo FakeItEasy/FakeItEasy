@@ -7,6 +7,7 @@ namespace FakeItEasy.Specs
     using System.Runtime.InteropServices;
     using FakeItEasy.Configuration;
     using FakeItEasy.Tests.TestHelpers;
+    using FakeItEasy.Tests.TestHelpers.FSharp;
     using FluentAssertions;
     using Xbehave;
     using Xunit;
@@ -183,6 +184,34 @@ namespace FakeItEasy.Specs
   Expected to find it once or more but didn't find it among the calls:
     1: FakeItEasy.Specs.CallMatchingSpecs+IHaveTwoGenericParameters.Bar`2[System.Int32,System.Double](baz1: 1, baz2: 2)
     2: FakeItEasy.Specs.CallMatchingSpecs+IHaveTwoGenericParameters.Bar`2[FakeItEasy.Specs.CallMatchingSpecs+GenericClass`2[System.Boolean,System.Int64],System.Int32](baz1: FakeItEasy.Specs.CallMatchingSpecs+GenericClass`2[System.Boolean,System.Int64], baz2: 3)
+
+"));
+        }
+
+        [Scenario]
+        public static void FailingMatchCallWithAnonymousParameter(
+            IHaveAMethodWithAnAnonymousParameter fake,
+            Exception exception)
+        {
+            "Given a fake that has a method with anonymous parameters"
+                .x(() => fake = A.Fake<IHaveAMethodWithAnAnonymousParameter>());
+
+            "And a call with argument 1 made on this fake"
+                .x(() => fake.Save(1));
+
+            "When I assert that a call with argument 3 has happened on this fake"
+                .x(() => exception = Record.Exception(() => A.CallTo(() => fake.Save(3)).MustHaveHappened()));
+
+            "Then the assertion should fail"
+                .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>());
+
+            "And the exception message should tell us that the call was not matched using a placeholder parameter name"
+                .x(() => exception.Message.Should().BeModuloLineEndings(@"
+
+  Assertion failed for the following call:
+    FakeItEasy.Tests.TestHelpers.FSharp.IHaveAMethodWithAnAnonymousParameter.Save(param1: 3)
+  Expected to find it once or more but didn't find it among the calls:
+    1: FakeItEasy.Tests.TestHelpers.FSharp.IHaveAMethodWithAnAnonymousParameter.Save(param1: 1)
 
 "));
         }

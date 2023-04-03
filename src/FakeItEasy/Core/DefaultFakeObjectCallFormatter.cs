@@ -132,15 +132,14 @@ namespace FakeItEasy.Core
 
         private static ArgumentValueInfo[] GetArgumentValueInfos(IFakeObjectCall call)
         {
-            return
-                (from argument in
-                    call.Method.GetParameters()
-                        .Zip(call.Arguments, (parameter, value) => new { parameter.Name, Value = value })
-                    select new ArgumentValueInfo
-                    {
-                        ArgumentName = argument.Name,
-                        ArgumentValue = argument.Value
-                    }).ToArray();
+            return call.Method.GetParameters()
+                .Zip(call.Arguments, (parameter, value) => new { parameter.Name, Value = value })
+                .Select((argument, index) => new ArgumentValueInfo
+                {
+                    ArgumentIndex = index,
+                    ArgumentName = argument.Name,
+                    ArgumentValue = argument.Value
+                }).ToArray();
         }
 
         private void AppendArgumentsList(StringBuilder builder, IFakeObjectCall call)
@@ -166,13 +165,17 @@ namespace FakeItEasy.Core
 
         private void AppendArgumentValue(StringBuilder builder, ArgumentValueInfo argument)
         {
+            // Usually parameters will be named, but in F# (at least) it's possible
+            // to declare a method with anonymous parameters. In that case, we try to
+            // help the user by outputting names like "param1", "param2", …
+            string argumentName = argument.ArgumentName ?? $"param{argument.ArgumentIndex + 1}";
             builder
-                .Append(argument.ArgumentName)
+                .Append(argumentName)
                 .Append(": ")
                 .Append(this.GetArgumentValueAsString(argument.ArgumentValue));
         }
 
-        private string GetArgumentValueAsString(object argumentValue)
+        private string GetArgumentValueAsString(object? argumentValue)
         {
             return this.argumentValueFormatter.GetArgumentValueAsString(argumentValue);
         }
@@ -180,20 +183,20 @@ namespace FakeItEasy.Core
         private void AppendArguments(StringBuilder builder, ArgumentValueInfo[] arguments)
         {
             var totalNumberOfArguments = arguments.Length;
-            var callIndex = 0;
             foreach (var argument in arguments)
             {
-                AppendArgumentSeparator(builder, callIndex, totalNumberOfArguments);
+                AppendArgumentSeparator(builder, argument.ArgumentIndex, totalNumberOfArguments);
                 this.AppendArgumentValue(builder, argument);
-                callIndex++;
             }
         }
 
         private struct ArgumentValueInfo
         {
-            public object ArgumentValue { get; set; }
+            public int ArgumentIndex { get; set; }
 
-            public string ArgumentName { get; set; }
+            public object? ArgumentValue { get; set; }
+
+            public string? ArgumentName { get; set; }
         }
     }
 }
