@@ -13,4 +13,7 @@
     <Compile Include="IHaveAMethodWithAnAnonymousParameter.fs" />
   </ItemGroup>
 
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(TargetFramework)' == 'net461'">
+    <Exec Command="pwsh postbuild.ps1 &quot;$(TargetPath)&quot;" />
+  </Target>
 </Project>
