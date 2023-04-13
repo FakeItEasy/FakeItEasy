@@ -8,6 +8,7 @@ namespace FakeItEasy.Specs
     using FakeItEasy.Core;
     using FakeItEasy.Creation;
     using FakeItEasy.Tests.TestHelpers;
+    using FakeItEasy.Tests.TestHelpers.FSharp;
     using FluentAssertions;
     using Xbehave;
     using Xunit;
@@ -385,6 +386,19 @@ namespace FakeItEasy.Specs
   Failed to create fake of type System.Func`1[FakeItEasy.Specs.CreationSpecsBase+PrivateClass]:
     Can not create proxy for type System.Func`1[[FakeItEasy.Specs.CreationSpecsBase+PrivateClass, FakeItEasy.Specs, Version=1.0.0.0, Culture=neutral, PublicKeyToken=eff28e2146d5fd2c]] because type FakeItEasy.Specs.CreationSpecsBase+PrivateClass is not accessible. Make it public, or internal and mark your assembly with [assembly: InternalsVisibleTo(*DynamicProxyGenAssembly2*)] attribute*
 "));
+        }
+
+        [Scenario]
+        public void PublicDelegateWithAnonymousParameterCanBeFaked(IAmADelegateWithAnAnonymousParameter fake)
+        {
+            "Given a public delegate with an anonymous parameter "
+                .See<IAmADelegateWithAnAnonymousParameter>();
+
+            "When I create a fake of the delegate"
+                .x(() => fake = this.CreateFake<IAmADelegateWithAnAnonymousParameter>());
+
+            "Then the fake is created"
+                .x(() => fake.Should().BeAFake());
         }
 
         [Scenario]
