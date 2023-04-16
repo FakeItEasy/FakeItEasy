@@ -14,8 +14,8 @@
     <PackageTags>TDD;unittesting;mocks;mocking;fakes;faking;stubs;stubbing;spy;spies;doubles;isolation;substitutes;substitution</PackageTags>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Castle.Core" Version="4.3.1" />
+  <ItemGroup Condition="'$(TargetFramework)' != 'net45'">
+    <PackageReference Include="Castle.Core" Version="5.1.1" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
@@ -39,6 +39,10 @@
   <PropertyGroup Condition="'$(TargetFramework)' == 'net45'">
     <DefineConstants>$(DefineConstants);LACKS_NULLABLE_ATTRIBUTES;LACKS_ARRAY_EMPTY;LACKS_STRING_CONTAINS_COMPARISONTYPE;LACKS_CALLERARGUMENTEXPRESSION</DefineConstants>
   </PropertyGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net45'">
+    <PackageReference Include="Castle.Core" Version="4.3.1" />
+  </ItemGroup>
 
   <ItemGroup>
     <!-- T4 template support -->
