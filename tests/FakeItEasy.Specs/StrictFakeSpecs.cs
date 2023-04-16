@@ -2,6 +2,7 @@ namespace FakeItEasy.Specs
 {
     using System;
     using FakeItEasy.Tests.TestHelpers;
+    using FakeItEasy.Tests.TestHelpers.FSharp;
     using FluentAssertions;
     using Xbehave;
     using Xunit;
@@ -330,6 +331,24 @@ namespace FakeItEasy.Specs
                     .Should()
                     .BeAnExceptionOfType<ExpectationException>()
                     .WithMessage(@"Call to unconfigured method of strict fake: FakeItEasy.Specs.StrictFakeSpecs+IMyInterface.MakeIt(name: ""argument"") on Foo1."));
+        }
+
+        [Scenario]
+        public static void AnonymousParameterInExpectationException(
+            IHaveAMethodWithAnAnonymousParameter fake,
+            Exception exception)
+        {
+            "Given a strict fake that has a method with anonymous parameters"
+                .x(() => fake = A.Fake<IHaveAMethodWithAnAnonymousParameter>(o => o.Strict()));
+
+            "And I call an unconfigured method"
+                .x(() => exception = Record.Exception(() => fake.Save(23978)));
+
+            "Then the thrown exception should include a placeholder parameter name"
+                .x(() => exception
+                    .Should()
+                    .BeAnExceptionOfType<ExpectationException>()
+                    .WithMessage(@"Call to unconfigured method of strict fake: FakeItEasy.Tests.TestHelpers.FSharp.IHaveAMethodWithAnAnonymousParameter.Save(param1: 23978)."));
         }
     }
 
