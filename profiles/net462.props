@@ -1,0 +1,13 @@
+<Project>
+  <!-- .NET Framework 4.6.2 only -->
+  <PropertyGroup>
+    <FakeItEasyTargetFrameworks>net462</FakeItEasyTargetFrameworks>
+    <ValueTaskExtensionsTargetFrameworks>net462</ValueTaskExtensionsTargetFrameworks>
+    <SpecsTargetFrameworks>net462</SpecsTargetFrameworks>
+    <IntegrationTestsTargetFrameworks>net462</IntegrationTestsTargetFrameworks>
+    <UnitTestsTargetFrameworks>net462</UnitTestsTargetFrameworks>
+    <TestHelpersTargetFrameworks>net462</TestHelpersTargetFrameworks>
+    <ApprovalTestsTargetFrameworks>net462</ApprovalTestsTargetFrameworks>
+    <RecipesTargetFrameworks>net462</RecipesTargetFrameworks>
+  </PropertyGroup>
+</Project>

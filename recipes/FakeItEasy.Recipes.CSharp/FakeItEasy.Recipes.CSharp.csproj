@@ -6,7 +6,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(TargetFramework)' == 'net461'">
+  <PropertyGroup Condition="$([MSBuild]::GetTargetFrameworkIdentifier('$(TargetFramework)')) == '.NETFramework'">
       <DefineConstants>$(DefineConstants);LACKS_RETAINED_REQUEST_CONTENT</DefineConstants>
   </PropertyGroup>
 

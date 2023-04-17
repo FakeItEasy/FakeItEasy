@@ -14,7 +14,7 @@
     <Compile Include="IHaveAMethodWithAnAnonymousParameter.fs" />
   </ItemGroup>
 
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(TargetFramework)' == 'net461'">
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="$([MSBuild]::GetTargetFrameworkIdentifier('$(TargetFramework)')) == '.NETFramework'">
     <Exec Command="pwsh postbuild.ps1 &quot;$(TargetPath)&quot;" />
   </Target>
 </Project>

@@ -15,7 +15,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Castle.Core" Version="4.3.1" />
+    <PackageReference Include="Castle.Core" Version="5.1.1" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
@@ -34,9 +34,9 @@
     <DefineConstants>$(DefineConstants);LACKS_NULLABLE_ATTRIBUTES;LACKS_STRING_CONTAINS_COMPARISONTYPE;LACKS_CALLERARGUMENTEXPRESSION</DefineConstants>
   </PropertyGroup>
 
-  <!-- .NET Framework 4.5 -->
+  <!-- .NET Framework -->
 
-  <PropertyGroup Condition="'$(TargetFramework)' == 'net45'">
+  <PropertyGroup Condition="$([MSBuild]::GetTargetFrameworkIdentifier('$(TargetFramework)')) == '.NETFramework'">
     <DefineConstants>$(DefineConstants);LACKS_NULLABLE_ATTRIBUTES;LACKS_ARRAY_EMPTY;LACKS_STRING_CONTAINS_COMPARISONTYPE;LACKS_CALLERARGUMENTEXPRESSION</DefineConstants>
   </PropertyGroup>
 
@@ -120,7 +120,7 @@
     </Compile>
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'net45' OR '$(TargetFramework)' == 'netstandard2.0'">
+  <ItemGroup Condition="!$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'netstandard2.1'))">
     <Compile Remove="ValueTaskReturnValueConfigurationExtensions.cs" />
     <Compile Remove="ValueTaskReturnValueConfigurationExtensions.StronglyTyped.cs" />
     <Compile Remove="ValueTaskAsyncReturnValueConfigurationExtensions.cs" />

@@ -19,11 +19,11 @@
       <DefineConstants>$(DefineConstants);LACKS_FAKEABLE_GENERIC_IN_PARAMETERS</DefineConstants>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(TargetFramework)' == 'net461'">
+  <PropertyGroup Condition="$([MSBuild]::GetTargetFrameworkIdentifier('$(TargetFramework)')) == '.NETFramework'">
       <DefineConstants>$(DefineConstants);LACKS_FAKEABLE_GENERIC_IN_PARAMETERS</DefineConstants>
   </PropertyGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
+  <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
 
