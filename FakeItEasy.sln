@@ -143,6 +143,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FakeItEasy.Recipes.CSharp",
 EndProject
 Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "FakeItEasy.Tests.TestHelpers.FSharp", "tests\FakeItEasy.Tests.TestHelpers.FSharp\FakeItEasy.Tests.TestHelpers.FSharp.fsproj", "{469F0214-2840-446D-A418-7539BDD2DEC0}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "profiles", "profiles", "{427B2879-0943-4BF7-97BB-E99BC91D630A}"
+	ProjectSection(SolutionItems) = preProject
+		profiles\full.props = profiles\full.props
+		profiles\net462.props = profiles\net462.props
+		profiles\net6.0.props = profiles\net6.0.props
+		profiles\netcore2.1.props = profiles\netcore2.1.props
+		profiles\netcore3.1.props = profiles\netcore3.1.props
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -225,6 +234,7 @@ Global
 		{8733C91C-38B3-4105-88A3-11AD82CB78CD} = {072853A5-377B-47C4-8644-AF1F4FD669E2}
 		{CDA19B53-4E12-456A-ADA7-06654C161D64} = {FFFFB03D-8D02-46C5-BD12-EC176C0E056C}
 		{469F0214-2840-446D-A418-7539BDD2DEC0} = {AD790E7D-D664-4B5F-8BE8-01507A2A9F3B}
+		{427B2879-0943-4BF7-97BB-E99BC91D630A} = {A6A7B553-5359-4FB9-B19C-8A23004F49DB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E70BBF50-5920-49F2-835D-4A2DBD73F0E1}
