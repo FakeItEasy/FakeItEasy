@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\FakeItEasy\FakeItEasy.csproj" />
+    <ProjectReference Include="..\FakeItEasy.Tests.TestHelpers.FSharp\FakeItEasy.Tests.TestHelpers.FSharp.fsproj" />
     <ProjectReference Include="..\FakeItEasy.Tests.TestHelpers\FakeItEasy.Tests.TestHelpers.csproj" />
   </ItemGroup>
 

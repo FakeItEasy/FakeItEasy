@@ -269,7 +269,7 @@ namespace FakeItEasy.Specs
                 .x(() => notAFake = new BaseClass());
 
             "When I start to configure a non-virtual void method on the object"
-                .x(() => exception = Record.Exception(() => A.CallTo(() => notAFake.DoSomethingNonVirtual())));
+                .x(() => exception = Record.Exception(() => A.CallTo(() => notAFake.DoSomethingNonVirtual(1))));
 
             "Then it throws an argument exception"
                .x(() => exception.Should().BeAnExceptionOfType<ArgumentException>()
@@ -285,11 +285,11 @@ namespace FakeItEasy.Specs
                 .x(() => fake = A.Fake<BaseClass>());
 
             "When I start to configure a non-virtual void method on the fake"
-                .x(() => exception = Record.Exception(() => A.CallTo(() => fake.DoSomethingNonVirtual())));
+                .x(() => exception = Record.Exception(() => A.CallTo(() => fake.DoSomethingNonVirtual(2))));
 
             "Then it throws a fake configuration exception"
                 .x(() => exception.Should().BeAnExceptionOfType<FakeConfigurationException>()
-                    .And.Message.Should().Contain("Non-virtual members can not be intercepted. Only interface members and virtual, overriding, and abstract members can be intercepted."));
+                    .And.Message.Should().ContainModuloLineEndings("The current proxy generator can not intercept the method FakeItEasy.Specs.ConfigurationSpecs+BaseClass.DoSomethingNonVirtual(System.Int32 anInt) for the following reason:\r\n    - Non-virtual members can not be intercepted. Only interface members and virtual, overriding, and abstract members can be intercepted."));
         }
 
         [Scenario]
@@ -799,7 +799,7 @@ namespace FakeItEasy.Specs
                 this.WasCalled = true;
             }
 
-            public void DoSomethingNonVirtual()
+            public void DoSomethingNonVirtual(int anInt)
             {
             }
 
