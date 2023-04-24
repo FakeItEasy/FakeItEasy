@@ -29,5 +29,5 @@ jobs:
         artifact-name: windows-artifacts
         nuget-api-key: ${{ secrets.NUGET_API_KEY }}
         docs-output-prefix: "docs"
-        docs-workflow-token: ${{ secrets.BOT_GITHUB_TOKEN }}
+        github-token: ${{ secrets.BOT_GITHUB_TOKEN }}
         dry-run: ${{ github.event.inputs.dry-run || false }}
