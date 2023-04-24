@@ -18,7 +18,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'net45' OR '$(TargetFramework)' == 'netstandard2.0'">
+  <ItemGroup Condition="!$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'netstandard2.1'))">
     <Compile Include="../FakeItEasy/ValueTaskReturnValueConfigurationExtensions.cs" />
     <Compile Include="../FakeItEasy/ValueTaskReturnValueConfigurationExtensions.StronglyTyped.cs" />
     <Compile Include="../FakeItEasy/ValueTaskAsyncReturnValueConfigurationExtensions.cs" />
@@ -29,7 +29,7 @@
     <ProjectReference Include="..\FakeItEasy\FakeItEasy.csproj" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'net45' OR '$(TargetFramework)' == 'netstandard2.0'">
+  <ItemGroup Condition="!$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'netstandard2.1'))">
     <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.3" />
   </ItemGroup>
 

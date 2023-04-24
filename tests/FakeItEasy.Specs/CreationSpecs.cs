@@ -345,7 +345,7 @@ namespace FakeItEasy.Specs
   Below is a list of reasons for failure per attempted constructor:
     Constructor with signature () failed:
       No usable default constructor was found on the type FakeItEasy.Specs.CreationSpecsBase+PrivateClass.
-      An exception of type Castle.DynamicProxy.Generators.GeneratorException was caught during this call. Its message was:
+      An exception of type System.ArgumentException was caught during this call. Its message was:
       Can not create proxy for type FakeItEasy.Specs.CreationSpecsBase+PrivateClass because it is not accessible. Make it public, or internal and mark your assembly with [assembly: InternalsVisibleTo(*DynamicProxyGenAssembly2*)] attribute*
 "));
         }
@@ -420,10 +420,9 @@ namespace FakeItEasy.Specs
   Below is a list of reasons for failure per attempted constructor:
     Constructor with signature () failed:
       No usable default constructor was found on the type FakeItEasy.Specs.CreationSpecsBase+ClassWithPrivateConstructor.
-      An exception of type Castle.DynamicProxy.InvalidProxyConstructorArgumentsException was caught during this call. Its message was:
+      An exception of type System.ArgumentException was caught during this call. Its message was:
       Can not instantiate proxy of class: FakeItEasy.Specs.CreationSpecsBase+ClassWithPrivateConstructor.
-      Could not find a parameterless constructor.
-"));
+      Could not find a parameterless constructor."));
         }
 
         [Scenario]
@@ -493,7 +492,7 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Message.Should().StartWithModuloLineEndings(@"
   Failed to create fake of type FakeItEasy.Specs.CreationSpecsBase+AClassThatCouldBeFakedWithTheRightConstructorArguments:
     No constructor matches the passed arguments for constructor.
-    An exception of type Castle.DynamicProxy.InvalidProxyConstructorArgumentsException was caught during this call. Its message was:
+    An exception of type System.ArgumentException was caught during this call. Its message was:
     Can not instantiate proxy of class: FakeItEasy.Specs.CreationSpecsBase+AClassThatCouldBeFakedWithTheRightConstructorArguments.
     Could not find a constructor that would match given arguments:
     System.Int32

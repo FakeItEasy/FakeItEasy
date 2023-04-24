@@ -32,10 +32,7 @@ You might not need everything to run a [partial build](#building-only-a-subset-o
 In order to build from Visual Studio, you will also need:
 
 1. Visual Studio 2022 (17.0 or later)
-2. The .NET Framework 4.5 targeting pack. Unfortunately, this targeting pack is no longer available for download from Microsoft. As a workaround, you can get the necessary files from the `Microsoft.NETFramework.ReferenceAssemblies.net45` package:
-   1. Download the [Microsoft.NETFramework.ReferenceAssemblies.net45](https://www.nuget.org/packages/Microsoft.NETFramework.ReferenceAssemblies.net45/) package from NuGet
-   2. Open it as a ZIP
-   3. Extract the contents of `build\.NETFramework\v4.5` to the `C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5` directory
+2. Install the ".NET Framework 4.6.2 targeting pack" indvidual component (via the Visual Studio installer)
 
 ### On Linux
 
@@ -103,7 +100,7 @@ available:
 
 * `full`: the default profile, builds all supported target frameworks supported
   on the current platform
-* `net45`: builds only the .NET Framework 4.5 target framework
+* `net462`: builds only the .NET Framework 4.6.2 target framework
 * `netcore2.1`: builds only .NET Core 2.1 / .NET Standard 2.0 target frameworks
 * `netcore3.1`: builds only .NET Core 3.1 / .NET Standard 2.1 target frameworks
 * `net6.0`: builds only the .NET 5.0 target framework, but tests on .NET 6.0
