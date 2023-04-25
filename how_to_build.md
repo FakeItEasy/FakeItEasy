@@ -101,7 +101,7 @@ available:
 * `full`: the default profile, builds all supported target frameworks supported
   on the current platform
 * `net462`: builds only the .NET Framework 4.6.2 target framework
-* `netcore2.1`: builds only .NET Core 2.1 / .NET Standard 2.0 target frameworks
+* `netstandard2.0`: builds only .NET Standard 2.0 target framework and tests on .NET Core 2.1
 * `netcore3.1`: builds only .NET Core 3.1 / .NET Standard 2.1 target frameworks
 * `net6.0`: builds only the .NET 5.0 target framework, but tests on .NET 6.0
 
