@@ -102,7 +102,7 @@ available:
   on the current platform
 * `net462`: builds only the .NET Framework 4.6.2 target framework
 * `netstandard2.0`: builds only .NET Standard 2.0 target framework and tests on .NET Core 2.1
-* `netcore3.1`: builds only .NET Core 3.1 / .NET Standard 2.1 target frameworks
+* `netstandard2.1`: builds only .NET Standard 2.1 target framework and tests on .NET Core 3.1
 * `net6.0`: builds only the .NET 5.0 target framework, but tests on .NET 6.0
 
 In order to select a profile, create a `FakeItEasy.user.props` file at the root
