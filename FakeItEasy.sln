@@ -148,8 +148,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "profiles", "profiles", "{42
 		profiles\full.props = profiles\full.props
 		profiles\net462.props = profiles\net462.props
 		profiles\net6.0.props = profiles\net6.0.props
-		profiles\netcore2.1.props = profiles\netcore2.1.props
-		profiles\netcore3.1.props = profiles\netcore3.1.props
+		profiles\netstandard2.0.props = profiles\netstandard2.0.props
+		profiles\netstandard2.1.props = profiles\netstandard2.1.props
 	EndProjectSection
 EndProject
 Global

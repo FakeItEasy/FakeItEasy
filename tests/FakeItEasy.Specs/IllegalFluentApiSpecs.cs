@@ -147,15 +147,8 @@ namespace ApiTest
                 .x(() => diagnostics.Where(d => d.Severity == DiagnosticSeverity.Error).Should().ContainSingle()
                     .Which.GetMessage().Should().Contain(expectedError));
 
-#if MISMATCH_COMPILE_AND_RUNTIME_FRAMEWORKS
-            "And there are warnings due to a mistmach between compile-time and runtime frameworks"
-                .x(() => diagnostics.Where(d => d.Severity != DiagnosticSeverity.Error).Should().OnlyContain(d =>
-                    d.Severity == DiagnosticSeverity.Warning &&
-                    d.Id == "CS1701"));
-#else
             "And no other diagnostics are emitted"
                 .x(() => diagnostics.Where(d => d.Severity != DiagnosticSeverity.Error).Should().BeEmpty());
-#endif
         }
 
         private static bool CompilationRequiresAssembly(Assembly a)

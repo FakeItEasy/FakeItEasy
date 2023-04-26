@@ -1,8 +1,8 @@
 <Project>
   <!-- Everything -->
   <PropertyGroup Condition="'$(OS)' == 'Windows_NT'">
-    <FakeItEasyTargetFrameworks>net462;netstandard2.0;netstandard2.1;net5.0</FakeItEasyTargetFrameworks>
-    <ValueTaskExtensionsTargetFrameworks>net462;netstandard2.0;netstandard2.1;net5.0</ValueTaskExtensionsTargetFrameworks>
+    <FakeItEasyTargetFrameworks>net462;netstandard2.0;netstandard2.1;net6.0</FakeItEasyTargetFrameworks>
+    <ValueTaskExtensionsTargetFrameworks>net462;netstandard2.0;netstandard2.1;net6.0</ValueTaskExtensionsTargetFrameworks>
     <SpecsTargetFrameworks>net462;netcoreapp2.1;netcoreapp3.1;net6.0</SpecsTargetFrameworks>
     <IntegrationTestsTargetFrameworks>net462;netcoreapp2.1;netcoreapp3.1;net6.0</IntegrationTestsTargetFrameworks>
     <UnitTestsTargetFrameworks>net462;netcoreapp2.1;netcoreapp3.1;net6.0</UnitTestsTargetFrameworks>
@@ -11,8 +11,8 @@
     <RecipesTargetFrameworks>net462;netcoreapp2.1;netcoreapp3.1;net6.0</RecipesTargetFrameworks>
   </PropertyGroup>
   <PropertyGroup Condition="'$(OS)' != 'Windows_NT'">
-    <FakeItEasyTargetFrameworks>netstandard2.0;netstandard2.1;net5.0</FakeItEasyTargetFrameworks>
-    <ValueTaskExtensionsTargetFrameworks>netstandard2.0;netstandard2.1;net5.0</ValueTaskExtensionsTargetFrameworks>
+    <FakeItEasyTargetFrameworks>netstandard2.0;netstandard2.1;net6.0</FakeItEasyTargetFrameworks>
+    <ValueTaskExtensionsTargetFrameworks>netstandard2.0;netstandard2.1;net6.0</ValueTaskExtensionsTargetFrameworks>
     <SpecsTargetFrameworks>netcoreapp2.1;netcoreapp3.1;net6.0</SpecsTargetFrameworks>
     <IntegrationTestsTargetFrameworks>netcoreapp2.1;netcoreapp3.1;net6.0</IntegrationTestsTargetFrameworks>
     <UnitTestsTargetFrameworks>netcoreapp2.1;netcoreapp3.1;net6.0</UnitTestsTargetFrameworks>
