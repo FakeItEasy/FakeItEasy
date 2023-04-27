@@ -39,6 +39,7 @@ plugins:
   - search
 
 markdown_extensions:
+  - footnotes
   - pymdownx.highlight:
       anchor_linenums: true
   - pymdownx.details
