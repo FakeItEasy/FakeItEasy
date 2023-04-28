@@ -30,7 +30,7 @@ jobs:
         run: |
           set -euo pipefail
           destinationPath=docspreview/pr${{ github.event.pull_request.number }}
-          az storage blob upload-batch --destination '$web' --destination-path $destinationPath --source artifacts/docs --overwrite true
+          az storage blob upload-batch --destination '$web' --destination-path $destinationPath --source documentation --overwrite true
           echo Successfully uploaded docs preview to $DOCS_PREVIEW_BASE_URL/$destinationPath
           echo "docs-preview-url=$DOCS_PREVIEW_BASE_URL/$destinationPath" >> $GITHUB_OUTPUT
 
