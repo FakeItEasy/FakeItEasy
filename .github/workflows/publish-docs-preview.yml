@@ -1,0 +1,58 @@
+name: Publish docs preview
+on:
+  pull_request_target:
+    types: labeled
+
+jobs:
+
+  publish-docs-preview:
+    name: Publish docs preview
+    runs-on: ubuntu-22.04
+    if: "${{ github.event.label.name == ':eyes: publish-docs-preview' }}"
+    steps:
+
+      - name: Download artifact
+        id: download-artifact
+        uses: dawidd6/action-download-artifact@v2
+        continue-on-error: true
+        with:
+          workflow: ci.yml
+          pr: ${{github.event.pull_request.number}}
+          name: documentation
+          path: documentation/
+
+      - name: Publish files
+        id: publish-files
+        if: ${{ steps.download-artifact.outcome == 'success' }}
+        continue-on-error: true
+        env:
+          AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.DOCS_PREVIEW_STORAGE_CONNECTION_STRING }}
+        run: |
+          set -euo pipefail
+          destinationPath=docspreview/pr${{ github.event.pull_request.number }}
+          az storage blob upload-batch --destination '$web' --destination-path $destinationPath --source artifacts/docs --overwrite true
+          echo Successfully uploaded docs preview to $DOCS_PREVIEW_BASE_URL/$destinationPath
+          echo "docs-preview-url=$DOCS_PREVIEW_BASE_URL/$destinationPath" >> $GITHUB_OUTPUT
+
+      - name: Set PR comment
+        id: set-pr-comment
+        if: ${{ always() }}
+        run: |
+          if [[ "${{ steps.publish-files.outcome }}" == "success" ]]; then
+            comment=":white_check_mark: Publish docs preview: Successfully published [here](${{ steps.publish-files.outcome.docs-preview-url }})."
+          elif [[ "${{ steps.download-artifact.outcome }}" != "success" ]]; then
+            comment=":x: Publish docs preview: failed to download documentation artifact."
+          else
+            comment=":x: Publish docs preview: failed to publish."
+          fi
+          echo "pr-comment=$comment" >> $GITHUB_OUTPUT
+
+      - name: Add pull request comment
+        if: ${{ always() }}
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          message: ${{ steps.set-pr-comment.outputs.pr-comment }}
+
+
+
+
