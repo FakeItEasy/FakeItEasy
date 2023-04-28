@@ -29,7 +29,7 @@ jobs:
           AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.DOCS_PREVIEW_STORAGE_CONNECTION_STRING }}
         run: |
           set -euo pipefail
-          destinationPath=docspreview/pr${{ github.event.pull_request.number }}
+          destinationPath=docspreview/pr${{ github.event.pull_request.number }}/
           az storage blob upload-batch --destination '$web' --destination-path $destinationPath --source documentation --overwrite true
           docsPreviewUrl=${{ vars.DOCS_PREVIEW_BASE_URL }}/$destinationPath
           echo Successfully uploaded docs preview to $docsPreviewUrl
@@ -40,7 +40,7 @@ jobs:
         if: ${{ always() }}
         run: |
           if [[ "${{ steps.publish-files.outcome }}" == "success" ]]; then
-            comment=":white_check_mark: Publish docs preview: Successfully published [here](${{ steps.publish-files.outcome.docs-preview-url }})."
+            comment=":white_check_mark: Publish docs preview: Successfully published [here](${{ steps.publish-files.outputs.docs-preview-url }})."
           elif [[ "${{ steps.download-artifact.outcome }}" != "success" ]]; then
             comment=":x: Publish docs preview: failed to download documentation artifact."
           else
