@@ -11,10 +11,7 @@ charset-normalizer==3.1.0
 click==8.1.3
     # via mkdocs
 colorama==0.4.6
-    # via
-    #   click
-    #   mkdocs
-    #   mkdocs-material
+    # via mkdocs-material
 ghp-import==2.1.0
     # via mkdocs
 idna==3.4
@@ -48,7 +45,7 @@ packaging==23.0
     # via mkdocs
 pygments==2.14.0
     # via mkdocs-material
-pymdown-extensions==9.10
+pymdown-extensions==10.0
     # via mkdocs-material
 python-dateutil==2.8.2
     # via ghp-import
