@@ -426,6 +426,19 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
+        public void ClassWithConstructorInParameterCanBeFaked(ClassWithConstructorInParameter fake)
+        {
+            "Given a class with a constructor with an in parameter"
+                .See<ClassWithConstructorInParameter>();
+
+            "When I create a fake of the class"
+                .x(() => fake = this.CreateFake<ClassWithConstructorInParameter>());
+
+            "Then the fake is created"
+                .x(() => fake.Should().BeAFake());
+        }
+
+        [Scenario]
         public void SealedClassCannotBeFaked(Exception exception)
         {
             "Given a sealed class"
@@ -786,6 +799,13 @@ namespace FakeItEasy.Specs
         public class ClassWithPrivateConstructor
         {
             private ClassWithPrivateConstructor()
+            {
+            }
+        }
+
+        public class ClassWithConstructorInParameter
+        {
+            public ClassWithConstructorInParameter(in DateTimeOffset dateTimeOffset)
             {
             }
         }

@@ -34,7 +34,8 @@ namespace FakeItEasy.Creation
                 var resolvedArgument = new ResolvedArgument(parameterType);
                 try
                 {
-                    var creationResult = resolver.TryResolveDummyValue(parameterType, resolutionContext);
+                    var dummyType = parameterType.IsByRef ? parameterType.GetElementType()! : parameterType;
+                    var creationResult = resolver.TryResolveDummyValue(dummyType, resolutionContext);
                     resolvedArgument.WasResolved = creationResult.WasSuccessful;
                     if (creationResult.WasSuccessful)
                     {
