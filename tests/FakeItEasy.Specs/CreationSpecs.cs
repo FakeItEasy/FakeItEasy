@@ -426,6 +426,45 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
+        public void ClassWithConstructorInParameterCanBeFaked(ClassWithConstructorInParameter fake)
+        {
+            "Given a class with a constructor with an in parameter"
+                .See<ClassWithConstructorInParameter>();
+
+            "When I create a fake of the class"
+                .x(() => fake = this.CreateFake<ClassWithConstructorInParameter>());
+
+            "Then the fake is created"
+                .x(() => fake.Should().BeAFake());
+        }
+
+        [Scenario]
+        public void ClassWithConstructorRefParameterCanBeFaked(ClassWithConstructorRefParameter fake)
+        {
+            "Given a class with a constructor with a ref parameter"
+                .See<ClassWithConstructorRefParameter>();
+
+            "When I create a fake of the class"
+                .x(() => fake = this.CreateFake<ClassWithConstructorRefParameter>());
+
+            "Then the fake is created"
+                .x(() => fake.Should().BeAFake());
+        }
+
+        [Scenario]
+        public void ClassWithConstructorOutParameterCanBeFaked(ClassWithConstructorOutParameter fake)
+        {
+            "Given a class with a constructor with an out parameter"
+                .See<ClassWithConstructorOutParameter>();
+
+            "When I create a fake of the class"
+                .x(() => fake = this.CreateFake<ClassWithConstructorOutParameter>());
+
+            "Then the fake is created"
+                .x(() => fake.Should().BeAFake());
+        }
+
+        [Scenario]
         public void SealedClassCannotBeFaked(Exception exception)
         {
             "Given a sealed class"
@@ -787,6 +826,28 @@ namespace FakeItEasy.Specs
         {
             private ClassWithPrivateConstructor()
             {
+            }
+        }
+
+        public class ClassWithConstructorInParameter
+        {
+            public ClassWithConstructorInParameter(in DateTimeOffset dateTimeOffset)
+            {
+            }
+        }
+
+        public class ClassWithConstructorRefParameter
+        {
+            public ClassWithConstructorRefParameter(ref DateTimeOffset dateTimeOffset)
+            {
+            }
+        }
+
+        public class ClassWithConstructorOutParameter
+        {
+            public ClassWithConstructorOutParameter(out DateTimeOffset dateTimeOffset)
+            {
+                dateTimeOffset = default;
             }
         }
 
