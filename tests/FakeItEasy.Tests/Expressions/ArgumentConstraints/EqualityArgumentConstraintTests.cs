@@ -12,7 +12,7 @@ namespace FakeItEasy.Tests.ExpressionsConstraints
     {
         public EqualityArgumentConstraintTests()
         {
-            this.Constraint = new EqualityArgumentConstraint(1);
+            this.Constraint = new EqualityArgumentConstraint(1, typeof(int));
         }
 
         protected override string ExpectedDescription => "1";
@@ -56,7 +56,7 @@ namespace FakeItEasy.Tests.ExpressionsConstraints
         [Fact]
         public void ToString_should_return_NULL_when_expected_value_is_null()
         {
-            var validator = new EqualityArgumentConstraint(null);
+            var validator = new EqualityArgumentConstraint(null, typeof(object));
 
             validator.ToString().Should().Be("NULL");
         }
@@ -64,7 +64,7 @@ namespace FakeItEasy.Tests.ExpressionsConstraints
         [Fact]
         public void ToString_should_put_accents_when_expected_value_is_string()
         {
-            var validator = new EqualityArgumentConstraint("foo");
+            var validator = new EqualityArgumentConstraint("foo", typeof(string));
 
             validator.ToString().Should().Be("\"foo\"");
         }

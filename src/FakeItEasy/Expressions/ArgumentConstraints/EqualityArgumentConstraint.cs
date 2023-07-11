@@ -7,18 +7,21 @@ namespace FakeItEasy.Expressions.ArgumentConstraints
     internal class EqualityArgumentConstraint
         : IArgumentConstraint
     {
-        public EqualityArgumentConstraint(object? expectedValue)
-        {
-            this.ExpectedValue = expectedValue;
-        }
+        private readonly object? expectedValue;
+        private readonly Type parameterType;
 
-        public object? ExpectedValue { get; }
+        public EqualityArgumentConstraint(object? expectedValue, Type parameterType)
+        {
+            this.expectedValue = expectedValue;
+            this.parameterType = parameterType;
+        }
 
         public string ConstraintDescription => this.ToString();
 
         public bool IsValid(object? argument)
         {
-            return object.Equals(this.ExpectedValue, argument);
+            var argumentEqualityComparer = ServiceLocator.Resolve<ArgumentEqualityComparer>();
+            return argumentEqualityComparer.AreEqual(this.expectedValue, argument, this.parameterType);
         }
 
         [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Any type of exception may be encountered.")]
@@ -27,15 +30,15 @@ namespace FakeItEasy.Expressions.ArgumentConstraints
             try
             {
                 var writer = ServiceLocator.Resolve<StringBuilderOutputWriter.Factory>().Invoke();
-                writer.WriteArgumentValue(this.ExpectedValue);
+                writer.WriteArgumentValue(this.expectedValue);
                 return writer.Builder.ToString();
             }
             catch (Exception ex) when (!(ex is UserCallbackException))
             {
                 // if ExpectedValue were null, WriteArgumentValue wouldn't have thrown
-                return Fake.TryGetFakeManager(this.ExpectedValue!, out var manager)
+                return Fake.TryGetFakeManager(this.expectedValue!, out var manager)
                     ? manager.FakeObjectDisplayName
-                    : this.ExpectedValue!.GetType().ToString();
+                    : this.expectedValue!.GetType().ToString();
             }
         }
 
