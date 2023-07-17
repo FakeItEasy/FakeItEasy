@@ -27,6 +27,8 @@ jobs:
             os-image: windows-2022
             os-name: Windows
             artifact-name: windows-artifacts
+            dotnet-versions-to-install: |
+              3.1
           - os: ubuntu
             os-image: ubuntu-22.04
             os-name: Ubuntu
