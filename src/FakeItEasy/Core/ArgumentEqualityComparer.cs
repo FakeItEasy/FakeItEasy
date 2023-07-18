@@ -24,7 +24,14 @@
                 return object.Equals(expectedValue, argumentValue);
             }
 
-            return comparer.AreEqual(expectedValue, argumentValue);
+            try
+            {
+                return comparer.AreEqual(expectedValue, argumentValue);
+            }
+            catch (Exception exception)
+            {
+                throw new UserCallbackException(ExceptionMessages.UserCallbackThrewAnException("Argument Equality Comparer"), exception);
+            }
         }
     }
 }

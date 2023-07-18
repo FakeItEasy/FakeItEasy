@@ -1,7 +1,9 @@
 ﻿namespace FakeItEasy.Specs
 {
+    using System;
     using FluentAssertions;
     using Xbehave;
+    using Xunit;
 
     public static class ArgumentEqualityComparerSpecs
     {
@@ -72,6 +74,8 @@
             int Bar(ClassWithCustomArgumentEqualityComparer arg);
 
             int Baz(ClassWithTwoEligibleArgumentEqualityComparers arg);
+
+            int Frob(ClassWithEqualityComparerThatThrows arg);
         }
 
         public class ClassWithCustomArgumentEqualityComparer
@@ -117,6 +121,20 @@
                 ClassWithTwoEligibleArgumentEqualityComparers? argumentValue)
             {
                 return expectedValue?.Y == argumentValue?.Y;
+            }
+        }
+
+        public class ClassWithEqualityComparerThatThrows
+        {
+        }
+
+        public class ComparerThatThrows : ArgumentEqualityComparer<ClassWithEqualityComparerThatThrows>
+        {
+            protected override bool AreEqual(
+                ClassWithEqualityComparerThatThrows? expectedValue,
+                ClassWithEqualityComparerThatThrows? argumentValue)
+            {
+                throw new Exception("Oops");
             }
         }
     }
