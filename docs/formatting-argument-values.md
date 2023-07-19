@@ -36,7 +36,7 @@ class BookArgumentValueFormatter : ArgumentValueFormatter<Book>
 This would help FakeItEasy display this error message:
 <pre>
 Assertion failed for the following call:
-  SampleTests.ILibrary.Checkout(<Ignored>)
+  SampleTests.ILibrary.Checkout(&lt;Ignored&gt;)
 Expected to find it never but found it once among the calls:
   1: SampleTests.ILibrary.Checkout(<b>book: 'The Ocean at the End of the Lane', published on 2013-06-18</b>)
 </pre>
@@ -45,7 +45,7 @@ which could make tracking down any failures a little easier.
 Compare to the original behavior:
 <pre>
 Assertion failed for the following call:
-  SampleTests.ILibrary.Checkout(<Ignored>)
+  SampleTests.ILibrary.Checkout(&lt;Ignored&gt;)
 Expected to find it never but found it once among the calls:
   1: SampleTests.ILibrary.Checkout(<b>book: SampleTests.Book</b>)
 </pre>
