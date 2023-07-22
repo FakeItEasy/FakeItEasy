@@ -6,11 +6,12 @@ user-supplied extension points. In most cases, there is no _need_ for
 users to define any extensions, but they may be used to enhance the
 power and usability of FakeItEasy.
 
-There are currently three kinds of extension points defined:
+There are currently four kinds of extension points defined:
 
 * [Custom Dummy Creation](custom-dummy-creation.md) rules,
-* [Implicit Creation Options](implicit-creation-options.md), and
-* [Argument Value Formatters](formatting-argument-values.md)
+* [Implicit Creation Options](implicit-creation-options.md),
+* [Argument Value Formatters](formatting-argument-values.md), and
+* [Argument Equality Comparers](custom-argument-equality.md)
 
 Please see their individual documentation to learn how each of these is used.
 

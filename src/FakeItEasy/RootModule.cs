@@ -44,6 +44,8 @@ namespace FakeItEasy
 
             var implicitOptionsBuilderCatalogue = new ImplicitOptionsBuilderCatalogue(fakeOptionsBuilders);
 
+            var argumentEqualityComparers = typeCatalogueInstanceProvider.InstantiateAllOfType<IArgumentEqualityComparer>();
+
             var methodInfoManager = new MethodInfoManager();
             var argumentConstraintTrap = new ArgumentConstraintTrap();
             var expressionArgumentConstraintFactory = new ExpressionArgumentConstraintFactory(argumentConstraintTrap);
@@ -98,6 +100,8 @@ namespace FakeItEasy
             registrar.Register((StringBuilderOutputWriter.Factory)StringBuilderOutputWriterFactory);
 
             registrar.Register<IFakeObjectCallFormatter>(fakeObjectCallFormatter);
+
+            registrar.Register(new ArgumentEqualityComparer(argumentEqualityComparers));
 
             StringBuilderOutputWriter StringBuilderOutputWriterFactory() =>
                 new StringBuilderOutputWriter(argumentValueFormatter!);

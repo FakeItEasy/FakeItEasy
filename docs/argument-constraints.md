@@ -26,7 +26,9 @@ Then FakeItEasy will look _only_ for calls made with the arguments
 `"hello"` and `17` - no other calls will match the rule.
 
 When checking for argument equality, FakeItEasy uses
-`object.Equals`. If the type to be checked does not provide an
+`object.Equals`, unless a
+[custom argument equality comparer](custom-argument-equality.md) is defined.
+If the type to be checked does not provide an
 adequate `Equals` method, you may have to use the `That.Matches`
 method described in [Custom matching](#custom-matching). Be
 particularly careful of types whose `Equals` methods perform reference

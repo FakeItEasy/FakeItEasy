@@ -63,6 +63,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{072853A5-3
 		docs\calling-wrapped-methods.md = docs\calling-wrapped-methods.md
 		docs\changing-behavior-between-calls.md = docs\changing-behavior-between-calls.md
 		docs\creating-fakes.md = docs\creating-fakes.md
+		docs\custom-argument-equality.md = docs\custom-argument-equality.md
 		docs\custom-dummy-creation.md = docs\custom-dummy-creation.md
 		docs\default-fake-behavior.md = docs\default-fake-behavior.md
 		docs\doing-nothing.md = docs\doing-nothing.md

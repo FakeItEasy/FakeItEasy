@@ -11,7 +11,11 @@ namespace FakeItEasy.Tests.Expressions.ArgumentConstraints
     {
         public AggregateArgumentConstraintTests()
         {
-            this.Constraint = new AggregateArgumentConstraint(new[] { new EqualityArgumentConstraint("foo"), new EqualityArgumentConstraint("bar") });
+            this.Constraint = new AggregateArgumentConstraint(new[]
+                {
+                    new EqualityArgumentConstraint("foo", typeof(string)),
+                    new EqualityArgumentConstraint("bar", typeof(string))
+                });
         }
 
         public interface ITypeWithMethod

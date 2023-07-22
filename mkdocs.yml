@@ -81,6 +81,7 @@ nav:
   - Custom Dummy Creation: custom-dummy-creation.md
 - Implicit Creation Options: implicit-creation-options.md
 - Formatting Argument Values: formatting-argument-values.md
+- Custom Argument Equality: custom-argument-equality.md
 - Scanning for Extension Points: scanning-for-extension-points.md
 - Bootstrapper: bootstrapper.md
 - Advanced usage: advanced-usage.md
