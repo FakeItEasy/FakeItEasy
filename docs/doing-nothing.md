@@ -7,7 +7,7 @@ A.CallTo(() => aFake.SomeVoidMethodThatShouldDoNothing())
 ```
 
 This is quite close to what a default Fake's
-[unconfigured member will do](doing-nothing.md#overrideable-members-are-faked),
+[unconfigured member will do](default-fake-behavior.md#overrideable-members-are-faked),
 but there a few situations where you may need to make the `DoesNothing` call
 explicitly.
 
