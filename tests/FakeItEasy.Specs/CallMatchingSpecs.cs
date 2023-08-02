@@ -1,6 +1,7 @@
 namespace FakeItEasy.Specs
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Reflection;
@@ -985,6 +986,32 @@ namespace FakeItEasy.Specs
 
             "Then the expression that invokes the constraint factory is called exactly once"
                 .x(() => constraintFactory.InvocationCount.Should().Be(1));
+        }
+
+        [Scenario]
+        public static void SimpleEnumerableMatchedByValues(Action<IEnumerable> fake)
+        {
+            "Given a fake with a method that takes an enumerable parameter"
+                .x(() => fake = A.Fake<Action<IEnumerable>>());
+
+            "When I call the method"
+                .x(() => fake.Invoke(new[] { 1, 2, 3 }));
+
+            "Then the fake says the method was called with a distinct but equivalent sequence"
+                .x(() => A.CallTo(() => fake.Invoke(new List<int> { 1, 2, 3 })).MustHaveHappened());
+        }
+
+        [Scenario]
+        public static void SimpleEnumerableDoesNotMatchNonEnumerable(Action<object> fake)
+        {
+            "Given a fake with a method that takes an object parameter"
+                .x(() => fake = A.Fake<Action<object>>());
+
+            "When I call the method with an enumerable"
+                .x(() => fake.Invoke(new[] { 1, 2, 3 }));
+
+            "Then the fake says the method was not called with an integer"
+                .x(() => A.CallTo(() => fake.Invoke(6)).MustNotHaveHappened());
         }
 
         public static IEnumerable<object[]> Fakes()
