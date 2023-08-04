@@ -4,7 +4,6 @@ namespace FakeItEasy.Specs
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using System.Reflection;
     using System.Runtime.InteropServices;
     using FakeItEasy.Configuration;
     using FakeItEasy.Tests.TestHelpers;
@@ -1012,6 +1011,79 @@ namespace FakeItEasy.Specs
 
             "Then the fake says the method was not called with an integer"
                 .x(() => A.CallTo(() => fake.Invoke(6)).MustNotHaveHappened());
+        }
+
+        [Scenario]
+        public static void StringMatchesString(Func<IEnumerable, int> fake, int result)
+        {
+            "Given a fake with a method that takes an enumerable parameter"
+                .x(() => fake = A.Fake<Func<IEnumerable, int>>());
+
+            "And I configure the method with a string"
+                .x(() => A.CallTo(() => fake.Invoke("abc")).Returns(3));
+
+            "When I call the method with another string made of the same characters"
+                .x(() => result = fake.Invoke("abc"));
+
+            "Then it returns the configured value"
+                .x(() => result.Should().Be(3));
+        }
+
+        [Scenario]
+        public static void CharEnumerableMatchesString(Func<IEnumerable, int> fake, int result)
+        {
+            "Given a fake with a method that takes an enumerable parameter"
+                .x(() => fake = A.Fake<Func<IEnumerable, int>>());
+
+            "And I configure the method with an array of chars"
+                .x(() => A.CallTo(() => fake.Invoke(new[] { 'a', 'b', 'c' })).Returns(3));
+
+            "When I call the method with a string made of the same characters"
+                .x(() => result = fake.Invoke("abc"));
+
+            "Then it returns the configured value"
+                .x(() => result.Should().Be(3));
+        }
+
+        [Scenario]
+        public static void StringMatchesCharEnumerable(Func<IEnumerable, int> fake, int result)
+        {
+            "Given a fake with a method that takes an enumerable parameter"
+                .x(() => fake = A.Fake<Func<IEnumerable, int>>());
+
+            "And I configure the method with a string"
+                .x(() => A.CallTo(() => fake.Invoke("xyz")).Returns(-3));
+
+            "When I call the method with an enumerable of the same characters"
+                .x(() => result = fake.Invoke(new List<char> { 'x', 'y', 'z' }));
+
+            "Then it returns the configured value"
+                .x(() => result.Should().Be(-3));
+        }
+
+        [Scenario]
+        public static void StringDoesNotMatchDifferentString(Func<IEnumerable, int> fake, Exception exception)
+        {
+            "Given a fake with a method that takes an enumerable parameter"
+                .x(() => fake = A.Fake<Func<IEnumerable, int>>());
+
+            "And I call the method with a string"
+                .x(() => fake.Invoke("def"));
+
+            "When I check to see if the method was called with a different string"
+                .x(() => exception = Record.Exception(
+                     () => A.CallTo(() => fake.Invoke("abc")).MustHaveHappened()));
+
+            "Then it should fail with a descriptive message"
+                .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>()
+                     .WithMessageModuloLineEndings(@"
+
+  Assertion failed for the following call:
+    System.Func`2[System.Collections.IEnumerable,System.Int32].Invoke(arg: ""abc"")
+  Expected to find it once or more but didn't find it among the calls:
+    1: System.Func`2[System.Collections.IEnumerable,System.Int32].Invoke(arg: ""def"")
+
+"));
         }
 
         public static IEnumerable<object[]> Fakes()

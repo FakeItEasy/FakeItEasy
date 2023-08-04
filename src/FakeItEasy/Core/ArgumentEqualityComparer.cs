@@ -47,11 +47,18 @@ namespace FakeItEasy.Core
 
             public bool CanCompare(Type type) => typeof(IEnumerable).IsAssignableFrom(type);
 
-            public bool AreEqual(object expectedValue, object argumentValue) =>
-                argumentValue is IEnumerable argumentEnumerable &&
-                Enumerable.SequenceEqual(
-                    ((IEnumerable)expectedValue).Cast<object?>(),
-                    argumentEnumerable.Cast<object?>());
+            public bool AreEqual(object expectedValue, object argumentValue)
+            {
+                if (expectedValue is string expectedString && argumentValue is string argumentString)
+                {
+                    return string.Equals(expectedString, argumentString, StringComparison.Ordinal);
+                }
+
+                return argumentValue is IEnumerable argumentEnumerable &&
+                    Enumerable.SequenceEqual(
+                        ((IEnumerable)expectedValue).Cast<object?>(),
+                        argumentEnumerable.Cast<object?>());
+            }
         }
     }
 }

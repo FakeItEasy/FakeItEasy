@@ -32,6 +32,7 @@ test from this list:
 * if one value is `null` and the other isn't, they are not considered equal,
 * the highest-priority [custom argument equality comparer](custom-argument-equality.md)
   that can compare the example object's type, or
+* if both values are `string`, `string.Equals` (as an optimization),
 * if the example object's type implements `System.Collections.IEnumerable`, the values
   are considered equal if and only if the actual object's type also implements
   `System.Collections.IEnumerable` and `System.Linq.Enumerable.SequenceEqual` evaluates
