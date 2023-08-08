@@ -1001,16 +1001,115 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
-        public static void SimpleEnumerableDoesNotMatchNonEnumerable(Action<object> fake)
+        public static void SimpleEnumerableDoesNotMatchNonEnumerable(Action<object> fake, Exception exception)
         {
             "Given a fake with a method that takes an object parameter"
                 .x(() => fake = A.Fake<Action<object>>());
 
-            "When I call the method with an enumerable"
+            "And I call the method with an enumerable"
                 .x(() => fake.Invoke(new[] { 1, 2, 3 }));
 
-            "Then the fake says the method was not called with an integer"
-                .x(() => A.CallTo(() => fake.Invoke(6)).MustNotHaveHappened());
+            "When I check to see if the method was called with an integer"
+                .x(() => exception = Record.Exception(() => A.CallTo(() => fake.Invoke(6)).MustHaveHappened()));
+
+            "Then it should fail with a descriptive message"
+                .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>()
+                     .WithMessageModuloLineEndings(@"
+
+  Assertion failed for the following call:
+    System.Action`1[System.Object].Invoke(obj: 6)
+  Expected to find it once or more but didn't find it among the calls:
+    1: System.Action`1[System.Object].Invoke(obj: [1, 2, 3])
+
+"));
+        }
+
+        [Scenario]
+        public static void NestedEnumerableMatchedByValues(Action<IEnumerable<IEnumerable<int>>> fake)
+        {
+            "Given a fake with a method that takes a nested enumerable parameter"
+                .x(() => fake = A.Fake<Action<IEnumerable<IEnumerable<int>>>>());
+
+            "When I call the method"
+                .x(() => fake.Invoke(new[] { new[] { 1, 2, 3 } }));
+
+            "Then the fake says the method was called with a distinct but equivalent sequence"
+                .x(() => A.CallTo(() => fake.Invoke(new List<List<int>> { new List<int> { 1, 2, 3 } })).MustHaveHappened());
+        }
+
+        [Scenario]
+        public static void NestedEnumerableMismatchedByInnerElement(
+            Action<IEnumerable<IEnumerable<int>>> fake, Exception exception)
+        {
+            "Given a fake with a method that takes a nested enumerable parameter"
+                .x(() => fake = A.Fake<Action<IEnumerable<IEnumerable<int>>>>());
+
+            "And I call the method"
+                .x(() => fake.Invoke(new[] { new[] { 1, 2, 3 } }));
+
+            "When I check to see if the method was called with an enumerable with a differing inner element "
+                .x(() => exception = Record.Exception(
+                     () => A.CallTo(() => fake.Invoke(new List<List<int>> { new List<int> { 1, 4, 3 } })).MustHaveHappened()));
+
+            "Then it should fail with a descriptive message"
+                .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>()
+                     .WithMessageModuloLineEndings(@"
+  Assertion failed for the following call:
+    System.Action`1[System.Collections.Generic.IEnumerable`1[System.Collections.Generic.IEnumerable`1[System.Int32]]].Invoke(obj: [[1, 4, 3]])
+  Expected to find it once or more but didn't find it among the calls:
+    1: System.Action`1[System.Collections.Generic.IEnumerable`1[System.Collections.Generic.IEnumerable`1[System.Int32]]].Invoke(obj: [[1, 2, 3]])
+
+"));
+        }
+
+        [Scenario]
+        public static void NestedEnumerableMismatchedByLongerEnumerableElement(
+                Action<IEnumerable<IEnumerable<int>>> fake, Exception exception)
+        {
+            "Given a fake with a method that takes a nested enumerable parameter"
+                .x(() => fake = A.Fake<Action<IEnumerable<IEnumerable<int>>>>());
+
+            "And I call the method"
+                .x(() => fake.Invoke(new[] { new[] { 1, 2, 3 } }));
+
+            "When I check to see if the method was called with an enumerable with a longer nested enumerable"
+                .x(() => exception = Record.Exception(
+                     () => A.CallTo(() => fake.Invoke(new List<List<int>> { new List<int> { 1, 2, 3, 4 } })).MustHaveHappened()));
+
+            "Then it should fail with a descriptive message"
+                .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>()
+                     .WithMessageModuloLineEndings(@"
+  Assertion failed for the following call:
+    System.Action`1[System.Collections.Generic.IEnumerable`1[System.Collections.Generic.IEnumerable`1[System.Int32]]].Invoke(obj: [[1, 2, 3, 4]])
+  Expected to find it once or more but didn't find it among the calls:
+    1: System.Action`1[System.Collections.Generic.IEnumerable`1[System.Collections.Generic.IEnumerable`1[System.Int32]]].Invoke(obj: [[1, 2, 3]])
+
+"));
+        }
+
+        [Scenario]
+        public static void NestedEnumerableMismatchedByShorterEnumerableElement(
+            Action<IEnumerable<IEnumerable<int>>> fake, Exception exception)
+        {
+            "Given a fake with a method that takes a nested enumerable parameter"
+                .x(() => fake = A.Fake<Action<IEnumerable<IEnumerable<int>>>>());
+
+            "And I call the method"
+                .x(() => fake.Invoke(new[] { new[] { 1, 2, 3 } }));
+
+            "When I check to see if the method was called with an enumerable with a shorter nested enumerable"
+                .x(() => exception = Record.Exception(
+                     () => A.CallTo(() => fake.Invoke(new List<List<int>> { new List<int> { 1, 2 } })).MustHaveHappened()));
+
+            "Then it should fail with a descriptive message"
+                .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>()
+                     .WithMessageModuloLineEndings(@"
+  Assertion failed for the following call:
+    System.Action`1[System.Collections.Generic.IEnumerable`1[System.Collections.Generic.IEnumerable`1[System.Int32]]].Invoke(obj: [[1, 2]])
+  Expected to find it once or more but didn't find it among the calls:
+    1: System.Action`1[System.Collections.Generic.IEnumerable`1[System.Collections.Generic.IEnumerable`1[System.Int32]]].Invoke(obj: [[1, 2, 3]])
+
+"));
         }
 
         [Scenario]
