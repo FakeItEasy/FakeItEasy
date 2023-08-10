@@ -13,8 +13,8 @@ namespace FakeItEasy.Tests.Expressions.ArgumentConstraints
         {
             this.Constraint = new AggregateArgumentConstraint(new[]
                 {
-                    new EqualityArgumentConstraint("foo", typeof(string)),
-                    new EqualityArgumentConstraint("bar", typeof(string))
+                    new EqualityArgumentConstraint("foo"),
+                    new EqualityArgumentConstraint("bar")
                 });
         }
 

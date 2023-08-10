@@ -31,7 +31,7 @@ test from this list:
 * if both values are `null`, they are considered equal,
 * if one value is `null` and the other isn't, they are not considered equal,
 * the highest-priority [custom argument equality comparer](custom-argument-equality.md)
-  that can compare the parameter's type, or
+  that can compare the example object's type, or
 * `Object.Equals`
 
 If this list is not satisfactory, you may have to use the `That.Matches`

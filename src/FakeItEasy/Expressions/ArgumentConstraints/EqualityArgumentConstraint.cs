@@ -8,12 +8,10 @@ namespace FakeItEasy.Expressions.ArgumentConstraints
         : IArgumentConstraint
     {
         private readonly object expectedValue;
-        private readonly Type parameterType;
 
-        public EqualityArgumentConstraint(object expectedValue, Type parameterType)
+        public EqualityArgumentConstraint(object expectedValue)
         {
             this.expectedValue = expectedValue;
-            this.parameterType = parameterType;
         }
 
         public string ConstraintDescription => this.ToString();
@@ -26,7 +24,7 @@ namespace FakeItEasy.Expressions.ArgumentConstraints
             }
 
             var argumentEqualityComparer = ServiceLocator.Resolve<ArgumentEqualityComparer>();
-            return argumentEqualityComparer.AreEqual(this.expectedValue, argument, this.parameterType);
+            return argumentEqualityComparer.AreEqual(this.expectedValue, argument);
         }
 
         [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Any type of exception may be encountered.")]

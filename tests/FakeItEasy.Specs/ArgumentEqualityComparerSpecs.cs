@@ -143,6 +143,25 @@ namespace FakeItEasy.Specs
                 .x(() => exception.Should().BeNull());
         }
 
+        [Scenario]
+        public static void ArgumentEqualityComparerObjectParameter(IFoo fake, int result)
+        {
+            "Given a fake with a method that has an object parameter"
+                .x(() => fake = A.Fake<IFoo>());
+
+            "And a type for which a throwing custom argument equality comparer exists"
+                .See<ClassWithCustomArgumentEqualityComparer>();
+
+            "When a call to the fake is configured with a specific argument value"
+                .x(() => A.CallTo(() => fake.ConsumeObject(new ClassWithCustomArgumentEqualityComparer { Value = 7 })).Returns(53));
+
+            "And a call to the fake is made with a distinct but identical instance"
+                .x(() => result = fake.ConsumeObject(new ClassWithCustomArgumentEqualityComparer { Value = 7 }));
+
+            "Then it should return the configured value"
+                .x(() => result.Should().Be(53));
+        }
+
         public interface IFoo
         {
             int Bar(ClassWithCustomArgumentEqualityComparer? arg);
@@ -150,6 +169,8 @@ namespace FakeItEasy.Specs
             int Baz(ClassWithTwoEligibleArgumentEqualityComparers arg);
 
             int Frob(ClassWithEqualityComparerThatThrows? arg);
+
+            int ConsumeObject(object arg);
         }
 
         public class ClassWithCustomArgumentEqualityComparer

@@ -60,10 +60,10 @@ namespace FakeItEasy.Expressions
             return argument.ArgumentInformation.IsOut;
         }
 
-        private static IArgumentConstraint CreateEqualityConstraint(object? expressionValue, Type parameterType)
+        private static IArgumentConstraint CreateEqualityConstraint(object? expressionValue)
             => expressionValue is null
                 ? NullArgumentConstraint.Instance
-                : new EqualityArgumentConstraint(expressionValue, parameterType);
+                : new EqualityArgumentConstraint(expressionValue);
 
         private static void CheckArgumentExpressionIsValid(Expression expression)
         {
@@ -165,7 +165,7 @@ namespace FakeItEasy.Expressions
             {
                 constraint = this.argumentConstraintTrapper.TrapConstraintOrCreate(
                     () => expressionValue = expression.Evaluate(),
-                    () => CreateEqualityConstraint(expressionValue, parameterType));
+                    () => CreateEqualityConstraint(expressionValue));
             }
             catch (TargetInvocationException ex)
             {

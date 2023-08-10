@@ -74,11 +74,11 @@ public interface IArgumentEqualityComparer
 
 When FakeItEasy needs to compare a non-null argument value with a non-null expected value,
 it looks at all known `IArgumentEqualityComparer` implementations for which
-`CanCompare` returns true for the parameter type. If multiple implementations
+`CanCompare` returns true for the type of the expected value. If multiple implementations
 match, the one with the highest `Priority` is used.
 
 If all that's needed is an Argument Equality Comparer that specifies how to
-compare instances of a specific type,  extending `abstract class
+compare two instances of a specific type, extending `abstract class
 ArgumentEqualityComparer<T>: IArgumentEqualityComparer` is preferred. It
 provides default implementations of `Priority` and `CanCompare` (although
 they can be overridden if needed).

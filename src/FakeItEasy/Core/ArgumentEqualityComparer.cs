@@ -15,9 +15,9 @@ namespace FakeItEasy.Core
             this.argumentEqualityComparers = argumentEqualityComparers.OrderByDescending(c => c.Priority).ToArray();
         }
 
-        public bool AreEqual(object expectedValue, object argumentValue, Type parameterType)
+        public bool AreEqual(object expectedValue, object argumentValue)
         {
-            var comparer = this.cachedComparers.GetOrAdd(parameterType, t => this.argumentEqualityComparers.FirstOrDefault(c => c.CanCompare(t)));
+            var comparer = this.cachedComparers.GetOrAdd(expectedValue.GetType(), this.FindHighestPriorityComparer);
 
             if (comparer is null)
             {
@@ -33,5 +33,8 @@ namespace FakeItEasy.Core
                 throw new UserCallbackException(ExceptionMessages.UserCallbackThrewAnException("Argument Equality Comparer"), exception);
             }
         }
+
+        private IArgumentEqualityComparer? FindHighestPriorityComparer(Type type)
+            => this.argumentEqualityComparers.FirstOrDefault(c => c.CanCompare(type));
     }
 }
