@@ -1,4 +1,4 @@
-﻿namespace FakeItEasy.Core
+namespace FakeItEasy.Core
 {
     using System;
     using System.Collections.Concurrent;
@@ -15,7 +15,7 @@
             this.argumentEqualityComparers = argumentEqualityComparers.OrderByDescending(c => c.Priority).ToArray();
         }
 
-        public bool AreEqual(object? expectedValue, object? argumentValue, Type parameterType)
+        public bool AreEqual(object expectedValue, object argumentValue, Type parameterType)
         {
             var comparer = this.cachedComparers.GetOrAdd(parameterType, t => this.argumentEqualityComparers.FirstOrDefault(c => c.CanCompare(t)));
 

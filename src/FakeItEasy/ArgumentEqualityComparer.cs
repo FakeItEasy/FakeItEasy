@@ -30,7 +30,7 @@ public abstract class ArgumentEqualityComparer<T> : IArgumentEqualityComparer
     /// <param name="argumentValue">The second object to compare.</param>
     /// <returns><c>true</c> if the objects are considered equal. Otherwise <c>false</c>.</returns>
     /// <remarks>This method cannot be overridden. Override the <see cref="AreEqual(T, T)"/> method instead.</remarks>
-    public bool AreEqual(object? expectedValue, object? argumentValue) => this.AreEqual((T?)expectedValue, (T?)argumentValue);
+    public bool AreEqual(object expectedValue, object argumentValue) => this.AreEqual((T)expectedValue, (T)argumentValue);
 
     /// <summary>
     /// When overridden in a derived class, indicates whether <paramref name="expectedValue"/> and
@@ -39,5 +39,5 @@ public abstract class ArgumentEqualityComparer<T> : IArgumentEqualityComparer
     /// <param name="expectedValue">The first object to compare.</param>
     /// <param name="argumentValue">The second object to compare.</param>
     /// <returns><c>true</c> if the objects are considered equal. Otherwise <c>false</c>.</returns>
-    protected abstract bool AreEqual(T? expectedValue, T? argumentValue);
+    protected abstract bool AreEqual(T expectedValue, T argumentValue);
 }

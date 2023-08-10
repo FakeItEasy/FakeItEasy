@@ -54,14 +54,6 @@ namespace FakeItEasy.Tests.ExpressionsConstraints
         }
 
         [Fact]
-        public void ToString_should_return_NULL_when_expected_value_is_null()
-        {
-            var validator = new EqualityArgumentConstraint(null, typeof(object));
-
-            validator.ToString().Should().Be("NULL");
-        }
-
-        [Fact]
         public void ToString_should_put_accents_when_expected_value_is_string()
         {
             var validator = new EqualityArgumentConstraint("foo", typeof(string));

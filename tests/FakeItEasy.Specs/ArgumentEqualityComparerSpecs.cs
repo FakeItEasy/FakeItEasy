@@ -1,6 +1,7 @@
-﻿namespace FakeItEasy.Specs
+namespace FakeItEasy.Specs
 {
     using System;
+    using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using Xbehave;
     using Xunit;
@@ -69,13 +70,86 @@
                     .Which.Message.Should().Be("Oops"));
         }
 
+        [Scenario]
+        public static void ArgumentEqualityComparerThatThrowsNullExample(IFoo fake, Exception exception)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IFoo>());
+
+            "And a type for which a throwing custom argument equality comparer exists"
+                .See<ClassWithCustomArgumentEqualityComparer>();
+
+            "And a method on the fake is called with a non-null value"
+                .x(() => fake.Frob(new ClassWithEqualityComparerThatThrows()));
+
+            "When the method is checked to see if the call was made with a null example argument"
+                .x(() => exception = Record.Exception(() => A.CallTo(() => fake.Frob(null)).MustHaveHappened()));
+
+            "Then it should fail with a descriptive message"
+                .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>()
+                     .WithMessageModuloLineEndings(@"
+
+  Assertion failed for the following call:
+    FakeItEasy.Specs.ArgumentEqualityComparerSpecs+IFoo.Frob(arg: NULL)
+  Expected to find it once or more but didn't find it among the calls:
+    1: FakeItEasy.Specs.ArgumentEqualityComparerSpecs+IFoo.Frob(arg: FakeItEasy.Specs.ArgumentEqualityComparerSpecs+ClassWithEqualityComparerThatThrows)
+
+"));
+        }
+
+        [Scenario]
+        public static void ArgumentEqualityComparerThatThrowsNullArgument(IFoo fake, Exception exception)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IFoo>());
+
+            "And a type for which a throwing custom argument equality comparer exists"
+                .See<ClassWithCustomArgumentEqualityComparer>();
+
+            "And a method on the fake is called with null"
+                .x(() => fake.Frob(null));
+
+            "When the method is checked to see if the call was made with a non-null example argument"
+                .x(() => exception = Record.Exception(() => A.CallTo(() => fake.Frob(new ClassWithEqualityComparerThatThrows())).MustHaveHappened()));
+
+            "Then it should fail with a descriptive message"
+                .x(() => exception.Should().BeAnExceptionOfType<ExpectationException>()
+                     .WithMessageModuloLineEndings(@"
+
+  Assertion failed for the following call:
+    FakeItEasy.Specs.ArgumentEqualityComparerSpecs+IFoo.Frob(arg: FakeItEasy.Specs.ArgumentEqualityComparerSpecs+ClassWithEqualityComparerThatThrows)
+  Expected to find it once or more but didn't find it among the calls:
+    1: FakeItEasy.Specs.ArgumentEqualityComparerSpecs+IFoo.Frob(arg: NULL)
+
+"));
+        }
+
+        [Scenario]
+        public static void ArgumentEqualityComparerThatThrowsNullExampleAndArgument(IFoo fake, Exception exception)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IFoo>());
+
+            "And a type for which a throwing custom argument equality comparer exists"
+                .See<ClassWithCustomArgumentEqualityComparer>();
+
+            "And a method on the fake is called with null"
+                .x(() => fake.Frob(null));
+
+            "When the method is checked to see if the call was made with a null example argument"
+                .x(() => exception = Record.Exception(() => A.CallTo(() => fake.Frob(null)).MustHaveHappened()));
+
+            "Then it should pass"
+                .x(() => exception.Should().BeNull());
+        }
+
         public interface IFoo
         {
-            int Bar(ClassWithCustomArgumentEqualityComparer arg);
+            int Bar(ClassWithCustomArgumentEqualityComparer? arg);
 
             int Baz(ClassWithTwoEligibleArgumentEqualityComparers arg);
 
-            int Frob(ClassWithEqualityComparerThatThrows arg);
+            int Frob(ClassWithEqualityComparerThatThrows? arg);
         }
 
         public class ClassWithCustomArgumentEqualityComparer
@@ -86,10 +160,10 @@
         public class CustomComparer : ArgumentEqualityComparer<ClassWithCustomArgumentEqualityComparer>
         {
             protected override bool AreEqual(
-                ClassWithCustomArgumentEqualityComparer? expectedValue,
-                ClassWithCustomArgumentEqualityComparer? argumentValue)
+                ClassWithCustomArgumentEqualityComparer expectedValue,
+                ClassWithCustomArgumentEqualityComparer argumentValue)
             {
-                return expectedValue?.Value == argumentValue?.Value;
+                return expectedValue.Value == argumentValue.Value;
             }
         }
 
@@ -105,10 +179,10 @@
             public override Priority Priority => new Priority(1);
 
             protected override bool AreEqual(
-                ClassWithTwoEligibleArgumentEqualityComparers? expectedValue,
-                ClassWithTwoEligibleArgumentEqualityComparers? argumentValue)
+                ClassWithTwoEligibleArgumentEqualityComparers expectedValue,
+                ClassWithTwoEligibleArgumentEqualityComparers argumentValue)
             {
-                return expectedValue?.X == argumentValue?.X;
+                return expectedValue.X == argumentValue.X;
             }
         }
 
@@ -117,10 +191,10 @@
             public override Priority Priority => new Priority(2);
 
             protected override bool AreEqual(
-                ClassWithTwoEligibleArgumentEqualityComparers? expectedValue,
-                ClassWithTwoEligibleArgumentEqualityComparers? argumentValue)
+                ClassWithTwoEligibleArgumentEqualityComparers expectedValue,
+                ClassWithTwoEligibleArgumentEqualityComparers argumentValue)
             {
-                return expectedValue?.Y == argumentValue?.Y;
+                return expectedValue.Y == argumentValue.Y;
             }
         }
 
@@ -131,8 +205,8 @@
         public class ComparerThatThrows : ArgumentEqualityComparer<ClassWithEqualityComparerThatThrows>
         {
             protected override bool AreEqual(
-                ClassWithEqualityComparerThatThrows? expectedValue,
-                ClassWithEqualityComparerThatThrows? argumentValue)
+                ClassWithEqualityComparerThatThrows expectedValue,
+                ClassWithEqualityComparerThatThrows argumentValue)
             {
                 throw new Exception("Oops");
             }

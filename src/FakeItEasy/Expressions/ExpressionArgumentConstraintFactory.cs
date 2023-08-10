@@ -61,9 +61,9 @@ namespace FakeItEasy.Expressions
         }
 
         private static IArgumentConstraint CreateEqualityConstraint(object? expressionValue, Type parameterType)
-        {
-            return new EqualityArgumentConstraint(expressionValue, parameterType);
-        }
+            => expressionValue is null
+                ? NullArgumentConstraint.Instance
+                : new EqualityArgumentConstraint(expressionValue, parameterType);
 
         private static void CheckArgumentExpressionIsValid(Expression expression)
         {
