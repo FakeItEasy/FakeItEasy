@@ -7,6 +7,7 @@ namespace FakeItEasy
     using System.Linq;
     using System.Linq.Expressions;
     using System.Threading;
+    using FakeItEasy.Expressions.ArgumentConstraints;
 
     /// <summary>
     /// Provides validation extensions for <see cref="IArgumentConstraintManager{T}"/>.
@@ -23,7 +24,7 @@ namespace FakeItEasy
         {
             Guard.AgainstNull(manager);
 
-            return manager.Matches(x => x is null, x => x.Write("NULL"));
+            return manager.Matches(NullArgumentConstraint.Instance.IsValid, NullArgumentConstraint.Instance.ConstraintDescription);
         }
 
         /// <summary>
@@ -37,7 +38,7 @@ namespace FakeItEasy
         {
             Guard.AgainstNull(manager);
 
-            return manager.Matches(x => x is null, x => x.Write("NULL"));
+            return manager.Matches(x => NullArgumentConstraint.Instance.IsValid(x), NullArgumentConstraint.Instance.ConstraintDescription);
         }
 
         /// <summary>

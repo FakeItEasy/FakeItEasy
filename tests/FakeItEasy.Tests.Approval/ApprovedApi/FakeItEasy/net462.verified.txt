@@ -84,8 +84,8 @@ namespace FakeItEasy
     {
         protected ArgumentEqualityComparer() { }
         public virtual FakeItEasy.Priority Priority { get; }
-        protected abstract bool AreEqual(T? expectedValue, T? argumentValue);
-        public bool AreEqual(object? expectedValue, object? argumentValue) { }
+        public bool AreEqual(object expectedValue, object argumentValue) { }
+        protected abstract bool AreEqual(T expectedValue, T argumentValue);
         public virtual bool CanCompare(System.Type type) { }
     }
     public static class ArgumentValidationConfigurationExtensions
@@ -253,7 +253,7 @@ namespace FakeItEasy
     public interface IArgumentEqualityComparer
     {
         FakeItEasy.Priority Priority { get; }
-        bool AreEqual(object? expectedValue, object? argumentValue);
+        bool AreEqual(object expectedValue, object argumentValue);
         bool CanCompare(System.Type type);
     }
     public interface IArgumentValueFormatter

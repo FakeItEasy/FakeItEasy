@@ -7,21 +7,24 @@ namespace FakeItEasy.Expressions.ArgumentConstraints
     internal class EqualityArgumentConstraint
         : IArgumentConstraint
     {
-        private readonly object? expectedValue;
-        private readonly Type parameterType;
+        private readonly object expectedValue;
 
-        public EqualityArgumentConstraint(object? expectedValue, Type parameterType)
+        public EqualityArgumentConstraint(object expectedValue)
         {
             this.expectedValue = expectedValue;
-            this.parameterType = parameterType;
         }
 
         public string ConstraintDescription => this.ToString();
 
         public bool IsValid(object? argument)
         {
+            if (argument is null)
+            {
+                return false;
+            }
+
             var argumentEqualityComparer = ServiceLocator.Resolve<ArgumentEqualityComparer>();
-            return argumentEqualityComparer.AreEqual(this.expectedValue, argument, this.parameterType);
+            return argumentEqualityComparer.AreEqual(this.expectedValue, argument);
         }
 
         [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Any type of exception may be encountered.")]
@@ -33,12 +36,11 @@ namespace FakeItEasy.Expressions.ArgumentConstraints
                 writer.WriteArgumentValue(this.expectedValue);
                 return writer.Builder.ToString();
             }
-            catch (Exception ex) when (!(ex is UserCallbackException))
+            catch (Exception ex) when (ex is not UserCallbackException)
             {
-                // if ExpectedValue were null, WriteArgumentValue wouldn't have thrown
-                return Fake.TryGetFakeManager(this.expectedValue!, out var manager)
+                return Fake.TryGetFakeManager(this.expectedValue, out var manager)
                     ? manager.FakeObjectDisplayName
-                    : this.expectedValue!.GetType().ToString();
+                    : this.expectedValue.GetType().ToString();
             }
         }
 

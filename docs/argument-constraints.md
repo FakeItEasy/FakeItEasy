@@ -25,11 +25,16 @@ A.CallTo(() => foo.Bar("hello", 17)).MustHaveHappened();
 Then FakeItEasy will look _only_ for calls made with the arguments
 `"hello"` and `17` - no other calls will match the rule.
 
-When checking for argument equality, FakeItEasy uses
-`object.Equals`, unless a
-[custom argument equality comparer](custom-argument-equality.md) is defined.
-If the type to be checked does not provide an
-adequate `Equals` method, you may have to use the `That.Matches`
+When checking for argument equality, FakeItEasy uses the first applicable equality
+test from this list:
+
+* if both values are `null`, they are considered equal,
+* if one value is `null` and the other isn't, they are not considered equal,
+* the highest-priority [custom argument equality comparer](custom-argument-equality.md)
+  that can compare the example object's type, or
+* `Object.Equals`
+
+If this list is not satisfactory, you may have to use the `That.Matches`
 method described in [Custom matching](#custom-matching). Be
 particularly careful of types whose `Equals` methods perform reference
 equality rather than value equality. In that case, the objects have to

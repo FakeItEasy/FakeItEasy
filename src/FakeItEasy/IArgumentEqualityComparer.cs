@@ -28,6 +28,6 @@
         /// <param name="expectedValue">The first object to compare.</param>
         /// <param name="argumentValue">The second object to compare.</param>
         /// <returns><c>true</c> if the objects are considered equal. Otherwise <c>false</c>.</returns>
-        bool AreEqual(object? expectedValue, object? argumentValue);
+        bool AreEqual(object expectedValue, object argumentValue);
     }
 }
