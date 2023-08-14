@@ -9,12 +9,17 @@ namespace FakeItEasy.Expressions.ArgumentConstraints
     {
         private readonly object expectedValue;
 
-        public EqualityArgumentConstraint(object expectedValue)
+        private EqualityArgumentConstraint(object expectedValue)
         {
             this.expectedValue = expectedValue;
         }
 
         public string ConstraintDescription => this.ToString();
+
+        public static IArgumentConstraint FromExpectedValue(object? expectedValue)
+            => expectedValue is null
+                ? NullArgumentConstraint.Instance
+                : new EqualityArgumentConstraint(expectedValue);
 
         public bool IsValid(object? argument)
         {

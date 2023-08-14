@@ -1,6 +1,7 @@
 namespace FakeItEasy.Specs
 {
     using System;
+    using System.Collections.Generic;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using Xbehave;
@@ -181,9 +182,67 @@ namespace FakeItEasy.Specs
                 .x(() => result.Should().NotBe(53));
         }
 
+        [Scenario]
+        public static void NestedCustomArgumentEqualityComparerMatches(IFoo fake, int result)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IFoo>());
+
+            "And a type for which a custom argument equality comparer exists"
+                .See<ClassWithCustomArgumentEqualityComparer>();
+
+            "When a call to the fake is configured with a sequence of those types"
+                .x(() => A.CallTo(() => fake.Barlist(new[]
+                {
+                    new ClassWithCustomArgumentEqualityComparer { Value = 1 },
+                    new ClassWithCustomArgumentEqualityComparer { Value = 2 },
+                })).Returns(42));
+
+            "And a call to the fake is made with a distinct but identical sequence"
+                .x(() => result = fake.Barlist(
+                    new List<ClassWithCustomArgumentEqualityComparer>
+                    {
+                        new ClassWithCustomArgumentEqualityComparer { Value = 1 },
+                        new ClassWithCustomArgumentEqualityComparer { Value = 2 },
+                    }));
+
+            "Then it should return the configured value"
+                .x(() => result.Should().Be(42));
+        }
+
+        [Scenario]
+        public static void NestedCustomArgumentEqualityComparerMismatch(IFoo fake, int result)
+        {
+            "Given a fake"
+                .x(() => fake = A.Fake<IFoo>());
+
+            "And a type for which a custom argument equality comparer exists"
+                .See<ClassWithCustomArgumentEqualityComparer>();
+
+            "When a call to the fake is configured with a sequence of those types"
+                .x(() => A.CallTo(() => fake.Barlist(new[]
+                {
+                    new ClassWithCustomArgumentEqualityComparer { Value = 1 },
+                    new ClassWithCustomArgumentEqualityComparer { Value = 2 },
+                })).Returns(42));
+
+            "And a call to the fake is made with a different sequence"
+                .x(() => result = fake.Barlist(
+                    new List<ClassWithCustomArgumentEqualityComparer>
+                    {
+                        new ClassWithCustomArgumentEqualityComparer { Value = 2 },
+                        new ClassWithCustomArgumentEqualityComparer { Value = 1 },
+                    }));
+
+            "Then it should not return the configured value"
+                .x(() => result.Should().NotBe(42));
+        }
+
         public interface IFoo
         {
             int Bar(ClassWithCustomArgumentEqualityComparer? arg);
+
+            int Barlist(IEnumerable<ClassWithCustomArgumentEqualityComparer> arg);
 
             int Baz(ClassWithTwoEligibleArgumentEqualityComparers arg);
 
