@@ -99,7 +99,7 @@ namespace FakeItEasy.Configuration
             Guard.AgainstNull(action);
 
             this.AddRuleIfNeeded();
-            this.RuleBeingBuilt.Actions.Add(action);
+            this.RuleBeingBuilt.AddAction(action);
             return this;
         }
 

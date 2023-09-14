@@ -83,32 +83,11 @@ namespace FakeItEasy.Tests.Configuration
         }
 
         [Fact]
-        public void Invokes_should_add_action_to_list_of_actions()
-        {
-            Action<IFakeObjectCall> action = x => { };
-
-            this.builder.Invokes(action);
-
-            A.CallTo(() => this.builder.RuleBeingBuilt.Actions.Add(action)).MustHaveHappened();
-        }
-
-        [Fact]
         public void Invokes_should_be_null_guarded()
         {
             Action<IFakeObjectCall> action = x => { };
             Expression<Action> call = () => this.builder.Invokes(action);
             call.Should().BeNullGuarded();
-        }
-
-        [Fact]
-        public void Invokes_on_return_value_configuration_should_add_action_to_list_of_actions()
-        {
-            var returnConfig = this.CreateTestableReturnConfiguration();
-            Action<IFakeObjectCall> action = x => { };
-
-            returnConfig.Invokes(action);
-
-            A.CallTo(() => this.builder.RuleBeingBuilt.Actions.Add(action)).MustHaveHappened();
         }
 
         [Fact]

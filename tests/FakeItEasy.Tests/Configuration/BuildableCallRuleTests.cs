@@ -61,8 +61,8 @@ namespace FakeItEasy.Tests.Configuration
             // Arrange
             bool firstWasCalled = false;
             bool secondWasCalled = false;
-            this.rule.Actions.Add(x => firstWasCalled = true);
-            this.rule.Actions.Add(x => secondWasCalled = true);
+            this.rule.AddAction(x => firstWasCalled = true);
+            this.rule.AddAction(x => secondWasCalled = true);
 
             this.rule.UseApplicator(x => { });
 
@@ -81,7 +81,7 @@ namespace FakeItEasy.Tests.Configuration
             IFakeObjectCall? passedCall = null;
 
             this.rule.UseApplicator(x => { });
-            this.rule.Actions.Add(x => passedCall = x);
+            this.rule.AddAction(x => passedCall = x);
 
             this.rule.Apply(call);
 
