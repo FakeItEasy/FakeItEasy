@@ -64,9 +64,9 @@ namespace FakeItEasy.Expressions
         {
             expression = GetExpressionWithoutConversion(expression);
 
-            if (expression is MemberExpression memberExpression && IsMemberOfA(memberExpression.Member))
+            if (expression is MemberExpression memberExpression && IsBuiltInConstraintDefiningMember(memberExpression))
             {
-                // It's A._, or A.Ignore, so it's safe.
+                // It's ._ or .Ignore, so it's safe.
                 return;
             }
 
@@ -124,9 +124,10 @@ namespace FakeItEasy.Expressions
             return expression;
         }
 
-        private static bool IsMemberOfA(MemberInfo member)
+        private static bool IsBuiltInConstraintDefiningMember(MemberExpression node)
         {
-            return GetGenericTypeDefinition(member.DeclaringType!) == typeof(A<>);
+            Type declaringType = GetGenericTypeDefinition(node.Member.DeclaringType!);
+            return declaringType == typeof(A<>) || declaringType == typeof(An<>);
         }
 
         private static Type GetGenericTypeDefinition(Type type)
@@ -196,7 +197,7 @@ namespace FakeItEasy.Expressions
         {
             protected override Expression VisitMember(MemberExpression node)
             {
-                if (IsMemberOfA(node.Member))
+                if (IsBuiltInConstraintDefiningMember(node))
                 {
                     throw new InvalidOperationException(ExceptionMessages.ArgumentConstraintCannotBeNestedInArgument);
                 }
