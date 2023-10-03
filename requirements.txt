@@ -11,10 +11,7 @@ charset-normalizer==3.2.0
 click==8.1.6
     # via mkdocs
 colorama==0.4.6
-    # via
-    #   click
-    #   mkdocs
-    #   mkdocs-material
+    # via mkdocs-material
 ghp-import==2.1.0
     # via mkdocs
 idna==3.4
@@ -66,7 +63,7 @@ requests==2.31.0
     # via mkdocs-material
 six==1.16.0
     # via python-dateutil
-urllib3==2.0.4
+urllib3==2.0.6
     # via requests
 verspec==0.1.0
     # via mike
