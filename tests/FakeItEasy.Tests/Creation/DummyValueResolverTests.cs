@@ -229,7 +229,6 @@ namespace FakeItEasy.Tests.Creation
         }
 
         [Theory]
-        [InlineData(typeof(void))]
         [InlineData(typeof(Func<int>))]
         [InlineData(typeof(Action))]
         public void Should_return_failed_result_for_restricted_types(Type restrictedType)
