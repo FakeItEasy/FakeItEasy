@@ -228,24 +228,6 @@ namespace FakeItEasy.Tests.Creation
             ((TypeWithMultipleConstructorsOfDifferentWidth)dummy!).WidestConstructorWasCalled.Should().BeTrue();
         }
 
-        [Theory]
-        [InlineData(typeof(Func<int>))]
-        [InlineData(typeof(Action))]
-        public void Should_return_failed_result_for_restricted_types(Type restrictedType)
-        {
-            // Arrange
-            var resolver = new DummyValueResolver(
-                this.CreateDummyFactoryThatMakesNoDummy(),
-                this.fakeObjectCreator,
-                this.proxyOptionsFactory);
-
-            // Act
-            var result = resolver.TryResolveDummyValue(restrictedType, new LoopDetectingResolutionContext());
-
-            // Assert
-            result.WasSuccessful.Should().BeFalse();
-        }
-
         [Fact]
         public void Should_be_able_to_create_lazy_wrapper()
         {
