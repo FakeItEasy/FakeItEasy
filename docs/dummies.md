@@ -63,6 +63,7 @@ argument values. It uses Dummies.
 When FakeItEasy needs to access a Dummy of type `T`, it tries a number
 of approaches in turn, until one succeeds:
 
+1. If `T` is `void`, return `null`.
 1. If there's a user-supplied
   [dummy factory](custom-dummy-creation.md) for `T`,
   return whatever it makes.

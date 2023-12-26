@@ -4,6 +4,7 @@ namespace FakeItEasy.Specs
     using System.Diagnostics.CodeAnalysis;
     using System.Threading.Tasks;
     using FakeItEasy.Configuration;
+    using FakeItEasy.Creation;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using Xbehave;
@@ -786,6 +787,22 @@ namespace FakeItEasy.Specs
                 .x(() => result.Status.Should().Be(TaskStatus.RanToCompletion));
         }
 
+        [Scenario]
+        public static void CallingAnUnconfiguredVoidMethodWhenVoidFakeOptionsBuilderExists(IFoo fake, Exception? exception)
+        {
+            "Given a fake options builder that can build options for fake of type void"
+                .See<VoidOptionsBuilder>();
+
+            "And a fake of a type with a void method"
+                .x(() => fake = A.Fake<IFoo>());
+
+            "And the void method is called on the fake"
+                .x(() => exception = Record.Exception(() => fake.Bar()));
+
+            "Then it does not throw"
+                .x(() => exception.Should().BeNull());
+        }
+
         public class BaseClass
         {
             public bool WasCalled { get; private set; }
@@ -898,6 +915,17 @@ namespace FakeItEasy.Specs
             protected override IFoo Create()
             {
                 return Instance;
+            }
+        }
+
+        public class VoidOptionsBuilder : IFakeOptionsBuilder
+        {
+            public Priority Priority => Priority.Default;
+
+            public bool CanBuildOptionsForFakeOfType(Type type) => type == typeof(void);
+
+            public void BuildOptions(Type typeOfFake, IFakeOptions options)
+            {
             }
         }
     }

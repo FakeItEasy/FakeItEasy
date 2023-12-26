@@ -26,6 +26,7 @@ namespace FakeItEasy.Creation
             this.strategyCache = new ConcurrentDictionary<Type, ResolveStrategy>();
             this.strategies = new ResolveStrategy[]
                 {
+                    new ResolveVoidByReturningNullStrategy(),
                     new ResolveFromDummyFactoryStrategy(dummyFactory),
                     new ResolveByCreatingTaskStrategy(),
                     new ResolveByCreatingLazyStrategy(),
@@ -362,6 +363,19 @@ namespace FakeItEasy.Creation
                 return success
                     ? CreationResult.SuccessfullyCreated(result)
                     : CreationResult.FailedToCreateDummy(typeOfDummy, "No Dummy Factory produced a result.");
+            }
+        }
+
+        private class ResolveVoidByReturningNullStrategy : ResolveStrategy
+        {
+            public override CreationResult TryCreateDummyValue(Type typeOfDummy, IDummyValueResolver resolver, LoopDetectingResolutionContext resolutionContext)
+            {
+                if (typeOfDummy == typeof(void))
+                {
+                    return CreationResult.SuccessfullyCreated(null);
+                }
+
+                return CreationResult.FailedToCreateDummy(typeOfDummy, "It is not void.");
             }
         }
 

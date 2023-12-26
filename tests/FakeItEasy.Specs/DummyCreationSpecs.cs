@@ -242,6 +242,7 @@ namespace FakeItEasy.Specs
             "And its message indicates that a dummy couldn't be created due to the dependency"
                 .x(() => exception.Message.Should().BeModuloLineEndings(@"
   Failed to create dummy of type FakeItEasy.Specs.DummyCreationSpecsBase+ClassWithRecursiveDependency:
+    It is not void.
     No Dummy Factory produced a result.
     It is not a Task.
     It is not a Lazy.
@@ -271,6 +272,7 @@ namespace FakeItEasy.Specs
             "And its message indicates that a dummy couldn't be created"
                 .x(() => exception.Message.Should().StartWithModuloLineEndings(@"
   Failed to create dummy of type FakeItEasy.Specs.DummyCreationSpecsBase+ClassWithNoPublicConstructors:
+    It is not void.
     No Dummy Factory produced a result.
     It is not a Task.
     It is not a Lazy.
@@ -301,6 +303,7 @@ namespace FakeItEasy.Specs
             "And its message indicates that a dummy couldn't be created"
                 .x(() => exception.Message.Should().StartWithModuloLineEndings(@"
   Failed to create dummy of type FakeItEasy.Specs.DummyCreationSpecsBase+ClassWithThrowingConstructor:
+    It is not void.
     No Dummy Factory produced a result.
     It is not a Task.
     It is not a Lazy.
@@ -329,6 +332,7 @@ namespace FakeItEasy.Specs
             "And its message indicates that a dummy couldn't be created"
                 .x(() => exception.Message.Should().MatchModuloLineEndings(@"
   Failed to create dummy of type FakeItEasy.Specs.DummyCreationSpecsBase+PrivateAbstractClass:
+    It is not void.
     No Dummy Factory produced a result.
     It is not a Task.
     It is not a Lazy.
@@ -358,6 +362,7 @@ namespace FakeItEasy.Specs
             "And its message indicates that a dummy couldn't be created"
                 .x(() => exception.Message.Should().BeModuloLineEndings(@"
   Failed to create dummy of type FakeItEasy.Specs.DummyCreationSpecsBase+ClassWithNoResolvableConstructors:
+    It is not void.
     No Dummy Factory produced a result.
     It is not a Task.
     It is not a Lazy.
@@ -387,6 +392,7 @@ namespace FakeItEasy.Specs
             "And its message indicates that a dummy couldn't be created"
                 .x(() => exception.Message.Should().StartWithModuloLineEndings(@"
   Failed to create dummy of type FakeItEasy.Specs.DummyCreationSpecsBase+ClassWithNoPublicConstructors:
+    It is not void.
     No Dummy Factory produced a result.
     It is not a Task.
     It is not a Lazy.
