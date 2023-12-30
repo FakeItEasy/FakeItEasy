@@ -26,4 +26,4 @@ namespace FakeItEasy.Core
 
         public int SequenceNumber { get; }
     }
-}
+}
