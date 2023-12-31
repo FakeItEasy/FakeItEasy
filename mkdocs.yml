@@ -73,6 +73,7 @@ nav:
 - Assertion:
   - Assertion: assertion.md
   - Ordered assertions: ordered-assertions.md
+- Capturing arguments: capturing-arguments.md
 - Faking async methods: faking-async-methods.md
 - Raising events: raising-events.md
 - Strict fakes: strict-fakes.md

@@ -183,5 +183,20 @@ namespace FakeItEasy
         {
             return CallTo(fake).MatchingEventAction(fake, action);
         }
+
+        /// <summary>
+        /// Obtains an object that can be used to capture and later examine <typeparamref name="TArgument"/> instances passed to
+        /// a fake method call.
+        /// </summary>
+        /// <typeparam name="TArgument">The type of argument to capture.</typeparam>
+        /// <returns>
+        /// An object that can be used to capture and later examine arguments passed to a fake method call.
+        /// </returns>
+        /// <remarks>
+        /// If captured arguments are modified by production or test code, a new
+        /// argument capturer can be created from this instance to preserve the original state. See
+        /// <see cref="Captured{TArgument}.FrozenBy{TCapture}(Func{TArgument, TCapture})"/>.
+        /// </remarks>
+        public static Captured<TArgument> Captured<TArgument>() => new();
     }
 }

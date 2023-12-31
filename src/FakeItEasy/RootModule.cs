@@ -146,7 +146,7 @@ namespace FakeItEasy
         private class ArgumentConstraintManagerFactory
             : IArgumentConstraintManagerFactory
         {
-            public INegatableArgumentConstraintManager<T> Create<T>()
+            public ICapturableArgumentConstraintManager<T> Create<T>()
             {
                 return new DefaultArgumentConstraintManager<T>(ArgumentConstraintTrap.ReportTrappedConstraint);
             }
