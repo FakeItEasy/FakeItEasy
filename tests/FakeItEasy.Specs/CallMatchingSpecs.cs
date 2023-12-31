@@ -59,6 +59,61 @@ namespace FakeItEasy.Specs
             int Bar(object arg);
         }
 
+        public interface IHaveAnIntParameter
+        {
+            int Bar(int arg);
+        }
+
+        [Scenario]
+        public static void Test(IHaveAnIntParameter fake, List<int> results, List<int> arguments)
+        {
+            Func<int, bool> recordsArguments = i =>
+            {
+                arguments.Add(i);
+                return true;
+            };
+
+            "Given a faked class with a method taking an int parameter"
+                .x(() => fake = A.Fake<IHaveAnIntParameter>());
+
+            "And a call to a method with an int parameter configured on this fake"
+                .x(() =>
+                    A.CallTo(() => fake.Bar(A<int>.That.Matches(recordsArguments, writer => writer.Write("Hello"))))
+                        .Returns(10)
+                        .NumberOfTimes(1)
+                        .Then
+                        .Returns(20)
+                        .NumberOfTimes(1)
+                );
+
+            "And a list to record the arguments"
+                .x(() => arguments = new List<int>());
+
+            "And a list to record the results"
+                .x(() => results = new List<int>());
+
+            "When two calls with int parameters are made to the fake"
+                .x(() =>
+                    {
+                        results.Add(fake.Bar(0));
+                        results.Add(fake.Bar(1));
+                    }
+                );
+
+            "Then the fake returns the results as configured"
+                .x(() =>
+                    {
+                        results[0].Should().Be(10, because: "that is the result of the first invocation");
+                        results[1].Should().Be(20, because: "that is the result of the second invocation");
+                    }
+                );
+
+            "And only the arguments used in the calls are recorded"
+                .x(() => arguments.Should().
+                    HaveCount(2, because: "only 2 calls were made to the fake")
+                    .And.Subject.Should().Contain(new[] { 0, 1 }, because: "those are the arguments used when invoking the fake"));
+        }
+
         [Scenario]
         public static void CallToAField(ClassWithAField fake, Exception exception)
         {
