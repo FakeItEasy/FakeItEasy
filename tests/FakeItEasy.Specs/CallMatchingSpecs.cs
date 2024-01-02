@@ -65,7 +65,7 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
-        public static void Test(IHaveAnIntParameter fake, List<int> results, List<int> arguments)
+        public static void Test(IHaveAnIntParameter fake, IList<int> results, IList<int> arguments)
         {
             Func<int, bool> recordsArguments = i =>
             {
@@ -83,8 +83,7 @@ namespace FakeItEasy.Specs
                         .NumberOfTimes(1)
                         .Then
                         .Returns(20)
-                        .NumberOfTimes(1)
-                );
+                        .NumberOfTimes(1));
 
             "And a list to record the arguments"
                 .x(() => arguments = new List<int>());
@@ -97,20 +96,18 @@ namespace FakeItEasy.Specs
                     {
                         results.Add(fake.Bar(0));
                         results.Add(fake.Bar(1));
-                    }
-                );
+                    });
 
             "Then the fake returns the results as configured"
                 .x(() =>
                     {
                         results[0].Should().Be(10, because: "that is the result of the first invocation");
                         results[1].Should().Be(20, because: "that is the result of the second invocation");
-                    }
-                );
+                    });
 
             "And only the arguments used in the calls are recorded"
-                .x(() => arguments.Should().
-                    HaveCount(2, because: "only 2 calls were made to the fake")
+                .x(() => arguments.Should()
+                    .HaveCount(2, because: "only 2 calls were made to the fake")
                     .And.Subject.Should().Contain(new[] { 0, 1 }, because: "those are the arguments used when invoking the fake"));
         }
 
