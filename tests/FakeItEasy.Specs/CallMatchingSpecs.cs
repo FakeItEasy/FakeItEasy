@@ -65,50 +65,38 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
-        public static void Test(IHaveAnIntParameter fake, IList<int> results, IList<int> arguments)
+        public static void CallWithSpecificNumberOfTimes(IHaveAnIntParameter fake, IList<int> arguments, Func<int, bool> recordsArguments)
         {
-            Func<int, bool> recordsArguments = i =>
-            {
-                arguments.Add(i);
-                return true;
-            };
-
             "Given a faked class with a method taking an int parameter"
                 .x(() => fake = A.Fake<IHaveAnIntParameter>());
 
-            "And a call to a method with an int parameter configured on this fake"
+            "And an argument matching predicate that records the argument and always returns true"
+                .x(() => recordsArguments = i =>
+                {
+                    arguments.Add(i);
+                    return true;
+                });
+
+            "And a call to a method with an int parameter configured on this fake using that predicate, with a specific number of times"
                 .x(() =>
                     A.CallTo(() => fake.Bar(A<int>.That.Matches(recordsArguments, writer => writer.Write("Hello"))))
-                        .Returns(10)
-                        .NumberOfTimes(1)
+                        .Returns(10).Once()
                         .Then
-                        .Returns(20)
-                        .NumberOfTimes(1));
+                        .Returns(20).Once());
 
             "And a list to record the arguments"
                 .x(() => arguments = new List<int>());
 
-            "And a list to record the results"
-                .x(() => results = new List<int>());
-
             "When two calls with int parameters are made to the fake"
                 .x(() =>
-                    {
-                        results.Add(fake.Bar(0));
-                        results.Add(fake.Bar(1));
-                    });
+                {
+                    fake.Bar(0);
+                    fake.Bar(1);
+                });
 
-            "Then the fake returns the results as configured"
-                .x(() =>
-                    {
-                        results[0].Should().Be(10, because: "that is the result of the first invocation");
-                        results[1].Should().Be(20, because: "that is the result of the second invocation");
-                    });
-
-            "And only the arguments used in the calls are recorded"
+            "Then the arguments used in the calls are recorded exactly once"
                 .x(() => arguments.Should()
-                    .HaveCount(2, because: "only 2 calls were made to the fake")
-                    .And.Subject.Should().Contain(new[] { 0, 1 }, because: "those are the arguments used when invoking the fake"));
+                    .Equal(new[] { 0, 1 }, because: "those are the arguments used when invoking the fake"));
         }
 
         [Scenario]
