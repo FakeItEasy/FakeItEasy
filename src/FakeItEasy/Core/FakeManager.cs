@@ -244,7 +244,7 @@ namespace FakeItEasy.Core
             {
                 foreach (var rule in this.allUserRules)
                 {
-                    if (rule.Rule.IsApplicableTo(fakeObjectCall) && rule.HasNotBeenCalledSpecifiedNumberOfTimes())
+                    if (rule.HasNotBeenCalledSpecifiedNumberOfTimes() && rule.Rule.IsApplicableTo(fakeObjectCall))
                     {
                         bestUserRule = rule;
                         break;

@@ -59,6 +59,46 @@ namespace FakeItEasy.Specs
             int Bar(object arg);
         }
 
+        public interface IHaveAnIntParameter
+        {
+            int Bar(int arg);
+        }
+
+        [Scenario]
+        public static void CallWithSpecificNumberOfTimes(IHaveAnIntParameter fake, IList<int> arguments, Func<int, bool> recordsArguments)
+        {
+            "Given a faked class with a method taking an int parameter"
+                .x(() => fake = A.Fake<IHaveAnIntParameter>());
+
+            "And an argument matching predicate that records the argument and always returns true"
+                .x(() => recordsArguments = i =>
+                {
+                    arguments.Add(i);
+                    return true;
+                });
+
+            "And a call to a method with an int parameter configured on this fake using that predicate, with a specific number of times"
+                .x(() =>
+                    A.CallTo(() => fake.Bar(A<int>.That.Matches(recordsArguments, writer => writer.Write("Hello"))))
+                        .Returns(10).Once()
+                        .Then
+                        .Returns(20).Once());
+
+            "And a list to record the arguments"
+                .x(() => arguments = new List<int>());
+
+            "When two calls with int parameters are made to the fake"
+                .x(() =>
+                {
+                    fake.Bar(0);
+                    fake.Bar(1);
+                });
+
+            "Then the arguments used in the calls are recorded exactly once"
+                .x(() => arguments.Should()
+                    .Equal(new[] { 0, 1 }, because: "those are the arguments used when invoking the fake"));
+        }
+
         [Scenario]
         public static void CallToAField(ClassWithAField fake, Exception exception)
         {
