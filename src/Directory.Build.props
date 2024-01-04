@@ -11,6 +11,7 @@
     <PackageReleaseNotes>https://github.com/FakeItEasy/FakeItEasy/releases</PackageReleaseNotes>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <RepositoryUrl>https://github.com/FakeItEasy/FakeItEasy.git</RepositoryUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -28,6 +29,7 @@
 
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)FakeItEasy.png" Pack="true" PackagePath="images/FakeItEasy.png" />
+    <None Include="$(MSBuildThisFileDirectory)../README.md" Pack="true" PackagePath="/" />
   </ItemGroup>
 
 </Project>

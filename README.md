@@ -1,4 +1,4 @@
-<img src="https://fakeiteasy.github.io/img/fakeiteasy_logo_512.png" width="256px" alt="Are you mocking me?" />
+![Are you mocking me?](https://raw.githubusercontent.com/FakeItEasy/fakeiteasy.github.io/master/img/fakeiteasy_logo_256.png)
 
 [![NuGet version](https://img.shields.io/nuget/v/FakeItEasy.svg?style=flat)](https://www.nuget.org/packages/FakeItEasy)
 [![Build status](https://github.com/FakeItEasy/FakeItEasy/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/FakeItEasy/FakeItEasy/actions/workflows/ci.yml?query=branch%3Amaster)
