@@ -70,6 +70,9 @@ namespace FakeItEasy
 - create the fake with the {nameof(StrictFakeOptions)}.{nameof(StrictFakeOptions.AllowEvents)} flag;
 - or use {nameof(Manage)}.{nameof(Manage.Event)}(eventName).{nameof(IManageEventConfiguration.Of)}(fake) or {nameof(Manage)}.{nameof(Manage.AllEvents)}.{nameof(IManageEventConfiguration.Of)}(fake) to enable automatic event management.";
 
+        public static string NoCapturedValues =>
+            "No values were captured.";
+
         public static string WrongConstructorExpressionType(Type actualConstructorType, Type expectedConstructorType) =>
             $"Supplied constructor is for type {actualConstructorType}, but must be for {expectedConstructorType}.";
 

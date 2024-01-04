@@ -91,6 +91,17 @@ namespace FakeItEasy.Expressions
             return values is null ? BuildableCallRule.DefaultOutAndRefParametersValueProducer : call => values!;
         }
 
+        public void PerformConstraintMatcherSideEffects(IFakeObjectCall fakeObjectCall)
+        {
+            for (int i = 0; i < fakeObjectCall.Arguments.Count; ++i)
+            {
+                if (this.argumentConstraints[i] is IHaveASideEffect constraintWithSideEffect)
+                {
+                    constraintWithSideEffect.ApplySideEffect(fakeObjectCall.Arguments[i]);
+                }
+            }
+        }
+
         private bool InvokesSameMethodOnTarget(Type type, MethodInfo first, MethodInfo second)
         {
             return this.methodInfoManager.WillInvokeSameMethodOnTarget(type, first, second);

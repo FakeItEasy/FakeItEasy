@@ -220,6 +220,11 @@ A.CallTo(() => fake.Bar(null, 0))
     .Throws<Exception>();
 ```
 
+## Capturing arguments
+
+It is also possible to [capture arguments passed to a call](capturing-arguments.md), whether you
+also want to constrain those arguments or not, and verify the passed values after the fact.
+
 ## Nested argument constraints
 
 Note that an argument constraint cannot be "nested" in an argument; the

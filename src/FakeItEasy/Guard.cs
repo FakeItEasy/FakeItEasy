@@ -13,16 +13,22 @@ namespace FakeItEasy
         /// <summary>
         /// Throws an exception if the specified argument is null.
         /// </summary>
+        /// <typeparam name="T">The type of the argument.</typeparam>
         /// <param name="argument">The argument.</param>
         /// <param name="argumentName">Name of the argument.</param>
+        /// <returns>The <paramref name="argument"/>.</returns>
         /// <exception cref="ArgumentNullException">The specified argument was null.</exception>
         [DebuggerStepThrough]
-        public static void AgainstNull([ValidatedNotNull, NotNull] object? argument, [CallerArgumentExpression("argument")] string argumentName = null!)
+        public static T AgainstNull<T>(
+            [ValidatedNotNull, NotNull] T argument,
+            [CallerArgumentExpression(nameof(argument))] string argumentName = null!)
         {
             if (argument is null)
             {
                 throw new ArgumentNullException(argumentName);
             }
+
+            return argument;
         }
 
         /// <summary>

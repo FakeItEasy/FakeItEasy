@@ -2,6 +2,6 @@ namespace FakeItEasy
 {
     internal interface IArgumentConstraintManagerFactory
     {
-        INegatableArgumentConstraintManager<T> Create<T>();
+        ICapturableArgumentConstraintManager<T> Create<T>();
     }
 }

@@ -19,24 +19,19 @@ namespace FakeItEasy.Configuration
             call.SetReturnValue(call.GetDefaultReturnValue());
 
         private readonly List<WherePredicate> wherePredicates;
+        private readonly ICollection<Action<IFakeObjectCall>> actions;
         private Action<IInterceptedFakeObjectCall> applicator;
         private bool wasApplicatorSet;
         private bool canSetOutAndRefParametersValueProducer;
 
         protected BuildableCallRule()
         {
-            this.Actions = new LinkedList<Action<IFakeObjectCall>>();
+            this.actions = new LinkedList<Action<IFakeObjectCall>>();
             this.applicator = DefaultApplicator;
             this.OutAndRefParametersValueProducer = DefaultOutAndRefParametersValueProducer;
             this.canSetOutAndRefParametersValueProducer = true;
             this.wherePredicates = new List<WherePredicate>();
         }
-
-        /// <summary>
-        /// Gets a collection of actions that should be invoked when the configured
-        /// call is made.
-        /// </summary>
-        public virtual ICollection<Action<IFakeObjectCall>> Actions { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the base method of the fake object call should be
@@ -61,6 +56,12 @@ namespace FakeItEasy.Configuration
         {
             private get; set;
         }
+
+        /// <summary>
+        /// Adds an action that should be invoked when the configured call is made.
+        /// </summary>
+        /// <param name="action">The new action.</param>
+        public void AddAction(Action<IFakeObjectCall> action) => this.actions.Add(action);
 
         /// <summary>
         /// Writes a description of calls the rule is applicable to.
@@ -94,7 +95,7 @@ namespace FakeItEasy.Configuration
         {
             Guard.AgainstNull(fakeObjectCall);
 
-            foreach (var action in this.Actions)
+            foreach (var action in this.actions)
             {
                 action.Invoke(fakeObjectCall);
             }

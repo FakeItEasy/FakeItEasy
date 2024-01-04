@@ -43,6 +43,12 @@ namespace FakeItEasy.Tests
         }
 
         [Fact]
+        public void Assert_should_return_argument_when_not_null()
+        {
+            Guard.AgainstNull("an argument value").Should().Be("an argument value");
+        }
+
+        [Fact]
         public void Assert_should_pass_when_call_is_properly_guarded_constructor()
         {
 #pragma warning disable CA1806 // Do not ignore method results

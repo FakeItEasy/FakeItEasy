@@ -15,6 +15,7 @@ namespace FakeItEasy
         public static FakeItEasy.Configuration.IAnyCallConfigurationWithVoidReturnType CallTo(object fake, FakeItEasy.EventAction action) { }
         public static FakeItEasy.Configuration.IReturnValueArgumentValidationConfiguration<T> CallTo<T>(System.Linq.Expressions.Expression<System.Func<T>> callSpecification) { }
         public static FakeItEasy.Configuration.IPropertySetterAnyValueConfiguration<TValue> CallToSet<TValue>(System.Linq.Expressions.Expression<System.Func<TValue>> propertySpecification) { }
+        public static FakeItEasy.Captured<TArgument> Captured<TArgument>() { }
         public static System.Collections.Generic.IList<T> CollectionOfDummy<T>(int numberOfDummies) { }
         public static System.Collections.Generic.IList<T> CollectionOfFake<T>(int numberOfFakes)
             where T :  class { }
@@ -160,6 +161,19 @@ namespace FakeItEasy
         public static TInterface Invokes<TInterface, T1, T2, T3, T4, T5, T6>(this FakeItEasy.Configuration.ICallbackConfiguration<TInterface> configuration, System.Action<T1, T2, T3, T4, T5, T6> actionToInvoke) { }
         public static TInterface Invokes<TInterface, T1, T2, T3, T4, T5, T6, T7>(this FakeItEasy.Configuration.ICallbackConfiguration<TInterface> configuration, System.Action<T1, T2, T3, T4, T5, T6, T7> actionToInvoke) { }
         public static TInterface Invokes<TInterface, T1, T2, T3, T4, T5, T6, T7, T8>(this FakeItEasy.Configuration.ICallbackConfiguration<TInterface> configuration, System.Action<T1, T2, T3, T4, T5, T6, T7, T8> actionToInvoke) { }
+    }
+    public class Captured<TArgument> : FakeItEasy.Captured<TArgument, TArgument>
+    {
+        public FakeItEasy.Captured<TArgument, TCapture> FrozenBy<TCapture>(System.Func<TArgument, TCapture> freezer) { }
+    }
+    public class Captured<TArgument, TCapture>
+    {
+        public TArgument Ignored { get; }
+        public FakeItEasy.INegatableArgumentConstraintManager<TArgument> That { get; }
+        public System.Collections.Generic.IReadOnlyList<TCapture> Values { get; }
+        [System.CLSCompliant(false)]
+        public TArgument _ { get; }
+        public TCapture GetLastValue() { }
     }
     public static class CompletedFakeObjectCallExtensions
     {
