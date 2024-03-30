@@ -132,7 +132,7 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
 
         private static ProxyGeneratorResult GetResultForFailedProxyGeneration(Type typeOfProxy, IEnumerable<object?> argumentsForConstructor, Exception e) =>
             argumentsForConstructor.Any()
-                ? new ProxyGeneratorResult(DynamicProxyMessages.ArgumentsForConstructorDoesNotMatchAnyConstructor, e)
+                ? new ProxyGeneratorResult(e)
                 : GetProxyResultForNoDefaultConstructor(typeOfProxy, e);
 
         private static ProxyGeneratorResult GetProxyResultForNoDefaultConstructor(Type typeOfProxy, Exception e)
