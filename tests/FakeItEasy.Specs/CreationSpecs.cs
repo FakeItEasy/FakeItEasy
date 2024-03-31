@@ -121,7 +121,6 @@ namespace FakeItEasy.Specs
          *FakeItEasy.Specs.CreationSpecsBase.ClassWithMultipleConstructors..ctor()*
 
     Constructor with signature (System.String) failed:
-      No constructor matches the passed arguments for constructor.
       An exception of type System.Exception was caught during this call. Its message was:
       string constructor failed
       with reason on two lines
@@ -530,7 +529,6 @@ namespace FakeItEasy.Specs
             "And the exception message indicates the reason for failure"
                 .x(() => exception.Message.Should().StartWithModuloLineEndings(@"
   Failed to create fake of type FakeItEasy.Specs.CreationSpecsBase+AClassThatCouldBeFakedWithTheRightConstructorArguments:
-    No constructor matches the passed arguments for constructor.
     An exception of type System.ArgumentException was caught during this call. Its message was:
     Can not instantiate proxy of class: FakeItEasy.Specs.CreationSpecsBase+AClassThatCouldBeFakedWithTheRightConstructorArguments.
     Could not find a constructor that would match given arguments:

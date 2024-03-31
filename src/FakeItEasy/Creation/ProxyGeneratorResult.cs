@@ -28,6 +28,32 @@ namespace FakeItEasy.Creation
         /// Creates a new instance representing a failed proxy
         /// generation attempt due to an exception being caught.
         /// </summary>
+        /// <param name="exception">
+        /// The exception thrown from the creation attempt.
+        /// </param>
+        public ProxyGeneratorResult(Exception exception)
+        {
+            Guard.AgainstNull(exception);
+
+            if (exception is TargetInvocationException && exception.InnerException is not null)
+            {
+                exception = exception.InnerException;
+            }
+
+            this.ReasonForFailure =
+                string.Format(
+                    "An exception of type {1} was caught during this call. Its message was:{0}{2}{0}{3}",
+                    Environment.NewLine,
+                    exception.GetType(),
+                    exception.Message,
+                    exception.StackTrace);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ProxyGeneratorResult"/> class.
+        /// Creates a new instance representing a failed proxy
+        /// generation attempt due to an exception being caught.
+        /// </summary>
         /// <param name="reasonForFailure">
         /// The reason the proxy generation failed.
         /// </param>

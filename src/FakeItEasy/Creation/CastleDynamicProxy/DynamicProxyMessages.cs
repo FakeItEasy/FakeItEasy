@@ -1,12 +1,9 @@
-﻿namespace FakeItEasy.Creation.CastleDynamicProxy
+namespace FakeItEasy.Creation.CastleDynamicProxy
 {
     using System;
 
     internal static class DynamicProxyMessages
     {
-        public static string ArgumentsForConstructorDoesNotMatchAnyConstructor =>
-            "No constructor matches the passed arguments for constructor.";
-
         public static string ArgumentsForConstructorOnInterfaceType =>
             "Arguments for constructor specified for interface type.";
 
