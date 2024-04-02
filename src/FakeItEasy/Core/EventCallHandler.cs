@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Reflection;
 
     internal class EventCallHandler
@@ -11,9 +12,14 @@
         private readonly Dictionary<object, Delegate> registeredEventHandlers;
 
         public EventCallHandler(FakeManager fakeManager)
+            : this(fakeManager, new Dictionary<object, Delegate>())
+        {
+        }
+
+        private EventCallHandler(FakeManager fakeManager, Dictionary<object, Delegate> registeredEventHandlers)
         {
             this.fakeManager = fakeManager;
-            this.registeredEventHandlers = new Dictionary<object, Delegate>();
+            this.registeredEventHandlers = registeredEventHandlers;
         }
 
         public void HandleEventCall(EventCall eventCall)
@@ -33,6 +39,12 @@
             {
                 this.RemoveEventListener(eventCall);
             }
+        }
+
+        public EventCallHandler GetSnapshot()
+        {
+            var registeredHandlers = new Dictionary<object, Delegate>(this.registeredEventHandlers);
+            return new EventCallHandler(this.fakeManager, registeredHandlers);
         }
 
         private void RemoveEventListener(EventCall call)

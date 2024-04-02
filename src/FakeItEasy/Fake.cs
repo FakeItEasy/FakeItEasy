@@ -5,6 +5,7 @@ namespace FakeItEasy
     using System.Diagnostics;
     using System.Diagnostics.CodeAnalysis;
     using FakeItEasy.Core;
+    using FakeItEasy.Creation;
 
     /// <summary>
     /// Provides static methods for accessing fake objects.
@@ -47,7 +48,7 @@ namespace FakeItEasy
         /// </summary>
         /// <param name="fakedObject">The faked object to clear the configuration of.</param>
         [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "object", Justification = "The term fake object does not refer to the type System.Object.")]
-        [Obsolete("ClearConfiguration will be removed in version 8.0.0. Prefer to discard the fake and create a new one.")]
+        [Obsolete("ClearConfiguration will be removed in version 9.0.0. Use Fake.Reset, or discard the fake and create a new one.")]
         public static void ClearConfiguration(object fakedObject)
         {
             Guard.AgainstNull(fakedObject);
@@ -95,6 +96,27 @@ namespace FakeItEasy
             Guard.AgainstNull(potentialFake);
 
             return TryGetFakeManager(potentialFake, out _);
+        }
+
+        /// <summary>
+        /// Reset the fake to its initial state.
+        /// </summary>
+        /// <param name="fake">The fake object to reset.</param>
+        /// <remarks>
+        /// This method resets all changes made to the fake after it was created. This includes:
+        /// <list type="bullet">
+        /// <item><description>Call configurations</description></item>
+        /// <item><description>State of auto-faked properties</description></item>
+        /// <item><description>Recorded calls</description></item>
+        /// <item><description>Interception listeners</description></item>
+        /// </list>
+        /// However, changes made during fake creation (using <see cref="IFakeOptions.ConfigureFake"/>) will be preserved.
+        /// </remarks>
+        public static void Reset(object fake)
+        {
+            Guard.AgainstNull(fake);
+
+            FakeManagerAccessor.GetFakeManager(fake).RestoreInitialState();
         }
     }
 }
