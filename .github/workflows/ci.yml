@@ -38,12 +38,12 @@ jobs:
               2.1
     runs-on: ${{ matrix.os-image }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: true
           fetch-depth: 0
       - name: Setup .NET
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v4
         if: ${{ matrix.dotnet-versions-to-install }}
         with:
           dotnet-version: ${{ matrix.dotnet-versions-to-install }}
@@ -51,7 +51,7 @@ jobs:
         run: ./build.ps1
         shell: pwsh
       - name: Upload artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: ${{ matrix.artifact-name }}
@@ -61,11 +61,11 @@ jobs:
     name: Build documentation
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: false
       - name: Setup Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: 3.11
           architecture: x64
@@ -76,7 +76,7 @@ jobs:
       - name: Build docs
         run: python -m mkdocs build --clean --site-dir artifacts/docs --config-file mkdocs.yml --strict
       - name: Upload docs
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: documentation
           path: artifacts/docs
