@@ -399,4 +399,52 @@ public static class ResetFakeSpecs
         "Then it throws an ExpectationException"
             .x(() => exception.Should().BeOfType<ExpectationException>());
     }
+
+    [Scenario]
+    public static void StatefulUserRule(IFoo fake)
+    {
+        "Given a fake with a stateful user rule that is applied once during creation"
+            .x(() => fake = A.Fake<IFoo>(options =>
+            {
+                options.ConfigureFake(f =>
+                {
+                    Fake.GetFakeManager(f).AddRuleFirst(new CallCounterRule());
+                    f.AMethod();
+                });
+            }));
+
+        "And another call is made on the fake after creation"
+            .x(() => fake.AMethod());
+
+        "When the fake is reset"
+            .x(() => Fake.Reset(fake));
+
+        "Then the stateful rule is reset to its initial state"
+            .x(() => fake.AMethod().Should().Be(2));
+    }
+
+    private class CallCounterRule : IStatefulFakeObjectCallRule
+    {
+        private int numberOfTimesCalled;
+
+        public int? NumberOfTimesToCall => null;
+
+        public bool IsApplicableTo(IFakeObjectCall fakeObjectCall)
+        {
+            return fakeObjectCall.Method.ReturnType == typeof(int);
+        }
+
+        public void Apply(IInterceptedFakeObjectCall fakeObjectCall)
+        {
+            fakeObjectCall.SetReturnValue(++this.numberOfTimesCalled);
+        }
+
+        public IFakeObjectCallRule GetSnapshot()
+        {
+            return new CallCounterRule
+            {
+                numberOfTimesCalled = this.numberOfTimesCalled
+            };
+        }
+    }
 }
