@@ -2,13 +2,32 @@
 
 FakeItEasy exposes a few APIs that aren't commonly needed, but can be useful in certain scenarios.
 
-## Clearing the configuration of a fake
+## Resetting a fake to its initial state
 
-To "unconfigure" a fake so it has default behavior, discard the fake and create
-a new one. If this is not feasible, for example because you wish to remove the
-configuration in the middle of a test and the system under test already holds
-the fake, see
-[Changing behavior between calls](changing-behavior-between-calls.md).
+In most cases, you should just discard the fake after use and create a new one; in other words,
+don't reuse a fake between tests if you can avoid it.
+
+However, in some situations this might not be practical. To actually reset a fake to its initial
+state, use the `Fake.Reset` method:
+
+```csharp
+Fake.Reset(fake);
+```
+
+This method resets all changes made to the fake after it was created. This includes:
+* call configurations
+* values of [auto-faked read-write properties](default-fake-behavior.md#readwrite-properties)
+* event handlers
+* [recorded calls](#getting-the-list-of-calls-made-on-a-fake)
+* [interception listeners](#intercepting-calls)
+
+However, any changes made _during_ fake creation (via fake creation options) will be preserved.
+This includes all the elements mentioned above, but also:
+* [strictness](strict-fakes.md),
+* [object wrapping](calling-wrapped-methods.md),
+* [redirecting to base methods](calling-base-methods.md), and
+* other [explicit](creating-fakes.md#explicit-creation-options) or
+  [implicit](implicit-creation-options.md) creation options.
 
 ## Clearing a fake's recorded calls
 
@@ -107,6 +126,11 @@ Assert.Equal(42, foo.Bar());
 ```
 
 You can also remove a rule using the `RemoveRule` method.
+
+Note that if your custom rule is stateful, you should implement the
+`IStatefulFakeObjectCallRule` interface to provide a way to get a snapshot of
+the current state of your rule. This is necessary for `Fake.Reset` to work
+correctly.
 
 ### Intercepting calls
 

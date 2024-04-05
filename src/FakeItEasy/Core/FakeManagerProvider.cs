@@ -64,6 +64,8 @@ namespace FakeItEasy.Core
                     this.fakeManagerAccessor.SetFakeManager(proxy, this.initializedFakeManager);
 
                     this.ApplyInitialConfiguration(proxy);
+
+                    this.initializedFakeManager.CaptureInitialState();
                 }
             }
         }

@@ -69,5 +69,17 @@ namespace FakeItEasy.Tests
             Expression<Action> call = () => Fake.TryGetFakeManager(A.Dummy<object>(), out manager);
             call.Should().BeNullGuarded();
         }
+
+        [Fact]
+        public void Reset_should_be_guarded()
+        {
+            // Arrange
+
+            // Act
+
+            // Assert
+            Expression<Action> call = () => Fake.Reset(A.Dummy<object>());
+            call.Should().BeNullGuarded();
+        }
     }
 }

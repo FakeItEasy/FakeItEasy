@@ -212,13 +212,14 @@ namespace FakeItEasy
     }
     public static class Fake
     {
-        [System.Obsolete("ClearConfiguration will be removed in version 8.0.0. Prefer to discard the fake a" +
-            "nd create a new one.")]
+        [System.Obsolete("ClearConfiguration will be removed in version 9.0.0. Use Fake.Reset, or discard t" +
+            "he fake and create a new one.")]
         public static void ClearConfiguration(object fakedObject) { }
         public static void ClearRecordedCalls(object fakedObject) { }
         public static System.Collections.Generic.IEnumerable<FakeItEasy.Core.ICompletedFakeObjectCall> GetCalls(object fakedObject) { }
         public static FakeItEasy.Core.FakeManager GetFakeManager(object fakedObject) { }
         public static bool IsFake(object potentialFake) { }
+        public static void Reset(object fake) { }
         public static bool TryGetFakeManager(object potentialFake, [System.Diagnostics.CodeAnalysis.NotNullWhen(true)] out FakeItEasy.Core.FakeManager? fakeManager) { }
     }
     public static class FakeObjectCallExtensions
@@ -581,6 +582,10 @@ namespace FakeItEasy.Core
     {
         void OnAfterCallIntercepted(FakeItEasy.Core.ICompletedFakeObjectCall interceptedCall);
         void OnBeforeCallIntercepted(FakeItEasy.Core.IFakeObjectCall interceptedCall);
+    }
+    public interface IStatefulFakeObjectCallRule : FakeItEasy.Core.IFakeObjectCallRule
+    {
+        FakeItEasy.Core.IFakeObjectCallRule GetSnapshot();
     }
     public class Raise<TEventArgs>
     {

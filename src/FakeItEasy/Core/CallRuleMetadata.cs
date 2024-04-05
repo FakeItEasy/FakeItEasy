@@ -53,5 +53,13 @@ namespace FakeItEasy.Core
         {
             return this.Rule.ToString();
         }
+
+        public CallRuleMetadata GetSnapshot()
+        {
+            var rule = this.Rule is IStatefulFakeObjectCallRule statefulRule
+                ? statefulRule.GetSnapshot()
+                : this.Rule;
+            return new CallRuleMetadata(rule, this.CalledNumberOfTimes);
+        }
     }
 }

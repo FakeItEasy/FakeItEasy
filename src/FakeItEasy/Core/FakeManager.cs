@@ -24,16 +24,19 @@ namespace FakeItEasy.Core
             new DefaultReturnValueRule(),
         };
 
-        private readonly LinkedList<IInterceptionListener> interceptionListeners;
         private readonly WeakReference objectReference;
 
-        private readonly LinkedList<CallRuleMetadata> allUserRules;
+        private LinkedList<CallRuleMetadata> allUserRules;
+
+        private LinkedList<IInterceptionListener> interceptionListeners;
 
         private EventCallHandler? eventCallHandler;
 
         private ConcurrentQueue<CompletedFakeObjectCall> recordedCalls;
 
         private int lastSequenceNumber = -1;
+
+        private FakeSnapshot? initialState;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FakeManager"/> class.
@@ -186,6 +189,16 @@ namespace FakeItEasy.Core
             }
         }
 
+        internal void CaptureInitialState()
+        {
+            this.initialState = FakeSnapshot.CaptureState(this);
+        }
+
+        internal void RestoreInitialState()
+        {
+            this.initialState?.RestoreState(this);
+        }
+
         internal int GetLastRecordedSequenceNumber() => this.lastSequenceNumber;
 
         /// <summary>
@@ -307,6 +320,28 @@ namespace FakeItEasy.Core
             }
             while (sequenceNumber > last &&
                    sequenceNumber != Interlocked.CompareExchange(ref this.lastSequenceNumber, sequenceNumber, last));
+        }
+
+        private void ReplaceUserRules(IEnumerable<CallRuleMetadata>? rules)
+        {
+            // ReSharper disable once InconsistentlySynchronizedField
+            this.allUserRules = rules is null
+                ? new LinkedList<CallRuleMetadata>()
+                : new LinkedList<CallRuleMetadata>(rules);
+        }
+
+        private void ReplaceRecordedCalls(CompletedFakeObjectCall[]? calls)
+        {
+            this.recordedCalls = calls is null
+                ? new ConcurrentQueue<CompletedFakeObjectCall>()
+                : new ConcurrentQueue<CompletedFakeObjectCall>(calls);
+        }
+
+        private void ReplaceInterceptionListeners(IInterceptionListener[]? listeners)
+        {
+            this.interceptionListeners = listeners is null
+                ? new LinkedList<IInterceptionListener>()
+                : new LinkedList<IInterceptionListener>(listeners);
         }
 
         private abstract class SharedFakeObjectCallRule : IFakeObjectCallRule

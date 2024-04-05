@@ -47,6 +47,7 @@ dotnet_diagnostic.SA1629.severity = warning # Documentation text must end with a
 dotnet_diagnostic.SA1633.severity = none    # Files should have file headers
 
 csharp_using_directive_placement = inside_namespace
+resharper_csharp_qualified_using_at_nested_scope = true
 
 dotnet_style_qualification_for_field = true
 dotnet_style_qualification_for_property = true
@@ -79,10 +80,10 @@ dotnet_naming_rule.non_field_members_pascal_case.symbols = non_field_members
 dotnet_naming_rule.non_field_members_pascal_case.style = pascal_case
 dotnet_naming_rule.non_field_members_pascal_case.severity = warning
 
-dotnet_naming_rule.static_fields.symbols = non_field_members
+dotnet_naming_rule.static_fields.symbols = static_fields
 dotnet_naming_rule.static_fields.style = pascal_case
 dotnet_naming_rule.static_fields.severity = warning
 
-dotnet_naming_rule.private_instance_field.symbols = non_field_members
+dotnet_naming_rule.private_instance_field.symbols = private_instance_field
 dotnet_naming_rule.private_instance_field.style = camel_case
 dotnet_naming_rule.private_instance_field.severity = warning
