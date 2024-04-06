@@ -37,7 +37,7 @@ namespace FakeItEasy.Specs
             IDummyFactory formatter,
             Priority priority)
         {
-            "Given an argument value formatter that does not override priority"
+            "Given a dummy factory that does not override priority"
                 .x(() => formatter = new SomeDummyFactory());
 
             "When I fetch the Priority"
