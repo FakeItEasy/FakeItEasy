@@ -40,6 +40,7 @@ dotnet_diagnostic.CA2237.severity = none    # Mark ISerializable types with Seri
 dotnet_diagnostic.SA1124.severity = warning # Do not use regions
 dotnet_diagnostic.SA1127.severity = none    # Generic type constraints should be on their own line
 dotnet_diagnostic.SA1413.severity = none    # Use trailing comma in multi-line initializers
+dotnet_diagnostic.CA1510.severity = none    # Use 'ArgumentNullException.ThrowIfNull' instead of explicitly throwing a new exception instance
 dotnet_diagnostic.SA1600.severity = none    # Elements should be documented
 dotnet_diagnostic.SA1601.severity = none    # Partial elements should be documented
 dotnet_diagnostic.SA1628.severity = warning # Documentation text must begin with a capital letter
