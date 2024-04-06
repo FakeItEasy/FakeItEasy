@@ -115,7 +115,7 @@ foreach (var profile in Directory.EnumerateFiles("profiles", "*.props").Select(P
 
 RunTargetsAndExit(args, messageOnly: ex => ex is NonZeroExitCodeException);
 
-file record Project(string Path)
+file sealed record Project(string Path)
 {
     public static implicit operator Project(string path) => new Project(path);
 
