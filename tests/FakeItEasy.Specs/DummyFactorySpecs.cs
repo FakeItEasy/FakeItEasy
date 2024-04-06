@@ -47,11 +47,11 @@ namespace FakeItEasy.Specs
                 .x(() => priority.Should().Be(Priority.Default));
         }
 
-        private class SomeClass
+        private sealed class SomeClass
         {
         }
 
-        private class SomeDummyFactory : DummyFactory<SomeClass>
+        private sealed class SomeDummyFactory : DummyFactory<SomeClass>
         {
             protected override SomeClass Create()
             {

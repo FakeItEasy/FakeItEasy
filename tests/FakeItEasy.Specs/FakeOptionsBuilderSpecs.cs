@@ -344,7 +344,7 @@ namespace FakeItEasy.Specs
         {
         }
 
-        private class SomeClassOptionsBuilder : FakeOptionsBuilder<SomeClass>
+        private sealed class SomeClassOptionsBuilder : FakeOptionsBuilder<SomeClass>
         {
             protected override void BuildOptions(IFakeOptions<SomeClass> options)
             {

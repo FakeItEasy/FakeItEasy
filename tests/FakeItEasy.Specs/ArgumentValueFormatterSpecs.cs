@@ -22,11 +22,11 @@
         }
 
         [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Required for testing.")]
-        private class SomeClass
+        private sealed class SomeClass
         {
         }
 
-        private class SomeArgumentValueFormatter : ArgumentValueFormatter<SomeClass>
+        private sealed class SomeArgumentValueFormatter : ArgumentValueFormatter<SomeClass>
         {
             protected override string GetStringValue(SomeClass argumentValue)
             {
