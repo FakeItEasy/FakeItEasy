@@ -5,6 +5,7 @@ dotnet_diagnostic.CA1051.severity = none # Do not declare visible instance field
 dotnet_diagnostic.CA1062.severity = none # In externally visible method, validate parameter is non-null before using it
 dotnet_diagnostic.CA1707.severity = none # Remove the underscores from member name
 dotnet_diagnostic.CA1822.severity = none # Member does not access instance data and can be marked as static
+dotnet_diagnostic.CA1861.severity = none # Prefer 'static readonly' fields over constant array arguments if the called method is called repeatedly and is not mutating the passed array
 dotnet_diagnostic.CA2000.severity = none # Call System.IDisposable.Dispose on object
 dotnet_diagnostic.CA2201.severity = none # Do not raise reserved exception types
 dotnet_diagnostic.SA1201.severity = none # Members should be ordered correctly
