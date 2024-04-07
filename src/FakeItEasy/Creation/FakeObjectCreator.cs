@@ -103,7 +103,7 @@ namespace FakeItEasy.Creation
                     return CreationResult.FailedToCreateFake(typeOfFake, "Faked delegates cannot be made using explicit constructor arguments.");
                 }
 
-                if (proxyOptions.AdditionalInterfacesToImplement.Any())
+                if (proxyOptions.AdditionalInterfacesToImplement.Count != 0)
                 {
                     return CreationResult.FailedToCreateFake(typeOfFake, "Faked delegates cannot be made to implement additional interfaces.");
                 }
@@ -189,7 +189,7 @@ namespace FakeItEasy.Creation
 
                 // Always try the parameterless constructor even if there are no constructors on the type. Some proxy generators
                 // can proxy types without constructors, such as interfaces.
-                if (!allConstructors.Any())
+                if (allConstructors.Length == 0)
                 {
                     yield return Type.EmptyTypes;
                     yield break;

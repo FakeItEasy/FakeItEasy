@@ -61,7 +61,7 @@ namespace FakeItEasy.Expressions
         private static void WriteArgumentsListString(IOutputWriter writer, MethodInfo method, IEnumerable<IArgumentConstraint> argumentConstraints)
         {
             var constraints = GetArgumentConstraintsForArgumentsList(method, argumentConstraints);
-            if (constraints.Any() || !method.IsPropertyGetterOrSetter())
+            if (constraints.Count != 0 || !method.IsPropertyGetterOrSetter())
             {
                 WriteArgumentListPrefix(writer, method);
                 int index = 0;

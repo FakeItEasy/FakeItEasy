@@ -70,12 +70,12 @@ namespace FakeItEasy
         /// </exception>
         public TCapture GetLastValue()
         {
-            if (this.values.Any())
+            if (this.values.Count == 0)
             {
-                return this.values.Last();
+                throw new ExpectationException(ExceptionMessages.NoCapturedValues);
             }
 
-            throw new ExpectationException(ExceptionMessages.NoCapturedValues);
+            return this.values.Last();
         }
 
         /// <summary>

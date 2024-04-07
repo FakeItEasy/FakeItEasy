@@ -312,12 +312,12 @@ namespace FakeItEasy.Creation
                     }
                 }
 
-                if (consideredConstructors.Any())
+                if (consideredConstructors.Count == 0)
                 {
-                    return CreationResult.FailedToCreateDummy(typeOfDummy, consideredConstructors);
+                    return CreationResult.FailedToCreateDummy(typeOfDummy, "It has no public constructors.");
                 }
 
-                return CreationResult.FailedToCreateDummy(typeOfDummy, "It has no public constructors.");
+                return CreationResult.FailedToCreateDummy(typeOfDummy, consideredConstructors);
             }
 
             private static IEnumerable<ConstructorInfo> GetConstructorsInOrder(Type type)

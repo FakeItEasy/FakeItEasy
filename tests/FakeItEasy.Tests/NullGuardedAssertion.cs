@@ -251,7 +251,7 @@ namespace FakeItEasy.Tests
                         index++;
                     }
 
-                    if (!result.Any())
+                    if (result.Count == 0)
                     {
                         throw new InvalidOperationException(
                             "Provided call has no non-null nullable arguments, so there's nothing to check.");
