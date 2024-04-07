@@ -180,7 +180,7 @@ namespace FakeItEasy.Expressions
             return constraint;
         }
 
-        private IArgumentConstraint CreateParamArrayConstraint(NewArrayExpression expression, Type parameterType)
+        private AggregateArgumentConstraint CreateParamArrayConstraint(NewArrayExpression expression, Type parameterType)
         {
             var result = new List<IArgumentConstraint>();
             var itemType = parameterType.GetElementType()!;

@@ -204,7 +204,7 @@ namespace FakeItEasy.Configuration
 
         protected abstract bool OnIsApplicableTo(IFakeObjectCall fakeObjectCall);
 
-        private static ICollection<int> GetIndexesOfOutAndRefParameters(IInterceptedFakeObjectCall fakeObjectCall)
+        private static List<int> GetIndexesOfOutAndRefParameters(IInterceptedFakeObjectCall fakeObjectCall)
         {
             var indexes = new List<int>();
 

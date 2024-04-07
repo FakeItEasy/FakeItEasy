@@ -107,7 +107,7 @@ namespace FakeItEasy.Creation.DelegateProxies
         //     y = (int)arguments[1];
         //     z = (int)arguments[2];
         // }
-        private static Expression CreateBodyExpression(
+        private static BlockExpression CreateBodyExpression(
             MethodInfo delegateMethod,
             DelegateCallInterceptedEventRaiser eventRaiser,
             ParameterExpression[] parameterExpressions)

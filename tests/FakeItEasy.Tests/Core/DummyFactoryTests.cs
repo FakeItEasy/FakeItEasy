@@ -12,7 +12,7 @@ namespace FakeItEasy.Tests.Core
         [Fact]
         public void Create_with_type_parameter_should_return_object_from_Create()
         {
-            var factory = new TestableFakeFactory() as IDummyFactory;
+            var factory = new TestableFakeFactory();
             var created = factory.Create(typeof(SomeType));
 
             created.Should().BeOfType<SomeType>();
@@ -26,7 +26,7 @@ namespace FakeItEasy.Tests.Core
                 typeof(TestableFakeFactory),
                 typeof(SomeType));
 
-            var factory = new TestableFakeFactory() as IDummyFactory;
+            var factory = new TestableFakeFactory();
 
             var exception = Record.Exception(() => factory.Create(typeof(DummyFactoryTests)));
 

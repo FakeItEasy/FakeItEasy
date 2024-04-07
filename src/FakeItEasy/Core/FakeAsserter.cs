@@ -41,7 +41,7 @@ namespace FakeItEasy.Core
             }
         }
 
-        private static void AppendCallDescription(string callDescription, IOutputWriter writer)
+        private static void AppendCallDescription(string callDescription, StringBuilderOutputWriter writer)
         {
             writer.WriteLine();
             writer.Write("Assertion failed for the following call:");
@@ -54,7 +54,7 @@ namespace FakeItEasy.Core
             }
         }
 
-        private static void AppendExpectation(IEnumerable<IFakeObjectCall> calls, string callCountDescription, int matchedCallCount, IOutputWriter writer)
+        private static void AppendExpectation(IEnumerable<IFakeObjectCall> calls, string callCountDescription, int matchedCallCount, StringBuilderOutputWriter writer)
         {
             writer.Write("Expected to find it {0} ", callCountDescription);
 
@@ -84,7 +84,7 @@ namespace FakeItEasy.Core
             writer.WriteLine();
         }
 
-        private static void AppendCallList(IEnumerable<IFakeObjectCall> calls, CallWriter callWriter, IOutputWriter writer)
+        private static void AppendCallList(IEnumerable<IFakeObjectCall> calls, CallWriter callWriter, StringBuilderOutputWriter writer)
         {
             using (writer.Indent())
             {

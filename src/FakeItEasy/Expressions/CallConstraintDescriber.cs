@@ -41,7 +41,7 @@ namespace FakeItEasy.Expressions
             writer.Write(method.GetGenericArgumentsString());
         }
 
-        private static IList<IArgumentConstraint> GetArgumentConstraintsForArgumentsList(MethodInfo method, IEnumerable<IArgumentConstraint> argumentConstraints)
+        private static List<IArgumentConstraint> GetArgumentConstraintsForArgumentsList(MethodInfo method, IEnumerable<IArgumentConstraint> argumentConstraints)
         {
             var list = argumentConstraints.ToList();
             if (method.IsPropertySetter())
