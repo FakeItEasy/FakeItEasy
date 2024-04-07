@@ -5,6 +5,9 @@ namespace FakeItEasy.Specs
     using System.Globalization;
     using System.Linq;
     using System.Reflection;
+#if !LACKS_COMPOSITEFORMAT
+    using System.Text;
+#endif
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
     using Microsoft.CodeAnalysis;
@@ -16,7 +19,7 @@ namespace FakeItEasy.Specs
     /// </summary>
     public static class IllegalFluentApiSpecs
     {
-        private const string FakeUsageTemplate = @"
+        private const string RawFakeUsageTemplate = @"
 namespace ApiTest
 {{
     using FakeItEasy;
@@ -39,6 +42,12 @@ namespace ApiTest
     }}
 }}
 ";
+
+#if LACKS_COMPOSITEFORMAT
+        private const string FakeUsageTemplate = RawFakeUsageTemplate;
+#else
+        private static readonly CompositeFormat FakeUsageTemplate = CompositeFormat.Parse(RawFakeUsageTemplate);
+#endif
 
         private static IEnumerable<Microsoft.CodeAnalysis.MetadataReference> references = AppDomain.CurrentDomain.GetAssemblies()
             .Where(a => !a.IsDynamic)
