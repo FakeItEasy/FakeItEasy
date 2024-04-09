@@ -7,6 +7,10 @@
   </PropertyGroup>
 
 
+  <PropertyGroup Condition="!$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net8.0'))">
+    <DefineConstants>$(DefineConstants);LACKS_COMPOSITEFORMAT</DefineConstants>
+  </PropertyGroup>
+
   <PropertyGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
       <DefineConstants>$(DefineConstants);LACKS_FAKEABLE_GENERIC_IN_PARAMETERS</DefineConstants>
   </PropertyGroup>

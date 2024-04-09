@@ -154,7 +154,7 @@ namespace FakeItEasy.Tests
                     }
                 }
 
-                protected static IEnumerable<ArgumentInfo> GetArgumentInfos(IEnumerable<Expression> callArgumentsValues, ParameterInfo[] callArguments)
+                protected static List<ArgumentInfo> GetArgumentInfos(IEnumerable<Expression> callArgumentsValues, ParameterInfo[] callArguments)
                 {
                     var result = new List<ArgumentInfo>();
                     int index = 0;
@@ -204,7 +204,7 @@ namespace FakeItEasy.Tests
                     builder.Write(argument.Name);
                 }
 
-                private IEnumerable<CallThatShouldThrow> GetArgumentsForCallsThatAreNotProperlyNullGuarded()
+                private List<CallThatShouldThrow> GetArgumentsForCallsThatAreNotProperlyNullGuarded()
                 {
                     var result = new List<CallThatShouldThrow>();
 
@@ -231,7 +231,7 @@ namespace FakeItEasy.Tests
                     return result;
                 }
 
-                private IEnumerable<CallThatShouldThrow> GetArgumentPermutationsThatShouldThrow()
+                private List<CallThatShouldThrow> GetArgumentPermutationsThatShouldThrow()
                 {
                     var result = new List<CallThatShouldThrow>();
                     int index = 0;
@@ -251,7 +251,7 @@ namespace FakeItEasy.Tests
                         index++;
                     }
 
-                    if (!result.Any())
+                    if (result.Count == 0)
                     {
                         throw new InvalidOperationException(
                             "Provided call has no non-null nullable arguments, so there's nothing to check.");
@@ -353,7 +353,7 @@ namespace FakeItEasy.Tests
                     this.method.Invoke(this.target, arguments);
                 }
 
-                private static IEnumerable<ArgumentInfo> GetExpressionArguments(MethodCallExpression expression)
+                private static List<ArgumentInfo> GetExpressionArguments(MethodCallExpression expression)
                 {
                     return ConstraintState.GetArgumentInfos(expression.Arguments, expression.Method.GetParameters());
                 }
@@ -377,7 +377,7 @@ namespace FakeItEasy.Tests
                     this.constructorInfo.Invoke(arguments);
                 }
 
-                private static IEnumerable<ArgumentInfo> GetArgumentInfos(NewExpression expression)
+                private static List<ArgumentInfo> GetArgumentInfos(NewExpression expression)
                 {
                     return GetArgumentInfos(expression.Arguments, expression.Constructor!.GetParameters());
                 }

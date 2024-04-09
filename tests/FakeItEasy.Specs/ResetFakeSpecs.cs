@@ -423,7 +423,7 @@ public static class ResetFakeSpecs
             .x(() => fake.AMethod().Should().Be(2));
     }
 
-    private class CallCounterRule : IStatefulFakeObjectCallRule
+    private sealed class CallCounterRule : IStatefulFakeObjectCallRule
     {
         private int numberOfTimesCalled;
 

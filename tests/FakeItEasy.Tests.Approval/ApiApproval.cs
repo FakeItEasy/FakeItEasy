@@ -21,6 +21,7 @@ namespace FakeItEasy.Tests.Approval
         [InlineData("FakeItEasy", "netstandard2.0")]
         [InlineData("FakeItEasy", "netstandard2.1")]
         [InlineData("FakeItEasy", "net6.0")]
+        [InlineData("FakeItEasy", "net8.0")]
         [InlineData("FakeItEasy.Extensions.ValueTask", "net462")]
         [InlineData("FakeItEasy.Extensions.ValueTask", "netstandard2.0")]
         [MethodImpl(MethodImplOptions.NoInlining)]

@@ -68,7 +68,9 @@ namespace FakeItEasy.Tests.Core
             var result = this.instanceProvider.InstantiateAllOfType<SomeInterfaceImplementor>();
 
             // Assert
+#pragma warning disable CA1851 // Possible multiple enumerations of 'IEnumerable' collection
             result.Single().Should().BeSameAs(result.Single());
+#pragma warning restore CA1851 // Possible multiple enumerations of 'IEnumerable' collection
         }
 
         [Fact]

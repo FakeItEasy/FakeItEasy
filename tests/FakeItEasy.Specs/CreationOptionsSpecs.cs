@@ -919,7 +919,7 @@ namespace FakeItEasy.Specs
                 new FakeCreator<InternalClassVisibleToDynamicProxy>());
         }
 
-        private class FakeCreator<TFake> : IFakeCreator where TFake : class
+        private sealed class FakeCreator<TFake> : IFakeCreator where TFake : class
         {
             public Type FakeType => typeof(TFake);
 

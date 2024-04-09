@@ -82,11 +82,11 @@ namespace FakeItEasy.Configuration
             return AsPropertySetterConfiguration(voidConfiguration);
         }
 
-        private static IPropertySetterConfiguration AsPropertySetterConfiguration(
+        private static PropertySetterAdapter AsPropertySetterConfiguration(
                 IVoidConfiguration voidArgumentValidationConfiguration) =>
             new PropertySetterAdapter(voidArgumentValidationConfiguration);
 
-        private static IPropertySetterAfterCallbackConfiguredConfiguration AsPropertySetterAfterCallbackConfiguredConfiguration(
+        private static PropertySetterAfterCallbackConfiguredAdapter AsPropertySetterAfterCallbackConfiguredConfiguration(
                 IVoidAfterCallbackConfiguredConfiguration voidArgumentValidationConfiguration) =>
             new PropertySetterAfterCallbackConfiguredAdapter(voidArgumentValidationConfiguration);
 

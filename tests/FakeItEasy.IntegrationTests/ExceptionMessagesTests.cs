@@ -35,13 +35,13 @@ namespace FakeItEasy.IntegrationTests
             var fake = A.Fake<List<int>>();
 
             // Act
-            var exception = Record.Exception(() => A.CallTo(() => fake.Any()));
+            var exception = Record.Exception(() => A.CallTo(() => fake.Average()));
 
             // Assert
             var expectedMessage =
 @"
 
-  The current proxy generator can not intercept the method System.Linq.Enumerable.Any`1[System.Int32](System.Collections.Generic.IEnumerable`1[System.Int32] source) for the following reason:
+  The current proxy generator can not intercept the method System.Linq.Enumerable.Average(System.Collections.Generic.IEnumerable`1[System.Int32] source) for the following reason:
     - Extension methods can not be intercepted since they're static.
 
 ";

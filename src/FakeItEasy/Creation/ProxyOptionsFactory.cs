@@ -47,7 +47,7 @@ namespace FakeItEasy.Creation
             return proxyOptions;
         }
 
-        private static IFakeOptions CreateFakeOptions<T>(ProxyOptions proxyOptions) where T : class => new FakeOptions<T>(proxyOptions);
+        private static FakeOptions<T> CreateFakeOptions<T>(ProxyOptions proxyOptions) where T : class => new FakeOptions<T>(proxyOptions);
 
         private static Func<ProxyOptions, IFakeOptions> GetFakeOptionsFactory(Type typeOfFake)
         {

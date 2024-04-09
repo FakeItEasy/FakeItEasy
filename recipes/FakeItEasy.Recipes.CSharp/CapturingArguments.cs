@@ -166,7 +166,7 @@ public class CapturingArguments
     }
 
     //// --8<-- [start:Calculator]
-    internal class Calculator(IListLogger logger)
+    internal sealed class Calculator(IListLogger logger)
     {
         public int Add(IList<int> operands)
         {

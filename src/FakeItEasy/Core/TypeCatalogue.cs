@@ -68,7 +68,7 @@ namespace FakeItEasy.Core
             return this.availableTypes;
         }
 
-        private static IEnumerable<Assembly> GetAllAssemblies(IEnumerable<string> extraAssemblyFiles)
+        private static HashSet<Assembly> GetAllAssemblies(IEnumerable<string> extraAssemblyFiles)
         {
             var assembliesToScan = new HashSet<Assembly>();
             var loadedAssemblyFiles = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
@@ -204,7 +204,7 @@ namespace FakeItEasy.Core
             Write(writer, ex, message);
         }
 
-        private static void Write(IOutputWriter writer, Exception ex, string message)
+        private static void Write(DefaultOutputWriter writer, Exception ex, string message)
         {
             writer.Write(message);
             writer.WriteLine();
@@ -217,7 +217,7 @@ namespace FakeItEasy.Core
             }
         }
 
-        private static IOutputWriter CreateConsoleWriter()
+        private static DefaultOutputWriter CreateConsoleWriter()
         {
             // We can pass null as the ArgumentValueFormatter, because we never call
             // WriteArgumentValue on this writer.

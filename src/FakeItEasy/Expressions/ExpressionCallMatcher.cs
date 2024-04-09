@@ -73,7 +73,7 @@ namespace FakeItEasy.Expressions
 
         public Func<IFakeObjectCall, ICollection<object?>> GetOutAndRefParametersValueProducer()
         {
-            IList<object?>? values = null;
+            List<object?>? values = null;
 
             foreach (var argumentConstraint in this.argumentConstraints)
             {

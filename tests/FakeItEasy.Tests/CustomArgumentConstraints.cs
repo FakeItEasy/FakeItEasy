@@ -40,7 +40,7 @@ namespace FakeItEasy.Tests
         internal static IProxyOptions IsEmpty(this IArgumentConstraintManager<IProxyOptions> scope)
         {
             return scope.NullCheckedMatches(
-                x => !x.AdditionalInterfacesToImplement.Any()
+                x => x.AdditionalInterfacesToImplement.Count == 0
                      && x.ArgumentsForConstructor is null
                      && !x.ProxyConfigurationActions.Any()
                      && !x.Attributes.Any(),

@@ -49,13 +49,13 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
 
             if (method.IsStatic)
             {
-                if (method.GetCustomAttributes(typeof(System.Runtime.CompilerServices.ExtensionAttribute), false).Any())
+                if (method.GetCustomAttributes(typeof(System.Runtime.CompilerServices.ExtensionAttribute), false).Length == 0)
                 {
-                    return "Extension methods can not be intercepted since they're static.";
+                    return "Static methods can not be intercepted.";
                 }
                 else
                 {
-                    return "Static methods can not be intercepted.";
+                    return "Extension methods can not be intercepted since they're static.";
                 }
             }
 

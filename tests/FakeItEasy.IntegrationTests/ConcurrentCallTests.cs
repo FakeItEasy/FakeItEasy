@@ -83,7 +83,7 @@ namespace FakeItEasy.IntegrationTests
             public abstract void MutateRules(IFoo fake);
         }
 
-        private class GetUnconfiguredProperty : RuleMutatingAction
+        private sealed class GetUnconfiguredProperty : RuleMutatingAction
         {
             public override void MutateRules(IFoo fake)
             {
@@ -91,22 +91,22 @@ namespace FakeItEasy.IntegrationTests
             }
         }
 
-        private class SetUnconfiguredProperty : RuleMutatingAction
+        private sealed class SetUnconfiguredProperty : RuleMutatingAction
         {
             public override void MutateRules(IFoo fake) => fake.StringProperty = "a string";
         }
 
-        private class AddRuleFirst : RuleMutatingAction
+        private sealed class AddRuleFirst : RuleMutatingAction
         {
             public override void MutateRules(IFoo fake) => Fake.GetFakeManager(fake).AddRuleFirst(A.Dummy<IFakeObjectCallRule>());
         }
 
-        private class AddRuleLast : RuleMutatingAction
+        private sealed class AddRuleLast : RuleMutatingAction
         {
             public override void MutateRules(IFoo fake) => Fake.GetFakeManager(fake).AddRuleLast(A.Dummy<IFakeObjectCallRule>());
         }
 
-        private class RemoveRule : RuleMutatingAction
+        private sealed class RemoveRule : RuleMutatingAction
         {
             private IFakeObjectCallRule? ruleToRemove;
 
@@ -125,19 +125,19 @@ namespace FakeItEasy.IntegrationTests
             }
         }
 
-        private class ClearConfiguration : RuleMutatingAction
+        private sealed class ClearConfiguration : RuleMutatingAction
         {
 #pragma warning disable CS0618 // ClearConfiguration is obsolete
             public override void MutateRules(IFoo fake) => Fake.ClearConfiguration(fake);
 #pragma warning restore CS0618 // ClearConfiguration is obsolete
         }
 
-        private class AddConfigurationViaACallTo : RuleMutatingAction
+        private sealed class AddConfigurationViaACallTo : RuleMutatingAction
         {
             public override void MutateRules(IFoo fake) => A.CallTo(() => fake.IntProperty).Returns(1);
         }
 
-        private class AddConfigurationViaThen : RuleMutatingAction
+        private sealed class AddConfigurationViaThen : RuleMutatingAction
         {
             // If the mutating action performs
             // A.CallTo(() => fake.IntProperty).Returns(1).Once().Then.Returns(2)

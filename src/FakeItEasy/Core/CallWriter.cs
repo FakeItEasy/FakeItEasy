@@ -18,13 +18,13 @@ namespace FakeItEasy.Core
 
         public virtual void WriteCalls<T>(IEnumerable<T> calls, IOutputWriter writer) where T : IFakeObjectCall
         {
-            if (!calls.Any())
+            var callArray = calls.ToArray();
+            if (callArray.Length == 0)
             {
                 return;
             }
 
             var callInfos = new List<CallInfo>();
-            var callArray = calls.ToArray();
 
             for (var i = 0; i < callArray.Length && i < MaxNumberOfCallsToWrite; i++)
             {
@@ -54,7 +54,7 @@ namespace FakeItEasy.Core
             writer.WriteLine();
         }
 
-        private static void WriteCalls(IEnumerable<CallInfo> callInfos, IOutputWriter writer)
+        private static void WriteCalls(List<CallInfo> callInfos, IOutputWriter writer)
         {
             var lastCall = callInfos.Last();
             var numberOfDigitsInLastCallNumber = lastCall.NumberOfDigitsInCallNumber();

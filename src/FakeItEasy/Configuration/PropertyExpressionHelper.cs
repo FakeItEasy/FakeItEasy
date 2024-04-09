@@ -39,13 +39,13 @@ namespace FakeItEasy.Configuration
 
             if (indexerSetterInfo is null)
             {
-                if (parsedCallExpression.ArgumentsExpressions.Any())
+                if (parsedCallExpression.ArgumentsExpressions.Length == 0)
                 {
-                    var expressionDescription = GetExpressionDescription(parsedCallExpression);
-                    throw new ArgumentException(ExceptionMessages.ExpressionIsIndexedPropertyWithoutSetter(expressionDescription));
+                    throw new ArgumentException(ExceptionMessages.PropertyHasNoSetter(propertyName));
                 }
 
-                throw new ArgumentException(ExceptionMessages.PropertyHasNoSetter(propertyName));
+                var expressionDescription = GetExpressionDescription(parsedCallExpression);
+                throw new ArgumentException(ExceptionMessages.ExpressionIsIndexedPropertyWithoutSetter(expressionDescription));
             }
 
             var originalParameterInfos = indexerSetterInfo.GetParameters();

@@ -169,12 +169,12 @@ namespace FakeItEasy.Tests.Expressions
             result.CallTarget.Should().BeSameAs(d);
         }
 
-        private static LambdaExpression Call(Expression<Action> callExpression)
+        private static Expression<System.Action> Call(Expression<Action> callExpression)
         {
             return callExpression;
         }
 
-        private static LambdaExpression Call<T>(Expression<Func<T>> callExpression)
+        private static Expression<System.Func<T>> Call<T>(Expression<Func<T>> callExpression)
         {
             return callExpression;
         }

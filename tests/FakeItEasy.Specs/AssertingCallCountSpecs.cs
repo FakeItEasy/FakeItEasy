@@ -148,7 +148,7 @@ namespace FakeItEasy.Specs
             }
         }
 
-        private static IEnumerable<CountableCall> AllCountableCalls()
+        private static CountableCall[] AllCountableCalls()
         {
             return new[]
             {
@@ -160,7 +160,7 @@ namespace FakeItEasy.Specs
             };
         }
 
-        private static IEnumerable<CallCountAsserter> MatchingAssertions()
+        private static CallCountAsserter[] MatchingAssertions()
         {
             return new[]
             {
@@ -206,7 +206,7 @@ namespace FakeItEasy.Specs
             };
         }
 
-        private static IEnumerable<CallCountAsserter> NonMatchingAssertions()
+        private static CallCountAsserter[] NonMatchingAssertions()
         {
             return new[]
             {

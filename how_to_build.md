@@ -104,6 +104,7 @@ available:
 * `netstandard2.0`: builds only .NET Standard 2.0 target framework and tests on .NET Core 2.1
 * `netstandard2.1`: builds only .NET Standard 2.1 target framework and tests on .NET Core 3.1
 * `net6.0`: builds and tests only the .NET 6.0 target framework
+* `net8.0`: builds and tests only the .NET 8.0 target framework
 
 In order to select a profile, create a `FakeItEasy.user.props` file at the root
 of the repository by running
@@ -118,7 +119,7 @@ either by editing the file by hand or via a build target (which will actually
 create the file if it doesn't already exist). For example:
 
 ```
-build.cmd use-profile-net6.0
+build.cmd use-profile-net8.0
 ```
 
 Note that Visual Studio will not reflect a change of build profile until you

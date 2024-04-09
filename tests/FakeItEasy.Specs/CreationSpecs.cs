@@ -859,7 +859,7 @@ namespace FakeItEasy.Specs
             new FakeCreator<Func<int, string>>(),
             new FakeCreator<EventHandler<EventArgs>>());
 
-        private class FakeCreator<TFake> : IFakeCreator where TFake : class
+        private sealed class FakeCreator<TFake> : IFakeCreator where TFake : class
         {
             public Type FakeType => typeof(TFake);
 
@@ -872,6 +872,7 @@ namespace FakeItEasy.Specs
         }
 
         [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Required for testing.")]
+        [SuppressMessage("Microsoft.Performance", "CA1852:SealInternalTypes", Justification = "We require only one reason for the class to be unfakeable - the access level.")]
         private class PrivateClass
         {
         }
