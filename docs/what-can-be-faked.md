@@ -2,7 +2,7 @@
 
 ## What types can be faked?
 
-FakeItEasy uses
+BlairItEasy uses
 [Castle DynamicProxy](https://www.castleproject.org/projects/dynamicproxy/)
 to create fakes. Thus, it can fake just about anything that could
 normally be overridden, extended, or implemented.  This means that the
@@ -12,7 +12,7 @@ following entities can be faked:
 * classes that
     * are not sealed,
     * are not static, and
-    * have at least one public or protected constructor whose arguments FakeItEasy can construct or obtain
+    * have at least one public or protected constructor whose arguments BlairItEasy can construct or obtain
 * delegates
 
 Note that special steps will need to be taken to
@@ -20,14 +20,14 @@ Note that special steps will need to be taken to
 
 ### Types whose methods have `in` parameters
 
-Generic types that contain methods having a parameter modified by the `in` keyword cannot be faked by FakeItEasy.
-This limitation is tracked as [issue 1382](https://github.com/FakeItEasy/FakeItEasy/issues/1382).
+Generic types that contain methods having a parameter modified by the `in` keyword cannot be faked by BlairItEasy.
+This limitation is tracked as [issue 1382](https://github.com/BlairItEasy/BlairItEasy/issues/1382).
 
 ### Where do the constructor arguments come from?
   
 * they can be supplied via `WithArgumentsForConstructor` as shown in
   [creating fakes](creating-fakes.md), or
-* FakeItEasy will use [dummies](dummies.md) as arguments
+* BlairItEasy will use [dummies](dummies.md) as arguments
 
 ## What members can be overridden?
 

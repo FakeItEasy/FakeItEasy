@@ -1,6 +1,6 @@
 # Faking async methods
 
-The faking of `async` methods is fully supported in FakeItEasy.
+The faking of `async` methods is fully supported in BlairItEasy.
 
 ```csharp
 public class Foo
@@ -36,9 +36,9 @@ A.CallTo(() => foo.Bar()).Returns("bar");
 ```
 
 These overloads of `Returns` and `ReturnsLazily` also exist for `ValueTask<T>`. If your test project
-targets a framework compatible with .NET Standard 2.1 or higher, they're built into FakeItEasy itself;
+targets a framework compatible with .NET Standard 2.1 or higher, they're built into BlairItEasy itself;
 otherwise, they're in a separate package:
-[`FakeItEasy.Extensions.ValueTask`](https://www.nuget.org/packages/FakeItEasy.Extensions.ValueTask).
+[`BlairItEasy.Extensions.ValueTask`](https://www.nuget.org/packages/BlairItEasy.Extensions.ValueTask).
 
 ## Throwing exceptions
 

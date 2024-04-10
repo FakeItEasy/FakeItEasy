@@ -18,9 +18,9 @@ You can also create a collection of fakes by writing:
 var foos = A.CollectionOfFake<Foo>(10);
 ```
 
-For cases where the type to fake isn't statically known, non-generic methods are also available. These are usually only required when writing extensions for FakeItEasy, so they live in the `FakeItEasy.Sdk` namespace:
+For cases where the type to fake isn't statically known, non-generic methods are also available. These are usually only required when writing extensions for BlairItEasy, so they live in the `BlairItEasy.Sdk` namespace:
 ```csharp
-using FakeItEasy.Sdk;
+using BlairItEasy.Sdk;
 ...
 var type = GetTypeOfFake();
 object fake = Create.Fake(type);
@@ -94,4 +94,4 @@ fake.CallsTo(x => x.Bar("some argument")).Returns("some return value");
 var foo = fake.FakeObject;
 ```
 
-For an alternative look at migrating from Moq to FakeItEasy, see Daniel Marbach's blog post that talks about [Migration from Moq to FakeItEasy with Resharper Search Patterns](https://www.planetgeek.ch/2013/07/18/migration-from-moq-to-fakeiteasy-with-resharper-search-patterns/).
+For an alternative look at migrating from Moq to BlairItEasy, see Daniel Marbach's blog post that talks about [Migration from Moq to BlairItEasy with Resharper Search Patterns](https://www.planetgeek.ch/2013/07/18/migration-from-moq-to-fakeiteasy-with-resharper-search-patterns/).

@@ -33,7 +33,7 @@ providing constructor arguments, and more.
 
 ### How it works
 
-FakeItEasy uses classes that implement the following interface to configure Fakes:
+BlairItEasy uses classes that implement the following interface to configure Fakes:
 
 ```csharp
 public interface IFakeOptionsBuilder
@@ -44,7 +44,7 @@ public interface IFakeOptionsBuilder
 }
 ```
 
-When FakeItEasy creates a Fake, it looks at all known
+When BlairItEasy creates a Fake, it looks at all known
 `IFakeOptionsBuilder` implementations for which
 `CanBuildOptionsForFakeOfType` returns `true`. Then it passes an empty
 `options` object to `BuildOptions`. If multiple implementations match,
@@ -93,8 +93,8 @@ Note that once the type of Fake being created is identified, say as
 be the _exact_ type being faked, not just something in the inheritance
 tree.
 
-### How does FakeItEasy find the Fake Options Builders?
+### How does BlairItEasy find the Fake Options Builders?
 
-On initialization, FakeItEasy
+On initialization, BlairItEasy
 [looks for Discoverable Extension Points](scanning-for-extension-points.md),
 including Fake Options Builders.

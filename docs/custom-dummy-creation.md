@@ -1,6 +1,6 @@
 # Custom Dummy Creation
 
-FakeItEasy has built-in [Dummy](dummies.md) creation rules that
+BlairItEasy has built-in [Dummy](dummies.md) creation rules that
 provide usable non-null values to be used in tests. However, if the
 default dummy creation behavior isn't adequate, you can provide your
 own. Here's an example:
@@ -17,7 +17,7 @@ class DummyBookFactory : DummyFactory<Book>
 
 ### How it works
 
-FakeItEasy uses classes that implement the following interface to create Dummies:
+BlairItEasy uses classes that implement the following interface to create Dummies:
 
 ```csharp
 public interface IDummyFactory
@@ -28,7 +28,7 @@ public interface IDummyFactory
 }
 ```
 
-When FakeItEasy tries to create a Dummy, it looks at all known
+When BlairItEasy tries to create a Dummy, it looks at all known
 `IDummyFactory` implementations for which `CanCreate` returns
 `true`. If multiple implementations match, the one with the highest
 `Priority`is used.
@@ -72,9 +72,9 @@ class DummyEnumerableFactory: IDummyFactory
 }
 ```
 
-### How does FakeItEasy find the Dummy Factories?
+### How does BlairItEasy find the Dummy Factories?
 
-On initialization, FakeItEasy
+On initialization, BlairItEasy
 [looks for Discoverable Extension Points](scanning-for-extension-points.md),
 including Dummy Factories.
 

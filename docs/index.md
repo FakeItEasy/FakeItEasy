@@ -4,7 +4,7 @@ hide:
 ---
 <div id="logo"></div>
 
-FakeItEasy is a .NET dynamic fake library for creating all types of fake objects, mocks, stubs etc.
+BlairItEasy is a .NET dynamic fake library for creating all types of fake objects, mocks, stubs etc.
 
 * Easier semantics, all fake objects are just that - fakes - the use of the fakes determines whether they're mocks or stubs.
 * Context-aware fluent interface guides the developer.
@@ -15,9 +15,9 @@ FakeItEasy is a .NET dynamic fake library for creating all types of fake objects
 
 * [Website](https://fakeiteasy.github.io/)
 * [Quickstart](quickstart.md)
-* [Chat](https://gitter.im/FakeItEasy/FakeItEasy)
-* [Package](https://nuget.org/packages/FakeItEasy "FakeItEasy on NuGet")
+* [Chat](https://gitter.im/BlairItEasy/BlairItEasy)
+* [Package](https://nuget.org/packages/BlairItEasy "BlairItEasy on NuGet")
 
 ----
-FakeItEasy logo designed by Vanja Pakaski.
+BlairItEasy logo designed by Vanja Pakaski.
 

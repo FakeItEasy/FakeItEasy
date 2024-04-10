@@ -1,11 +1,11 @@
 # Strict fakes
 
-[By default](default-fake-behavior.md), FakeItEasy's fakes support
+[By default](default-fake-behavior.md), BlairItEasy's fakes support
 what is sometimes called "loose mocking". This means that calls to any
 of the fake's members are allowed, even if they haven't been
 configured.
 
-However, FakeItEasy also supports strict fakes, in which all calls to
+However, BlairItEasy also supports strict fakes, in which all calls to
 unconfigured members are rejected, throwing an
 `ExpectationException`. Strict fakes are created by supplying a
 [creation option](creating-fakes.md#explicit-creation-options):

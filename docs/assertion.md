@@ -35,7 +35,7 @@ A.CallTo(() => foo.Bar()).MustHaveHappenedANumberOfTimesMatching(n => n % 2 == 0
 
 ## Asserting Calls Made with Mutable Arguments
 
-When FakeItEasy records a method (or property) call, it remembers
+When BlairItEasy records a method (or property) call, it remembers
 which objects were used as argument, but does not take a snapshot of
 the objects' state. This means that if an object is changed after
 being used as an argument, but before argument constraints are

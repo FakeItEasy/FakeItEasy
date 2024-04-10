@@ -1,12 +1,12 @@
 # Source Stepping
 
-In most cases, you'll never need to step through the FakeItEasy source code,
-but occasionally, it may help to see what FakeItEasy is doing under the hood.
-FakeItEasy uses [SourceLink](https://github.com/dotnet/sourcelink) to make it
-a breeze to step into the FakeItEasy source code.
+In most cases, you'll never need to step through the BlairItEasy source code,
+but occasionally, it may help to see what BlairItEasy is doing under the hood.
+BlairItEasy uses [SourceLink](https://github.com/dotnet/sourcelink) to make it
+a breeze to step into the BlairItEasy source code.
 
 To enable SourceLink, follow the instructions below depending on your IDE or
-editor. Then, during your debug session, when you step into a FakeItEasy method
+editor. Then, during your debug session, when you step into a BlairItEasy method
 call, the debugger will download the source code from GitHub so you can step
 through it.
 

@@ -1,6 +1,6 @@
 # Dummies
 
-A Dummy is an object that FakeItEasy can provide when an object of a
+A Dummy is an object that BlairItEasy can provide when an object of a
 certain type is required, but the actual behavior of the object is not
 important.
 
@@ -42,25 +42,25 @@ A.CollectionOfDummy<Book>(10);
 
 This will return an `IList` containing 10 dummy `Book` instances.
 
-For cases where the type of dummy isn't statically known, non-generic methods are also available. These are usually only required when writing extensions for FakeItEasy, so they live in the `FakeItEasy.Sdk` namespace:
+For cases where the type of dummy isn't statically known, non-generic methods are also available. These are usually only required when writing extensions for BlairItEasy, so they live in the `BlairItEasy.Sdk` namespace:
 ```csharp
-using FakeItEasy.Sdk;
+using BlairItEasy.Sdk;
 ...
 var type = GetTypeOfDummy();
 object dummy = Create.Dummy(type);
 IList<object> dummies = Create.CollectionOfDummy(type, 10);
 ```
 
-## How FakeItEasy uses them
+## How BlairItEasy uses them
 
 When [creating Fakes](creating-fakes.md) or Dummies of class types,
-FakeItEasy needs to invoke the classes' constructors. If the
-constructors take arguments, FakeItEasy needs to generate appropriate
+BlairItEasy needs to invoke the classes' constructors. If the
+constructors take arguments, BlairItEasy needs to generate appropriate
 argument values. It uses Dummies.
 
 ## How are the Dummies made?
 
-When FakeItEasy needs to access a Dummy of type `T`, it tries a number
+When BlairItEasy needs to access a Dummy of type `T`, it tries a number
 of approaches in turn, until one succeeds:
 
 1. If `T` is `void`, return `null`.
@@ -90,5 +90,5 @@ can't be made.
   supplying the Dummies as the argument list. If the argument list can't be satisfied,
   then try the next constructor.
 
-If none of these strategies yield a viable Dummy, then FakeItEasy
+If none of these strategies yield a viable Dummy, then BlairItEasy
 can't make a Dummy of type `T`.

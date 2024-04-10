@@ -1,6 +1,6 @@
 # Raising events
 
-FakeItEasy can be used to simulate the raising of an event from a Fake object, assuming the event is virtual or abstract, or defined on an interface.
+BlairItEasy can be used to simulate the raising of an event from a Fake object, assuming the event is virtual or abstract, or defined on an interface.
 
 ## `EventHandler`-based events
 
@@ -93,11 +93,11 @@ The approach described above for raising events doesn't work in some situations:
 
 This is because the calls (including event subscription and unsubscription) are
 forwarded to another implementation (wrapped object or base class) that
-FakeItEasy has no control over, so the fake doesn't know about the handlers and
+BlairItEasy has no control over, so the fake doesn't know about the handlers and
 cannot call them.
 
 Similarly, strict fakes don't handle any call unless explicitly configured,
-including event subscription or unsubscription, so FakeItEasy also can't raise
+including event subscription or unsubscription, so BlairItEasy also can't raise
 events on strict fakes.
 
 To work around this limitation, you have three options:

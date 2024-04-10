@@ -1,7 +1,7 @@
 # Specifying a Call to Configure
 
 One of the first steps in configuring a fake object's behavior is to
-specify which call to configure. Like most FakeItEasy actions, this is
+specify which call to configure. Like most BlairItEasy actions, this is
 done using a method on the `A` class: `A.CallTo`.
 
 ## Specifying a method call or property `get` using an Expression
@@ -11,7 +11,7 @@ A.CallTo(() => fakeShop.GetTopSellingCandy()).Returns(lollipop);
 A.CallTo(() => fakeShop.Address).Returns("123 Fake Street");
 ```
 
-The expressions in the above example are not evaluated by FakeItEasy:
+The expressions in the above example are not evaluated by BlairItEasy:
 no call to `GetTopSellingCandy` or `Address` is made. The expressions
 are just used to identify which call to configure, after which
 `A.CallTo` returns an object that can be used to specify how the fake
@@ -113,7 +113,7 @@ A.CallTo(fakeShop).Where(call => call.Method.Name == "set_Address")
 ## Specifying a call to an event accessor
 
 Although calls to event accessors can be specified using the approach described
-in the previous section, FakeItEasy also provides helper methods to make this
+in the previous section, BlairItEasy also provides helper methods to make this
 easier:
 
 ```csharp

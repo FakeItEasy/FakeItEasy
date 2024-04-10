@@ -1,16 +1,16 @@
 # Quickstart
 
-Getting started with FakeItEasy is very simple:
+Getting started with BlairItEasy is very simple:
 
 * Open the Package Manager Console:  
 Tools → Library Package Manager → Package Manager Console
-* Execute `Install-Package FakeItEasy`
+* Execute `Install-Package BlairItEasy`
 * Start faking dependencies in your tests. Here's a sample test class with fakes:
 
 ```csharp
 namespace FakeItEasyQuickstart
 {
-    using FakeItEasy;
+    using BlairItEasy;
     using NUnit; // any test framework will do
 
     public class SweetToothTests
@@ -37,6 +37,6 @@ namespace FakeItEasyQuickstart
 }
 ```
 
-* Most FakeItEasy functionality is reached from a common entry point: the `A` class.
+* Most BlairItEasy functionality is reached from a common entry point: the `A` class.
 * In this example the `lollipop` instance is used as a stub and the `shop` instance is used as a mock but there's no need to know the difference, just fake it! Easy!
 * Fluent, easy-to-use syntax guides you as you configure fakes.

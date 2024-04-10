@@ -65,6 +65,6 @@ for examining, in detail, the call that triggers the exception, or for configuri
 more than 8 parameters.
 
 These overloads of `ThrowsAsync` also exist for `ValueTask` and `ValueTask<T>`. If your test project
-targets a framework compatible with .NET Standard 2.1 or higher, they're built into FakeItEasy itself;
+targets a framework compatible with .NET Standard 2.1 or higher, they're built into BlairItEasy itself;
 otherwise, they're in a separate package:
-[`FakeItEasy.Extensions.ValueTask`](https://www.nuget.org/packages/FakeItEasy.Extensions.ValueTask).
+[`BlairItEasy.Extensions.ValueTask`](https://www.nuget.org/packages/BlairItEasy.Extensions.ValueTask).

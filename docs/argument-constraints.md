@@ -1,6 +1,6 @@
 # Argument constraints
 
-When configuring and [asserting](assertion.md) calls in FakeItEasy,
+When configuring and [asserting](assertion.md) calls in BlairItEasy,
 the arguments of the call can be constrained so that only calls to the
 configured method where the arguments matches the constraint are
 selected.
@@ -22,10 +22,10 @@ var foo = A.Fake<IFoo>();
 A.CallTo(() => foo.Bar("hello", 17)).MustHaveHappened();
 ```
 
-Then FakeItEasy will look _only_ for calls made with the arguments
+Then BlairItEasy will look _only_ for calls made with the arguments
 `"hello"` and `17` - no other calls will match the rule.
 
-When checking for argument equality, FakeItEasy uses the first applicable equality
+When checking for argument equality, BlairItEasy uses the first applicable equality
 test from this list:
 
 * if both values are `null`, they are considered equal,
@@ -101,23 +101,23 @@ this rather contrived example:
 A<string>.That.Matches(s => s.Length == 3 && s[1] == 'X');
 ```
 
-FakeItEasy will evaluate the predicate against any supplied
+BlairItEasy will evaluate the predicate against any supplied
 argument. The predicate can be supplied as an `Expression<Func<T, bool>>`
-or as a `Func<T, bool>`. FakeItEasy can generate a description
+or as a `Func<T, bool>`. BlairItEasy can generate a description
 of the matcher when an `Expression` is supplied (although you may
 supply your own as well), but you must supply a description when using
 a `Func`.
 
 For another example of using `That.Matches`, see Jonathan Channon's
-[Comparing object instances with FakeItEasy](https://blog.jonathanchannon.com/2013/09/11/comparing-object-instances-with-fakeiteasy).
+[Comparing object instances with BlairItEasy](https://blog.jonathanchannon.com/2013/09/11/comparing-object-instances-with-fakeiteasy).
 
 ### Always place `Ignored` and `That` inside `A.CallTo`
 
 The `Ignored` (and `_`) and `That` matchers must be placed within the
 expression inside the `A.CallTo` call. This is because these special
 constraint methods do not return an actual matcher object. They tell
-FakeItEasy how to match the parameter via a special event that's fired
-when the constraint method is invoked. FakeItEasy only listens to the
+BlairItEasy how to match the parameter via a special event that's fired
+when the constraint method is invoked. BlairItEasy only listens to the
 events in the context of an `A.CallTo`.
 
 So, tempting as it might be to save one of the constraints away in a
@@ -125,7 +125,7 @@ handy variable, don't do it.
 
 ## Using correct grammar
 
-FakeItEasy's API attempts to imitate the English language, so that call
+BlairItEasy's API attempts to imitate the English language, so that call
 configurations and assertions read naturally. In that spirit, it's
 possible to use `An<T>` instead of `A<T>` for types whose name starts
 with a vowel sound. For instance:

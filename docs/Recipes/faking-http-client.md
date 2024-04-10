@@ -15,7 +15,7 @@ public Task<HttpResponseMessage>GetAsync(string? requestUri)
 ```
 
 This method is neither virtual nor abstract, and so [can't be overridden by
-FakeItEasy](../what-can-be-faked.md#what-members-can-be-overridden).
+BlairItEasy](../what-can-be-faked.md#what-members-can-be-overridden).
 
 As a workaround, we can look at the [definition of
 GetAsync](https://github.com/dotnet/runtime/blob/ab5e28c1cab305450897749daa7393bef30d7505/src/libraries/System.Net.Http/src/System/Net/Http/HttpClient.cs#L363-L364)
@@ -27,7 +27,7 @@ constructor.
 
 `HttpMessageHandler.SendAsync` is protected, which makes it
 less convenient to override than a public method. We need to specify the call by
-name, and to give FakeItEasy a hint about the return type, as described in
+name, and to give BlairItEasy a hint about the return type, as described in
 [Specifying a call to any method or
 property](../specifying-a-call-to-configure.md#specifying-a-call-to-any-method-or-property).
 

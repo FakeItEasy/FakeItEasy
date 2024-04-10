@@ -1,6 +1,6 @@
 # Advanced usage
 
-FakeItEasy exposes a few APIs that aren't commonly needed, but can be useful in certain scenarios.
+BlairItEasy exposes a few APIs that aren't commonly needed, but can be useful in certain scenarios.
 
 ## Resetting a fake to its initial state
 
@@ -43,7 +43,7 @@ A.CallTo(() => foo.Bar()).MustNotHaveHappened();
 
 ## Getting the list of calls made on a fake
 
-Sometimes, the call assertion API offered by FakeItEasy isn't enough, and you need to manually check the calls made on a fake.
+Sometimes, the call assertion API offered by BlairItEasy isn't enough, and you need to manually check the calls made on a fake.
 The `Fake.GetCalls` method returns a fake's recorded calls as a list of `ICompletedFakeObjectCall` objects that you can examine yourself:
 
 ```csharp

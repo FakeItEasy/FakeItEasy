@@ -2,7 +2,7 @@
 
 ## Default behavior when comparing argument values
 
-By default, FakeItEasy compares argument values using `Object.Equals`. For
+By default, BlairItEasy compares argument values using `Object.Equals`. For
 instance, consider this call configuration:
 
 ```csharp
@@ -38,7 +38,7 @@ A.CallTo(() => fake.DoSomethingElse(expectedFoo)).Returns(42);
 
 And it would just do the right thing.
 
-FakeItEasy offers a way to override the default behavior by providing a custom
+BlairItEasy offers a way to override the default behavior by providing a custom
 argument equality comparer.
 
 ## Writing a custom argument equality comparer
@@ -56,12 +56,12 @@ public class FooComparer : ArgumentEqualityComparer<Foo>
 }
 ```
 
-FakeItEasy will automatically discover this class and use it to compare
+BlairItEasy will automatically discover this class and use it to compare
 instances of `Foo`.
 
 ## How it works
 
-FakeItEasy uses classes that implement the following interface to compare argument values:
+BlairItEasy uses classes that implement the following interface to compare argument values:
 
 ```csharp
 public interface IArgumentEqualityComparer
@@ -72,7 +72,7 @@ public interface IArgumentEqualityComparer
 }
 ```
 
-When FakeItEasy needs to compare a non-null argument value with a non-null expected value,
+When BlairItEasy needs to compare a non-null argument value with a non-null expected value,
 it looks at all known `IArgumentEqualityComparer` implementations for which
 `CanCompare` returns true for the type of the expected value. If multiple implementations
 match, the one with the highest `Priority` is used.
@@ -102,8 +102,8 @@ class ToStringArgumentEqualityComparer : IArgumentEqualityComparer
 }
 ```
 
-## How does FakeItEasy find Argument Equality Comparers?
+## How does BlairItEasy find Argument Equality Comparers?
 
-On initialization, FakeItEasy
+On initialization, BlairItEasy
 [looks for Discoverable Extension Points](scanning-for-extension-points.md),
 including Argument Equality Comparers.

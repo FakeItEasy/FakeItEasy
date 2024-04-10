@@ -34,7 +34,7 @@ This is a fairly standard test with fakes, except we:
   case you prefer that name)
 * use `Values` to access all the captured values so they can be asserted
 * (alternative flow) use `GetLastValue` to access the most recent captured value so it can be asserted.
-  This will throw a `FakeItEasy.ExpectationException` if no values have been captured.
+  This will throw a `BlairItEasy.ExpectationException` if no values have been captured.
 
 ???+ note "Values are only captured if the call matches the configuration"
     When a call configuration intends to capture one or more arguments, the argument
