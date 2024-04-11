@@ -34,8 +34,7 @@ jobs:
               head_sha: '${{ github.event.inputs.sha }}',
               status: 'success'
             });
-            core.info('listWorkflowRuns response: \n' + JSON.stringify(runsResponse, null, '  '));
-            const runsForPr = runsResponse.workflow_runs.filter(r => r.pull_requests[0]?.number === ${{ github.event.inputs.pr }});
+            const runsForPr = runsResponse.data.workflow_runs.filter(r => r.pull_requests[0]?.number === ${{ github.event.inputs.pr }});
             const run = runsForPr[0];
             if (!run) {
               core.setFailed('Could not find a successful workflow run for the PR');
