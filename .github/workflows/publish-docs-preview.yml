@@ -11,15 +11,40 @@ jobs:
     if: "${{ github.event.label.name == ':eyes: publish-docs-preview' }}"
     steps:
 
-      - name: Download artifact
-        id: download-artifact
-        uses: dawidd6/action-download-artifact@v3
+      - name: Find CI workflow run for PR
+        id: find-workflow-run
+        uses: actions/github-script@v7
         continue-on-error: true
         with:
-          workflow: ci.yml
-          pr: ${{github.event.pull_request.number}}
+          script: |
+            // Find the last successful workflow run for the current PR's head
+            const {owner, repo} = context.repo;
+            const runsResponse = await github.rest.actions.listWorkflowRuns({
+              owner,
+              repo,
+              workflow_id: 'ci.yml',
+              event: 'pull_request',
+              head_sha: context.sha,
+              status: 'success'
+            });
+            const runs = runsResponse.data.workflow_runs;
+            runs.sort((a, b) => b.created_at.getTime() - a.created_at.getTime());
+            const run = runs[0];
+            if (!run) {
+              core.setFailed('Could not find a successful workflow run for the PR');
+              return;
+            }
+            core.setOutput('run-id', run.id);
+
+      - name: Download artifact
+        if: ${{ steps.find-workflow-run.outcome == 'success' }}
+        id: download-artifact
+        uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
           name: documentation
           path: documentation/
+          run-id: ${{ steps.find-workflow-run.outputs.run-id }}
 
       - name: Publish files
         id: publish-files
@@ -54,6 +79,10 @@ jobs:
         with:
           message: ${{ steps.set-pr-comment.outputs.pr-comment }}
 
-
+      - name: Check outcome
+        run: |
+          if [[ "${{ steps.publish-files.outcome }}" != "success" ]]; then
+            exit 1
+          fi
 
 
