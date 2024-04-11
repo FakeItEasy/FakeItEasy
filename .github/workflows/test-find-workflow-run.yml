@@ -1,15 +1,5 @@
 name: Test find workflow run
 on:
-  workflow_dispatch:
-    inputs:
-      sha:
-        type: string
-        required: true
-        description: Head SHA of the pull request
-      pr:
-        type: number
-        required: true
-        description: Pull request number
   pull_request:
 
 jobs:
@@ -17,31 +7,9 @@ jobs:
     name: Find workflow run
     runs-on: ubuntu-22.04
     steps:
-      - name: Find CI workflow run for PR
-        id: find-workflow-run
+      - name: Debug - SHA values
         uses: actions/github-script@v7
-        continue-on-error: true
         with:
           script: |
-            // Find the last successful workflow run for the current PR that has the documentation artifact.
-            const owner = 'FakeItEasy';
-            const repo = 'FakeItEasy';
-            const runsResponse = await github.rest.actions.listWorkflowRuns({
-              owner,
-              repo,
-              workflow_id: 'ci.yml',
-              event: 'pull_request',
-              head_sha: '${{ github.event.inputs.sha }}',
-              status: 'success'
-            });
-            const runs = runsResponse.data.workflow_runs;
-            runs.sort((a, b) => b.created_at.getTime() - a.created_at.getTime());
-            const run = runs[0];
-            if (!run) {
-              core.setFailed('Could not find a successful workflow run for the PR');
-              return;
-            }
-            core.setOutput('run-id', run.id);
-      - name: Display id of the workflow run
-        run: |
-          echo "Found workflow run id: ${{ steps.find-workflow-run.outputs.run-id }}"
+            core.info('context.sha: ' + context.sha);
+            core.info('github.event.pull_request.head.sha: ${{ github.event.pull_request.head.sha }}')
