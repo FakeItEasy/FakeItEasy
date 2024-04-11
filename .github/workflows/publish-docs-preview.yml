@@ -44,6 +44,7 @@ jobs:
         with:
           name: documentation
           path: documentation/
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           run-id: ${{ steps.find-workflow-run.outputs.run-id }}
 
       - name: Publish files
