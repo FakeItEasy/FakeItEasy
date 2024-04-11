@@ -24,7 +24,7 @@ jobs:
               repo,
               workflow_id: 'ci.yml',
               event: 'pull_request',
-              head_sha: context.sha,
+              head_sha: '${{ github.event.pull_request.head.sha }}',
               status: 'success'
             });
             const runs = runsResponse.data.workflow_runs;
