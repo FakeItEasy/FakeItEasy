@@ -1,4 +1,5 @@
 name: Publish docs preview
+run-name: "Publish docs preview for PR #${{ github.event.pull_request.number }}"
 on:
   pull_request_target:
     types: labeled
@@ -65,12 +66,13 @@ jobs:
         id: set-pr-comment
         if: ${{ always() }}
         run: |
+          runUrl="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
           if [[ "${{ steps.publish-files.outcome }}" == "success" ]]; then
             comment=":white_check_mark: Publish docs preview: Successfully published [here](${{ steps.publish-files.outputs.docs-preview-url }})."
           elif [[ "${{ steps.download-artifact.outcome }}" != "success" ]]; then
-            comment=":x: Publish docs preview: failed to download documentation artifact."
+            comment=":x: Publish docs preview: failed to download documentation artifact. [See workflow run for details]($runUrl)."
           else
-            comment=":x: Publish docs preview: failed to publish."
+            comment=":x: Publish docs preview: failed to publish. [See workflow run for details]($runUrl)."
           fi
           echo "pr-comment=$comment" >> $GITHUB_OUTPUT
 
@@ -85,5 +87,3 @@ jobs:
           if [[ "${{ steps.publish-files.outcome }}" != "success" ]]; then
             exit 1
           fi
-
-
