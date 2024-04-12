@@ -1,4 +1,5 @@
 name: Publish docs preview
+run-name: "Publish docs preview for PR #${{ github.event.pull_request.number }}"
 on:
   pull_request_target:
     types: labeled
@@ -85,5 +86,3 @@ jobs:
           if [[ "${{ steps.publish-files.outcome }}" != "success" ]]; then
             exit 1
           fi
-
-
