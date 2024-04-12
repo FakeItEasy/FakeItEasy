@@ -66,7 +66,7 @@ jobs:
         id: set-pr-comment
         if: ${{ always() }}
         run: |
-          runUrl="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          runUrl="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           if [[ "${{ steps.publish-files.outcome }}" == "success" ]]; then
             comment=":white_check_mark: Publish docs preview: Successfully published [here](${{ steps.publish-files.outputs.docs-preview-url }})."
           elif [[ "${{ steps.download-artifact.outcome }}" != "success" ]]; then
