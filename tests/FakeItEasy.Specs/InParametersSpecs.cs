@@ -79,9 +79,7 @@ namespace FakeItEasy.Specs
 
 #if LACKS_FAKEABLE_GENERIC_IN_PARAMETERS
         // A characterization test, representing the current capabilities of the code, not the desired state.
-        // If it start failing, update it and fix the "What can be faked" documentation page.
-        //
-        // https://github.com/FakeItEasy/FakeItEasy/issues/1382 tracks this failing.
+        // If it starts failing, update it and fix the "What can be faked" documentation page.
         [Scenario]
         public void FakingGenericInParam(Exception exception)
         {

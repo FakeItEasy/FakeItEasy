@@ -20,8 +20,9 @@ Note that special steps will need to be taken to
 
 ### Types whose methods have `in` parameters
 
-Generic types that contain methods having a parameter modified by the `in` keyword cannot be faked by FakeItEasy.
-This limitation is tracked as [issue 1382](https://github.com/FakeItEasy/FakeItEasy/issues/1382).
+Due to deficiencies in earlier .NET framework releases, generic types that contain methods having
+a parameter modified by the `in` keyword cannot be faked by FakeItEasy running on target frameworks
+earlier than .NET 6.
 
 ### Where do the constructor arguments come from?
   
