@@ -20,7 +20,7 @@ Suppose we want to make sure that we send correct messages to the logger.
 We can record the first argument to each `Log` call in a variable of type
 `Captured` and verify the values in the "assert" phase of the test.
 
-```csharp title="simple capture" linenums="1" hl_lines="2 6 17 22"
+```csharp title="simple capture" linenums="1" hl_lines="2 6 8 17 22"
 --8<--
 recipes/FakeItEasy.Recipes.CSharp/CapturingArguments.cs:SimpleCapture
 --8<--
@@ -32,6 +32,12 @@ This is a fairly standard test with fakes, except we:
 * use the `Captured` object's `_` member to configure the call to capture any values for that argument
   (this is analogous to the `A<T>._` member, and just like it, there is a matching `Ignored` member in
   case you prefer that name)
+* specify that the method will [do nothing](doing-nothing.md). 
+  As with any attempt to [configure a fake object's behavior](specifying-a-call-to-configure), it's the final
+  action that completes the `A.CallTo` sequence. Without it, there's no change to the fake object's
+  behavior, and no values will be captured on calls to the method. You don't need to pair `DoesNothing` with
+  configuration that uses a capturing argument: you could return values, throw exceptions, or whatever;
+  it was just appropriate here for a method that returns nothing.
 * use `Values` to access all the captured values so they can be asserted
 * (alternative flow) use `GetLastValue` to access the most recent captured value so it can be asserted.
   This will throw a `FakeItEasy.ExpectationException` if no values have been captured.
