@@ -17,10 +17,16 @@ are just used to identify which call to configure, after which
 `A.CallTo` returns an object that can be used to specify how the fake
 should behave when the call is made.
 
+???+ note "Use an action to complete call configuration"
+    Specifying the call via `A.CallTo` and related methods does not
+    have any effect on the fake object. You must include an action
+    for the call to perform to alter the behavior of the fake object.
 
-Many types of actions can be specified, including
-[returning various values](specifying-return-values.md),
-[throwing exceptions](throwing-exceptions.md), and more.
+    There are many types of actions that can be specified, including
+    [returning various values](specifying-return-values.md),
+    [throwing exceptions](throwing-exceptions.md), and more. Even
+    [doing nothing](doing-nothing.md), which may be required for a
+    void method.
 
 ## Specifying a call to a property setter
 
