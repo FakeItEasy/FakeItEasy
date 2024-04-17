@@ -18,11 +18,11 @@ namespace FakeItEasy.Tests.Creation.DelegateProxies
             var proxyGeneratorResult = DelegateProxyGenerator.GenerateProxy(typeof(Action), fakeCallProcessorProvider);
 
             // Assert
-            var generatedProxy = proxyGeneratorResult.GeneratedProxy;
+            var generatedProxy = (Action)proxyGeneratorResult.GeneratedProxy!;
             generatedProxy.Should().NotBeNull("we need a proxy");
 
             A.CallTo(() => fakeCallProcessorProvider.Fetch(A<object>._)).MustNotHaveHappened();
-            A.CallTo(() => fakeCallProcessorProvider.EnsureInitialized(generatedProxy!)).MustHaveHappened();
+            A.CallTo(() => fakeCallProcessorProvider.EnsureInitialized(generatedProxy.Target!, generatedProxy)).MustHaveHappened();
         }
     }
 }

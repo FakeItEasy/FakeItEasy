@@ -3,7 +3,7 @@ namespace FakeItEasy.Core
     /// <summary>
     /// The responsibility of this interface is to instantiate a new <see cref="IFakeCallProcessor"/> and to fully initialize it (e.g.
     /// applying the initial configuration). This should happen one time on the first call of <see cref="Fetch"/> or
-    /// <see cref="EnsureInitialized"/>.
+    /// <see cref="EnsureInitialized(object, object?)"/>.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -25,5 +25,12 @@ namespace FakeItEasy.Core
         /// </summary>
         /// <param name="proxy">The corresponding proxy object of the new <see cref="IFakeCallProcessor"/>.</param>
         void EnsureInitialized(object proxy);
+
+        /// <summary>
+        /// Ensures that the <see cref="IFakeCallProcessor"/> is initialized (and can be used to retrieve the proxy's fake call processor later on).
+        /// </summary>
+        /// <param name="proxy">The corresponding proxy object of the new <see cref="IFakeCallProcessor"/>.</param>
+        /// <param name="alias">Another representation of the Fake. Popular when faking a delegate.</param>
+        void EnsureInitialized(object proxy, object alias);
     }
 }

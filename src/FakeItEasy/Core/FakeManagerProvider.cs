@@ -5,7 +5,7 @@ namespace FakeItEasy.Core
 
     /// <summary>
     /// Implementation of <see cref="IFakeCallProcessorProvider"/>, which returns a <see cref="FakeManager"/> as "call processor" lazily (on
-    /// the first call of <see cref="Fetch"/> or <see cref="EnsureInitialized"/>).
+    /// the first call of <see cref="Fetch"/> or <see cref="EnsureInitialized(object, object?)"/>).
     /// </summary>
     internal class FakeManagerProvider : IFakeCallProcessorProvider
     {
@@ -51,7 +51,9 @@ namespace FakeItEasy.Core
             }
         }
 
-        public void EnsureInitialized(object proxy)
+        public void EnsureInitialized(object proxy) => this.EnsureInitialized(proxy, null);
+
+        public void EnsureInitialized(object proxy, object? alias)
         {
             Guard.AgainstNull(proxy);
 
@@ -62,8 +64,13 @@ namespace FakeItEasy.Core
                     this.initializedFakeManager = this.fakeManagerFactory(this.typeOfFake, proxy, this.proxyOptions.Name);
 
                     this.fakeManagerAccessor.SetFakeManager(proxy, this.initializedFakeManager);
+                    if (alias is not null)
+                    {
+                        this.fakeManagerAccessor.SetFakeManager(alias, this.initializedFakeManager);
+                    }
 
-                    this.ApplyInitialConfiguration(proxy);
+                    // If it exists, the alias will have a more appropriate type than the proxy.
+                    this.ApplyInitialConfiguration(alias ?? proxy);
 
                     this.initializedFakeManager.CaptureInitialState();
                 }

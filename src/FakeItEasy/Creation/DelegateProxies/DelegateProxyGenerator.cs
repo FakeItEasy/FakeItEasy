@@ -45,10 +45,10 @@ namespace FakeItEasy.Creation.DelegateProxies
             // helper method provided by DynamicProxy:
             var delegateProxy = ProxyUtil.CreateDelegateToMixin(proxy, typeOfProxy);
 
-            fakeCallProcessorProvider.EnsureInitialized(proxy);
+            fakeCallProcessorProvider.EnsureInitialized(proxy, delegateProxy);
 
-            var a = ServiceLocator.Resolve<IFakeManagerAccessor>();
-            a.SetFakeManager(delegateProxy, a.GetFakeManager(proxy));
+            // var a = ServiceLocator.Resolve<IFakeManagerAccessor>();
+            // a.SetFakeManager(delegateProxy, a.GetFakeManager(proxy));
             return new ProxyGeneratorResult(delegateProxy);
         }
 
