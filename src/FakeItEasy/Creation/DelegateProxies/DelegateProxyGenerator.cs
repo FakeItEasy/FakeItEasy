@@ -2,13 +2,9 @@ namespace FakeItEasy.Creation.DelegateProxies
 {
     using System;
     using System.Collections.Concurrent;
-    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-    using System.Linq.Expressions;
-    using System.Reflection;
     using Castle.DynamicProxy;
-    using FakeItEasy.Configuration;
     using FakeItEasy.Core;
 
     internal static class DelegateProxyGenerator
@@ -22,8 +18,6 @@ namespace FakeItEasy.Creation.DelegateProxies
             IFakeCallProcessorProvider fakeCallProcessorProvider)
         {
             Guard.AgainstNull(typeOfProxy);
-
-            var invokeMethod = typeOfProxy.GetMethod("Invoke")!;
 
             if (!IsAccessibleToDynamicProxy(typeOfProxy))
             {
@@ -39,10 +33,18 @@ namespace FakeItEasy.Creation.DelegateProxies
                 }
             }
 
-            var eventRaiser = new DelegateCallInterceptedEventRaiser(fakeCallProcessorProvider, invokeMethod, typeOfProxy);
+            var options = new ProxyGenerationOptions();
+            options.AddDelegateTypeMixin(typeOfProxy);
 
-            fakeCallProcessorProvider.EnsureInitialized(eventRaiser.Instance);
-            return new ProxyGeneratorResult(eventRaiser.Instance);
+            var delegateProxyInterceptor = new DelegateProxyInterceptor(fakeCallProcessorProvider);
+            var proxy = ProxyGenerator.CreateClassProxy(typeof(object), options, delegateProxyInterceptor);
+
+            var delegateProxy = ProxyUtil.CreateDelegateToMixin(proxy, typeOfProxy);
+            delegateProxyInterceptor.SetDelegate(delegateProxy);
+
+            fakeCallProcessorProvider.EnsureInitialized(delegateProxy);
+
+            return new ProxyGeneratorResult(delegateProxy);
         }
 
         private static bool IsAccessibleToDynamicProxy(Type type)
@@ -65,169 +67,20 @@ namespace FakeItEasy.Creation.DelegateProxies
             }
         }
 
-        private static Delegate CreateDelegateProxy(
-            Type typeOfProxy, MethodInfo invokeMethod, DelegateCallInterceptedEventRaiser eventRaiser)
+        private class DelegateProxyInterceptor(IFakeCallProcessorProvider fakeCallProcessorProvider) : IInterceptor
         {
-            var parameterExpressions =
-                invokeMethod.GetParameters().Select(x => Expression.Parameter(x.ParameterType, x.Name)).ToArray();
+            private Delegate? theDelegate;
 
-            var body = CreateBodyExpression(invokeMethod, eventRaiser, parameterExpressions);
-            return Expression.Lambda(typeOfProxy, body, parameterExpressions).Compile();
-        }
-
-        // Generate a method that:
-        // - wraps its arguments in an object array
-        // - passes this array to eventRaiser.Raise()
-        // - assigns the output values back to the ref/out parameters
-        // - casts and returns the result of eventRaiser.Raise()
-        //
-        // For instance, for a delegate like this:
-        //
-        // delegate int Foo(int x, ref int y, out int z);
-        //
-        // We generate a method like this:
-        //
-        // int ProxyFoo(int x, ref int y, out int z)
-        // {
-        //     var arguments = new[]{ (object)x, (object)y, (object)z };
-        //     var result = (int)eventRaiser.Raise(arguments);
-        //     y = (int)arguments[1];
-        //     z = (int)arguments[2];
-        //     return result;
-        // }
-        //
-        // Or, for a delegate with void return type:
-        //
-        // delegate void Foo(int x, ref int y, out int z);
-        //
-        // void ProxyFoo(int x, ref int y, out int z)
-        // {
-        //     var arguments = new[]{ (object)x, (object)y, (object)z };
-        //     eventRaiser.Raise(arguments);
-        //     y = (int)arguments[1];
-        //     z = (int)arguments[2];
-        // }
-        private static BlockExpression CreateBodyExpression(
-            MethodInfo delegateMethod,
-            DelegateCallInterceptedEventRaiser eventRaiser,
-            ParameterExpression[] parameterExpressions)
-        {
-            bool isVoid = delegateMethod.ReturnType == typeof(void);
-
-            // Local variables of the generated method
-            var arguments = Expression.Variable(typeof(object[]), "arguments");
-            var result = isVoid ? null : Expression.Variable(delegateMethod.ReturnType, "result");
-
-            var bodyExpressions = new List<Expression>();
-
-            bodyExpressions.Add(Expression.Assign(arguments, WrapParametersInObjectArray(parameterExpressions)));
-
-            Expression call = Expression.Call(
-                Expression.Constant(eventRaiser), DelegateCallInterceptedEventRaiser.RaiseMethod, arguments);
-
-            if (!isVoid)
+            public void SetDelegate(Delegate newDelegate)
             {
-                // If the return type is non void, cast the result of eventRaiser.Raise()
-                // to the real return type and assign to the result variable
-                call = Expression.Assign(result!, Expression.Convert(call, delegateMethod.ReturnType));
+                this.theDelegate = newDelegate;
             }
 
-            bodyExpressions.Add(call);
-
-            // After the call, copy the values back to the ref/out parameters
-            for (int index = 0; index < parameterExpressions.Length; index++)
+            public void Intercept(IInvocation invocation)
             {
-                var parameter = parameterExpressions[index];
-                if (parameter.IsByRef)
-                {
-                    var assignment = AssignParameterFromArrayElement(arguments, index, parameter);
-                    bodyExpressions.Add(assignment);
-                }
-            }
-
-            // Return the result if the return type is non-void
-            if (!isVoid)
-            {
-                bodyExpressions.Add(result!);
-            }
-
-            var variables = isVoid ? new[] { arguments } : new[] { arguments, result! };
-            return Expression.Block(variables, bodyExpressions);
-        }
-
-        private static BinaryExpression AssignParameterFromArrayElement(
-            ParameterExpression arguments, int index, ParameterExpression parameter)
-        {
-            return Expression.Assign(
-                parameter,
-                Expression.Convert(Expression.ArrayAccess(arguments, Expression.Constant(index)), parameter.Type));
-        }
-
-        private static NewArrayExpression WrapParametersInObjectArray(ParameterExpression[] parameterExpressions)
-        {
-            return Expression.NewArrayInit(
-                typeof(object), parameterExpressions.Select(x => Expression.Convert(x, typeof(object))));
-        }
-
-        private class DelegateCallInterceptedEventRaiser
-        {
-            public static readonly MethodInfo RaiseMethod = typeof(DelegateCallInterceptedEventRaiser).GetMethod(nameof(Raise))!;
-
-            private readonly IFakeCallProcessorProvider fakeCallProcessorProvider;
-            private readonly MethodInfo method;
-
-            public DelegateCallInterceptedEventRaiser(IFakeCallProcessorProvider fakeCallProcessorProvider, MethodInfo method, Type type)
-            {
-                this.fakeCallProcessorProvider = fakeCallProcessorProvider;
-                this.method = method;
-                this.Instance = CreateDelegateProxy(type, method, this);
-            }
-
-            public Delegate Instance { get; }
-
-            public object? Raise(object[] arguments)
-            {
-                var call = new DelegateFakeObjectCall(this.Instance, this.method, arguments);
-                this.fakeCallProcessorProvider.Fetch(this.Instance).Process(call);
-                return call.ReturnValue;
-            }
-        }
-
-        private class DelegateFakeObjectCall : InterceptedFakeObjectCall
-        {
-            private readonly object[] originalArguments;
-
-            public DelegateFakeObjectCall(Delegate instance, MethodInfo method, object[] arguments)
-            {
-                this.FakedObject = instance;
-                this.originalArguments = arguments.ToArray();
-                this.Arguments = new ArgumentCollection(arguments, method);
-                this.Method = method;
-            }
-
-            public override object? ReturnValue { get; set; }
-
-            public override MethodInfo Method { get; }
-
-            public override ArgumentCollection Arguments { get; }
-
-            public override object FakedObject { get; }
-
-            public override void CallBaseMethod()
-            {
-                throw new FakeConfigurationException(ExceptionMessages.DelegateCannotCallBaseMethod);
-            }
-
-            public override void SetArgumentValue(int index, object? value)
-            {
-                this.Arguments.GetUnderlyingArgumentsArray()[index] = value;
-            }
-
-            public override CompletedFakeObjectCall ToCompletedCall()
-            {
-                return new CompletedFakeObjectCall(
-                    this,
-                    this.originalArguments);
+                Guard.AgainstNull(invocation);
+                var call = new CastleInvocationDelegateCallAdapter(invocation, this.theDelegate!);
+                fakeCallProcessorProvider.Fetch(invocation.Proxy).Process(call);
             }
         }
     }
