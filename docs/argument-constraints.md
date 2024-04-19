@@ -111,6 +111,7 @@ a `Func`.
 For another example of using `That.Matches`, see Jonathan Channon's
 [Comparing object instances with FakeItEasy](https://blog.jonathanchannon.com/2013/09/11/comparing-object-instances-with-fakeiteasy).
 
+
 ### Always place `Ignored` and `That` inside `A.CallTo`
 
 The `Ignored` (and `_`) and `That` matchers must be placed within the
@@ -175,6 +176,15 @@ or `WhenArgumentsMatch`, described below.
 
 In addition to constraining by `ref` argument values, calls can be explicitly configured to
 [assign outgoing `ref` argument values](assigning-out-and-ref-parameters).
+
+
+## Arguments of anonymous types
+
+Anonymous types are not shared between assemblies, so it's not possible to make an argument
+constraint that matches an anonymous type from another assembly. Instead, you may use
+`A.CallTo(fake).Where(...)` as described in
+[Specifying a call to any method or property](specifying-a-call-to-configure.md#specifying-a-call-to-any-method-or-property).
+
 
 ## Overriding argument matchers
 
