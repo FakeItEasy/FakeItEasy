@@ -93,9 +93,12 @@ A.CallTo(fakeShop).WithReturnType<string>().Returns("sugar tastes good");
 // if the configured return value doesn't match the called method's return type.
 A.CallTo(fakeShop).WithNonVoidReturnType().Returns("sugar tastes good");
 
-// Or create a sophisticated test with a predicate that acts on an IFakeObjectCall
-A.CallTo(fakeShop).Where(call => call.Arguments.Count > 4)
-                  .Throws(new Exception("too many arguments is bad");
+// Or create a sophisticated test with a predicate that acts on an IFakeObjectCall.
+// One use case is when the call's arguments include an object of an anonymous type,
+// since it's impossible to create argument constraints for anonymous types.
+A.CallTo(fakeShop).Where(call => call.Method.Name == "AnonymousArgEater")
+                  .WithReturnType<string>()
+                  .Returns("no-name candy");
 ```
 
 `A.CallTo(object)` can also be used to specify write-only properties and
