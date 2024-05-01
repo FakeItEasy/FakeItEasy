@@ -6,7 +6,7 @@ using Microsoft.CodeAnalysis;
 
 public abstract class StronglyTypedOverloadsGenerator : ISourceGenerator
 {
-    protected const int MaximumTypeParameterCount = 8;
+    private const int MaximumTypeParameterCount = 8;
 
     private static readonly string[] Ordinals =
     [
@@ -43,6 +43,9 @@ public abstract class StronglyTypedOverloadsGenerator : ISourceGenerator
     {
         // No initialization required
     }
+
+    protected static string OverloadMethod(Func<int, string> generator) =>
+        Escalate(MaximumTypeParameterCount, "\n\n", generator);
 
     protected static string TypeParamDocsSource(int typeParametersCount) =>
         Escalate(

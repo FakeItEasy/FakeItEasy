@@ -16,7 +16,7 @@ public class ExceptionThrowerGenerator : StronglyTypedOverloadsGenerator
 
                 public partial interface IExceptionThrowerConfiguration<out TInterface>
                 {
-            {{Indent(2, GenerateMethodDeclarations())}}
+            {{Indent(2, OverloadMethod(GenerateMethodDeclaration))}}
                 }
 
                 internal partial class RuleBuilder
@@ -52,8 +52,6 @@ public class ExceptionThrowerGenerator : StronglyTypedOverloadsGenerator
             """;
     }
 
-    private static string GenerateMethodDeclarations() => Escalate(MaximumTypeParameterCount, "\n\n", GenerateMethodDeclaration);
-
     private static string GenerateMethodDeclaration(int typeParametersCount)
     {
         var typeParamList = TypeParamList(typeParametersCount);
@@ -71,7 +69,7 @@ public class ExceptionThrowerGenerator : StronglyTypedOverloadsGenerator
     }
 
     private static string GenerateMethodImplementations(string configurationInterface) =>
-        Escalate(MaximumTypeParameterCount, "\n\n", i => GenerateMethodImplementation(configurationInterface, i));
+        OverloadMethod(i => GenerateMethodImplementation(configurationInterface, i));
 
     private static string GenerateMethodImplementation(string configurationInterface, int typeParametersCount)
     {

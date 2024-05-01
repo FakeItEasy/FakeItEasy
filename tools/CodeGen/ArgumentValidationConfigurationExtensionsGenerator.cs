@@ -16,14 +16,11 @@ public class ArgumentValidationConfigurationExtensionsGenerator : StronglyTypedO
 
                 public static partial class ArgumentValidationConfigurationExtensions
                 {
-            {{Indent(2, GenerateMethodImplementations())}}
+            {{Indent(2, OverloadMethod(GenerateMethodImplementation))}}
                 }
             }
             """;
     }
-
-    private static string GenerateMethodImplementations() =>
-        Escalate(MaximumTypeParameterCount, "\n\n", GenerateMethodImplementation);
 
     private static string GenerateMethodImplementation(int typeParametersCount)
     {
