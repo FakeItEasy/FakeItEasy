@@ -16,27 +16,25 @@ The build requires that a few pieces of software be installed on the host comput
 FakeItEasy can be built and tested on Windows and Linux operating systems and probably on Mac (but we've not tried it), with few differences between the two.
 
 The default [build profile](#building-only-a-subset-of-the-supported-target-frameworks) builds FakeItEasy for
-.NET Framework 4.6.2 (only on Windows),
-.NET Standard 2.0,
+.NET 8.0,
+.NET 6.0,
 .NET Standard 2.1,
-.NET 6.0,
-and .NET 8.0,
+.NET Standard 2.0,
+and .NET Framework 4.6.2 (only on Windows)
 and runs the tests on
-.NET Framework 4.6.2 (only on Windows),
-.NET Core 2.1,
-.NET Core 3.1,
+.NET 8.0,
 .NET 6.0,
-and .NET 8.0.
+.NET Core 3.1,
+.NET Core 2.1,
+and .NET Framework 4.6.2 (only on Windows).
+
 
 Ensure that the following are installed:
 
-1. The .NET Core 2.1 and 3.1 runtimes
-
+1. An up-to-date version of the .NET 8.0 SDK (currently this means 8.0.204 or later)
 2. The .NET 6.0 runtime
-
-3. The .NET Framework 4.6.2 or higher (only on Windows)
-
-4. An up-to-date version of the .NET 8.0 SDK (currently this means 8.0.204 or later)
+3. The .NET Core 2.1 and 3.1 runtimes
+4. The .NET Framework 4.6.2 or higher (only on Windows)
 
 You might not need everything to run a [partial build](#building-only-a-subset-of-the-supported-target-frameworks).
 
@@ -100,11 +98,11 @@ available:
 
 * `full`: the default profile, builds all supported target frameworks supported
   on the current platform
-* `net462`: builds and tests only the .NET Framework 4.6.2 target framework
-* `netstandard2.0`: builds only .NET Standard 2.0 target framework and tests on .NET Core 2.1
-* `netstandard2.1`: builds only .NET Standard 2.1 target framework and tests on .NET Core 3.1
-* `net6.0`: builds and tests only the .NET 6.0 target framework
 * `net8.0`: builds and tests only the .NET 8.0 target framework
+* `net6.0`: builds and tests only the .NET 6.0 target framework
+* `netstandard2.1`: builds only .NET Standard 2.1 target framework and tests on .NET Core 3.1
+* `netstandard2.0`: builds only .NET Standard 2.0 target framework and tests on .NET Core 2.1
+* `net462`: builds and tests only the .NET Framework 4.6.2 target framework
 
 In order to select a profile, create a `FakeItEasy.user.props` file at the root
 of the repository by running
