@@ -11,11 +11,20 @@ At the time of writing the full build (including all target frameworks) can only
 
 ## Prerequisites
 
-The build requires that a few pieces of software be installed on the host computer. We're somewhat aggressive about adoptiong new language features and the like, so rather than specifying exactly which versions are required, we'll tend toward "latest" or "at least" forms of guidance. If it seems you have an incompatible version of the software, prefer to upgrade rather than downgrade.
+The build requires that a few pieces of software be installed on the host computer. We're somewhat aggressive about adopting new language features and the like, so rather than specifying exactly which versions are required, we'll tend toward "latest" or "at least" forms of guidance. If it seems you have an incompatible version of the software, prefer to upgrade rather than downgrade.
 
-### On Windows
+FakeItEasy can be built and tested on Windows and Linux operating systems and probably on Mac (but we've not tried it), with few differences between the two.
 
-The default [build profile](#building-only-a-subset-of-the-supported-target-frameworks) on Windows builds FakeItEasy for .NET Framework 4.6.2, .NET Standard 2.0, .NET Standard 2.1, and .NET 6.0, and runs the tests on .NET Framework 4.6.2, .NET Core 2.1, .NET Core 3.1, and .NET 6.0.
+The default [build profile](#building-only-a-subset-of-the-supported-target-frameworks) builds FakeItEasy for
+.NET Framework 4.6.2 (only on Windows),
+.NET Standard 2.0,
+.NET Standard 2.1,
+and .NET 6.0,
+and runs the tests on
+.NET Framework 4.6.2 (only on Windows),
+.NET Core 2.1,
+.NET Core 3.1,
+and .NET 6.0.
 
 Ensure that the following are installed:
 
@@ -23,28 +32,16 @@ Ensure that the following are installed:
 
 2. The .NET 6.0 runtime
 
-3. The .NET Framework 4.6.2 or higher
+3. The .NET Framework 4.6.2 or higher (only on Windows)
 
 4. An up-to-date version of the .NET 7.0 SDK (currently this means 7.0.203 or later)
 
 You might not need everything to run a [partial build](#building-only-a-subset-of-the-supported-target-frameworks).
 
-In order to build from Visual Studio, you will also need:
+We've only tested building FakeItEasy from Visual Studio on Windows, which requires:
 
 1. Visual Studio 2022 (17.0 or later)
 2. Install the ".NET Framework 4.6.2 targeting pack" individual component (via the Visual Studio installer)
-
-### On Linux
-
-The default [build profile](#building-only-a-subset-of-the-supported-target-frameworks) on Linux builds FakeItEasy for .NET Standard 2.0, .NET Standard 2.1, and .NET 6.0, and runs the tests on .NET Core 2.1, .NET Core 3.1, and .NET 6.0 (the .NET Framework isn't supported on Linux).
-
-Ensure the following are installed:
-
-1. The .NET Core 2.1 and 3.1 runtimes
-
-2. The .NET 6.0 runtime
-
-3. An up-to-date version of the .NET 7.0 SDK (currently this means 7.0.203 or later)
 
 ## Building
 
@@ -54,7 +51,8 @@ Using a command prompt, navigate to your clone root folder and execute:
 - `./build.sh` on Linux
 - `./build.ps1` on Windows or Linux, if Powershell is installed
 
-This executes the default build targets to produce .NET Standard and/or .NET Framework artifacts, depending on the selected [build profile](#building-only-a-subset-of-the-supported-target-frameworks).
+This executes the default build targets to produce artifacts for various target frameworks,
+depending on the selected [build profile](#building-only-a-subset-of-the-supported-target-frameworks).
 
 After the build has completed, the build artifacts will be located in `artifacts`.
 
@@ -89,9 +87,9 @@ After the build has completed, the build artifacts will be located in `artifacts
 
 ### Building only a subset of the supported target frameworks
 
-FakeItEasy targets multiple versions of .NET (.NET Framework 4.6.2, .NET
-Standard 2.0 and 2.1, and .NET 6.0), and the tests also run on multiple frameworks (.NET
-Framework 4.6.2, .NET Core 2.1 and 3.1, and .NET 6.0). A consequence is that a full
+FakeItEasy is built to target and be tested against multiple versions of .NET as listed under
+[Prerequisites](#prerequisites) above.
+A consequence is that a full
 build can take a significant amount of time. When working on the code, you might
 want a faster feedback loop. To this end, FakeItEasy's build infrastructure has
 the concept of "build profiles", which makes it possible to build only a subset
