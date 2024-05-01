@@ -35,7 +35,6 @@
 
   <ItemGroup Condition="!$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'netstandard2.1'))">
     <Compile Include="../FakeItEasy/ValueTaskReturnValueConfigurationExtensions.cs" />
-    <Compile Include="../FakeItEasy/ValueTaskReturnValueConfigurationExtensions.StronglyTyped.cs" />
     <Compile Include="../FakeItEasy/ValueTaskAsyncReturnValueConfigurationExtensions.cs" />
   </ItemGroup>
 

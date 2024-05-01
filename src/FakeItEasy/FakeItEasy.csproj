@@ -60,21 +60,8 @@
     <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="ValueTaskReturnValueConfigurationExtensions.StronglyTyped.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ValueTaskReturnValueConfigurationExtensions.StronglyTyped.cs</LastGenOutput>
-    </None>
-    <Compile Update="ValueTaskReturnValueConfigurationExtensions.StronglyTyped.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>ValueTaskReturnValueConfigurationExtensions.StronglyTyped.tt</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
   <ItemGroup Condition="!$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'netstandard2.1'))">
     <Compile Remove="ValueTaskReturnValueConfigurationExtensions.cs" />
-    <Compile Remove="ValueTaskReturnValueConfigurationExtensions.StronglyTyped.cs" />
     <Compile Remove="ValueTaskAsyncReturnValueConfigurationExtensions.cs" />
   </ItemGroup>
 
