@@ -61,10 +61,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="ReturnValueConfigurationExtensions.StronglyTyped.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ReturnValueConfigurationExtensions.StronglyTyped.cs</LastGenOutput>
-    </None>
     <None Update="ValueTaskAsyncReturnValueConfigurationExtensions.StronglyTyped.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ValueTaskAsyncReturnValueConfigurationExtensions.StronglyTyped.cs</LastGenOutput>
@@ -73,11 +69,6 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ValueTaskReturnValueConfigurationExtensions.StronglyTyped.cs</LastGenOutput>
     </None>
-    <Compile Update="ReturnValueConfigurationExtensions.StronglyTyped.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>ReturnValueConfigurationExtensions.StronglyTyped.tt</DependentUpon>
-    </Compile>
     <Compile Update="ValueTaskAsyncReturnValueConfigurationExtensions.StronglyTyped.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
