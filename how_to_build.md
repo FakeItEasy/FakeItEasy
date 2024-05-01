@@ -19,12 +19,14 @@ The default [build profile](#building-only-a-subset-of-the-supported-target-fram
 .NET Framework 4.6.2 (only on Windows),
 .NET Standard 2.0,
 .NET Standard 2.1,
-and .NET 6.0,
+.NET 6.0,
+and .NET 8.0,
 and runs the tests on
 .NET Framework 4.6.2 (only on Windows),
 .NET Core 2.1,
 .NET Core 3.1,
-and .NET 6.0.
+.NET 6.0,
+and .NET 8.0.
 
 Ensure that the following are installed:
 
@@ -34,7 +36,7 @@ Ensure that the following are installed:
 
 3. The .NET Framework 4.6.2 or higher (only on Windows)
 
-4. An up-to-date version of the .NET 7.0 SDK (currently this means 7.0.203 or later)
+4. An up-to-date version of the .NET 8.0 SDK (currently this means 8.0.204 or later)
 
 You might not need everything to run a [partial build](#building-only-a-subset-of-the-supported-target-frameworks).
 
