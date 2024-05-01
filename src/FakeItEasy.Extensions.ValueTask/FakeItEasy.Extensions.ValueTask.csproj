@@ -14,6 +14,21 @@
     <PackageTags>FakeItEasy;ValueTask</PackageTags>
   </PropertyGroup>
 
+  <PropertyGroup Label="Code generation properties">
+    <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+    <CompilerGeneratedFilesOutputPath>Generated</CompilerGeneratedFilesOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup Label="Code generation items">
+    <Compile Remove="$(CompilerGeneratedFilesOutputPath)/**/*.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../tools/CodeGen/CodeGen.csproj"
+                      OutputItemType="Analyzer"
+                      ReferenceOutputAssembly="false" />
+  </ItemGroup>
+
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
@@ -22,7 +37,6 @@
     <Compile Include="../FakeItEasy/ValueTaskReturnValueConfigurationExtensions.cs" />
     <Compile Include="../FakeItEasy/ValueTaskReturnValueConfigurationExtensions.StronglyTyped.cs" />
     <Compile Include="../FakeItEasy/ValueTaskAsyncReturnValueConfigurationExtensions.cs" />
-    <Compile Include="../FakeItEasy/ValueTaskAsyncReturnValueConfigurationExtensions.StronglyTyped.cs" />
   </ItemGroup>
 
   <ItemGroup>
