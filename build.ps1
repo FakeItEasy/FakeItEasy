@@ -1,3 +1,4 @@
+#!/usr/bin/env pwsh
 try {
     Push-Location $PSScriptRoot
     dotnet run --project "./tools/FakeItEasy.Build" -- $args
