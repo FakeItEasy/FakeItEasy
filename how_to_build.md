@@ -1,50 +1,35 @@
 # How to build
 
-These instructions are *only* for building from the command line, which includes compilation, test execution and packaging. This is the simplest way to build.
+These instructions focus on building from the command line, which includes compilation, test execution and packaging.
+This is the simplest way to build.
 It also replicates the build on the Continuous Integration (CI) build server and is the best indicator of whether a pull request will build.
+It's possible to build and test in various IDEs as well, but these may not perfectly replicate the official builds.
 
-You can also build the solution using Visual Studio 2022 17.0 or later, but this doesn't provide the same assurances as the command line build.
+## Supported frameworks and prerequisites
 
-At the time of writing the full build (including all target frameworks) can only run on Windows.
+FakeItEasy can be built and tested on Windows and Linux operating systems and probably on Mac (but we've not tried it) with a few differences between the OSes.
 
-[Partial builds](#building-only-a-subset-of-the-supported-target-frameworks) are supported on Linux (Ubuntu 18.04). This might also run on macOS, but hasn't been tested.
+The build requires that a few pieces of software be installed on the host computer. We're somewhat aggressive about adopting new language features and the like, so rather than specifying exactly which versions are required, we'll tend toward "latest" or "at least" forms of guidance. If it seems you have an incompatible version of the software, prefer to upgrade rather than downgrade.
 
-## Prerequisites
+To build FakeItEasy at all, you must have
+* an up-to-date version of the .NET 8.0 SDK (currently this means 8.0.204 or later)
 
-The build requires that a few pieces of software be installed on the host computer. We're somewhat aggressive about adoptiong new language features and the like, so rather than specifying exactly which versions are required, we'll tend toward "latest" or "at least" forms of guidance. If it seems you have an incompatible version of the software, prefer to upgrade rather than downgrade.
+FakeItEasy supports the following targets
 
-### On Windows
+| Target                | Tested On            | Additional prerequisites                   | Build Profile  |
+|-----------------------|----------------------|--------------------------------------------|----------------|
+| .NET 8.0              | .NET 8.0             |                                            | net8.0         |
+| .NET 6.0              | .NET 6.0             | .NET 6.0 runtime                           | net6.0         |
+| .NET Standard 2.1     | .NET Core 3.1        | .NET Core 3.1 runtime                      | netstandard2.1 |
+| .NET Standard 2.0     | .NET Core 2.1        | .NET Core 2.1 runtime                      | netstandard2.0 |
+| .NET Framework 4.6.2  | .NET Framework 4.6.2 | Windows OS, .NET Framework 4.6.2 or higher | net462         |
 
-The default [build profile](#building-only-a-subset-of-the-supported-target-frameworks) on Windows builds FakeItEasy for .NET Framework 4.6.2, .NET Standard 2.0, .NET Standard 2.1, and .NET 6.0, and runs the tests on .NET Framework 4.6.2, .NET Core 2.1, .NET Core 3.1, and .NET 6.0.
+The default [build profile](#building-only-a-subset-of-the-supported-target-frameworks) (called `full`)
+will build and test all targets that are supported on the active operating system, so will require all
+of the addtional prequisites listed above.
 
-Ensure that the following are installed:
-
-1. The .NET Core 2.1 and 3.1 runtimes
-
-2. The .NET 6.0 runtime
-
-3. The .NET Framework 4.6.2 or higher
-
-4. An up-to-date version of the .NET 7.0 SDK (currently this means 7.0.203 or later)
-
-You might not need everything to run a [partial build](#building-only-a-subset-of-the-supported-target-frameworks).
-
-In order to build from Visual Studio, you will also need:
-
-1. Visual Studio 2022 (17.0 or later)
-2. Install the ".NET Framework 4.6.2 targeting pack" individual component (via the Visual Studio installer)
-
-### On Linux
-
-The default [build profile](#building-only-a-subset-of-the-supported-target-frameworks) on Linux builds FakeItEasy for .NET Standard 2.0, .NET Standard 2.1, and .NET 6.0, and runs the tests on .NET Core 2.1, .NET Core 3.1, and .NET 6.0 (the .NET Framework isn't supported on Linux).
-
-Ensure the following are installed:
-
-1. The .NET Core 2.1 and 3.1 runtimes
-
-2. The .NET 6.0 runtime
-
-3. An up-to-date version of the .NET 7.0 SDK (currently this means 7.0.203 or later)
+[Partial builds](#building-only-a-subset-of-the-supported-target-frameworks) are supported on Windows and Linux.
+They might also run on macOS, but haven't been tested.
 
 ## Building
 
@@ -54,15 +39,14 @@ Using a command prompt, navigate to your clone root folder and execute:
 - `./build.sh` on Linux
 - `./build.ps1` on Windows or Linux, if Powershell is installed
 
-This executes the default build targets to produce .NET Standard and/or .NET Framework artifacts, depending on the selected [build profile](#building-only-a-subset-of-the-supported-target-frameworks).
+This executes the default build targets to produce artifacts for various target frameworks,
+depending on the selected [build profile](#building-only-a-subset-of-the-supported-target-frameworks).
 
 After the build has completed, the build artifacts will be located in `artifacts`.
 
-## Extras
-
 ### Running specific build tasks
 
-`build.cmd` wraps a [Bullseye](https://github.com/adamralph/bullseye) targets project, so you can use all the usual command line arguments that you would use with Bullseye, e.g.:
+`build.cmd`, `build.sh`, and `build.ps1` wrap a [Bullseye](https://github.com/adamralph/bullseye) targets project, so you can use all the usual command line arguments that you would use with Bullseye, e.g.:
 
 * View the full list of build targets:
 
@@ -85,41 +69,47 @@ After the build has completed, the build artifacts will be located in `artifacts
 
     `build.cmd -?`
 
-(On Linux, just replace `build.cmd` with `./build.sh` or `./build.ps1`)
+(Depending on your operating system or preferred shell, replace `build.cmd` with `./build.sh` or `./build.ps1`.)
+
+### Alternative flow: building with Visual Studio
+
+We've only tested building FakeItEasy from Visual Studio on Windows. It can be convenient,
+but is not official and does not provide the same assurance as a command-line build.
+The additional requirements are:
+
+1. Visual Studio 2022 (17.0 or later)
+2. Install the ".NET Framework 4.6.2 targeting pack" individual component (via the Visual Studio installer)
 
 ### Building only a subset of the supported target frameworks
 
-FakeItEasy targets multiple versions of .NET (.NET Framework 4.6.2, .NET
-Standard 2.0 and 2.1, and .NET 6.0), and the tests also run on multiple frameworks (.NET
-Framework 4.6.2, .NET Core 2.1 and 3.1, and .NET 6.0). A consequence is that a full
-build can take a significant amount of time. When working on the code, you might
-want a faster feedback loop. To this end, FakeItEasy's build infrastructure has
-the concept of "build profiles", which makes it possible to build only a subset
-of all the target frameworks supported by FakeItEasy. The following profiles are
-available:
+FakeItEasy is built to target and be tested against multiple versions of .NET as listed under
+[Supported frameworks and prerequisites](#supported-frameworks-and-prerequisites) above.
+In some cases, you may want to build only a subset of the frameworks. Perhaps you're
+unable to install a particular prerequisite, or you want to iterate quickly and so you
+want to try building a single framework for a while before finally testing with all
+frameworks.
 
-* `full`: the default profile, builds all supported target frameworks supported
-  on the current platform
-* `net462`: builds and tests only the .NET Framework 4.6.2 target framework
-* `netstandard2.0`: builds only .NET Standard 2.0 target framework and tests on .NET Core 2.1
-* `netstandard2.1`: builds only .NET Standard 2.1 target framework and tests on .NET Core 3.1
-* `net6.0`: builds and tests only the .NET 6.0 target framework
-* `net8.0`: builds and tests only the .NET 8.0 target framework
+To this end, FakeItEasy's build infrastructure has "build profiles", which makes it possible to
+build only a subset of the target frameworks. All the profiles listed above are available,
+including `full`, the default profile which builds all target frameworks supported on the current platform.
 
-In order to select a profile, create a `FakeItEasy.user.props` file at the root
+To activate a profile, create or update a `FakeItEasy.user.props` file at the root
 of the repository by running
 
 ```
-build.cmd initialize-user-properties
+build.cmd use-profile-<profile name>
 ```
 
-Thereafter
-you can switch profiles by replacing the contents of the `BuildProfile` element
-either by editing the file by hand or via a build target (which will actually
-create the file if it doesn't already exist). For example:
+For example:
 
 ```
 build.cmd use-profile-net8.0
+```
+
+or
+
+```
+build.cmd use-profile-full
 ```
 
 Note that Visual Studio will not reflect a change of build profile until you
