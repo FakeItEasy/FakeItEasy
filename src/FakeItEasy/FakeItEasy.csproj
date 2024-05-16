@@ -14,8 +14,23 @@
     <PackageTags>TDD;unittesting;mocks;mocking;fakes;faking;stubs;stubbing;spy;spies;doubles;isolation;substitutes;substitution</PackageTags>
   </PropertyGroup>
 
+  <PropertyGroup Label="Code generation properties">
+      <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+      <CompilerGeneratedFilesOutputPath>Generated</CompilerGeneratedFilesOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup Label="Code generation items">
+    <Compile Remove="$(CompilerGeneratedFilesOutputPath)/**/*.cs" />
+  </ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="Castle.Core" Version="5.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../tools/CodeGen/CodeGen.csproj"
+                      OutputItemType="Analyzer"
+                      ReferenceOutputAssembly="false" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
@@ -40,91 +55,9 @@
     <DefineConstants>$(DefineConstants);LACKS_NULLABLE_ATTRIBUTES;LACKS_ARRAY_EMPTY;LACKS_STRING_CONTAINS_COMPARISONTYPE;LACKS_CALLERARGUMENTEXPRESSION</DefineConstants>
   </PropertyGroup>
 
-  <ItemGroup>
-    <!-- T4 template support -->
-    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="ArgumentValidationConfigurationExtensions.StronglyTyped.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ArgumentValidationConfigurationExtensions.StronglyTyped.cs</LastGenOutput>
-    </None>
-    <None Update="Configuration\ExceptionThrower.StronglyTyped.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ExceptionThrower.StronglyTyped.cs</LastGenOutput>
-    </None>
-    <None Update="Configuration\OutAndRefParameters.StronglyTyped.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>OutAndRefParameters.StronglyTyped.cs</LastGenOutput>
-    </None>
-    <None Update="AsyncReturnValueConfigurationExtensions.StronglyTyped.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>AsyncReturnValueConfigurationExtensions.StronglyTyped.cs</LastGenOutput>
-    </None>
-    <None Update="CallbackConfigurationExtensions.StronglyTyped.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>CallbackConfigurationExtensions.StronglyTyped.cs</LastGenOutput>
-    </None>
-    <None Update="ReturnValueConfigurationExtensions.StronglyTyped.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ReturnValueConfigurationExtensions.StronglyTyped.cs</LastGenOutput>
-    </None>
-    <None Update="ValueTaskAsyncReturnValueConfigurationExtensions.StronglyTyped.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ValueTaskAsyncReturnValueConfigurationExtensions.StronglyTyped.cs</LastGenOutput>
-    </None>
-    <None Update="ValueTaskReturnValueConfigurationExtensions.StronglyTyped.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ValueTaskReturnValueConfigurationExtensions.StronglyTyped.cs</LastGenOutput>
-    </None>
-    <Compile Update="ArgumentValidationConfigurationExtensions.StronglyTyped.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>ArgumentValidationConfigurationExtensions.StronglyTyped.tt</DependentUpon>
-    </Compile>
-    <Compile Update="Configuration\ExceptionThrower.StronglyTyped.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>ExceptionThrower.StronglyTyped.tt</DependentUpon>
-    </Compile>
-    <Compile Update="Configuration\OutAndRefParameters.StronglyTyped.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>OutAndRefParameters.StronglyTyped.tt</DependentUpon>
-    </Compile>
-    <Compile Update="AsyncReturnValueConfigurationExtensions.StronglyTyped.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>AsyncReturnValueConfigurationExtensions.StronglyTyped.tt</DependentUpon>
-    </Compile>
-    <Compile Update="CallbackConfigurationExtensions.StronglyTyped.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>CallbackConfigurationExtensions.StronglyTyped.tt</DependentUpon>
-    </Compile>
-    <Compile Update="ReturnValueConfigurationExtensions.StronglyTyped.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>ReturnValueConfigurationExtensions.StronglyTyped.tt</DependentUpon>
-    </Compile>
-    <Compile Update="ValueTaskAsyncReturnValueConfigurationExtensions.StronglyTyped.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>ValueTaskAsyncReturnValueConfigurationExtensions.StronglyTyped.tt</DependentUpon>
-    </Compile>
-    <Compile Update="ValueTaskReturnValueConfigurationExtensions.StronglyTyped.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>ValueTaskReturnValueConfigurationExtensions.StronglyTyped.tt</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
   <ItemGroup Condition="!$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'netstandard2.1'))">
     <Compile Remove="ValueTaskReturnValueConfigurationExtensions.cs" />
-    <Compile Remove="ValueTaskReturnValueConfigurationExtensions.StronglyTyped.cs" />
     <Compile Remove="ValueTaskAsyncReturnValueConfigurationExtensions.cs" />
-    <Compile Remove="ValueTaskAsyncReturnValueConfigurationExtensions.StronglyTyped.cs" />
   </ItemGroup>
 
 </Project>
