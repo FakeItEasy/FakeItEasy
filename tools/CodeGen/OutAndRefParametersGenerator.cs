@@ -5,6 +5,11 @@ using Microsoft.CodeAnalysis;
 [Generator]
 public class OutAndRefParametersGenerator : StronglyTypedOverloadsGenerator
 {
+    protected override bool IsApplicable(GeneratorExecutionContext context)
+    {
+        return IsTypeInTargetAssembly(context, "FakeItEasy.Configuration.IOutAndRefParametersConfiguration`1");
+    }
+
     protected override string GenerateSource()
     {
         return $$"""

@@ -5,6 +5,11 @@ using Microsoft.CodeAnalysis;
 [Generator]
 public class ExceptionThrowerGenerator : StronglyTypedOverloadsGenerator
 {
+    protected override bool IsApplicable(GeneratorExecutionContext context)
+    {
+        return IsTypeInTargetAssembly(context, "FakeItEasy.Configuration.IExceptionThrowerConfiguration`1");
+    }
+
     protected override string GenerateSource()
     {
         return $$"""

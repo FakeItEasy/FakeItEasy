@@ -5,6 +5,11 @@ using Microsoft.CodeAnalysis;
 [Generator]
 public class ArgumentValidationConfigurationExtensionsGenerator : StronglyTypedOverloadsGenerator
 {
+    protected override bool IsApplicable(GeneratorExecutionContext context)
+    {
+        return IsTypeInTargetAssembly(context, "FakeItEasy.ArgumentValidationConfigurationExtensions");
+    }
+
     protected override string GenerateSource()
     {
         return $$"""

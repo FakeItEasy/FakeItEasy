@@ -5,6 +5,11 @@ using Microsoft.CodeAnalysis;
 [Generator]
 public class AsyncReturnValueConfigurationExtensionsGenerator : StronglyTypedOverloadsGenerator
 {
+    protected override bool IsApplicable(GeneratorExecutionContext context)
+    {
+        return IsTypeInTargetAssembly(context, "FakeItEasy.AsyncReturnValueConfigurationExtensions");
+    }
+
     protected override string GenerateSource()
     {
         return $$"""

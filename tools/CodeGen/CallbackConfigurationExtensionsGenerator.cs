@@ -5,6 +5,11 @@ using Microsoft.CodeAnalysis;
 [Generator]
 public class CallbackConfigurationExtensionsGenerator : StronglyTypedOverloadsGenerator
 {
+    protected override bool IsApplicable(GeneratorExecutionContext context)
+    {
+        return IsTypeInTargetAssembly(context, "FakeItEasy.CallbackConfigurationExtensions");
+    }
+
     protected override string GenerateSource()
     {
         return $$"""
