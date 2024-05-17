@@ -6,11 +6,14 @@ namespace FakeItEasy.Creation
     using System.Text;
     using FakeItEasy.Core;
 
-    internal abstract class CreationResult
+    internal abstract class CreationResult(int status)
     {
+        private const int SuccessfulCreation = 0;
+        private const int FailedCreation = 1;
+
         public static CreationResult Untried { get; } = new UntriedCreationResult();
 
-        public abstract bool WasSuccessful { get; }
+        public bool WasSuccessful => status == SuccessfulCreation;
 
         public abstract object? Result { get; }
 
@@ -37,19 +40,15 @@ namespace FakeItEasy.Creation
         /// <returns>A combined creation result. Successful if either input was successful, and failed otherwise.</returns>
         public abstract CreationResult MergeIntoDummyResult(CreationResult other);
 
-        private class UntriedCreationResult : CreationResult
+        private class UntriedCreationResult() : CreationResult(FailedCreation)
         {
-            public override bool WasSuccessful => false;
-
             public override object Result => throw new NotSupportedException();
 
             public override CreationResult MergeIntoDummyResult(CreationResult other) => other;
         }
 
-        private class SuccessfulCreationResult(object? result) : CreationResult
+        private class SuccessfulCreationResult(object? result) : CreationResult(SuccessfulCreation)
         {
-            public override bool WasSuccessful => true;
-
             public override object? Result { get; } = result;
 
             public override CreationResult MergeIntoDummyResult(CreationResult other) => this;
@@ -60,12 +59,10 @@ namespace FakeItEasy.Creation
             CreationMode creationMode,
             IList<string>? reasonsForFailure = null,
             IList<ResolvedConstructor>? consideredConstructors = null)
-            : CreationResult
+            : CreationResult(FailedCreation)
         {
             private readonly IList<string>? reasonsForFailure = reasonsForFailure;
             private readonly IList<ResolvedConstructor>? consideredConstructors = consideredConstructors;
-
-            public override bool WasSuccessful => false;
 
             public override object Result =>
                     throw creationMode.CreateException(this.BuildFailedToCreateResultMessage());
