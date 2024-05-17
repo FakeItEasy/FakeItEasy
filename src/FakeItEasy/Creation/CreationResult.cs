@@ -46,40 +46,29 @@ namespace FakeItEasy.Creation
             public override CreationResult MergeIntoDummyResult(CreationResult other) => other;
         }
 
-        private class SuccessfulCreationResult : CreationResult
+        private class SuccessfulCreationResult(object? result) : CreationResult
         {
-            public SuccessfulCreationResult(object? result) => this.Result = result;
-
             public override bool WasSuccessful => true;
 
-            public override object? Result { get; }
+            public override object? Result { get; } = result;
 
             public override CreationResult MergeIntoDummyResult(CreationResult other) => this;
         }
 
-        private class FailedCreationResult : CreationResult
+        private class FailedCreationResult(
+            Type type,
+            CreationMode creationMode,
+            IList<string>? reasonsForFailure = null,
+            IList<ResolvedConstructor>? consideredConstructors = null)
+            : CreationResult
         {
-            private readonly Type type;
-            private readonly IList<string>? reasonsForFailure;
-            private readonly IList<ResolvedConstructor>? consideredConstructors;
-            private CreationMode creationMode;
-
-            public FailedCreationResult(
-                Type type,
-                CreationMode creationMode,
-                IList<string>? reasonsForFailure = null,
-                IList<ResolvedConstructor>? consideredConstructors = null)
-            {
-                this.type = type;
-                this.creationMode = creationMode;
-                this.reasonsForFailure = reasonsForFailure;
-                this.consideredConstructors = consideredConstructors;
-            }
+            private readonly IList<string>? reasonsForFailure = reasonsForFailure;
+            private readonly IList<ResolvedConstructor>? consideredConstructors = consideredConstructors;
 
             public override bool WasSuccessful => false;
 
-            public override object? Result =>
-                    throw this.creationMode.CreateException(this.GetFailedToCreateResultMessage());
+            public override object Result =>
+                    throw creationMode.CreateException(this.BuildFailedToCreateResultMessage());
 
             public override CreationResult MergeIntoDummyResult(CreationResult other)
             {
@@ -92,7 +81,7 @@ namespace FakeItEasy.Creation
 
                 var failedOther = (FailedCreationResult)other;
                 return new FailedCreationResult(
-                    this.type,
+                    type,
                     CreationMode.Dummy,
                     MergeReasonsForFailure(this.reasonsForFailure, failedOther.reasonsForFailure),
                     MergeConsideredConstructors(this.consideredConstructors, failedOther.consideredConstructors));
@@ -134,14 +123,14 @@ namespace FakeItEasy.Creation
                 return constructorsFromResult1.Union(constructorsFromResult2, ResolvedConstructorComparer.Default).ToList();
             }
 
-            private string GetFailedToCreateResultMessage()
+            private string BuildFailedToCreateResultMessage()
             {
                 var message = new StringBuilder();
 
                 message
                     .AppendLine()
-                    .AppendIndented("  ", $"Failed to create {this.creationMode.Name} of type ")
-                    .Append(this.type)
+                    .AppendIndented("  ", $"Failed to create {creationMode.Name} of type ")
+                    .Append(type)
                     .Append(':');
 
                 if (this.reasonsForFailure is not null)
