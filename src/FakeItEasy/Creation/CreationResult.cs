@@ -11,8 +11,6 @@ namespace FakeItEasy.Creation
         private const int SuccessfulCreation = 0;
         private const int FailedCreation = 1;
 
-        public static CreationResult Untried { get; } = new UntriedCreationResult();
-
         public bool WasSuccessful => status == SuccessfulCreation;
 
         public abstract object? Result { get; }
@@ -36,22 +34,20 @@ namespace FakeItEasy.Creation
         /// Returns a creation result for a dummy by combining two results.
         /// Successful results are preferred to failed. Failed results will have their reasons for failure aggregated.
         /// </summary>
-        /// <param name="other">The other result to merge. Must not be <c>null</c>.</param>
-        /// <returns>A combined creation result. Successful if either input was successful, and failed otherwise.</returns>
-        public abstract CreationResult MergeIntoDummyResult(CreationResult other);
-
-        private class UntriedCreationResult() : CreationResult(FailedCreation)
+        /// <param name="previousResult">May be <c>null</c> if <paramref name="newResult"/> is the result of the first attempt to create the dummy.</param>
+        /// <param name="newResult">The other result to merge. Must not be <c>null</c>.</param>
+        /// <returns>A combined creation result. Successful if either <c>newResult</c> was successful, and failed otherwise.</returns>
+        public static CreationResult MergeResults(CreationResult? previousResult, CreationResult newResult)
         {
-            public override object Result => throw new NotSupportedException();
-
-            public override CreationResult MergeIntoDummyResult(CreationResult other) => other;
+            Guard.AgainstNull(newResult);
+            return previousResult is null || newResult is not FailedCreationResult newFailedResult
+                ? newResult
+                : newFailedResult.MergeIntoDummyResult(previousResult);
         }
 
         private class SuccessfulCreationResult(object? result) : CreationResult(SuccessfulCreation)
         {
             public override object? Result { get; } = result;
-
-            public override CreationResult MergeIntoDummyResult(CreationResult other) => this;
         }
 
         private class FailedCreationResult(
@@ -67,21 +63,16 @@ namespace FakeItEasy.Creation
             public override object Result =>
                     throw creationMode.CreateException(this.BuildFailedToCreateResultMessage());
 
-            public override CreationResult MergeIntoDummyResult(CreationResult other)
+            public FailedCreationResult MergeIntoDummyResult(CreationResult other)
             {
                 Guard.AgainstNull(other);
-
-                if (other.WasSuccessful)
-                {
-                    return other;
-                }
 
                 var failedOther = (FailedCreationResult)other;
                 return new FailedCreationResult(
                     type,
-                    CreationMode.Dummy,
-                    MergeReasonsForFailure(this.reasonsForFailure, failedOther.reasonsForFailure),
-                    MergeConsideredConstructors(this.consideredConstructors, failedOther.consideredConstructors));
+                    creationMode,
+                    MergeReasonsForFailure(failedOther.reasonsForFailure, this.reasonsForFailure),
+                    MergeConsideredConstructors(failedOther.consideredConstructors, this.consideredConstructors));
             }
 
             private static IList<string>? MergeReasonsForFailure(
