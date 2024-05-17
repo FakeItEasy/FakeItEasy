@@ -9,9 +9,14 @@ namespace FakeItEasy.Creation
     internal abstract class CreationResult(int status)
     {
         private const int SuccessfulCreation = 0;
-        private const int FailedCreation = 1;
+        private const int InterimFailedCreation = 1;
+        private const int PermanentlyFailedCreation = 2;
 
-        public bool WasSuccessful => status == SuccessfulCreation;
+        private readonly int status = status;
+
+        public bool WasSuccessful => this.status == SuccessfulCreation;
+
+        public bool IsFinal => this.status != InterimFailedCreation;
 
         public abstract object? Result { get; }
 
@@ -19,16 +24,19 @@ namespace FakeItEasy.Creation
              new SuccessfulCreationResult(result);
 
         public static CreationResult FailedToCreateDummy(Type type, string reasonForFailure) =>
-            new FailedCreationResult(type, CreationMode.Dummy, reasonsForFailure: new List<string> { reasonForFailure });
+            new FailedCreationResult(InterimFailedCreation, type, CreationMode.Dummy, reasonsForFailure: new List<string> { reasonForFailure });
 
         public static CreationResult FailedToCreateDummy(Type type, List<ResolvedConstructor> consideredConstructors) =>
-            new FailedCreationResult(type, CreationMode.Dummy, consideredConstructors: consideredConstructors);
+            new FailedCreationResult(InterimFailedCreation, type, CreationMode.Dummy, consideredConstructors: consideredConstructors);
 
         public static CreationResult FailedToCreateFake(Type type, string reasonForFailure) =>
-            new FailedCreationResult(type, CreationMode.Fake, reasonsForFailure: new List<string> { reasonForFailure });
+            new FailedCreationResult(InterimFailedCreation, type, CreationMode.Fake, reasonsForFailure: new List<string> { reasonForFailure });
 
         public static CreationResult FailedToCreateFake(Type type, List<ResolvedConstructor> consideredConstructors) =>
-            new FailedCreationResult(type, CreationMode.Fake, consideredConstructors: consideredConstructors);
+            new FailedCreationResult(InterimFailedCreation, type, CreationMode.Fake, consideredConstructors: consideredConstructors);
+
+        public static CreationResult PermanentlyFailedToCreateDummy(Type type, string reasonForFailure) =>
+            new FailedCreationResult(PermanentlyFailedCreation, type, CreationMode.Dummy, reasonsForFailure: new List<string> { reasonForFailure });
 
         /// <summary>
         /// Returns a creation result for a dummy by combining two results.
@@ -51,11 +59,12 @@ namespace FakeItEasy.Creation
         }
 
         private class FailedCreationResult(
+            int status,
             Type type,
             CreationMode creationMode,
             IList<string>? reasonsForFailure = null,
             IList<ResolvedConstructor>? consideredConstructors = null)
-            : CreationResult(FailedCreation)
+            : CreationResult(status)
         {
             private readonly IList<string>? reasonsForFailure = reasonsForFailure;
             private readonly IList<ResolvedConstructor>? consideredConstructors = consideredConstructors;
@@ -69,6 +78,7 @@ namespace FakeItEasy.Creation
 
                 var failedOther = (FailedCreationResult)other;
                 return new FailedCreationResult(
+                    this.status,
                     type,
                     creationMode,
                     MergeReasonsForFailure(failedOther.reasonsForFailure, this.reasonsForFailure),

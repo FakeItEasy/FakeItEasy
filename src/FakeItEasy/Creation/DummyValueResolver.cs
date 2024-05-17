@@ -79,6 +79,12 @@ namespace FakeItEasy.Creation
                     return thisCreationResult;
                 }
 
+                if (thisCreationResult.IsFinal)
+                {
+                    creationResult = thisCreationResult;
+                    break;
+                }
+
                 creationResult = CreationResult.MergeResults(creationResult, thisCreationResult);
             }
 
@@ -95,6 +101,12 @@ namespace FakeItEasy.Creation
             {
                 if (typeOfDummy.IsValueType && typeOfDummy != typeof(void))
                 {
+#if !TRY_ISBYREF_CREATION
+                    if (typeOfDummy.IsByRefLike)
+                    {
+                        return CreationResult.PermanentlyFailedToCreateDummy(typeOfDummy, "It is byref-like.");
+                    }
+#endif
                     return CreationResult.SuccessfullyCreated(Activator.CreateInstance(typeOfDummy));
                 }
 
