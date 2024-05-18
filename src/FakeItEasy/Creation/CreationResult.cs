@@ -95,7 +95,7 @@ namespace FakeItEasy.Creation
                     this.type,
                     CreationMode.Dummy,
                     MergeReasonsForFailure(this.reasonsForFailure, failedOther.reasonsForFailure),
-                    MergeConsideredConstructors(this.consideredConstructors, failedOther.consideredConstructors));
+                    this.consideredConstructors ?? failedOther.consideredConstructors);
             }
 
             private static IList<string>? MergeReasonsForFailure(
@@ -115,23 +115,6 @@ namespace FakeItEasy.Creation
                 var mergedList = new List<string>(reasonsFromResult1);
                 mergedList.AddRange(reasonsFromResult2);
                 return mergedList;
-            }
-
-            private static IList<ResolvedConstructor>? MergeConsideredConstructors(
-                IList<ResolvedConstructor>? constructorsFromResult1,
-                IList<ResolvedConstructor>? constructorsFromResult2)
-            {
-                if (constructorsFromResult1 is null)
-                {
-                    return constructorsFromResult2;
-                }
-
-                if (constructorsFromResult2 is null)
-                {
-                    return constructorsFromResult1;
-                }
-
-                return constructorsFromResult1.Union(constructorsFromResult2, ResolvedConstructorComparer.Default).ToList();
             }
 
             private string GetFailedToCreateResultMessage()
@@ -204,38 +187,6 @@ namespace FakeItEasy.Creation
                     .AppendIndented("    ", "Types marked with * could not be resolved. Please provide a Dummy Factory to enable these constructors.")
                     .AppendLine()
                     .AppendLine();
-            }
-        }
-
-        private class ResolvedConstructorComparer : IEqualityComparer<ResolvedConstructor>
-        {
-            private ResolvedConstructorComparer()
-            {
-            }
-
-            public static ResolvedConstructorComparer Default { get; } = new ResolvedConstructorComparer();
-
-            public bool Equals(ResolvedConstructor? x, ResolvedConstructor? y)
-            {
-                return ReferenceEquals(x, y) || (x is not null && y is not null && ConstructorArgumentTypes(x).SequenceEqual(ConstructorArgumentTypes(y)));
-
-                IEnumerable<Type> ConstructorArgumentTypes(ResolvedConstructor constructor) =>
-                    constructor.Arguments.Select(a => a.ArgumentType);
-            }
-
-            public int GetHashCode(ResolvedConstructor obj)
-            {
-                unchecked
-                {
-                    var hash = 17;
-
-                    foreach (var resolvedArgument in obj.Arguments)
-                    {
-                        hash = (hash * 23) + EqualityComparer<object>.Default.GetHashCode(resolvedArgument.ArgumentType);
-                    }
-
-                    return hash;
-                }
             }
         }
 
