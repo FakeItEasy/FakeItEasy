@@ -2,6 +2,7 @@ namespace FakeItEasy
 {
     using System;
     using System.Diagnostics;
+    using System.Linq;
 
     /// <summary>
     /// Provides extension methods for <see cref="Type"/>.
@@ -29,6 +30,15 @@ namespace FakeItEasy
         {
             return !type.IsValueType
                 || (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>));
+        }
+
+        public static bool IsByRefLike(this Type type)
+        {
+#if LACKS_ISBYREFLIKE
+            return type.GetCustomAttributesData().Any(att => att.AttributeType.FullName == "System.Runtime.CompilerServices.IsByRefLikeAttribute");
+#else
+            return type.IsByRefLike;
+#endif
         }
 
         [DebuggerStepThrough]

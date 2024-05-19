@@ -46,13 +46,13 @@
   <!-- .NET Standard 2.0 -->
 
   <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <DefineConstants>$(DefineConstants);LACKS_NULLABLE_ATTRIBUTES;LACKS_STRING_CONTAINS_COMPARISONTYPE;LACKS_CALLERARGUMENTEXPRESSION</DefineConstants>
+    <DefineConstants>$(DefineConstants);LACKS_NULLABLE_ATTRIBUTES;LACKS_STRING_CONTAINS_COMPARISONTYPE;LACKS_CALLERARGUMENTEXPRESSION;LACKS_ISBYREFLIKE</DefineConstants>
   </PropertyGroup>
 
   <!-- .NET Framework -->
 
   <PropertyGroup Condition="$([MSBuild]::GetTargetFrameworkIdentifier('$(TargetFramework)')) == '.NETFramework'">
-    <DefineConstants>$(DefineConstants);LACKS_NULLABLE_ATTRIBUTES;LACKS_ARRAY_EMPTY;LACKS_STRING_CONTAINS_COMPARISONTYPE;LACKS_CALLERARGUMENTEXPRESSION</DefineConstants>
+    <DefineConstants>$(DefineConstants);LACKS_NULLABLE_ATTRIBUTES;LACKS_ARRAY_EMPTY;LACKS_STRING_CONTAINS_COMPARISONTYPE;LACKS_CALLERARGUMENTEXPRESSION;LACKS_ISBYREFLIKE;TRY_ISBYREF_CREATION</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup Condition="!$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'netstandard2.1'))">

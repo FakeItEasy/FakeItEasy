@@ -39,6 +39,13 @@ namespace FakeItEasy.Creation
 
         public CreationResult TryResolveDummyValue(Type typeOfDummy, LoopDetectingResolutionContext resolutionContext)
         {
+#if !TRY_ISBYREF_CREATION
+            if (typeOfDummy.IsByRefLike())
+            {
+                return CreationResult.FailedToCreateDummy(typeOfDummy, "It is byref-like.");
+            }
+#endif
+
             // Make sure we're not already resolving typeOfDummy. It may seem that we could skip this check when we have
             // a cached resolution strategy in strategyCache, but it's necessary in case multiple threads are involved and
             // typeOfDummy has a constructor that takes typeOfDummy as a parameter.
