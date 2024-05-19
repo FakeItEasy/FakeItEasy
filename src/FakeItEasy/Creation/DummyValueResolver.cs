@@ -79,6 +79,12 @@ namespace FakeItEasy.Creation
                         this.strategyCache.TryAdd(typeOfDummy, strategy);
                         return successfulCreationResult;
                     case FailedCreationResult failedCreationResult:
+                        if (failedCreationResult.IsBlocking)
+                        {
+                            this.strategyCache.TryAdd(typeOfDummy, new UnableToResolveStrategy(failedCreationResult));
+                            return failedCreationResult;
+                        }
+
                         failedCreationResults.Add(failedCreationResult);
                         break;
                 }
@@ -96,8 +102,14 @@ namespace FakeItEasy.Creation
                 IDummyValueResolver resolver,
                 LoopDetectingResolutionContext resolutionContext)
             {
-                if (typeOfDummy.IsValueType && typeOfDummy != typeof(void))
+                if (typeOfDummy.IsValueType)
                 {
+#if !TRY_ISBYREF_CREATION
+                    if (typeOfDummy.IsByRefLike)
+                    {
+                        return FailedCreationResult.BlockingForDummy(typeOfDummy, "It is byref-like.");
+                    }
+#endif
                     return new SuccessfulCreationResult(Activator.CreateInstance(typeOfDummy));
                 }
 
