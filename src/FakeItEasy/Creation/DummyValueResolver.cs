@@ -1,6 +1,7 @@
 namespace FakeItEasy.Creation
 {
     using System;
+    using System.Collections;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
@@ -69,21 +70,23 @@ namespace FakeItEasy.Creation
             Type typeOfDummy,
             LoopDetectingResolutionContext resolutionContext)
         {
-            CreationResult creationResult = CreationResult.Untried;
+            var failedCreationResults = new List<FailedCreationResult>();
             foreach (var strategy in this.strategies)
             {
-                var thisCreationResult = strategy.TryCreateDummyValue(typeOfDummy, this, resolutionContext);
-                if (thisCreationResult.WasSuccessful)
+                switch (strategy.TryCreateDummyValue(typeOfDummy, this, resolutionContext))
                 {
-                    this.strategyCache.TryAdd(typeOfDummy, strategy);
-                    return thisCreationResult;
+                    case SuccessfulCreationResult successfulCreationResult:
+                        this.strategyCache.TryAdd(typeOfDummy, strategy);
+                        return successfulCreationResult;
+                    case FailedCreationResult failedCreationResult:
+                        failedCreationResults.Add(failedCreationResult);
+                        break;
                 }
-
-                creationResult = creationResult.MergeIntoDummyResult(thisCreationResult);
             }
 
-            this.strategyCache.TryAdd(typeOfDummy, new UnableToResolveStrategy(creationResult));
-            return creationResult;
+            var overallFailedCreationResult = FailedCreationResult.Merge(failedCreationResults);
+            this.strategyCache.TryAdd(typeOfDummy, new UnableToResolveStrategy(overallFailedCreationResult));
+            return overallFailedCreationResult;
         }
 
         private class ResolveByActivatingValueTypeStrategy : ResolveStrategy

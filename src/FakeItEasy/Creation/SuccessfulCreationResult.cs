@@ -7,6 +7,4 @@ internal class SuccessfulCreationResult : CreationResult
     public override bool WasSuccessful => true;
 
     public override object? Result { get; }
-
-    public override CreationResult MergeIntoDummyResult(CreationResult other) => this;
 }

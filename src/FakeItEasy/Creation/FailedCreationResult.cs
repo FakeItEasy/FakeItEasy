@@ -42,41 +42,30 @@ internal class FailedCreationResult : CreationResult
     public static CreationResult ForFake(Type type, List<ResolvedConstructor> consideredConstructors) =>
         new FailedCreationResult(type, CreationMode.Fake, consideredConstructors: consideredConstructors);
 
-    public override CreationResult MergeIntoDummyResult(CreationResult other)
+    /// <summary>
+    /// Returns a failed creation result combining multiple results.
+    /// Reasons for failure aggregated.
+    /// </summary>
+    /// <param name="results">The individual failure results to merge.</param>
+    /// <returns>A combined failed creation result.</returns>
+    public static FailedCreationResult Merge(IList<FailedCreationResult> results)
     {
-        Guard.AgainstNull(other);
-
-        if (other.WasSuccessful)
-        {
-            return other;
-        }
-
-        var failedOther = (FailedCreationResult)other;
         return new FailedCreationResult(
-            this.type,
-            CreationMode.Dummy,
-            MergeReasonsForFailure(this.reasonsForFailure, failedOther.reasonsForFailure),
-            this.consideredConstructors ?? failedOther.consideredConstructors);
+            results[0].type,
+            results[0].creationMode,
+            MergeReasonsForFailure(results),
+            MergeConsideredConstructors(results));
     }
 
-    private static IList<string>? MergeReasonsForFailure(
-        IList<string>? reasonsFromResult1,
-        IList<string>? reasonsFromResult2)
-    {
-        if (reasonsFromResult1 is null)
-        {
-            return reasonsFromResult2;
-        }
+    private static List<string> MergeReasonsForFailure(IEnumerable<FailedCreationResult> results) =>
+        results.Select(result => result.reasonsForFailure)
+            .Where(reasons => reasons is not null)
+            .SelectMany(reasons => reasons!)
+            .ToList();
 
-        if (reasonsFromResult2 is null)
-        {
-            return reasonsFromResult1;
-        }
-
-        var mergedList = new List<string>(reasonsFromResult1);
-        mergedList.AddRange(reasonsFromResult2);
-        return mergedList;
-    }
+    private static IList<ResolvedConstructor>? MergeConsideredConstructors(IList<FailedCreationResult> results) =>
+        results.Select(result => result.consideredConstructors)
+            .FirstOrDefault(constructors => constructors is not null);
 
     private string GetFailedToCreateResultMessage()
     {
