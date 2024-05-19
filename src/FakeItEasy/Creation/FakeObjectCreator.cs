@@ -32,7 +32,7 @@ namespace FakeItEasy.Creation
         {
             if (!resolutionContext.TryBeginToResolve(typeOfFake))
             {
-                return CreationResult.FailedToCreateFake(typeOfFake, "Recursive dependency detected. Already resolving " + typeOfFake + '.');
+                return FailedCreationResult.ForFake(typeOfFake, "Recursive dependency detected. Already resolving " + typeOfFake + '.');
             }
 
             try
@@ -95,25 +95,25 @@ namespace FakeItEasy.Creation
             {
                 if (proxyOptions.Attributes.Any())
                 {
-                    return CreationResult.FailedToCreateFake(typeOfFake, "Faked delegates cannot have custom attributes applied to them.");
+                    return FailedCreationResult.ForFake(typeOfFake, "Faked delegates cannot have custom attributes applied to them.");
                 }
 
                 if (proxyOptions.ArgumentsForConstructor is not null && proxyOptions.ArgumentsForConstructor.Any())
                 {
-                    return CreationResult.FailedToCreateFake(typeOfFake, "Faked delegates cannot be made using explicit constructor arguments.");
+                    return FailedCreationResult.ForFake(typeOfFake, "Faked delegates cannot be made using explicit constructor arguments.");
                 }
 
                 if (proxyOptions.AdditionalInterfacesToImplement.Count != 0)
                 {
-                    return CreationResult.FailedToCreateFake(typeOfFake, "Faked delegates cannot be made to implement additional interfaces.");
+                    return FailedCreationResult.ForFake(typeOfFake, "Faked delegates cannot be made to implement additional interfaces.");
                 }
 
                 var fakeCallProcessorProvider = this.fakeCallProcessorProviderFactory(typeOfFake, proxyOptions);
                 var proxyGeneratorResult = DelegateProxyGenerator.GenerateProxy(typeOfFake, fakeCallProcessorProvider);
 
                 return proxyGeneratorResult.ProxyWasSuccessfullyGenerated
-                    ? CreationResult.SuccessfullyCreated(proxyGeneratorResult.GeneratedProxy)
-                    : CreationResult.FailedToCreateFake(typeOfFake, proxyGeneratorResult.ReasonForFailure!);
+                    ? new SuccessfulCreationResult(proxyGeneratorResult.GeneratedProxy)
+                    : FailedCreationResult.ForFake(typeOfFake, proxyGeneratorResult.ReasonForFailure!);
             }
 
             public bool MethodCanBeInterceptedOnInstance(MethodInfo method, object callTarget, [NotNullWhen(false)]out string? failReason) =>
@@ -149,8 +149,8 @@ namespace FakeItEasy.Creation
                     proxyOptions.Attributes,
                     fakeCallProcessorProvider);
                 return proxyGeneratorResult.ProxyWasSuccessfullyGenerated
-                    ? CreationResult.SuccessfullyCreated(proxyGeneratorResult.GeneratedProxy)
-                    : CreationResult.FailedToCreateFake(typeOfFake, proxyGeneratorResult.ReasonForFailure!);
+                    ? new SuccessfulCreationResult(proxyGeneratorResult.GeneratedProxy)
+                    : FailedCreationResult.ForFake(typeOfFake, proxyGeneratorResult.ReasonForFailure!);
             }
 
             public CreationResult CreateFake(
@@ -161,7 +161,7 @@ namespace FakeItEasy.Creation
             {
                 if (!CastleDynamicProxyGenerator.CanGenerateProxy(typeOfFake, out string? reasonCannotGenerate))
                 {
-                    return CreationResult.FailedToCreateFake(typeOfFake, reasonCannotGenerate);
+                    return FailedCreationResult.ForFake(typeOfFake, reasonCannotGenerate);
                 }
 
                 if (proxyOptions.ArgumentsForConstructor is not null)
@@ -169,8 +169,8 @@ namespace FakeItEasy.Creation
                     var proxyGeneratorResult = this.GenerateProxy(typeOfFake, proxyOptions, proxyOptions.ArgumentsForConstructor);
 
                     return proxyGeneratorResult.ProxyWasSuccessfullyGenerated
-                        ? CreationResult.SuccessfullyCreated(proxyGeneratorResult.GeneratedProxy)
-                        : CreationResult.FailedToCreateFake(typeOfFake, proxyGeneratorResult.ReasonForFailure!);
+                        ? new SuccessfulCreationResult(proxyGeneratorResult.GeneratedProxy)
+                        : FailedCreationResult.ForFake(typeOfFake, proxyGeneratorResult.ReasonForFailure!);
                 }
 
                 return this.TryCreateFakeWithDummyArgumentsForConstructor(
@@ -231,7 +231,7 @@ namespace FakeItEasy.Creation
 
                         if (result.ProxyWasSuccessfullyGenerated)
                         {
-                            return CreationResult.SuccessfullyCreated(result.GeneratedProxy);
+                            return new SuccessfulCreationResult(result.GeneratedProxy);
                         }
 
                         constructor.ReasonForFailure = result.ReasonForFailure!;
@@ -252,7 +252,7 @@ namespace FakeItEasy.Creation
                             if (result.ProxyWasSuccessfullyGenerated)
                             {
                                 this.parameterTypesCache.TryAdd(typeOfFake, parameterTypes);
-                                return CreationResult.SuccessfullyCreated(result.GeneratedProxy);
+                                return new SuccessfulCreationResult(result.GeneratedProxy);
                             }
 
                             constructor.ReasonForFailure = result.ReasonForFailure!;
@@ -262,7 +262,7 @@ namespace FakeItEasy.Creation
                     }
                 }
 
-                return CreationResult.FailedToCreateFake(typeOfFake, consideredConstructors);
+                return FailedCreationResult.ForFake(typeOfFake, consideredConstructors);
             }
 
             private ProxyGeneratorResult GenerateProxy(Type typeOfFake, IProxyOptions proxyOptions, IEnumerable<object?> argumentsForConstructor)

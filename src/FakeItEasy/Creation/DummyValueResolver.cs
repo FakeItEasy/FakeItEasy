@@ -50,7 +50,7 @@ namespace FakeItEasy.Creation
             // might have different behavior. This is essentially the problem that arose in issue 1639.
             if (!resolutionContext.TryBeginToResolve(typeOfDummy))
             {
-                return CreationResult.FailedToCreateDummy(typeOfDummy, "Recursive dependency detected. Already resolving " + typeOfDummy + '.');
+                return FailedCreationResult.ForDummy(typeOfDummy, "Recursive dependency detected. Already resolving " + typeOfDummy + '.');
             }
 
             try
@@ -95,10 +95,10 @@ namespace FakeItEasy.Creation
             {
                 if (typeOfDummy.IsValueType && typeOfDummy != typeof(void))
                 {
-                    return CreationResult.SuccessfullyCreated(Activator.CreateInstance(typeOfDummy));
+                    return new SuccessfulCreationResult(Activator.CreateInstance(typeOfDummy));
                 }
 
-                return CreationResult.FailedToCreateDummy(typeOfDummy, "It is not a value type.");
+                return FailedCreationResult.ForDummy(typeOfDummy, "It is not a value type.");
             }
         }
 
@@ -139,7 +139,7 @@ namespace FakeItEasy.Creation
             {
                 if (typeOfDummy == typeof(Task))
                 {
-                    return CreationResult.SuccessfullyCreated(TaskHelper.CompletedTask);
+                    return new SuccessfulCreationResult(TaskHelper.CompletedTask);
                 }
 
                 if (typeOfDummy.IsGenericType && typeOfDummy.GetGenericTypeDefinition() == typeof(Task<>))
@@ -151,12 +151,12 @@ namespace FakeItEasy.Creation
                         : typeOfTaskResult.GetDefaultValue();
 
                     var method = GenericFromResultMethodDefinition.MakeGenericMethod(typeOfTaskResult);
-                    return CreationResult.SuccessfullyCreated(method.Invoke(null, new[] { taskResult }));
+                    return new SuccessfulCreationResult(method.Invoke(null, new[] { taskResult }));
                 }
 
                 if (typeOfDummy.FullName == "System.Threading.Tasks.ValueTask")
                 {
-                    return CreationResult.SuccessfullyCreated(typeOfDummy.GetDefaultValue());
+                    return new SuccessfulCreationResult(typeOfDummy.GetDefaultValue());
                 }
 
                 if (typeOfDummy.IsGenericType &&
@@ -171,10 +171,10 @@ namespace FakeItEasy.Creation
                         : typeOfTaskResult.GetDefaultValue();
 
                     var ctor = typeOfDummy.GetConstructor(new[] { typeOfTaskResult })!;
-                    return CreationResult.SuccessfullyCreated(ctor.Invoke(new[] { taskResult }));
+                    return new SuccessfulCreationResult(ctor.Invoke(new[] { taskResult }));
                 }
 
-                return CreationResult.FailedToCreateDummy(typeOfDummy, "It is not a Task.");
+                return FailedCreationResult.ForDummy(typeOfDummy, "It is not a Task.");
             }
 
             private static MethodInfo CreateGenericFromResultMethodDefinition()
@@ -202,10 +202,10 @@ namespace FakeItEasy.Creation
                     var typeOfLazyResult = typeOfDummy.GetGenericArguments()[0];
                     var method = CreateLazyDummyGenericDefinition.MakeGenericMethod(typeOfLazyResult);
                     var dummy = method.Invoke(null, new object[] { resolver });
-                    return CreationResult.SuccessfullyCreated(dummy);
+                    return new SuccessfulCreationResult(dummy);
                 }
 
-                return CreationResult.FailedToCreateDummy(typeOfDummy, "It is not a Lazy.");
+                return FailedCreationResult.ForDummy(typeOfDummy, "It is not a Lazy.");
             }
 
             private static Lazy<T> CreateLazyDummy<T>(IDummyValueResolver resolver)
@@ -238,10 +238,10 @@ namespace FakeItEasy.Creation
                     }
 
                     var dummy = Activator.CreateInstance(typeOfDummy, args);
-                    return CreationResult.SuccessfullyCreated(dummy);
+                    return new SuccessfulCreationResult(dummy);
                 }
 
-                return CreationResult.FailedToCreateDummy(typeOfDummy, "It is not a tuple.");
+                return FailedCreationResult.ForDummy(typeOfDummy, "It is not a tuple.");
             }
 
             private static bool IsTuple(Type type) =>
@@ -264,12 +264,12 @@ namespace FakeItEasy.Creation
             {
                 if (typeof(Delegate).IsAssignableFrom(typeOfDummy))
                 {
-                    return CreationResult.FailedToCreateDummy(typeOfDummy, "It is a Delegate.");
+                    return FailedCreationResult.ForDummy(typeOfDummy, "It is a Delegate.");
                 }
 
                 if (typeOfDummy.IsAbstract)
                 {
-                    return CreationResult.FailedToCreateDummy(typeOfDummy, "It is abstract.");
+                    return FailedCreationResult.ForDummy(typeOfDummy, "It is abstract.");
                 }
 
                 // Save the constructors as we try them. Avoids eager evaluation and double evaluation
@@ -286,7 +286,7 @@ namespace FakeItEasy.Creation
                     {
                         if (TryCreateDummyValueUsingConstructor(cachedConstructor, resolvedConstructor, out object? result))
                         {
-                            return CreationResult.SuccessfullyCreated(result);
+                            return new SuccessfulCreationResult(result);
                         }
 
                         consideredConstructors.Add(resolvedConstructor);
@@ -305,7 +305,7 @@ namespace FakeItEasy.Creation
                             TryCreateDummyValueUsingConstructor(constructor, resolvedConstructor, out object? result))
                         {
                             this.cachedConstructors.TryAdd(typeOfDummy, constructor);
-                            return CreationResult.SuccessfullyCreated(result);
+                            return new SuccessfulCreationResult(result);
                         }
 
                         consideredConstructors.Add(resolvedConstructor);
@@ -314,10 +314,10 @@ namespace FakeItEasy.Creation
 
                 if (consideredConstructors.Count == 0)
                 {
-                    return CreationResult.FailedToCreateDummy(typeOfDummy, "It has no public constructors.");
+                    return FailedCreationResult.ForDummy(typeOfDummy, "It has no public constructors.");
                 }
 
-                return CreationResult.FailedToCreateDummy(typeOfDummy, consideredConstructors);
+                return FailedCreationResult.ForDummy(typeOfDummy, consideredConstructors);
             }
 
             private static IEnumerable<ConstructorInfo> GetConstructorsInOrder(Type type)
@@ -361,8 +361,8 @@ namespace FakeItEasy.Creation
             {
                 var success = this.DummyFactory.TryCreateDummyObject(typeOfDummy, out object? result);
                 return success
-                    ? CreationResult.SuccessfullyCreated(result)
-                    : CreationResult.FailedToCreateDummy(typeOfDummy, "No Dummy Factory produced a result.");
+                    ? new SuccessfulCreationResult(result)
+                    : FailedCreationResult.ForDummy(typeOfDummy, "No Dummy Factory produced a result.");
             }
         }
 
@@ -372,10 +372,10 @@ namespace FakeItEasy.Creation
             {
                 if (typeOfDummy == typeof(void))
                 {
-                    return CreationResult.SuccessfullyCreated(null);
+                    return new SuccessfulCreationResult(null);
                 }
 
-                return CreationResult.FailedToCreateDummy(typeOfDummy, "It is not void.");
+                return FailedCreationResult.ForDummy(typeOfDummy, "It is not void.");
             }
         }
 

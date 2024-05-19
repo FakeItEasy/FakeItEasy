@@ -29,7 +29,7 @@ namespace FakeItEasy.Tests.Creation
                         IProxyOptions proxyOptions,
                         IDummyValueResolver resolver,
                         LoopDetectingResolutionContext resolutionContext) =>
-                    CreationResult.FailedToCreateDummy(type, string.Empty));
+                    FailedCreationResult.ForDummy(type, string.Empty));
         }
 
         public static IEnumerable<object?[]> DummiesInContainer()
@@ -256,7 +256,7 @@ namespace FakeItEasy.Tests.Creation
                     A<IProxyOptions>._,
                     A<IDummyValueResolver>._,
                     A<LoopDetectingResolutionContext>._))
-                .Returns(CreationResult.SuccessfullyCreated(value));
+                .Returns(new SuccessfulCreationResult(value));
         }
 
         private DynamicDummyFactory CreateDummyFactoryThatMakes(object value)
