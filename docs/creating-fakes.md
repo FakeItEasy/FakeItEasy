@@ -82,7 +82,7 @@ mentioned above.
 
 ## Unnatural fakes
 
-For those accustomed to [Moq](https://www.moqthis.com/) there is an
+For those accustomed to [Moq](https://github.com/devlooped/moq/) there is an
 alternative way of creating fakes through the `new Fake<T>`
 syntax. The fake provides a fluent interface for configuring the faked
 object:
