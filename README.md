@@ -35,7 +35,7 @@ A.CallTo(() => shop.BuyCandy(lollipop)).MustHaveHappened();
 * [Website](https://fakeiteasy.github.io/)
 * [Quickstart](https://fakeiteasy.github.io/docs/stable/quickstart/)
 * [Documentation](https://fakeiteasy.github.io/docs/stable/)
-* [Chat](https://gitter.im/FakeItEasy/FakeItEasy)
+* [Chat](https://app.gitter.im/#/room/#FakeItEasy_FakeItEasy:gitter.im)
 * [NuGet packages on NuGet.org](https://www.nuget.org/profiles/FakeItEasy "FakeItEasy's packages on NuGet.org"), targeting:
   * .NET Framework 4.6.2
   * .NET Standard 2.0

@@ -15,8 +15,8 @@ FakeItEasy is a .NET dynamic fake library for creating all types of fake objects
 
 * [Website](https://fakeiteasy.github.io/)
 * [Quickstart](quickstart.md)
-* [Chat](https://gitter.im/FakeItEasy/FakeItEasy)
-* [Package](https://nuget.org/packages/FakeItEasy "FakeItEasy on NuGet")
+* [Chat](https://app.gitter.im/#/room/#FakeItEasy_FakeItEasy:gitter.im)
+* [Package](https://www.nuget.org/packages/FakeItEasy "FakeItEasy on NuGet")
 
 ----
 FakeItEasy logo designed by Vanja Pakaski.
