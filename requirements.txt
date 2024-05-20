@@ -4,6 +4,8 @@
 #
 #    pip-compile requirements.in
 #
+beautifulsoup4==4.12.3
+    # via linkchecker
 certifi==2023.7.22
     # via requests
 charset-normalizer==3.3.2
@@ -11,7 +13,12 @@ charset-normalizer==3.3.2
 click==8.1.7
     # via mkdocs
 colorama==0.4.6
-    # via mkdocs-material
+    # via
+    #   click
+    #   mkdocs
+    #   mkdocs-material
+dnspython==2.6.1
+    # via linkchecker
 ghp-import==2.1.0
     # via mkdocs
 idna==3.7
@@ -21,6 +28,8 @@ jinja2==3.1.4
     #   mike
     #   mkdocs
     #   mkdocs-material
+linkchecker==10.4.0
+    # via -r requirements.in
 markdown==3.3.7
     # via
     #   mkdocs
@@ -60,9 +69,13 @@ pyyaml-env-tag==0.1
 regex==2023.10.3
     # via mkdocs-material
 requests==2.32.0
-    # via mkdocs-material
+    # via
+    #   linkchecker
+    #   mkdocs-material
 six==1.16.0
     # via python-dateutil
+soupsieve==2.5
+    # via beautifulsoup4
 urllib3==2.0.7
     # via requests
 verspec==0.1.0

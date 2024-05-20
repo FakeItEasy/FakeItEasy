@@ -56,8 +56,19 @@ Target(
     forEach: projectsToPack,
     action: project => Run("dotnet", $"pack {project.Path} --configuration Release --no-build --nologo --output \"{Path.GetFullPath("artifacts/output")}\""));
 
+Target("docs", DependsOn("check-docs-links"));
+
+// If mkdocs's site_url configuration is not set, sitemap.xml is full of "None" links.
+// Even with a valid site_url, the link check would fail if we added a new page.
+// So trust that any non-None links that mkdocs puts in sitemap.xml will be valid.
+// The 404.html page is likewise generated, and isn't even the one we use on the live site (mike generates a new one).
 Target(
-    "docs",
+    "check-docs-links",
+    DependsOn("generate-docs"),
+    () => Run("linkchecker", "--ignore-url=sitemap.xml --ignore-url=404.html --check-extern -F html/utf-8/artifacts/docs-link-check.html ./artifacts/docs/index.html"));
+
+Target(
+    "generate-docs",
     () => Run("python", "-m mkdocs build --clean --site-dir artifacts/docs --config-file mkdocs.yml --strict"));
 
 Target(
