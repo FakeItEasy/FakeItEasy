@@ -32,8 +32,8 @@ This is a fairly standard test with fakes, except we:
 * use the `Captured` object's `_` member to configure the call to capture any values for that argument
   (this is analogous to the `A<T>._` member, and just like it, there is a matching `Ignored` member in
   case you prefer that name)
-* specify that the method will [do nothing](doing-nothing.md). 
-  As with any attempt to [configure a fake object's behavior](specifying-a-call-to-configure), it's the final
+* specify that the method will [do nothing](doing-nothing.md).
+  As with any attempt to [configure a fake object's behavior](specifying-a-call-to-configure.md), it's the final
   action that completes the `A.CallTo` sequence. Without it, there's no change to the fake object's
   behavior, and no values will be captured on calls to the method. You don't need to pair `DoesNothing` with
   configuration that uses a capturing argument: you could return values, throw exceptions, or whatever;

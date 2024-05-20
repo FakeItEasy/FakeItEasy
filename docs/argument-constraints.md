@@ -158,7 +158,7 @@ Assert.That(success, Is.True);
 ```
 
 See
-[Implicitly Assigning `out` Parameter Values](assigning-out-and-ref-parameters#implicitly-assigning-out-parameter-values)
+[Implicitly Assigning `out` Parameter Values](assigning-out-and-ref-parameters.md#implicitly-assigning-out-parameter-values)
 to learn how the initial `configurationValue` is used in this case.
 
 ## `ref` parameters
@@ -175,7 +175,7 @@ To perform more sophisticated matching of `ref` parameter values in C#, use cons
 or `WhenArgumentsMatch`, described below.
 
 In addition to constraining by `ref` argument values, calls can be explicitly configured to
-[assign outgoing `ref` argument values](assigning-out-and-ref-parameters).
+[assign outgoing `ref` argument values](assigning-out-and-ref-parameters.md).
 
 
 ## Arguments of anonymous types
