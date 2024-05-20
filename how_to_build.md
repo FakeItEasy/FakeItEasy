@@ -129,7 +129,7 @@ python -m pip install --requirement requirements.txt
 from the root of the repository. After this, you can generate the docs by running
 
 ```
-python -m mkdocs build --clean --site-dir artifacts/docs --config-file mkdocs.yml --strict
+build.cmd docs
 ```
 
 The documentation will be built in `artifacts/docs` and can be viewed directly in a web

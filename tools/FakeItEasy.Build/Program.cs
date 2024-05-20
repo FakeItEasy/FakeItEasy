@@ -57,6 +57,10 @@ Target(
     action: project => Run("dotnet", $"pack {project.Path} --configuration Release --no-build --nologo --output \"{Path.GetFullPath("artifacts/output")}\""));
 
 Target(
+    "docs",
+    () => Run("python", "-m mkdocs build --clean --site-dir artifacts/docs --config-file mkdocs.yml --strict"));
+
+Target(
     "force-approve",
     () =>
     {
