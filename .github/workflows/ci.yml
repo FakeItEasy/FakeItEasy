@@ -74,9 +74,15 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install --requirement requirements.txt
       - name: Build docs
-        run: python -m mkdocs build --clean --site-dir artifacts/docs --config-file mkdocs.yml --strict
+        run: ./build.ps1 docs
+        shell: pwsh
       - name: Upload docs
         uses: actions/upload-artifact@v4
         with:
           name: documentation
           path: artifacts/docs
+      - name: Upload link check report
+        uses: actions/upload-artifact@v4
+        with:
+          name: docs-link-check
+          path: artifacts/docs-link-check.html

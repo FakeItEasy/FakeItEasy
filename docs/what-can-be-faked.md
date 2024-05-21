@@ -44,4 +44,4 @@ Note that this means that static members, including extension methods,
 
 ### Methods that return values by reference
 
-Methods that return values by reference (officially called "[reference return values](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/ref-returns#what-is-a-reference-return-value)") cannot be invoked on a Fake. Any attempt to do so will result in a `NullReferenceException` being thrown.
+Methods that return values by reference (officially called "[reference return values](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/statements/declarations#what-is-a-reference-return-value)") cannot be invoked on a Fake. Any attempt to do so will result in a `NullReferenceException` being thrown.
