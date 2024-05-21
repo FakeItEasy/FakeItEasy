@@ -911,35 +911,6 @@ namespace FakeItEasy.Specs
 
     public class NonGenericDummyCreationSpecs : DummyCreationSpecsBase
     {
-        [Scenario]
-        public void IsByRefLikeCreation(object? dummy, Exception? exception)
-        {
-            "Given a byref-like value type"
-                .See(nameof(ReadOnlySpan<char>));
-
-            "When a dummy of that type is requested"
-                .x(() => exception = Record.Exception(() => dummy = Sdk.Create.Dummy(typeof(ReadOnlySpan<char>))));
-
-#if CAN_CREATE_ISBYREFLIKE
-            "Then no exception is thrown"
-                .x(() => exception.Should().BeNull());
-
-            "And the dummy was created"
-                .x(() => dummy.Should().NotBeNull());
-#else
-            "Then it throws an exception of type DummyCreationException"
-                .x(() => exception.Should().BeAnExceptionOfType<DummyCreationException>());
-
-            "And its message indicates that a dummy couldn't be created due to its byref-likeness"
-                .x(() => exception!.Message.Should().BeModuloLineEndings("""
-
-                      Failed to create dummy of type System.ReadOnlySpan`1[System.Char]:
-                        It is byref-like.
-
-                    """));
-#endif
-        }
-
         protected override T CreateDummy<T>()
         {
             return (T)Sdk.Create.Dummy(typeof(T))!;

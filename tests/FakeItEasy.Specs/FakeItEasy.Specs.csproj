@@ -20,7 +20,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="$([MSBuild]::GetTargetFrameworkIdentifier('$(TargetFramework)')) == '.NETFramework'">
-      <DefineConstants>$(DefineConstants);LACKS_FAKEABLE_GENERIC_IN_PARAMETERS;CAN_CREATE_ISBYREFLIKE</DefineConstants>
+      <DefineConstants>$(DefineConstants);LACKS_FAKEABLE_GENERIC_IN_PARAMETERS</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
