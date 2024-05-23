@@ -48,9 +48,9 @@ After the build has completed, the build artifacts will be located in `artifacts
 
 `build.cmd`, `build.sh`, and `build.ps1` wrap a [Bullseye](https://github.com/adamralph/bullseye) targets project, so you can use all the usual command line arguments that you would use with Bullseye, e.g.:
 
-* View the full list of build targets:
+* View the full list of build targets with their dependencies:
 
-    `build.cmd -T`
+    `build.cmd -t`
 
 * Run a specific target:
 
