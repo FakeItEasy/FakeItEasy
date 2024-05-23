@@ -7,7 +7,7 @@ It's possible to build and test in various IDEs as well, but these may not perfe
 
 ## Supported frameworks and prerequisites
 
-FakeItEasy can be built and tested on Windows and Linux operating systems and probably on Mac (but we've not tried it) with a few differences between the OSes.
+FakeItEasy can be built and tested on Windows, Linux, and macOS operating systems with a few differences between the OSes.
 
 The build requires that a few pieces of software be installed on the host computer. We're somewhat aggressive about adopting new language features and the like, so rather than specifying exactly which versions are required, we'll tend toward "latest" or "at least" forms of guidance. If it seems you have an incompatible version of the software, prefer to upgrade rather than downgrade.
 
@@ -28,16 +28,15 @@ The default [build profile](#building-only-a-subset-of-the-supported-target-fram
 will build and test all targets that are supported on the active operating system, so will require all
 of the addtional prequisites listed above.
 
-[Partial builds](#building-only-a-subset-of-the-supported-target-frameworks) are supported on Windows and Linux.
-They might also run on macOS, but haven't been tested.
+[Partial builds](#building-only-a-subset-of-the-supported-target-frameworks) are also supported.
 
 ## Building
 
 Using a command prompt, navigate to your clone root folder and execute:
 
 - `build.cmd` on Windows
-- `./build.sh` on Linux
-- `./build.ps1` on Windows or Linux, if Powershell is installed
+- `./build.sh` on Linux or macOS
+- `./build.ps1` on any OS, if PowerShell is installed
 
 This executes the default build targets to produce artifacts for various target frameworks,
 depending on the selected [build profile](#building-only-a-subset-of-the-supported-target-frameworks).
@@ -48,9 +47,9 @@ After the build has completed, the build artifacts will be located in `artifacts
 
 `build.cmd`, `build.sh`, and `build.ps1` wrap a [Bullseye](https://github.com/adamralph/bullseye) targets project, so you can use all the usual command line arguments that you would use with Bullseye, e.g.:
 
-* View the full list of build targets:
+* View the full list of build targets with their dependencies:
 
-    `build.cmd -T`
+    `build.cmd -t`
 
 * Run a specific target:
 
