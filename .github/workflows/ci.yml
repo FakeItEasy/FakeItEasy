@@ -21,7 +21,7 @@ jobs:
     name: Build on ${{ matrix.os-name }}
     strategy:
       matrix:
-        os: [windows, ubuntu]
+        os: [windows, ubuntu, macos]
         include:
           - os: windows
             os-image: windows-2022
@@ -33,6 +33,13 @@ jobs:
             os-image: ubuntu-22.04
             os-name: Ubuntu
             artifact-name: ubuntu-artifacts
+            dotnet-versions-to-install: |
+              3.1
+              2.1
+          - os: macos
+            os-image: macos-12
+            os-name: macOS
+            artifact-name: macos-artifacts
             dotnet-versions-to-install: |
               3.1
               2.1
