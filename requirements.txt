@@ -13,10 +13,7 @@ charset-normalizer==3.3.2
 click==8.1.7
     # via mkdocs
 colorama==0.4.6
-    # via
-    #   click
-    #   mkdocs
-    #   mkdocs-material
+    # via mkdocs-material
 dnspython==2.6.1
     # via linkchecker
 ghp-import==2.1.0
@@ -76,7 +73,7 @@ six==1.16.0
     # via python-dateutil
 soupsieve==2.5
     # via beautifulsoup4
-urllib3==2.2.1
+urllib3==2.2.2
     # via requests
 verspec==0.1.0
     # via mike
