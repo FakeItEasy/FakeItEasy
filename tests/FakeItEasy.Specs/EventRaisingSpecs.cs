@@ -526,5 +526,31 @@ namespace FakeItEasy.Specs
             "Then the handler is called"
                 .x(() => A.CallTo(handler).MustHaveHappened());
         }
+
+        [Scenario]
+        public void SubscribeWithNullHandler(IEvents fake, Exception? exception)
+        {
+            "Given a fake with an event"
+                .x(() => fake = A.Fake<IEvents>());
+
+            "When subscribing to the event with a null handler"
+                .x(() => exception = Record.Exception(() => fake.UnsubscribedEvent += null));
+
+            "Then it should not throw"
+                .x(() => exception.Should().BeNull());
+        }
+
+        [Scenario]
+        public void UnsubscribeWithNullHandler(IEvents fake, Exception? exception)
+        {
+            "Given a fake with an event"
+                .x(() => fake = A.Fake<IEvents>());
+
+            "When unsubscribing from the event with a null handler"
+                .x(() => exception = Record.Exception(() => fake.UnsubscribedEvent -= null));
+
+            "Then it should not throw"
+                .x(() => exception.Should().BeNull());
+        }
     }
 }
