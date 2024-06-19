@@ -27,7 +27,7 @@ namespace FakeItEasy.Specs
     {
     }
 
-    public class EventRaisingSpecs
+    public class EventSpecs
     {
         private readonly EventArgs eventArgs = new EventArgs();
 
