@@ -34,7 +34,13 @@ namespace FakeItEasy.Core
                 return false;
             }
 
-            eventCall = new EventCall(eventInfo, fakeObjectCall.Method, (Delegate)fakeObjectCall.Arguments[0]!);
+            var handler = fakeObjectCall.Arguments.Get<Delegate>(0);
+            if (handler is null)
+            {
+                return false;
+            }
+
+            eventCall = new EventCall(eventInfo, fakeObjectCall.Method, handler);
             return true;
         }
 
