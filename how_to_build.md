@@ -116,16 +116,11 @@ reload the solution. The command line build will reflect the change immediately.
 
 ### Building the documentation
 
-The CI workflow uses [mkdocs](https://www.mkdocs.org/) to build the documentation. To replicate this process,
-install a recent [Python version](https://www.python.org/downloads/), and then install all the requirements
-by running
+The CI workflow uses [mkdocs](https://www.mkdocs.org/) to build the documentation.
+We use [uv](https://docs.astral.sh/uv/) to manage mkdocs and other Python tools used for the documentation.
+To build the documentation, **[install uv](https://docs.astral.sh/uv/getting-started/installation/)**.
 
-```
-python -m pip install --upgrade pip
-python -m pip install --requirement requirements.txt
-```
-
-from the root of the repository. After this, you can generate the docs by running
+After this, you can generate the docs by running
 
 ```
 build.cmd docs
@@ -136,20 +131,13 @@ browser or served using a number of tools such as [dotnet-serve](https://github.
 
 ### Updating the documentation-building packages
 
-The versions of the packages used to build the documentation are frozen using
-[pip-compile](https://github.com/jazzband/pip-tools#example-usage-for-pip-compile) from the pip-tools project.
+The versions of the packages used to build the documentation are frozen using uv as well.
 
-If you wish to update the packages used, install pip-tools:
-
-```
-python -m pip install --upgrade pip-tools
-```
-
-Then edit `requirements.in`, specifying the new requirements, and run
+If you wish to update the packages used, edit `pyproject.toml`, specifying the dev-dependencies, and run
 
 ```
-pip-compile requirements.in
+uv lock
 ```
 
 from the root of the repository. After verifying the generated documentation, you can commit both
-`requirements.*` files.
+`pyproject.toml` and `uv.lock`.

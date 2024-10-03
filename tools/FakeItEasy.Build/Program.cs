@@ -65,11 +65,11 @@ Target("docs", DependsOn("check-docs-links"));
 Target(
     "check-docs-links",
     DependsOn("generate-docs"),
-    () => Run("linkchecker", "--ignore-url=sitemap.xml --ignore-url=404.html --check-extern -F html/utf-8/artifacts/docs-link-check.html ./artifacts/docs/index.html"));
+    () => Run("uv", "run linkchecker --ignore-url=sitemap.xml --ignore-url=404.html --check-extern -F html/utf-8/artifacts/docs-link-check.html ./artifacts/docs/index.html"));
 
 Target(
     "generate-docs",
-    () => Run("python", "-m mkdocs build --clean --site-dir artifacts/docs --config-file mkdocs.yml --strict"));
+    () => Run("uv", "run mkdocs build --clean --site-dir artifacts/docs --config-file mkdocs.yml --strict"));
 
 Target(
     "force-approve",
