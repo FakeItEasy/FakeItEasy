@@ -1,4 +1,4 @@
-LinkChecker == 10.4.0
-mike == 1.1.2
-mkdocs == 1.4.2
-mkdocs-material == 9.1.3
+LinkChecker == 10.5.0
+mike == 2.1.3
+mkdocs == 1.6.1
+mkdocs-material == 9.5.39
