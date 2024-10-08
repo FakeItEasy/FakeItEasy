@@ -9,6 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.gitattributes = .gitattributes
 		.gitignore = .gitignore
 		.globalconfig = .globalconfig
+		.linkcheckerrc = .linkcheckerrc
 		.mailmap = .mailmap
 		build.cmd = build.cmd
 		build.ps1 = build.ps1
@@ -18,9 +19,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		how_to_build.md = how_to_build.md
 		License.txt = License.txt
 		mkdocs.yml = mkdocs.yml
+		pyproject.toml = pyproject.toml
 		README.md = README.md
-		requirements.in = requirements.in
-		requirements.txt = requirements.txt
+		uv.lock = uv.lock
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{59466C4D-C407-4DD9-B77B-D99162B9FC7C}"

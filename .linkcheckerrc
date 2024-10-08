@@ -1,0 +1,3 @@
+[filtering]
+ignorewarningsforurls=
+  ^https://stackoverflow\.com ^http-rate-limited$
