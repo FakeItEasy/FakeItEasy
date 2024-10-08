@@ -12,11 +12,11 @@ The coordinators will usually assign a priority to each issue from 1 (highest) t
 
 ## Tests
 
-Changes in functionality (new features, changed behavior, or bug fixes) should be described by [xBehave.net](https://xbehave.github.io/) acceptance tests in the `FakeItEasy.Specs` project. Doing so ensures that tests are written in language familiar to FakeItEasy's end users and are resilient to refactoring.
+Changes in functionality (new features, changed behavior, or bug fixes) should be described by [xBehave.net](https://github.com/adamralph/xbehave.net) acceptance tests in the `FakeItEasy.Specs` project. Doing so ensures that tests are written in language familiar to FakeItEasy's end users and are resilient to refactoring.
 
 There should be a high level of test coverage. When achieving proper coverage is impractical via acceptance tests, then integration tests or unit tests should be added.
 
-When writing integration or unit tests, use the [3A's pattern](http://defragdev.com/blog/?p=783) (Arrange, Act, Assert) with comments indicating each part.
+When writing integration or unit tests, use the [3A's pattern](https://defragdev.com/blog/?p=783) (Arrange, Act, Assert) with comments indicating each part.
 New or changed tests should use [FluentAssertions](https://github.com/dennisdoomen/fluentassertions) for the assertion phase.
 E.g.
 
@@ -44,11 +44,11 @@ Pull requests containing tabs will not be accepted. Make sure you set your edito
 
 ## Line Endings
 
-The repository is configured to preserve line endings both on checkout and commit (the equivalent of `autocrlf` set to `false`). This means *you* are responsible for line endings. We recommend that you configure your diff viewer so that it does not ignore line endings. Any [wall of pink](https://www.hanselman.com/blog/YoureJustAnotherCarriageReturnLineFeedInTheWall.aspx) pull requests will not be accepted.
+The repository is configured to preserve line endings both on checkout and commit (the equivalent of `autocrlf` set to `false`). This means *you* are responsible for line endings. We recommend that you configure your diff viewer so that it does not ignore line endings. Any [wall of pink](https://www.hanselman.com/blog/youre-just-another-carriage-return-line-feed-in-the-wall) pull requests will not be accepted.
 
 ## Line Width
 
-Try to keep lines of code no longer than 160 characters wide. This isn't a strict rule. Occasionally a line of code can be more readable if allowed to spill over slightly. A good way to remember this rule is to use the 'Column Guides' feature of the [Productivity Power Tools 2012](https://visualstudiogallery.msdn.microsoft.com/3a96a4dc-ba9c-4589-92c5-640e07332afd) extension for Visual Studio.
+Try to keep lines of code no longer than 160 characters wide. This isn't a strict rule. Occasionally a line of code can be more readable if allowed to spill over slightly.
 
 ## Coding Style
 
@@ -76,18 +76,18 @@ You should pick either the "personal" or "this computer" option.
 
 ## Making Changes
 
-FakeItEasy uses the git branching model known as [GitHub flow](https://help.github.com/articles/github-flow/). As such, all development must be performed on a ["feature branch"](https://martinfowler.com/bliki/FeatureBranch.html) created from the main development branch, which is called `master`. To submit a change:
+FakeItEasy uses the git branching model known as [GitHub flow](https://docs.github.com/en/get-started/using-github/github-flow). As such, all development must be performed on a ["feature branch"](https://martinfowler.com/bliki/FeatureBranch.html) created from the main development branch, which is called `master`. To submit a change:
 
-1. [Fork](https://help.github.com/forking/) the  [FakeItEasy repository](https://github.com/FakeItEasy/FakeItEasy/) on GitHub
+1. [Fork](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo) the  [FakeItEasy repository](https://github.com/FakeItEasy/FakeItEasy/) on GitHub
 1. Clone your fork locally
 1. Configure the upstream repo (`git remote add upstream git://github.com/FakeItEasy/FakeItEasy.git`)
 1. Create a local branch (`git checkout -b my-branch master`)
 1. Work on your feature
 1. Rebase if required (see below)
 1. Run code analysis on the solution to ensure you have not introduced any violations
-1. Ensure the build succeeds (see ['How to build'](how_to_build.md "How to build"))
+1. Ensure the build succeeds (see ['How to build'](how-to-build.md "How to build"))
 1. Push the branch up to GitHub (`git push origin my-branch`)
-1. Send a [pull request](https://help.github.com/articles/using-pull-requests) on GitHub
+1. Send a [pull request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests) on GitHub
 
 You should **never** work directly on the `master` branch and you should **never** send a pull request from the `master` branch - always from a feature branch. The reasons for this are detailed below.
 
@@ -114,7 +114,7 @@ While working on your feature you may well create several branches, which is fin
 When you're ready to go you should confirm that you are up to date and rebased with upstream/master (see "Handling Updates from upstream/master" above) and then:
 
 1. `git push origin my-branch`
-1. Send a [pull request](https://help.github.com/articles/using-pull-requests) in GitHub, selecting the following dropdown values:
+1. Send a [pull request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests) in GitHub, selecting the following dropdown values:
 
 | Dropdown      | Value                                             |
 |---------------|---------------------------------------------------|

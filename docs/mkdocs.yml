@@ -99,5 +99,7 @@ nav:
   - Faking HttpClient: Recipes/faking-http-client.md
 - Platform support: platform-support.md
 - Source Stepping: source-stepping.md
+- Contributing: contributing.md
+- How to build: how-to-build.md
 - Why was FakeItEasy created?: why-was-fakeiteasy-created.md
 - External Resources: external-resources.md

@@ -12,6 +12,7 @@ FakeItEasy can be built and tested on Windows, Linux, and macOS operating system
 The build requires that a few pieces of software be installed on the host computer. We're somewhat aggressive about adopting new language features and the like, so rather than specifying exactly which versions are required, we'll tend toward "latest" or "at least" forms of guidance. If it seems you have an incompatible version of the software, prefer to upgrade rather than downgrade.
 
 To build FakeItEasy at all, you must have
+
 * an up-to-date version of the .NET 8.0 SDK (currently this means 8.0.204 or later)
 
 FakeItEasy supports the following targets

@@ -14,14 +14,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		build.cmd = build.cmd
 		build.ps1 = build.ps1
 		build.sh = build.sh
-		CONTRIBUTING.md = CONTRIBUTING.md
 		Directory.Build.props = Directory.Build.props
-		how_to_build.md = how_to_build.md
 		License.txt = License.txt
-		docs\mkdocs.yml = docs\mkdocs.yml
-		docs\pyproject.toml = docs\pyproject.toml
 		README.md = README.md
-		docs\uv.lock = docs\uv.lock
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{59466C4D-C407-4DD9-B77B-D99162B9FC7C}"
@@ -65,6 +60,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{072853A5-3
 		docs\calling-wrapped-methods.md = docs\calling-wrapped-methods.md
 		docs\capturing-arguments.md = docs\capturing-arguments.md
 		docs\changing-behavior-between-calls.md = docs\changing-behavior-between-calls.md
+		docs\contributing.md = docs\contributing.md
 		docs\creating-fakes.md = docs\creating-fakes.md
 		docs\custom-argument-equality.md = docs\custom-argument-equality.md
 		docs\custom-dummy-creation.md = docs\custom-dummy-creation.md
@@ -74,13 +70,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{072853A5-3
 		docs\external-resources.md = docs\external-resources.md
 		docs\faking-async-methods.md = docs\faking-async-methods.md
 		docs\formatting-argument-values.md = docs\formatting-argument-values.md
+		docs\how-to-build.md = docs\how-to-build.md
 		docs\how-to-fake-internal-types.md = docs\how-to-fake-internal-types.md
 		docs\implicit-creation-options.md = docs\implicit-creation-options.md
 		docs\index.md = docs\index.md
 		docs\invoking-custom-code.md = docs\invoking-custom-code.md
 		docs\limited-call-specifications.md = docs\limited-call-specifications.md
+		docs\mkdocs.yml = docs\mkdocs.yml
 		docs\ordered-assertions.md = docs\ordered-assertions.md
 		docs\platform-support.md = docs\platform-support.md
+		docs\pyproject.toml = docs\pyproject.toml
 		docs\quickstart.md = docs\quickstart.md
 		docs\raising-events.md = docs\raising-events.md
 		docs\read-write-property-behavior.md = docs\read-write-property-behavior.md
@@ -92,6 +91,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{072853A5-3
 		docs\throwing-exceptions.md = docs\throwing-exceptions.md
 		docs\what-can-be-faked.md = docs\what-can-be-faked.md
 		docs\why-was-fakeiteasy-created.md = docs\why-was-fakeiteasy-created.md
+		docs\uv.lock = docs\uv.lock
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "css", "css", "{5A081DFC-0269-480B-853A-89D09AF478A8}"

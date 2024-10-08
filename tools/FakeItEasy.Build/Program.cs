@@ -1,4 +1,3 @@
-using System.Collections.Frozen;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
@@ -64,12 +63,13 @@ Target("docs", DependsOn("check-docs-links"));
 // Even with a valid site_url, the link check would fail if we added a new page.
 // So trust that any non-None links that mkdocs puts in sitemap.xml will be valid.
 // The 404.html page is likewise generated, and isn't even the one we use on the live site (mike generates a new one).
+// We use a custom User Agent because Github doesn't like the default (LinkChecker/X.Y) and returns a 404.
 Target(
     "check-docs-links",
     DependsOn("generate-docs"),
     () => Run(
         "uv",
-        "run linkchecker --config=.linkcheckerrc --ignore-url=sitemap.xml --ignore-url=404.html --check-extern -F html/utf-8/../artifacts/docs-link-check.html ../artifacts/docs/index.html",
+        "run linkchecker --config=.linkcheckerrc --ignore-url=sitemap.xml --ignore-url=404.html --check-extern --user-agent=FakeItEasyDocs/1.0 -F html/utf-8/../artifacts/docs-link-check.html ../artifacts/docs/index.html",
         "docs"));
 
 Target(
