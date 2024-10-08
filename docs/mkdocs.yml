@@ -2,6 +2,12 @@ site_name: FakeItEasy
 site_dir: artifacts/docs
 repo_url: https://github.com/FakeItEasy/FakeItEasy
 extra_css: [css/fakeiteasy.css]
+docs_dir: .
+exclude_docs: |
+    .python-version
+    mkdocs.yml
+    pyproject.toml
+    uv.lock
 
 extra:
   version:
@@ -45,7 +51,7 @@ markdown_extensions:
   - pymdownx.details
   - pymdownx.inlinehilite
   - pymdownx.snippets:
-      base_path: !ENV [SNIPPETS_REPO_ROOT, '.']
+      base_path: !ENV [SNIPPETS_REPO_ROOT, '..']
       check_paths: true
       dedent_subsections: true
   - pymdownx.superfences

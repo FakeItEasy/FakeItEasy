@@ -67,12 +67,15 @@ Target("docs", DependsOn("check-docs-links"));
 Target(
     "check-docs-links",
     DependsOn("generate-docs"),
-    () => Run("uv", "run linkchecker --config=.linkcheckerrc --ignore-url=sitemap.xml --ignore-url=404.html --check-extern --file-output=html/utf-8/artifacts/docs-link-check.html ./artifacts/docs/index.html"));
+    () => Run(
+        "uv",
+        "run linkchecker --config=.linkcheckerrc --ignore-url=sitemap.xml --ignore-url=404.html --check-extern -F html/utf-8/../artifacts/docs-link-check.html ../artifacts/docs/index.html",
+        "docs"));
 
 Target(
     "generate-docs",
     DependsOn("create-python-version-file"),
-    () => Run("uv", "run mkdocs build --clean --site-dir artifacts/docs --config-file mkdocs.yml --strict"));
+    () => Run("uv", "run mkdocs build --clean --site-dir ../artifacts/docs --config-file mkdocs.yml --strict", "docs"));
 
 // uv really likes there to be a .python-version file to specify which version of python it should use.
 // Rather than maintain a duplicate of the version in pyproject.toml, we'll generate the .python-version file from the latter.
@@ -83,14 +86,14 @@ Target(
         // expect the line to look something like
         // requires-python = "~=x.yz"
         // . We want the x.yz part.
-        const string versionSourceFile = "pyproject.toml";
+        const string versionSourceFile = "docs/pyproject.toml";
         const string versionPattern = @"requires-python = ""~=(?<version>[^""]+)""";
         var pythonVersion = File.ReadLines(versionSourceFile)
             .Select(line => Regex.Match(line, versionPattern))
             .Where(m => m.Success)
             .Select(m => m.Groups["version"].Value)
             .FirstOrDefault() ?? throw new InvalidOperationException($"Could not find required Python version in {versionSourceFile}");
-        File.WriteAllText(".python-version", pythonVersion);
+        File.WriteAllText("docs/.python-version", pythonVersion);
     });
 
 Target(
