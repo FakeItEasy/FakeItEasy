@@ -37,12 +37,11 @@ jobs:
               3.1
               2.1
           - os: macos
-            os-image: macos-12
+            os-image: macos-15
             os-name: macOS
             artifact-name: macos-artifacts
             dotnet-versions-to-install: |
-              3.1
-              2.1
+              6.0
     runs-on: ${{ matrix.os-image }}
     steps:
       - uses: actions/checkout@v4
