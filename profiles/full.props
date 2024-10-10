@@ -21,8 +21,8 @@
     <RecipesTargetFrameworks>netcoreapp2.1;netcoreapp3.1;net6.0;net8.0</RecipesTargetFrameworks>
   </PropertyGroup>
   <PropertyGroup Condition="$([MSBuild]::IsOSPlatform('OSX'))">
-    <FakeItEasyTargetFrameworks>net6.0;net8.0</FakeItEasyTargetFrameworks>
-    <ValueTaskExtensionsTargetFrameworks>net6.0;net8.0</ValueTaskExtensionsTargetFrameworks>
+    <FakeItEasyTargetFrameworks>netstandard2.0;netstandard2.1;net6.0;net8.0</FakeItEasyTargetFrameworks>
+    <ValueTaskExtensionsTargetFrameworks>netstandard2.0;netstandard2.1;net6.0;net8.0</ValueTaskExtensionsTargetFrameworks>
     <SpecsTargetFrameworks>net6.0;net8.0</SpecsTargetFrameworks>
     <IntegrationTestsTargetFrameworks>net6.0;net8.0</IntegrationTestsTargetFrameworks>
     <UnitTestsTargetFrameworks>net6.0;net8.0</UnitTestsTargetFrameworks>
