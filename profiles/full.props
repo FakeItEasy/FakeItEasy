@@ -1,33 +1,25 @@
 <Project>
   <!-- Everything -->
+  <PropertyGroup>
+    <LibraryTargetFrameworks>net462;netstandard2.0;netstandard2.1;net6.0;net8.0</LibraryTargetFrameworks>
+  </PropertyGroup>
   <PropertyGroup Condition="$([MSBuild]::IsOSPlatform('Windows'))">
-    <FakeItEasyTargetFrameworks>net462;netstandard2.0;netstandard2.1;net6.0;net8.0</FakeItEasyTargetFrameworks>
-    <ValueTaskExtensionsTargetFrameworks>net462;netstandard2.0;netstandard2.1;net6.0;net8.0</ValueTaskExtensionsTargetFrameworks>
-    <SpecsTargetFrameworks>net462;netcoreapp2.1;netcoreapp3.1;net6.0;net8.0</SpecsTargetFrameworks>
-    <IntegrationTestsTargetFrameworks>net462;netcoreapp2.1;netcoreapp3.1;net6.0;net8.0</IntegrationTestsTargetFrameworks>
-    <UnitTestsTargetFrameworks>net462;netcoreapp2.1;netcoreapp3.1;net6.0;net8.0</UnitTestsTargetFrameworks>
-    <TestHelpersTargetFrameworks>net462;netstandard2.0;netstandard2.1;net6.0;net8.0</TestHelpersTargetFrameworks>
-    <ApprovalTestsTargetFrameworks>net8.0</ApprovalTestsTargetFrameworks>
-    <RecipesTargetFrameworks>net462;netcoreapp2.1;netcoreapp3.1;net6.0;net8.0</RecipesTargetFrameworks>
+    <TestTargetFrameworks>net462;netcoreapp2.1;netcoreapp3.1;net6.0;net8.0</TestTargetFrameworks>
   </PropertyGroup>
   <PropertyGroup Condition="$([MSBuild]::IsOSPlatform('Linux'))">
-    <FakeItEasyTargetFrameworks>net462;netstandard2.0;netstandard2.1;net6.0;net8.0</FakeItEasyTargetFrameworks>
-    <ValueTaskExtensionsTargetFrameworks>net462;netstandard2.0;netstandard2.1;net6.0;net8.0</ValueTaskExtensionsTargetFrameworks>
-    <SpecsTargetFrameworks>netcoreapp2.1;netcoreapp3.1;net6.0;net8.0</SpecsTargetFrameworks>
-    <IntegrationTestsTargetFrameworks>netcoreapp2.1;netcoreapp3.1;net6.0;net8.0</IntegrationTestsTargetFrameworks>
-    <UnitTestsTargetFrameworks>netcoreapp2.1;netcoreapp3.1;net6.0;net8.0</UnitTestsTargetFrameworks>
-    <TestHelpersTargetFrameworks>netstandard2.0;netstandard2.1;net6.0;net8.0</TestHelpersTargetFrameworks>
-    <ApprovalTestsTargetFrameworks>net8.0</ApprovalTestsTargetFrameworks>
-    <RecipesTargetFrameworks>netcoreapp2.1;netcoreapp3.1;net6.0;net8.0</RecipesTargetFrameworks>
+    <TestTargetFrameworks>netcoreapp2.1;netcoreapp3.1;net6.0;net8.0</TestTargetFrameworks>
   </PropertyGroup>
   <PropertyGroup Condition="$([MSBuild]::IsOSPlatform('OSX'))">
-    <FakeItEasyTargetFrameworks>net462;netstandard2.0;netstandard2.1;net6.0;net8.0</FakeItEasyTargetFrameworks>
-    <ValueTaskExtensionsTargetFrameworks>net462;netstandard2.0;netstandard2.1;net6.0;net8.0</ValueTaskExtensionsTargetFrameworks>
-    <SpecsTargetFrameworks>net6.0;net8.0</SpecsTargetFrameworks>
-    <IntegrationTestsTargetFrameworks>net6.0;net8.0</IntegrationTestsTargetFrameworks>
-    <UnitTestsTargetFrameworks>net6.0;net8.0</UnitTestsTargetFrameworks>
-    <TestHelpersTargetFrameworks>net6.0;net8.0</TestHelpersTargetFrameworks>
+    <TestTargetFrameworks>net6.0;net8.0</TestTargetFrameworks>
+  </PropertyGroup>
+  <PropertyGroup>
+    <FakeItEasyTargetFrameworks>$(LibraryTargetFrameworks)</FakeItEasyTargetFrameworks>
+    <ValueTaskExtensionsTargetFrameworks>$(LibraryTargetFrameworks)</ValueTaskExtensionsTargetFrameworks>
+    <TestHelpersTargetFrameworks>$(LibraryTargetFrameworks)</TestHelpersTargetFrameworks>
     <ApprovalTestsTargetFrameworks>net8.0</ApprovalTestsTargetFrameworks>
-    <RecipesTargetFrameworks>net6.0;net8.0</RecipesTargetFrameworks>
+    <SpecsTargetFrameworks>$(TestTargetFrameworks)</SpecsTargetFrameworks>
+    <IntegrationTestsTargetFrameworks>$(TestTargetFrameworks)</IntegrationTestsTargetFrameworks>
+    <UnitTestsTargetFrameworks>$(TestTargetFrameworks)</UnitTestsTargetFrameworks>
+    <RecipesTargetFrameworks>$(TestTargetFrameworks)</RecipesTargetFrameworks>
   </PropertyGroup>
 </Project>
