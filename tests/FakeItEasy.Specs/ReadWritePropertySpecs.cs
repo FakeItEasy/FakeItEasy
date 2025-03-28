@@ -1,7 +1,7 @@
 ﻿namespace FakeItEasy.Specs
 {
     using FluentAssertions;
-    using Xbehave;
+    using LambdaTale;
 
     public static class ReadWritePropertySpecs
     {

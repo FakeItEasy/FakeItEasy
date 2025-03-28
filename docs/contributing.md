@@ -12,7 +12,7 @@ The coordinators will usually assign a priority to each issue from 1 (highest) t
 
 ## Tests
 
-Changes in functionality (new features, changed behavior, or bug fixes) should be described by [xBehave.net](https://github.com/adamralph/xbehave.net) acceptance tests in the `FakeItEasy.Specs` project. Doing so ensures that tests are written in language familiar to FakeItEasy's end users and are resilient to refactoring.
+Changes in functionality (new features, changed behavior, or bug fixes) should be described by [LambdaTale](https://github.com/bbvch/LambdaTale) acceptance tests in the `FakeItEasy.Specs` project. Doing so ensures that tests are written in language familiar to FakeItEasy's end users and are resilient to refactoring.
 
 There should be a high level of test coverage. When achieving proper coverage is impractical via acceptance tests, then integration tests or unit tests should be added.
 

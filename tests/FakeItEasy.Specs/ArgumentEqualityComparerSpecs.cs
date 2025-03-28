@@ -4,7 +4,7 @@ namespace FakeItEasy.Specs
     using System.Collections.Generic;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
-    using Xbehave;
+    using LambdaTale;
     using Xunit;
 
     public static class ArgumentEqualityComparerSpecs

@@ -6,7 +6,7 @@ namespace FakeItEasy.Specs
     using FakeItEasy.Core;
     using FakeItEasy.Tests.TestHelpers.FSharp;
     using FluentAssertions;
-    using Xbehave;
+    using LambdaTale;
 
     public static class FakeSpecs
     {

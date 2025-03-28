@@ -5,7 +5,7 @@ namespace FakeItEasy.Specs
     using System.Linq;
 
     using FluentAssertions;
-    using Xbehave;
+    using LambdaTale;
 
     /// <summary>
     /// Check certain fluent API syntax invariants.

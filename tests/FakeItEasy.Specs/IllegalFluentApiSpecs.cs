@@ -10,9 +10,9 @@ namespace FakeItEasy.Specs
 #endif
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
+    using LambdaTale;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
-    using Xbehave;
 
     /// <summary>
     /// Check that certain fluent API syntax constructions are illegal.
