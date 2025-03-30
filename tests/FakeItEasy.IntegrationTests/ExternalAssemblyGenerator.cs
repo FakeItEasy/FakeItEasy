@@ -4,6 +4,8 @@ namespace FakeItEasy.IntegrationTests
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Reflection;
+    using System.Runtime.Versioning;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
 
@@ -65,7 +67,8 @@ namespace FakeItEasy.IntegrationTests
 
         private static string CreateBaseDirectory()
         {
-            var dir = Path.Combine(Path.GetTempPath(), AssemblyName);
+            var tfmAttribute = typeof(ExternalAssemblyGenerator).Assembly.GetCustomAttribute<TargetFrameworkAttribute>();
+            var dir = Path.Combine(Path.GetTempPath(), AssemblyName, tfmAttribute!.FrameworkName);
             if (Directory.Exists(dir))
             {
                 Directory.Delete(dir, recursive: true);
