@@ -4,7 +4,7 @@
 
   <PropertyGroup>
     <!-- suppress NU1902 and NU1903 so long as we have netcoreapp2.1 as a TFM -->
-    <NoWarn>$(NoWarn),CA1014,NU1902,NU1903</NoWarn>
+    <NoWarn>$(NoWarn),CS8002,CA1014,NU1902,NU1903</NoWarn>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
   </PropertyGroup>
 
@@ -16,7 +16,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.0" />
-    <PackageReference Include="xunit.core" Version="2.4.2" />
+    <PackageReference Include="xunit.core" Version="2.9.3" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3" />
     <PackageReference Include="XunitXml.TestLogger" Version="2.1.26" />
     <PackageReference Include="FluentAssertions" Version="5.10.3" />

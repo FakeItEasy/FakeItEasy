@@ -9,7 +9,7 @@ namespace FakeItEasy.Specs
     using FakeItEasy.Tests.TestHelpers;
     using FakeItEasy.Tests.TestHelpers.FSharp;
     using FluentAssertions;
-    using Xbehave;
+    using LambdaTale;
     using Xunit;
 
     public static class CallMatchingSpecs

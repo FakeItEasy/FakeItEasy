@@ -20,6 +20,7 @@ jobs:
   build:
     name: Build on ${{ matrix.os-name }}
     strategy:
+      fail-fast: false
       matrix:
         os: [windows, ubuntu, macos]
         include:

@@ -12,6 +12,9 @@
 
   <ItemGroup>
     <ProjectReference Include="../../src/FakeItEasy/FakeItEasy.csproj" />
+  </ItemGroup>
+  
+  <ItemGroup Condition="$([MSBuild]::GetTargetFrameworkIdentifier('$(TargetFramework)')) == '.NETFramework'">
     <Reference Include="System.Net.Http" />
   </ItemGroup>
 

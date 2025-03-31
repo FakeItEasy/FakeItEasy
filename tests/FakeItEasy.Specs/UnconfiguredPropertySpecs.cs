@@ -3,7 +3,7 @@ namespace FakeItEasy.Specs
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using FluentAssertions;
-    using Xbehave;
+    using LambdaTale;
 
     public static class UnconfiguredPropertySpecs
     {

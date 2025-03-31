@@ -2,7 +2,7 @@ namespace FakeItEasy.Specs
 {
     using FakeItEasy.Core;
     using FluentAssertions;
-    using Xbehave;
+    using LambdaTale;
 
     public static class ObjectMembersSpecs
     {

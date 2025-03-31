@@ -6,7 +6,7 @@ namespace FakeItEasy.Specs
     using FakeItEasy.Configuration;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
-    using Xbehave;
+    using LambdaTale;
     using Xunit;
 
     public delegate void CustomEventHandler(object sender, CustomEventArgs e);

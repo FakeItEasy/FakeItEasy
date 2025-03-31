@@ -2,7 +2,7 @@ namespace FakeItEasy.Specs
 {
     using System.Diagnostics.CodeAnalysis;
     using FluentAssertions;
-    using Xbehave;
+    using LambdaTale;
 
     public static class UnconfiguredFakeSpecs
     {

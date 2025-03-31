@@ -3,7 +3,7 @@ namespace FakeItEasy.Specs
     using System;
     using System.Diagnostics.CodeAnalysis;
     using FluentAssertions;
-    using Xbehave;
+    using LambdaTale;
 
     public static class DisposableSpecs
     {

@@ -5,7 +5,7 @@ namespace FakeItEasy.Specs
     using System.Threading.Tasks;
     using FakeItEasy.Tests.TestHelpers;
     using FluentAssertions;
-    using Xbehave;
+    using LambdaTale;
 
     public static class ThrowsAsyncSpecs
     {

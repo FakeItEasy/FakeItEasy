@@ -1,7 +1,7 @@
 namespace FakeItEasy.Specs
 {
     using System.Diagnostics.CodeAnalysis;
-    using Xbehave;
+    using LambdaTale;
 
     public static class AssertingOnSetOnlyPropertiesSpecs
     {

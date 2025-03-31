@@ -3,7 +3,7 @@ namespace FakeItEasy.Specs
     using System.Collections.Generic;
     using FakeItEasy.Core;
     using FluentAssertions;
-    using Xbehave;
+    using LambdaTale;
 
     public static class FakeManagerSpecs
     {

@@ -3,7 +3,7 @@ namespace FakeItEasy.Specs
     using System;
     using System.Threading.Tasks;
     using FluentAssertions;
-    using Xbehave;
+    using LambdaTale;
 
     public class ValueTaskReturnValueSpecs
     {

@@ -3,8 +3,8 @@ namespace FakeItEasy.Specs
     using System;
     using System.Diagnostics.CodeAnalysis;
     using FakeItEasy.Creation;
-    using Xbehave;
-    using Xbehave.Sdk;
+    using LambdaTale;
+    using LambdaTale.Sdk;
 
     public static class StringExtensions
     {

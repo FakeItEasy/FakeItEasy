@@ -2,7 +2,7 @@ namespace FakeItEasy.Specs
 {
     using System;
     using FluentAssertions;
-    using Xbehave;
+    using LambdaTale;
 
     public class EventActionSpecs
     {

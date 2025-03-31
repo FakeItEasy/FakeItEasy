@@ -3,7 +3,7 @@ namespace FakeItEasy.Specs
     using System;
     using System.Reflection;
     using FluentAssertions;
-    using Xbehave;
+    using LambdaTale;
 
     public static class DummyFactorySpecs
     {
