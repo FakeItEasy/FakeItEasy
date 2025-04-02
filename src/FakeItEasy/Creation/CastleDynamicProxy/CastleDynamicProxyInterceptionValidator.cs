@@ -8,6 +8,9 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
 
     internal class CastleDynamicProxyInterceptionValidator : IMethodInterceptionValidator
     {
+        private const string NonVirtualMethodsCantBeIntercepted =
+            "Non-virtual or sealed members can not be intercepted. Only interface members and non-sealed virtual, overriding, and abstract members can be intercepted.";
+
         private readonly MethodInfoManager methodInfoManager;
 
         public CastleDynamicProxyInterceptionValidator(MethodInfoManager methodInfoManager)
@@ -15,8 +18,14 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
             this.methodInfoManager = methodInfoManager;
         }
 
-        public bool MethodCanBeInterceptedOnInstance(MethodInfo method, object? callTarget, [NotNullWhen(false)]out string? failReason)
+        public bool MethodCanBeInterceptedOnInstance(MethodInfo method, object? callTarget, [NotNullWhen(false)] out string? failReason)
         {
+            if (method.DeclaringType!.IsInterface && !method.IsVirtual)
+            {
+                failReason = NonVirtualMethodsCantBeIntercepted;
+                return false;
+            }
+
             var invokedMethod = this.GetInvokedMethod(method, callTarget);
 
             failReason = GetReasonForWhyMethodCanNotBeIntercepted(invokedMethod);
@@ -43,7 +52,7 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
                 }
                 else
                 {
-                    return "Non-virtual members can not be intercepted. Only interface members and virtual, overriding, and abstract members can be intercepted.";
+                    return NonVirtualMethodsCantBeIntercepted;
                 }
             }
 
@@ -61,7 +70,7 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
 
             if (!method.IsVirtual)
             {
-                return "Non-virtual members can not be intercepted. Only interface members and virtual, overriding, and abstract members can be intercepted.";
+                return NonVirtualMethodsCantBeIntercepted;
             }
 
             if (!Castle.DynamicProxy.ProxyUtil.IsAccessible(method, out var message))

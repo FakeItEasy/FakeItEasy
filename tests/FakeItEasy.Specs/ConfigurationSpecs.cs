@@ -290,7 +290,7 @@ namespace FakeItEasy.Specs
 
             "Then it throws a fake configuration exception"
                 .x(() => exception.Should().BeAnExceptionOfType<FakeConfigurationException>()
-                    .And.Message.Should().ContainModuloLineEndings("The current proxy generator can not intercept the method FakeItEasy.Specs.ConfigurationSpecs+BaseClass.DoSomethingNonVirtual(System.Int32 anInt) for the following reason:\r\n    - Non-virtual members can not be intercepted. Only interface members and virtual, overriding, and abstract members can be intercepted."));
+                    .And.Message.Should().ContainModuloLineEndings("The current proxy generator can not intercept the method FakeItEasy.Specs.ConfigurationSpecs+BaseClass.DoSomethingNonVirtual(System.Int32 anInt) for the following reason:\r\n    - Non-virtual or sealed members can not be intercepted. Only interface members and non-sealed virtual, overriding, and abstract members can be intercepted."));
         }
 
         [Scenario]
@@ -322,7 +322,7 @@ namespace FakeItEasy.Specs
 
             "Then it throws a fake configuration exception"
                .x(() => exception.Should().BeAnExceptionOfType<FakeConfigurationException>()
-                   .And.Message.Should().Contain("Non-virtual members can not be intercepted. Only interface members and virtual, overriding, and abstract members can be intercepted."));
+                   .And.Message.Should().Contain("Non-virtual or sealed members can not be intercepted. Only interface members and non-sealed virtual, overriding, and abstract members can be intercepted."));
         }
 
         [Scenario]
@@ -354,7 +354,7 @@ namespace FakeItEasy.Specs
 
             "Then it throws a fake configuration exception"
                 .x(() => exception.Should().BeAnExceptionOfType<FakeConfigurationException>()
-                    .And.Message.Should().Contain("Non-virtual members can not be intercepted. Only interface members and virtual, overriding, and abstract members can be intercepted."));
+                    .And.Message.Should().Contain("Non-virtual or sealed members can not be intercepted. Only interface members and non-sealed virtual, overriding, and abstract members can be intercepted."));
         }
 
         [Scenario]
@@ -386,7 +386,7 @@ namespace FakeItEasy.Specs
 
             "Then it throws a fake configuration exception"
                 .x(() => exception.Should().BeAnExceptionOfType<FakeConfigurationException>()
-                    .And.Message.Should().Contain("Non-virtual members can not be intercepted. Only interface members and virtual, overriding, and abstract members can be intercepted."));
+                    .And.Message.Should().Contain("Non-virtual or sealed members can not be intercepted. Only interface members and non-sealed virtual, overriding, and abstract members can be intercepted."));
         }
 
         [Scenario]
@@ -418,7 +418,7 @@ namespace FakeItEasy.Specs
 
             "Then it throws a fake configuration exception"
                 .x(() => exception.Should().BeAnExceptionOfType<FakeConfigurationException>()
-                    .And.Message.Should().Contain("Non-virtual members can not be intercepted. Only interface members and virtual, overriding, and abstract members can be intercepted."));
+                    .And.Message.Should().Contain("Non-virtual or sealed members can not be intercepted. Only interface members and non-sealed virtual, overriding, and abstract members can be intercepted."));
         }
 
         [Scenario]
@@ -450,7 +450,7 @@ namespace FakeItEasy.Specs
 
             "Then it throws a fake configuration exception"
                .x(() => exception.Should().BeAnExceptionOfType<FakeConfigurationException>()
-                   .And.Message.Should().Contain("Non-virtual members can not be intercepted. Only interface members and virtual, overriding, and abstract members can be intercepted."));
+                   .And.Message.Should().Contain("Non-virtual or sealed members can not be intercepted. Only interface members and non-sealed virtual, overriding, and abstract members can be intercepted."));
         }
 
         [Scenario]
