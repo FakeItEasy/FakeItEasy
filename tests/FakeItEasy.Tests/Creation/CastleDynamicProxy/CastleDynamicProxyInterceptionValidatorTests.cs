@@ -37,7 +37,7 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
             return TestCases.FromObject(
                 new NonInterceptableTestCase(
                     () => new object().GetType(),
-                    "Non-virtual members can not be intercepted. Only interface members and virtual, overriding, and abstract members can be intercepted."),
+                    "Non-virtual or sealed members can not be intercepted. Only interface members and non-sealed virtual, overriding, and abstract members can be intercepted."),
                 new NonInterceptableTestCase(
                     () => object.Equals("foo", "bar"),
                     "Static methods can not be intercepted."),
@@ -48,7 +48,7 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
                     "Extension methods can not be intercepted since they're static."),
                 new NonInterceptableTestCase(
                     () => new TypeWithSealedOverride().ToString(),
-                    "Non-virtual members can not be intercepted. Only interface members and virtual, overriding, and abstract members can be intercepted."));
+                    "Non-virtual or sealed members can not be intercepted. Only interface members and non-sealed virtual, overriding, and abstract members can be intercepted."));
         }
 
         public static IEnumerable<object?[]> InterceptableMethods()
