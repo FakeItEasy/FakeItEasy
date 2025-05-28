@@ -15,6 +15,7 @@ Fake.Reset(fake);
 ```
 
 This method resets all changes made to the fake after it was created. This includes:
+
 * call configurations
 * values of [auto-faked read-write properties](default-fake-behavior.md#readwrite-properties)
 * event handlers
@@ -23,6 +24,7 @@ This method resets all changes made to the fake after it was created. This inclu
 
 However, any changes made _during_ fake creation (via fake creation options) will be preserved.
 This includes all the elements mentioned above, but also:
+
 * [strictness](strict-fakes.md),
 * [object wrapping](calling-wrapped-methods.md),
 * [redirecting to base methods](calling-base-methods.md), and
