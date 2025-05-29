@@ -54,6 +54,9 @@ jobs:
         if: ${{ matrix.dotnet-versions-to-install }}
         with:
           dotnet-version: ${{ matrix.dotnet-versions-to-install }}
+      - name: Print .NET SDK version
+        run: dotnet --version
+        shell: pwsh
       - name: Run build script
         run: ./build.ps1
         shell: pwsh
