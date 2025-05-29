@@ -41,6 +41,7 @@ A.CallTo(() => shop.BuyCandy(lollipop)).MustHaveHappened();
   * .NET Standard 2.0
   * .NET Standard 2.1
   * .NET 6.0
+  * .NET 8.0
 
 ---
 
