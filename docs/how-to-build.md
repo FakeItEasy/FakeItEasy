@@ -21,12 +21,11 @@ FakeItEasy supports the following targets
 |-----------------------|----------------------|--------------------------------------------|----------------|
 | .NET 8.0              | .NET 8.0             |                                            | net8.0         |
 | .NET 6.0              | .NET 6.0             | .NET 6.0 runtime                           | net6.0         |
-| .NET Standard 2.1     | .NET Core 3.1        | non-macOS OS, .NET Core 3.1 runtime        | netstandard2.1 |
 | .NET Framework 4.6.2  | .NET Framework 4.6.2 | Windows OS, .NET Framework 4.6.2 or higher | net462         |
 
 The default [build profile](#building-only-a-subset-of-the-supported-target-frameworks) (called `full`)
 will build and test all targets that are supported on the active operating system, so will require all
-of the addtional prerequisites listed above.
+the additional prerequisites listed above.
 
 [Partial builds](#building-only-a-subset-of-the-supported-target-frameworks) are also supported.
 

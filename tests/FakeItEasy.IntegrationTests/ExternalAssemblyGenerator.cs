@@ -56,15 +56,6 @@ namespace FakeItEasy.IntegrationTests
                 });
         }
 
-#if REQUIRES_NETSTANDARD_REFERENCE
-        private static string GetNetStandardAssemblyLocation()
-        {
-            var assembly = AppDomain.CurrentDomain.GetAssemblies()
-                .First(a => string.Equals(a.GetName().Name, "netstandard", StringComparison.OrdinalIgnoreCase));
-            return assembly.Location;
-        }
-#endif
-
         private static string CreateBaseDirectory()
         {
             var tfmAttribute = typeof(ExternalAssemblyGenerator).Assembly.GetCustomAttribute<TargetFrameworkAttribute>();
@@ -140,14 +131,10 @@ namespace FakeItEasy.IntegrationTests.External
 ";
 
             var references = GetFrameworkAssemblyLocations()
-                .Concat(new[]
-                {
+                .Concat([
                     typeof(A).Assembly.Location,
-#if REQUIRES_NETSTANDARD_REFERENCE
-                    GetNetStandardAssemblyLocation(),
-#endif
                     this.AssemblyDependencyPath
-                })
+                ])
                 .Select(l => MetadataReference.CreateFromFile(l));
 
             var compilation = CSharpCompilation.Create(

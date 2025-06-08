@@ -9,8 +9,7 @@ See the "Dependencies" section of the [FakeItEasy NuGet Gallery page](https://ww
 Beginning with FakeItEasy 8.0.0, we intend to publish new packages that target
 
 * .NET versions designated as Long Term Support (LTS) and currently supported by Microsoft
-* .NET Standard 2.1[^1]
-* .NET Framework 4.6.2[^2]
+* .NET Framework 4.6.2[^1]
 
 See the [.NET Support Policy](https://dotnet.microsoft.com/en-us/platform/support/policy) to learn which target frameworks
 are categorized as "Long Term Support", and when support begins and ends.
@@ -23,10 +22,6 @@ a breaking change and therefore requires a new major version. We choose to limit
 and issue a new major release when dropping a supported target framework.
 
 [^1]:
-    There are no explicit plans to remove support for .NET Standard target frameworks, but we may do so if Microsoft
-    explicitly ends support for them, or if supporting them within FakeItEasy becomes too onerous.
-
-[^2]:
     There are no explicit plans to remove support for .NET Framework, but we may increase the supported
     version or remove support if Microsoft ends support for .NET Framework, or if supporting it within
     FakeItEasy becomes too onerous.

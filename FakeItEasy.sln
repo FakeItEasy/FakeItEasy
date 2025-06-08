@@ -153,7 +153,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "profiles", "profiles", "{42
 		profiles\net462.props = profiles\net462.props
 		profiles\net6.0.props = profiles\net6.0.props
 		profiles\net8.0.props = profiles\net8.0.props
-		profiles\netstandard2.1.props = profiles\netstandard2.1.props
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeGen", "tools\CodeGen\CodeGen.csproj", "{95F1F48E-D5D7-4B9E-A0CE-FF5EC6C20190}"
