@@ -34,7 +34,7 @@ namespace FakeItEasy.Creation.CastleDynamicProxy
 
         private static string? GetReasonForWhyMethodCanNotBeIntercepted(MethodInfo method)
         {
-            if (Castle.DynamicProxy.ProxyUtil.IsProxyType(method.DeclaringType))
+            if (Castle.DynamicProxy.ProxyUtil.IsProxyType(method.DeclaringType!))
             {
                 return null;
             }

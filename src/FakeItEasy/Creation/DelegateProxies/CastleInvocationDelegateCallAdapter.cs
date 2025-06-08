@@ -16,7 +16,7 @@ namespace FakeItEasy.Creation.DelegateProxies
     {
         private readonly IInvocation invocation;
         private readonly Delegate theDelegate;
-        private readonly object[] originalArguments;
+        private readonly object?[] originalArguments;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CastleInvocationDelegateCallAdapter"/> class.
