@@ -37,25 +37,13 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
-  <!-- .NET Standard 2.1 -->
-
-  <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
-    <DefineConstants>$(DefineConstants);LACKS_CALLERARGUMENTEXPRESSION</DefineConstants>
-  </PropertyGroup>
-
-  <!-- .NET Standard 2.0 -->
-
-  <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <DefineConstants>$(DefineConstants);LACKS_NULLABLE_ATTRIBUTES;LACKS_STRING_CONTAINS_COMPARISONTYPE;LACKS_CALLERARGUMENTEXPRESSION;LACKS_ISBYREFLIKE</DefineConstants>
-  </PropertyGroup>
-
   <!-- .NET Framework -->
 
   <PropertyGroup Condition="$([MSBuild]::GetTargetFrameworkIdentifier('$(TargetFramework)')) == '.NETFramework'">
     <DefineConstants>$(DefineConstants);LACKS_NULLABLE_ATTRIBUTES;LACKS_ARRAY_EMPTY;LACKS_STRING_CONTAINS_COMPARISONTYPE;LACKS_CALLERARGUMENTEXPRESSION;LACKS_ISBYREFLIKE;TRY_ISBYREF_CREATION</DefineConstants>
   </PropertyGroup>
 
-  <ItemGroup Condition="!$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'netstandard2.1'))">
+  <ItemGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net462'))">
     <Compile Remove="ValueTaskReturnValueConfigurationExtensions.cs" />
     <Compile Remove="ValueTaskAsyncReturnValueConfigurationExtensions.cs" />
   </ItemGroup>

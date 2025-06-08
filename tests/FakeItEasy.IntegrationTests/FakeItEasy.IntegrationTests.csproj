@@ -6,14 +6,6 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
-    <DefineConstants>$(DefineConstants);REQUIRES_NETSTANDARD_REFERENCE</DefineConstants>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(TargetFramework)' == 'netcoreapp2.1'">
-    <DefineConstants>$(DefineConstants);REQUIRES_NETSTANDARD_REFERENCE</DefineConstants>
-  </PropertyGroup>
-
   <PropertyGroup Condition="$([MSBuild]::GetTargetFrameworkIdentifier('$(TargetFramework)')) == '.NETFramework'">
     <DefineConstants>$(DefineConstants);THROWS_ON_DUPLICATE_ASSEMBLY_LOAD;LACKS_STRING_CONTAINS_COMPARISONTYPE</DefineConstants>
   </PropertyGroup>

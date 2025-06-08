@@ -11,14 +11,6 @@
     <DefineConstants>$(DefineConstants);LACKS_COMPOSITEFORMAT</DefineConstants>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
-      <DefineConstants>$(DefineConstants);LACKS_FAKEABLE_GENERIC_IN_PARAMETERS</DefineConstants>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(TargetFramework)' == 'netcoreapp2.1'">
-      <DefineConstants>$(DefineConstants);LACKS_FAKEABLE_GENERIC_IN_PARAMETERS;LACKS_DEFAULT_INTERFACE_METHODS</DefineConstants>
-  </PropertyGroup>
-
   <PropertyGroup Condition="$([MSBuild]::GetTargetFrameworkIdentifier('$(TargetFramework)')) == '.NETFramework'">
       <DefineConstants>$(DefineConstants);LACKS_FAKEABLE_GENERIC_IN_PARAMETERS;CAN_CREATE_ISBYREFLIKE;LACKS_DEFAULT_INTERFACE_METHODS</DefineConstants>
   </PropertyGroup>

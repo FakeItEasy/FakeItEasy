@@ -38,9 +38,7 @@ A.CallTo(() => shop.BuyCandy(lollipop)).MustHaveHappened();
 * [Chat](https://app.gitter.im/#/room/#FakeItEasy_FakeItEasy:gitter.im)
 * [NuGet packages on NuGet.org](https://www.nuget.org/profiles/FakeItEasy "FakeItEasy's packages on NuGet.org"), targeting:
   * .NET Framework 4.6.2
-  * .NET Standard 2.0
-  * .NET Standard 2.1
-  * .NET 6.0
+  * .NET 8.0
 
 ---
 

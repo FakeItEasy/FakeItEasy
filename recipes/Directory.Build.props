@@ -3,8 +3,7 @@
   <Import Project="../Directory.Build.props" />
 
   <PropertyGroup>
-    <!-- suppress NU1902 and NU1903 so long as we have netcoreapp2.1 as a TFM -->
-    <NoWarn>$(NoWarn),CA1014,NU1902,NU1903</NoWarn>
+    <NoWarn>$(NoWarn),CA1014</NoWarn>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
   </PropertyGroup>
 
