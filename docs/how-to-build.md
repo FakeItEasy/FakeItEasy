@@ -22,7 +22,6 @@ FakeItEasy supports the following targets
 | .NET 8.0              | .NET 8.0             |                                            | net8.0         |
 | .NET 6.0              | .NET 6.0             | .NET 6.0 runtime                           | net6.0         |
 | .NET Standard 2.1     | .NET Core 3.1        | non-macOS OS, .NET Core 3.1 runtime        | netstandard2.1 |
-| .NET Standard 2.0     | .NET Core 2.1        | non-macOS OS, .NET Core 2.1 runtime        | netstandard2.0 |
 | .NET Framework 4.6.2  | .NET Framework 4.6.2 | Windows OS, .NET Framework 4.6.2 or higher | net462         |
 
 The default [build profile](#building-only-a-subset-of-the-supported-target-frameworks) (called `full`)

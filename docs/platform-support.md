@@ -9,7 +9,7 @@ See the "Dependencies" section of the [FakeItEasy NuGet Gallery page](https://ww
 Beginning with FakeItEasy 8.0.0, we intend to publish new packages that target
 
 * .NET versions designated as Long Term Support (LTS) and currently supported by Microsoft
-* .NET Standard 2.0 and 2.1[^1]
+* .NET Standard 2.1[^1]
 * .NET Framework 4.6.2[^2]
 
 See the [.NET Support Policy](https://dotnet.microsoft.com/en-us/platform/support/policy) to learn which target frameworks

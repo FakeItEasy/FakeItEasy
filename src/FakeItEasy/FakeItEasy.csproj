@@ -43,12 +43,6 @@
     <DefineConstants>$(DefineConstants);LACKS_CALLERARGUMENTEXPRESSION</DefineConstants>
   </PropertyGroup>
 
-  <!-- .NET Standard 2.0 -->
-
-  <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <DefineConstants>$(DefineConstants);LACKS_NULLABLE_ATTRIBUTES;LACKS_STRING_CONTAINS_COMPARISONTYPE;LACKS_CALLERARGUMENTEXPRESSION;LACKS_ISBYREFLIKE</DefineConstants>
-  </PropertyGroup>
-
   <!-- .NET Framework -->
 
   <PropertyGroup Condition="$([MSBuild]::GetTargetFrameworkIdentifier('$(TargetFramework)')) == '.NETFramework'">
