@@ -18,7 +18,6 @@ namespace FakeItEasy.Tests.Approval
 
         [SkippableTheory]
         [InlineData("FakeItEasy", "net462")]
-        [InlineData("FakeItEasy", "net6.0")]
         [InlineData("FakeItEasy", "net8.0")]
         [InlineData("FakeItEasy.Extensions.ValueTask", "net462")]
         [MethodImpl(MethodImplOptions.NoInlining)]

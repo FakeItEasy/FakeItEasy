@@ -50,16 +50,13 @@
   <ItemGroup>
     <None Include="$(OutputPath)/**/$(AssemblyName).dll" Pack="true" PackagePath="lib" Visible="false" />
     <None Include="$(OutputPath)/**/$(AssemblyName).xml" Pack="true" PackagePath="lib" Visible="false" />
-    <None Remove="$(OutputPath)/net6.0/**" />
     <None Remove="$(OutputPath)/net8.0/**" />
   </ItemGroup>
 
   <!-- Include placeholder files in netX.Y folders in package -->
   <Target Name="AddTfmPlaceholders">
-    <WriteLinesToFile File="$(IntermediateOutputPath)net6.0/_._" Overwrite="true" Lines="" />
     <WriteLinesToFile File="$(IntermediateOutputPath)net8.0/_._" Overwrite="true" Lines="" />
     <ItemGroup>
-      <None Include="$(IntermediateOutputPath)net6.0/_._" Pack="true" PackagePath="lib/net6.0" Visible="false" />
       <None Include="$(IntermediateOutputPath)net8.0/_._" Pack="true" PackagePath="lib/net8.0" Visible="false" />
     </ItemGroup>
   </Target>

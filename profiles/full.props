@@ -1,16 +1,16 @@
 <Project>
   <!-- Everything -->
   <PropertyGroup>
-    <LibraryTargetFrameworks>net462;net6.0;net8.0</LibraryTargetFrameworks>
+    <LibraryTargetFrameworks>net462;net8.0</LibraryTargetFrameworks>
   </PropertyGroup>
   <PropertyGroup Condition="$([MSBuild]::IsOSPlatform('Windows'))">
-    <TestTargetFrameworks>net462;net6.0;net8.0</TestTargetFrameworks>
+    <TestTargetFrameworks>net462;net8.0</TestTargetFrameworks>
   </PropertyGroup>
   <PropertyGroup Condition="$([MSBuild]::IsOSPlatform('Linux'))">
-    <TestTargetFrameworks>net6.0;net8.0</TestTargetFrameworks>
+    <TestTargetFrameworks>net8.0</TestTargetFrameworks>
   </PropertyGroup>
   <PropertyGroup Condition="$([MSBuild]::IsOSPlatform('OSX'))">
-    <TestTargetFrameworks>net6.0;net8.0</TestTargetFrameworks>
+    <TestTargetFrameworks>net8.0</TestTargetFrameworks>
   </PropertyGroup>
   <PropertyGroup>
     <FakeItEasyTargetFrameworks>$(LibraryTargetFrameworks)</FakeItEasyTargetFrameworks>
