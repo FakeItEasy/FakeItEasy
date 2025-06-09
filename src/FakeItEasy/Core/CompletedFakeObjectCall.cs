@@ -5,7 +5,7 @@ namespace FakeItEasy.Core
 
     internal class CompletedFakeObjectCall : ICompletedFakeObjectCall
     {
-        public CompletedFakeObjectCall(IInterceptedFakeObjectCall interceptedCall, object[] arguments)
+        public CompletedFakeObjectCall(IInterceptedFakeObjectCall interceptedCall, object?[] arguments)
         {
             this.FakedObject = interceptedCall.FakedObject;
             this.Method = interceptedCall.Method;

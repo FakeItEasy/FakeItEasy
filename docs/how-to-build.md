@@ -13,7 +13,7 @@ The build requires that a few pieces of software be installed on the host comput
 
 To build FakeItEasy at all, you must have
 
-* an up-to-date version of the .NET 8.0 SDK (currently this means 8.0.204 or later)
+* an up-to-date version of the .NET 9.0 SDK (currently this means 9.0.300 or later)
 
 FakeItEasy supports the following targets
 
