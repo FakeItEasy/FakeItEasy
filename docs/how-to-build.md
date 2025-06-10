@@ -17,10 +17,10 @@ To build FakeItEasy at all, you must have
 
 FakeItEasy supports the following targets
 
-| Target                | Tested On            | Additional prerequisites                   | Build Profile  |
-|-----------------------|----------------------|--------------------------------------------|----------------|
-| .NET 8.0              | .NET 8.0             |                                            | net8.0         |
-| .NET Framework 4.6.2  | .NET Framework 4.6.2 | Windows OS, .NET Framework 4.6.2 or higher | net462         |
+| Target                | Tested On            | Additional prerequisites                                                        | Build Profile  |
+|-----------------------|----------------------|---------------------------------------------------------------------------------|----------------|
+| .NET 8.0              | .NET 8.0             |                                                                                 | net8.0         |
+| .NET Framework 4.6.2  | .NET Framework 4.7.2 | Windows OS, .NET Framework 4.7.2 or higher, .NET Framework 4.6.2 targeting pack | net462         |
 
 The default [build profile](#building-only-a-subset-of-the-supported-target-frameworks) (called `full`)
 will build and test all targets that are supported on the active operating system, so will require all
@@ -75,7 +75,9 @@ but is not official and does not provide the same assurance as a command-line bu
 The additional requirements are:
 
 1. Visual Studio 2022 (17.0 or later)
-2. Install the ".NET Framework 4.6.2 targeting pack" individual component (via the Visual Studio installer)
+2. Install the following components via the Visual Studio installer (in the "Individual components" tab):
+   * .NET Framework 4.7.2 targeting pack
+   * .NET Framework 4.6.2 targeting pack
 
 ### Building only a subset of the supported target frameworks
 

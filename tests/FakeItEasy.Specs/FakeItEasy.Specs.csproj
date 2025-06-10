@@ -20,9 +20,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="bbv.LambdaTale" Version="2.9.302" />
+    <PackageReference Include="bbv.LambdaTale" Version="2.9.305" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.8.0" />
-    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
     <ProjectReference Include="..\..\src\FakeItEasy\FakeItEasy.csproj" />
     <ProjectReference Include="..\..\src\FakeItEasy.Extensions.ValueTask\FakeItEasy.Extensions.ValueTask.csproj" />
     <ProjectReference Include="..\FakeItEasy.Tests.TestHelpers\FakeItEasy.Tests.TestHelpers.csproj" />

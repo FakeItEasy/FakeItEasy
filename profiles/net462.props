@@ -3,11 +3,11 @@
   <PropertyGroup>
     <FakeItEasyTargetFrameworks>net462</FakeItEasyTargetFrameworks>
     <ValueTaskExtensionsTargetFrameworks>net462</ValueTaskExtensionsTargetFrameworks>
-    <SpecsTargetFrameworks>net462</SpecsTargetFrameworks>
-    <IntegrationTestsTargetFrameworks>net462</IntegrationTestsTargetFrameworks>
-    <UnitTestsTargetFrameworks>net462</UnitTestsTargetFrameworks>
-    <TestHelpersTargetFrameworks>net462</TestHelpersTargetFrameworks>
-    <ApprovalTestsTargetFrameworks>net462</ApprovalTestsTargetFrameworks>
-    <RecipesTargetFrameworks>net462</RecipesTargetFrameworks>
+    <SpecsTargetFrameworks>net472</SpecsTargetFrameworks>
+    <IntegrationTestsTargetFrameworks>net472</IntegrationTestsTargetFrameworks>
+    <UnitTestsTargetFrameworks>net472</UnitTestsTargetFrameworks>
+    <TestHelpersTargetFrameworks>net472</TestHelpersTargetFrameworks>
+    <ApprovalTestsTargetFrameworks>net472</ApprovalTestsTargetFrameworks>
+    <RecipesTargetFrameworks>net472</RecipesTargetFrameworks>
   </PropertyGroup>
 </Project>

@@ -4,7 +4,7 @@
     <LibraryTargetFrameworks>net462;net8.0</LibraryTargetFrameworks>
   </PropertyGroup>
   <PropertyGroup Condition="$([MSBuild]::IsOSPlatform('Windows'))">
-    <TestTargetFrameworks>net462;net8.0</TestTargetFrameworks>
+    <TestTargetFrameworks>net472;net8.0</TestTargetFrameworks>
   </PropertyGroup>
   <PropertyGroup Condition="$([MSBuild]::IsOSPlatform('Linux'))">
     <TestTargetFrameworks>net8.0</TestTargetFrameworks>
@@ -15,7 +15,7 @@
   <PropertyGroup>
     <FakeItEasyTargetFrameworks>$(LibraryTargetFrameworks)</FakeItEasyTargetFrameworks>
     <ValueTaskExtensionsTargetFrameworks>$(LibraryTargetFrameworks)</ValueTaskExtensionsTargetFrameworks>
-    <TestHelpersTargetFrameworks>$(LibraryTargetFrameworks)</TestHelpersTargetFrameworks>
+    <TestHelpersTargetFrameworks>$(TestTargetFrameworks)</TestHelpersTargetFrameworks>
     <ApprovalTestsTargetFrameworks>net8.0</ApprovalTestsTargetFrameworks>
     <SpecsTargetFrameworks>$(TestTargetFrameworks)</SpecsTargetFrameworks>
     <IntegrationTestsTargetFrameworks>$(TestTargetFrameworks)</IntegrationTestsTargetFrameworks>
