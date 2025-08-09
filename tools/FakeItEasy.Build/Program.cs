@@ -57,7 +57,7 @@ Target(
     forEach: projectsToPack,
     action: project => Run("dotnet", $"pack {project.Path} --configuration Release --no-build --nologo --output \"{Path.GetFullPath("artifacts/output")}\""));
 
-Target("docs", DependsOn("check-docs-links"));
+Target("docs", DependsOn("check-docs-links", "check-readme-links"));
 
 // If mkdocs's site_url configuration is not set, sitemap.xml is full of "None" links.
 // Even with a valid site_url, the link check would fail if we added a new page.
@@ -76,6 +76,13 @@ Target(
     "generate-docs",
     DependsOn("create-python-version-file"),
     () => Run("uv", "run mkdocs build --clean --site-dir ../artifacts/docs --config-file mkdocs.yml --strict", "docs"));
+
+Target(
+    "check-readme-links",
+    () => Run(
+        "uv",
+        "run linkchecker --config=.linkcheckerrc --check-extern --user-agent=FakeItEasyDocs/1.0 -F html/utf-8/../artifacts/readme-link-check.html ../README.md",
+        "docs"));
 
 // uv really likes there to be a .python-version file to specify which version of python it should use.
 // Rather than maintain a duplicate of the version in pyproject.toml, we'll generate the .python-version file from the latter.
