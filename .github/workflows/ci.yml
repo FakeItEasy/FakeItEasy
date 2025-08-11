@@ -86,8 +86,15 @@ jobs:
         with:
           name: documentation
           path: artifacts/docs
-      - name: Upload link check report
+      - name: Upload docs link check report
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: docs-link-check
           path: artifacts/docs-link-check.html
+      - name: Upload readme link check report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+            name: readme-link-check
+            path: artifacts/readme-link-check.html

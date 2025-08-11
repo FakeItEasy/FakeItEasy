@@ -1,3 +1,8 @@
 [filtering]
 ignore=
   ^https://stackoverflow\.com/
+
+ignorewarningsforurls=
+  # linkcheck always warns that it can't check markdown files,
+  # even though it does via the MarkdownCheck plugin
+  ^file:.*\.md$ ^url-content-type-unparseable
