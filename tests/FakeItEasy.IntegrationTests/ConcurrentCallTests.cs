@@ -20,7 +20,7 @@ namespace FakeItEasy.IntegrationTests
                 new AddRuleFirst(),
                 new AddRuleLast(),
                 new RemoveRule(),
-                new ClearConfiguration(),
+                new ResetFake(),
                 new AddConfigurationViaACallTo(),
                 new AddConfigurationViaThen());
 
@@ -125,11 +125,9 @@ namespace FakeItEasy.IntegrationTests
             }
         }
 
-        private sealed class ClearConfiguration : RuleMutatingAction
+        private sealed class ResetFake : RuleMutatingAction
         {
-#pragma warning disable CS0618 // ClearConfiguration is obsolete
-            public override void MutateRules(IFoo fake) => Fake.ClearConfiguration(fake);
-#pragma warning restore CS0618 // ClearConfiguration is obsolete
+            public override void MutateRules(IFoo fake) => Fake.Reset(fake);
         }
 
         private sealed class AddConfigurationViaACallTo : RuleMutatingAction

@@ -122,27 +122,6 @@ namespace FakeItEasy.Specs
         }
 
         [Scenario]
-        public static void ClearConfiguration(IFoo fake, bool configuredBehaviorWasUsed)
-        {
-            "Given a Fake"
-                .x(() => fake = A.Fake<IFoo>());
-
-            "And I configure a method call on the Fake"
-                .x(() => A.CallTo(() => fake.AMethod()).Invokes(() => configuredBehaviorWasUsed = true));
-
-            "When I clear the configuration"
-#pragma warning disable CS0618 // ClearConfiguration is obsolete
-                .x(() => Fake.ClearConfiguration(fake));
-#pragma warning restore CS0618 // ClearConfiguration is obsolete
-
-            "And I execute the previously-configured method"
-                .x(() => fake.AMethod());
-
-            "Then previously-configured behavior is not executed"
-                .x(() => configuredBehaviorWasUsed.Should().BeFalse());
-        }
-
-        [Scenario]
         public static void RecordedCallHasReturnValue(
             IFoo fake,
             object returnValue,
