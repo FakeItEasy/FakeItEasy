@@ -32,20 +32,6 @@ namespace FakeItEasy.Tests
         }
 
         [Fact]
-        public void ClearConfiguration_should_be_guarded()
-        {
-            // Arrange
-
-            // Act
-
-            // Assert
-#pragma warning disable CS0618 // ClearConfiguration is obsolete
-            Expression<Action> call = () => Fake.ClearConfiguration(A.Dummy<object>());
-#pragma warning restore CS0618 // ClearConfiguration is obsolete
-            call.Should().BeNullGuarded();
-        }
-
-        [Fact]
         public void ClearRecordedCalls_should_be_guarded()
         {
             // Arrange

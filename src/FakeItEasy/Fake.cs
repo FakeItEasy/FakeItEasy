@@ -44,20 +44,6 @@ namespace FakeItEasy
         }
 
         /// <summary>
-        /// Clears the configuration of the faked object.
-        /// </summary>
-        /// <param name="fakedObject">The faked object to clear the configuration of.</param>
-        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "object", Justification = "The term fake object does not refer to the type System.Object.")]
-        [Obsolete("ClearConfiguration will be removed in version 9.0.0. Use Fake.Reset, or discard the fake and create a new one.")]
-        public static void ClearConfiguration(object fakedObject)
-        {
-            Guard.AgainstNull(fakedObject);
-
-            var manager = FakeManagerAccessor.GetFakeManager(fakedObject);
-            manager.ClearUserRules();
-        }
-
-        /// <summary>
         /// Clears all recorded calls of the faked object.
         /// </summary>
         /// <param name="fakedObject">The faked object to clear the recorded calls of.</param>

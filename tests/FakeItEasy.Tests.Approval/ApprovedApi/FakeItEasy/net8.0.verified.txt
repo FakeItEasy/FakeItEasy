@@ -212,9 +212,6 @@ namespace FakeItEasy
     }
     public static class Fake
     {
-        [System.Obsolete("ClearConfiguration will be removed in version 9.0.0. Use Fake.Reset, or discard t" +
-            "he fake and create a new one.")]
-        public static void ClearConfiguration(object fakedObject) { }
         public static void ClearRecordedCalls(object fakedObject) { }
         public static System.Collections.Generic.IEnumerable<FakeItEasy.Core.ICompletedFakeObjectCall> GetCalls(object fakedObject) { }
         public static FakeItEasy.Core.FakeManager GetFakeManager(object fakedObject) { }
