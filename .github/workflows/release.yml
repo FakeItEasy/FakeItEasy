@@ -27,7 +27,7 @@ jobs:
       uses: ./tools-shared/.github/actions/deploy
       with:
         artifact-name: windows-artifacts
-        nuget-api-key: ${{ secrets.NUGET_API_KEY }}
+        nuget-user: ${{ vars.NUGET_USER }}
         docs-output-prefix: "docs"
         github-token: ${{ secrets.BOT_GITHUB_TOKEN }}
         dry-run: ${{ github.event.inputs.dry-run || false }}
