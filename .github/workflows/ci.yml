@@ -75,9 +75,9 @@ jobs:
         with:
           submodules: false
       - name: Install uv
-        uses: astral-sh/setup-uv@v3
+        uses: astral-sh/setup-uv@v7
         with:
-          version: '0.4.18'
+          version: '0.9.4'
       - name: Build docs
         run: ./build.ps1 docs
         shell: pwsh
