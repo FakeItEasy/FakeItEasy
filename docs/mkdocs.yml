@@ -1,5 +1,5 @@
 site_name: FakeItEasy
-site_dir: artifacts/docs
+site_dir: ../artifacts/docs
 repo_url: https://github.com/FakeItEasy/FakeItEasy
 extra_css: [css/fakeiteasy.css]
 docs_dir: .
