@@ -1,0 +1,34 @@
+name: Check links
+
+on:
+  schedule:
+    - cron: '0 4 * * *'
+  workflow_dispatch:
+
+jobs:
+  check-doc-links:
+    name: Check links
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: false
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          version: '0.9.4'
+      - name: Check links
+        run: ./build.ps1 check-links
+        shell: pwsh
+      - name: Upload docs link check report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: docs-link-check
+          path: artifacts/docs-link-check.html
+      - name: Upload readme link check report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+            name: readme-link-check
+            path: artifacts/readme-link-check.html
