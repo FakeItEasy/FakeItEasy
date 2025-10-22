@@ -6,9 +6,18 @@ on:
   workflow_dispatch:
 
 jobs:
-  check-doc-links:
-    name: Check links
+  check-links:
+    name: Check ${{ matrix.type }} links
     runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        include:
+          - type: docs
+            target: check-docs-links
+            report-path: artifacts/docs-link-check.html
+          - type: README
+            target: check-readme-links
+            report-path: artifacts/readme-link-check.html
     steps:
       - uses: actions/checkout@v4
         with:
@@ -18,17 +27,11 @@ jobs:
         with:
           version: '0.9.4'
       - name: Check links
-        run: ./build.ps1 check-links
+        run: ./build.ps1 ${{ matrix.target }}
         shell: pwsh
-      - name: Upload docs link check report
+      - name: Upload link check report
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: docs-link-check
-          path: artifacts/docs-link-check.html
-      - name: Upload readme link check report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-            name: readme-link-check
-            path: artifacts/readme-link-check.html
+          name: ${{ matrix.type }}-link-check
+          path: ${{ matrix.report-path }}
