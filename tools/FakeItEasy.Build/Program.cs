@@ -57,7 +57,9 @@ Target(
     forEach: projectsToPack,
     action: project => Run("dotnet", $"pack {project.Path} --configuration Release --no-build --nologo --output \"{Path.GetFullPath("artifacts/output")}\""));
 
-Target("docs", DependsOn("check-docs-links", "check-readme-links"));
+Target("docs", DependsOn("generate-docs"));
+
+Target("check-links", DependsOn("check-docs-links", "check-readme-links"));
 
 // If mkdocs's site_url configuration is not set, sitemap.xml is full of "None" links.
 // Even with a valid site_url, the link check would fail if we added a new page.
