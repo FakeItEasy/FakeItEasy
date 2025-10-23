@@ -108,10 +108,6 @@ of the matcher when an `Expression` is supplied (although you may
 supply your own as well), but you must supply a description when using
 a `Func`.
 
-For another example of using `That.Matches`, see Jonathan Channon's
-[Comparing object instances with FakeItEasy](https://blog.jonathanchannon.com/2013/09/11/comparing-object-instances-with-fakeiteasy/).
-
-
 ### Always place `Ignored` and `That` inside `A.CallTo`
 
 The `Ignored` (and `_`) and `That` matchers must be placed within the
