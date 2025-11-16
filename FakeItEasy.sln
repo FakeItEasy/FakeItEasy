@@ -84,7 +84,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{072853A5-3
 		docs\raising-events.md = docs\raising-events.md
 		docs\read-write-property-behavior.md = docs\read-write-property-behavior.md
 		docs\scanning-for-extension-points.md = docs\scanning-for-extension-points.md
-		docs\source-stepping.md = docs\source-stepping.md
 		docs\specifying-a-call-to-configure.md = docs\specifying-a-call-to-configure.md
 		docs\specifying-return-values.md = docs\specifying-return-values.md
 		docs\strict-fakes.md = docs\strict-fakes.md
