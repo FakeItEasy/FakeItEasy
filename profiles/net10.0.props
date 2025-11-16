@@ -1,0 +1,12 @@
+<Project>
+  <PropertyGroup>
+    <FakeItEasyTargetFrameworks>net10.0</FakeItEasyTargetFrameworks>
+    <ValueTaskExtensionsTargetFrameworks>net10.0</ValueTaskExtensionsTargetFrameworks>
+    <SpecsTargetFrameworks>net10.0</SpecsTargetFrameworks>
+    <IntegrationTestsTargetFrameworks>net10.0</IntegrationTestsTargetFrameworks>
+    <UnitTestsTargetFrameworks>net10.0</UnitTestsTargetFrameworks>
+    <TestHelpersTargetFrameworks>net10.0</TestHelpersTargetFrameworks>
+    <ApprovalTestsTargetFrameworks>net10.0</ApprovalTestsTargetFrameworks>
+    <RecipesTargetFrameworks>net10.0</RecipesTargetFrameworks>
+  </PropertyGroup>
+</Project>
