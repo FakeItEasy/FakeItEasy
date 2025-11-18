@@ -56,7 +56,7 @@ namespace FakeItEasy.Tests.Creation.CastleDynamicProxy
             return TestCases.FromObject(
                 new InterceptionTestCase(() => new object().ToString()),
                 new InterceptionTestCase(() =>
-                    ((IBInterface)A.Fake<IAInterface>(builder => builder.Implements(typeof(IBInterface))))
+                    ((IBInterface)A.Fake<IAInterface>(builder => builder.Implements<IBInterface>()))
                         .Method()));
         }
 

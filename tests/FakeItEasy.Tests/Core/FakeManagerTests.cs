@@ -336,7 +336,7 @@ namespace FakeItEasy.Tests.Core
             var fakeManager = new FakeManager(typeof(string), proxy, null);
 
             // Assert
-            fakeManager.FakeObjectType.Should().Be(typeof(string));
+            fakeManager.FakeObjectType.Should().Be<string>();
             fakeManager.Object.Should().BeSameAs(proxy);
         }
 

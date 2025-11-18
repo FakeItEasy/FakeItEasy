@@ -136,8 +136,8 @@ namespace FakeItEasy.Tests.Core
         public void Should_prefer_exact_type_formatter_to_interface_formatter()
         {
             // Arrange
-            this.AddTypeFormatter(typeof(IEnumerable), "an enumerable");
-            this.AddTypeFormatter(typeof(string), "a string");
+            this.AddTypeFormatter<IEnumerable>("an enumerable");
+            this.AddTypeFormatter<string>("a string");
 
             // Act
             var result = this.formatter.GetArgumentValueAsString("string value");
