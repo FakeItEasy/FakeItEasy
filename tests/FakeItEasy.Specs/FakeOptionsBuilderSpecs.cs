@@ -527,6 +527,7 @@ namespace FakeItEasy.Specs
                 return;
             }
 
+#pragma warning disable CA2263 // Testing non-generic version along with generics
             options.ConfigureFake(fake =>
             {
                 var domainEvent = (DomainEvent)fake;
@@ -537,6 +538,7 @@ namespace FakeItEasy.Specs
                 .Implements(typeof(IDisposable))
                 .Implements<IComparable>();
         }
+#pragma warning restore CA2263
     }
 
     public class RobotRunsAmokEventFakeOptionsBuilder : FakeOptionsBuilder<RobotRunsAmokEvent>

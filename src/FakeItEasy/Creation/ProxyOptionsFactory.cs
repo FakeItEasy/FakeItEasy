@@ -52,8 +52,11 @@ namespace FakeItEasy.Creation
         private static Func<ProxyOptions, IFakeOptions> GetFakeOptionsFactory(Type typeOfFake)
         {
             var method = typeof(ProxyOptionsFactory).GetMethod(nameof(CreateFakeOptions), BindingFlags.NonPublic | BindingFlags.Static)!.MakeGenericMethod(typeOfFake);
-
+#if LACKS_GENERIC_METHODINFO_CREATEDELEGATE
             return (Func<ProxyOptions, IFakeOptions>)method.CreateDelegate(typeof(Func<ProxyOptions, IFakeOptions>));
+#else
+            return method.CreateDelegate<Func<ProxyOptions, IFakeOptions>>();
+#endif
         }
     }
 }
