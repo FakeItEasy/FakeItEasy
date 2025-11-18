@@ -3,6 +3,7 @@ dotnet_diagnostic.CA1003.severity = none # Use generic event handler instances
 dotnet_diagnostic.CA1034.severity = none # Do not nest type
 dotnet_diagnostic.CA1051.severity = none # Do not declare visible instance fields
 dotnet_diagnostic.CA1062.severity = none # In externally visible method, validate parameter is non-null before using it
+dotnet_diagnostic.CA1515.severity = none # Because an application's API isn't typically referenced from outside the assembly, types can be made internal
 dotnet_diagnostic.CA1707.severity = none # Remove the underscores from member name
 dotnet_diagnostic.CA1822.severity = none # Member does not access instance data and can be marked as static
 dotnet_diagnostic.CA1861.severity = none # Prefer 'static readonly' fields over constant array arguments if the called method is called repeatedly and is not mutating the passed array
