@@ -146,7 +146,9 @@ namespace FakeItEasy.IntegrationTests
         public void Should_be_able_to_generate_class_fake_that_implements_additional_interface()
         {
             // Arrange
+#pragma warning disable CA2263 // Testing non-generic version
             var fake = A.Fake<FakeableClass>(x => x.Implements(typeof(IFoo)).Implements(typeof(IFormattable)));
+#pragma warning restore CA2263
 
             // Act
 
@@ -176,7 +178,9 @@ namespace FakeItEasy.IntegrationTests
         public void Should_be_able_to_generate_interface_fake_that_implements_additional_interface()
         {
             // Arrange
+#pragma warning disable CA2263 // Testing non-generic version
             var fake = A.Fake<IFoo>(x => x.Implements(typeof(IFormatProvider)).Implements(typeof(IFormattable)));
+#pragma warning restore CA2263
 
             // Act
 

@@ -149,6 +149,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "profiles", "profiles", "{427B2879-0943-4BF7-97BB-E99BC91D630A}"
 	ProjectSection(SolutionItems) = preProject
 		profiles\full.props = profiles\full.props
+		profiles\net10.0.props = profiles\net10.0.props
 		profiles\net462.props = profiles\net462.props
 		profiles\net8.0.props = profiles\net8.0.props
 	EndProjectSection
