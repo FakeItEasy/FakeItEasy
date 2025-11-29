@@ -19,6 +19,17 @@ var fakeShop = A.Fake<CandyShop>(options => options.CallsBaseMethods());
 
 And then [selectively override some of them](changing-behavior-between-calls.md#overriding-the-behavior-for-a-call)
 
-```chsharp
+```csharp
 A.CallTo(() => fakeShop.SellRockets()).Throws<Exception>();
 ```
+
+## Default interface members
+
+A fake may also be instructed to execute the
+[default implementation for an interface member](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/interface#default-interface-members)
+using `CallsBaseMethod` or `CallsBaseMethods` as above.
+
+???+ warning "This will not work for explicitly-implemented interfaces that have default member implementations"
+    [Explicit interface implementation](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/interfaces/explicit-interface-implementation)
+    redeclares the implemented interface's member(s), making them effectively new methods on the type, so there is no
+    "base member" implementation to call.
