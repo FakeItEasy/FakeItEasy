@@ -16,7 +16,8 @@ When such a member is invoked on the fake, the original behavior will be invoked
 
 ## Overrideable members are faked
 
-When a method or property is declared on a faked interface, or is
+When a method or property is declared on a faked interface
+(this includes default interface members), or is
 declared as abstract or virtual on a faked class, and the member is
 invoked on the fake, no action will be taken by the fake. It is as if
 the body of the member were empty. If the member has a return type (or
