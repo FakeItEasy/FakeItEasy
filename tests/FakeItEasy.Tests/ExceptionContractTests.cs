@@ -50,7 +50,7 @@ namespace FakeItEasy.Tests
             // Arrange
 
             // Act
-            var result = (T)Activator.CreateInstance(typeof(T))!;
+            var result = Activator.CreateInstance<T>();
 
             // Assert
             result.Should().NotBeNull();

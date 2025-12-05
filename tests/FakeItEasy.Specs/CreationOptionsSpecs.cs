@@ -643,7 +643,7 @@ namespace FakeItEasy.Specs
 
             "And an explicit options builder that makes a fake implement an interface"
                 .x(() => optionsBuilder = options => options
-                    .Implements(typeof(IDisposable)));
+                    .Implements<IDisposable>());
 
             "When I create the fake using the options builder"
                 .x(() => fake = fakeCreator.CreateFake(optionsBuilder, this));
@@ -659,7 +659,7 @@ namespace FakeItEasy.Specs
         {
             "Given an explicit options builder that makes a fake implement a non-interface type"
                 .x(() => optionsBuilder = options => options
-                    .Implements(typeof(string)));
+                    .Implements<string>());
 
             "When I create a fake using the options builder"
                 .x(() => exception = Record.Exception(() => this.CreateFake(optionsBuilder)));
@@ -676,8 +676,8 @@ namespace FakeItEasy.Specs
         {
             "Given an explicit options builder that makes a fake implement two interfaces"
                 .x(() => optionsBuilder = options => options
-                    .Implements(typeof(IComparable))
-                    .Implements(typeof(IDisposable)));
+                    .Implements<IComparable>()
+                    .Implements<IDisposable>());
 
             "When I create a fake using the options builder"
                 .x(() => fake = this.CreateFake(optionsBuilder));

@@ -37,7 +37,7 @@ namespace FakeItEasy.Creation.DelegateProxies
             options.AddDelegateTypeMixin(typeOfProxy);
 
             var delegateProxyInterceptor = new DelegateProxyInterceptor(fakeCallProcessorProvider);
-            var proxy = ProxyGenerator.CreateClassProxy(typeof(object), options, delegateProxyInterceptor);
+            var proxy = ProxyGenerator.CreateClassProxy<object>(options, delegateProxyInterceptor);
 
             var delegateProxy = ProxyUtil.CreateDelegateToMixin(proxy, typeOfProxy);
             delegateProxyInterceptor.SetDelegate(delegateProxy);
