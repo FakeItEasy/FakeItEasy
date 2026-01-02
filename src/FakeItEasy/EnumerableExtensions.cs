@@ -5,6 +5,7 @@ namespace FakeItEasy
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// Provides extension methods for generic usage of <see cref="IEnumerable{T}"/>.
@@ -113,7 +114,7 @@ namespace FakeItEasy
         /// <param name="count">The count of items, if it could be determined without enumeration; otherwise, zero.</param>
         /// <typeparam name="T">The type of items in the collection.</typeparam>
         /// <returns>true if the count could be determined without enumeration; otherwise, false.</returns>
-        public static bool TryGetCount<T>(this IEnumerable<T> collection, out int count)
+        public static bool TryGetCount<T>([NoEnumeration] this IEnumerable<T> collection, out int count)
         {
 #if LACKS_NONENUMERATEDCOUNT
             if (collection is ICollection<T> genericCollection)

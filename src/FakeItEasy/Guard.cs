@@ -4,6 +4,7 @@ namespace FakeItEasy
     using System.Diagnostics;
     using System.Diagnostics.CodeAnalysis;
     using System.Runtime.CompilerServices;
+    using NoEnumerationAttribute = JetBrains.Annotations.NoEnumerationAttribute;
 
     /// <summary>
     /// Provides methods for guarding method arguments.
@@ -20,7 +21,7 @@ namespace FakeItEasy
         /// <exception cref="ArgumentNullException">The specified argument was null.</exception>
         [DebuggerStepThrough]
         public static T AgainstNull<T>(
-            [ValidatedNotNull, NotNull] T argument,
+            [ValidatedNotNull, NotNull, NoEnumeration] T argument,
             [CallerArgumentExpression(nameof(argument))] string argumentName = null!)
         {
             if (argument is null)
