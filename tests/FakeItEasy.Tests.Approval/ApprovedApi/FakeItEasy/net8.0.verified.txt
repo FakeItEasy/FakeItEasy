@@ -51,6 +51,10 @@ namespace FakeItEasy
             where T : System.Collections.IEnumerable { }
         public static string EndsWith(this FakeItEasy.IArgumentConstraintManager<string> manager, string value) { }
         public static string EndsWith(this FakeItEasy.IArgumentConstraintManager<string> manager, string value, System.StringComparison comparisonType) { }
+        public static T HasSameElementsAs<T, TElement>(this FakeItEasy.IArgumentConstraintManager<T> manager, params TElement[] values)
+            where T : System.Collections.Generic.IEnumerable<TElement> { }
+        public static T HasSameElementsAs<T, TElement>(this FakeItEasy.IArgumentConstraintManager<T> manager, System.Collections.Generic.IEnumerable<TElement> values, System.Collections.Generic.IEqualityComparer<TElement>? comparer = null)
+            where T : System.Collections.Generic.IEnumerable<TElement> { }
         public static System.Threading.CancellationToken IsCanceled(this FakeItEasy.IArgumentConstraintManager<System.Threading.CancellationToken> manager) { }
         public static T IsEmpty<T>(this FakeItEasy.IArgumentConstraintManager<T> manager)
             where T : System.Collections.IEnumerable { }

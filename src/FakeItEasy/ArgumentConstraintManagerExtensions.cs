@@ -253,6 +253,51 @@ namespace FakeItEasy
         }
 
         /// <summary>
+        /// Constrains the argument collection so that it must contain the same elements as the
+        /// specified collection, in any order.
+        /// </summary>
+        /// <param name="manager">The constraint manager to match the constraint.</param>
+        /// <param name="values">The sequence to test against.</param>
+        /// <param name="comparer">A comparer to test the collection elements for equality. If null, the default equality comparer for <see cref="TElement"/> will be used.</param>
+        /// <typeparam name="T">The type of argument to constrain.</typeparam>
+        /// <typeparam name="TElement">The type of the collection's elements.</typeparam>
+        /// <returns>A dummy argument value.</returns>
+        public static T HasSameElementsAs<T, TElement>(
+            this IArgumentConstraintManager<T> manager,
+            IEnumerable<TElement> values,
+            IEqualityComparer<TElement>? comparer = null)
+            where T : IEnumerable<TElement>
+        {
+            Guard.AgainstNull(manager);
+            Guard.AgainstNull(values);
+
+            var list = values.AsList();
+            return manager.NullCheckedMatches(
+                x => x.HasSameElementsAs(list, comparer),
+                x => x.WriteArgumentValues(list).Write(" (in any order)"));
+        }
+
+        /// <summary>
+        /// Constrains the argument collection so that it must contain the same elements as the
+        /// specified collection, in any order.
+        /// </summary>
+        /// <param name="manager">The constraint manager to match the constraint.</param>
+        /// <param name="values">The sequence to test against.</param>
+        /// <typeparam name="T">The type of argument to constrain.</typeparam>
+        /// <typeparam name="TElement">The type of the collection's elements.</typeparam>
+        /// <returns>A dummy argument value.</returns>
+        public static T HasSameElementsAs<T, TElement>(
+            this IArgumentConstraintManager<T> manager,
+            params TElement[] values)
+            where T : IEnumerable<TElement>
+        {
+            Guard.AgainstNull(manager);
+            Guard.AgainstNull(values);
+
+            return manager.HasSameElementsAs((IEnumerable<TElement>)values);
+        }
+
+        /// <summary>
         /// Tests that the IEnumerable contains no items.
         /// </summary>
         /// <typeparam name="T">The type of argument.</typeparam>
