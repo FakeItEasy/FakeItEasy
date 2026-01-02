@@ -89,6 +89,8 @@ used. There are a few built-in matchers:
 |Contains(item)|item's presence in an enumerable|
 |IsSameSequenceAs(enumerable)|sequence equality, like `System.Linq.Enumerable.SequenceEqual`|
 |IsSameSequenceAs(value1, value2, ...)|sequence equality, like `System.Linq.Enumerable.SequenceEqual`|
+|IsEquivalentTo(enumerable)|set equality - same elements, any order|
+|IsEquivalentTo(value1, value2, ...)|set equality - same elements, any order|
 |Not|inverts the sense of the matcher|
 
 ### Custom matching

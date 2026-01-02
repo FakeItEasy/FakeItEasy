@@ -5,6 +5,7 @@ namespace FakeItEasy
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// Provides extension methods for generic usage of <see cref="IEnumerable{T}"/>.
@@ -60,6 +61,112 @@ namespace FakeItEasy
         public static IList<object> AsList(this IEnumerable source)
         {
             return source as IList<object> ?? source.Cast<object>().ToList();
+        }
+
+        public static bool IsEquivalentTo<T>(
+            this IEnumerable<T> collection,
+            IEnumerable<T> other,
+            IEqualityComparer<T>? comparer)
+        {
+            Guard.AgainstNull(collection);
+            Guard.AgainstNull(other);
+
+            // Fail fast if counts differ, when we can get the count without enumerating
+            if (collection.TryGetCount(out int collectionCount)
+                && other.TryGetCount(out int otherCount)
+                && collectionCount != otherCount)
+            {
+                return false;
+            }
+
+            var boxComparer = new BoxEqualityComparer<T>(comparer);
+            var itemCounts = other
+                .GroupBy(x => new Box<T>(x), boxComparer)
+                .ToDictionary(g => g.Key, g => g.Count(), boxComparer);
+            foreach (var item in collection)
+            {
+                var box = new Box<T>(item);
+                if (!itemCounts.TryGetValue(box, out var count))
+                {
+                    // collection contains item that isn't in other
+                    return false;
+                }
+
+                if (--count == 0)
+                {
+                    itemCounts.Remove(box);
+                }
+                else
+                {
+                    itemCounts[box] = count;
+                }
+            }
+
+            // Ensure we consumed all items from other.
+            // If not, collection had fewer items than other
+            return itemCounts.Count == 0;
+        }
+
+        /// <summary>
+        /// Tries to get the count of items in the collection without enumerating it.
+        /// </summary>
+        /// <param name="collection">The collection.</param>
+        /// <param name="count">The count of items, if it could be determined without enumeration; otherwise, zero.</param>
+        /// <typeparam name="T">The type of items in the collection.</typeparam>
+        /// <returns>true if the count could be determined without enumeration; otherwise, false.</returns>
+        public static bool TryGetCount<T>([NoEnumeration] this IEnumerable<T> collection, out int count)
+        {
+#if LACKS_NONENUMERATEDCOUNT
+            if (collection is ICollection<T> genericCollection)
+            {
+                count = genericCollection.Count;
+                return true;
+            }
+
+            if (collection is ICollection nonGenericCollection)
+            {
+                count = nonGenericCollection.Count;
+                return true;
+            }
+
+            if (collection is IReadOnlyCollection<T> readOnlyCollection)
+            {
+                count = readOnlyCollection.Count;
+                return true;
+            }
+
+            count = 0;
+            return false;
+#else
+            return collection.TryGetNonEnumeratedCount(out count);
+#endif
+        }
+
+        /// <summary>
+        /// Wraps a possibly null value in a struct to allow usage as a key in dictionaries.
+        /// </summary>
+        /// <param name="Value">The value to wrap.</param>
+        /// <typeparam name="T">The type of the value.</typeparam>
+        private record struct Box<T>(T Value);
+
+        private class BoxEqualityComparer<T> : IEqualityComparer<Box<T>>
+        {
+            private readonly IEqualityComparer<T> comparer;
+
+            public BoxEqualityComparer(IEqualityComparer<T>? comparer)
+            {
+                this.comparer = comparer ?? EqualityComparer<T>.Default;
+            }
+
+            public bool Equals(Box<T> x, Box<T> y)
+            {
+                return this.comparer.Equals(x.Value, y.Value);
+            }
+
+            public int GetHashCode(Box<T> obj)
+            {
+                return this.comparer.GetHashCode(obj.Value!);
+            }
         }
     }
 }
