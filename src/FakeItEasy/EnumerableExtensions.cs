@@ -5,7 +5,6 @@ namespace FakeItEasy
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
-    using JetBrains.Annotations;
 
     /// <summary>
     /// Provides extension methods for generic usage of <see cref="IEnumerable{T}"/>.
@@ -72,8 +71,8 @@ namespace FakeItEasy
             Guard.AgainstNull(other);
 
             // Fail fast if counts differ, when we can get the count without enumerating
-            if (collection.TryGetCount(out int collectionCount)
-                && other.TryGetCount(out int otherCount)
+            if (collection.TryGetNonEnumeratedCount(out int collectionCount)
+                && other.TryGetNonEnumeratedCount(out int otherCount)
                 && collectionCount != otherCount)
             {
                 return false;
@@ -105,41 +104,6 @@ namespace FakeItEasy
             // Ensure we consumed all elements from other.
             // If not, collection had fewer elements than other
             return elementCounts.Count == 0;
-        }
-
-        /// <summary>
-        /// Tries to get the count of items in the collection without enumerating it.
-        /// </summary>
-        /// <param name="collection">The collection.</param>
-        /// <param name="count">The count of items, if it could be determined without enumeration; otherwise, zero.</param>
-        /// <typeparam name="T">The type of items in the collection.</typeparam>
-        /// <returns>true if the count could be determined without enumeration; otherwise, false.</returns>
-        public static bool TryGetCount<T>([NoEnumeration] this IEnumerable<T> collection, out int count)
-        {
-#if LACKS_NONENUMERATEDCOUNT
-            if (collection is ICollection<T> genericCollection)
-            {
-                count = genericCollection.Count;
-                return true;
-            }
-
-            if (collection is ICollection nonGenericCollection)
-            {
-                count = nonGenericCollection.Count;
-                return true;
-            }
-
-            if (collection is IReadOnlyCollection<T> readOnlyCollection)
-            {
-                count = readOnlyCollection.Count;
-                return true;
-            }
-
-            count = 0;
-            return false;
-#else
-            return collection.TryGetNonEnumeratedCount(out count);
-#endif
         }
 
         /// <summary>
