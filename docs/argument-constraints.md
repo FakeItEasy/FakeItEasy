@@ -70,26 +70,28 @@ A.CallTo(() => foo.Bar("hello", A<int>._)).MustHaveHappened();
 If more complicated constraints are needed, the `That` method can be
 used. There are a few built-in matchers:
 
-|Matcher|Tests for|
-|:------|:--------|
-|IsNull()|`null`|
-|IsNotNull()|not `null`|
-|IsEqualTo(other)|object equality using `object.Equals`|
-|IsEqualTo(other, equalityComparer)|object equality using `equalityComparer.Equals`|
-|IsSameAs(other)|object identity - like `object.ReferenceEquals`|
-|IsInstanceOf(type)|an argument that can be assigned to a variable of type `type`|
-|Contains(string)|substring match with ordinal string comparison|
-|Contains(string, comparisonType)|substring match with the specified comparison type|
-|StartsWith(string)|substring at beginning of string with ordinal string comparison|
-|StartsWith(string, comparisonType)|substring at beginning of string with the specified comparison type|
-|EndsWith(string)|substring at end of string with ordinal string comparison|
-|EndsWith(string, comparisonType)|substring at end of string with the specified comparison type|
-|IsNullOrEmpty()|`null` or `""`|
-|IsEmpty()|empty enumerable|
-|Contains(item)|item's presence in an enumerable|
-|IsSameSequenceAs(enumerable)|sequence equality, like `System.Linq.Enumerable.SequenceEqual`|
-|IsSameSequenceAs(value1, value2, ...)|sequence equality, like `System.Linq.Enumerable.SequenceEqual`|
-|Not|inverts the sense of the matcher|
+| Matcher                                | Tests for                                                                              |
+|:---------------------------------------|:---------------------------------------------------------------------------------------|
+| IsNull()                               | `null`                                                                                 |
+| IsNotNull()                            | not `null`                                                                             |
+| IsEqualTo(other)                       | object equality using `object.Equals`                                                  |
+| IsEqualTo(other, equalityComparer)     | object equality using `equalityComparer.Equals`                                        |
+| IsSameAs(other)                        | object identity - like `object.ReferenceEquals`                                        |
+| IsInstanceOf(type)                     | an argument that can be assigned to a variable of type `type`                          |
+| Contains(string)                       | substring match with ordinal string comparison                                         |
+| Contains(string, comparisonType)       | substring match with the specified comparison type                                     |
+| StartsWith(string)                     | substring at beginning of string with ordinal string comparison                        |
+| StartsWith(string, comparisonType)     | substring at beginning of string with the specified comparison type                    |
+| EndsWith(string)                       | substring at end of string with ordinal string comparison                              |
+| EndsWith(string, comparisonType)       | substring at end of string with the specified comparison type                          |
+| IsNullOrEmpty()                        | `null` or `""`                                                                         |
+| IsEmpty()                              | empty enumerable                                                                       |
+| Contains(element)                      | element's presence in an enumerable                                                    |
+| IsSameSequenceAs(enumerable)           | sequence equality, like `System.Linq.Enumerable.SequenceEqual`                         |
+| IsSameSequenceAs(value1, value2, ...)  | sequence equality, like `System.Linq.Enumerable.SequenceEqual`                         |
+| HasSameElementsAs(enumerable)          | [multiset](https://en.wikipedia.org/wiki/Multiset) equality - same elements, any order |
+| HasSameElementsAs(value1, value2, ...) | [multiset](https://en.wikipedia.org/wiki/Multiset) equality - same elements, any order |
+| Not                                    | inverts the sense of the matcher                                                       |
 
 ### Custom matching
 

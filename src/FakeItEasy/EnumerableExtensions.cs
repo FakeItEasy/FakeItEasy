@@ -61,5 +61,76 @@ namespace FakeItEasy
         {
             return source as IList<object> ?? source.Cast<object>().ToList();
         }
+
+        public static bool HasSameElementsAs<T>(
+            this IEnumerable<T> collection,
+            IEnumerable<T> other,
+            IEqualityComparer<T>? comparer)
+        {
+            Guard.AgainstNull(collection);
+            Guard.AgainstNull(other);
+
+            // Fail fast if counts differ, when we can get the count without enumerating
+            if (collection.TryGetNonEnumeratedCount(out int collectionCount)
+                && other.TryGetNonEnumeratedCount(out int otherCount)
+                && collectionCount != otherCount)
+            {
+                return false;
+            }
+
+            var boxComparer = new BoxEqualityComparer<T>(comparer);
+            var elementCounts = other
+                .GroupBy(x => new Box<T>(x), boxComparer)
+                .ToDictionary(g => g.Key, g => g.Count(), boxComparer);
+            foreach (var element in collection)
+            {
+                var box = new Box<T>(element);
+                if (!elementCounts.TryGetValue(box, out var count))
+                {
+                    // collection contains element that isn't in other
+                    return false;
+                }
+
+                if (--count == 0)
+                {
+                    elementCounts.Remove(box);
+                }
+                else
+                {
+                    elementCounts[box] = count;
+                }
+            }
+
+            // Ensure we consumed all elements from other.
+            // If not, collection had fewer elements than other
+            return elementCounts.Count == 0;
+        }
+
+        /// <summary>
+        /// Wraps a possibly null value in a struct to allow usage as a key in dictionaries.
+        /// </summary>
+        /// <param name="Value">The value to wrap.</param>
+        /// <typeparam name="T">The type of the value.</typeparam>
+        private record struct Box<T>(T Value);
+
+        private class BoxEqualityComparer<T> : IEqualityComparer<Box<T>>
+        {
+            private readonly IEqualityComparer<T> comparer;
+
+            public BoxEqualityComparer(IEqualityComparer<T>? comparer)
+            {
+                this.comparer = comparer ?? EqualityComparer<T>.Default;
+            }
+
+            public bool Equals(Box<T> x, Box<T> y)
+            {
+                return this.comparer.Equals(x.Value, y.Value);
+            }
+
+            public int GetHashCode(Box<T> obj)
+            {
+                return this.comparer.GetHashCode(obj.Value!);
+            }
+        }
     }
 }
