@@ -213,7 +213,7 @@ public static class ArgumentConstraintManagerExtensions
     /// </summary>
     /// <param name="manager">The constraint manager to match the constraint.</param>
     /// <param name="values">The sequence to test against.</param>
-    /// <param name="comparer">A comparer to test the collection elements for equality. If null, the default equality comparer for <see cref="TElement"/> will be used.</param>
+    /// <param name="comparer">A comparer to test the collection elements for equality. If null, the default equality comparer for <c>TElement</c> will be used.</param>
     /// <typeparam name="T">The type of argument to constrain.</typeparam>
     /// <typeparam name="TElement">The type of the collection's elements.</typeparam>
     /// <returns>A dummy argument value.</returns>
@@ -258,7 +258,7 @@ public static class ArgumentConstraintManagerExtensions
     /// </summary>
     /// <param name="manager">The constraint manager to match the constraint.</param>
     /// <param name="values">The sequence to test against.</param>
-    /// <param name="comparer">A comparer to test the collection elements for equality. If null, the default equality comparer for <see cref="TElement"/> will be used.</param>
+    /// <param name="comparer">A comparer to test the collection elements for equality. If null, the default equality comparer for <c>TElement</c> will be used.</param>
     /// <typeparam name="T">The type of argument to constrain.</typeparam>
     /// <typeparam name="TElement">The type of the collection's elements.</typeparam>
     /// <returns>A dummy argument value.</returns>
