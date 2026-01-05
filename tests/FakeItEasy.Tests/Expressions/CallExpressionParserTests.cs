@@ -1,187 +1,186 @@
-namespace FakeItEasy.Tests.Expressions
+namespace FakeItEasy.Tests.Expressions;
+
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
+using FakeItEasy.Expressions;
+using FakeItEasy.Tests.TestHelpers;
+using FluentAssertions;
+using Xunit;
+
+using static FakeItEasy.Tests.TestHelpers.ExpressionHelper;
+
+public class CallExpressionParserTests
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
-    using System.Linq;
-    using System.Linq.Expressions;
-    using System.Reflection;
-    using FakeItEasy.Expressions;
-    using FakeItEasy.Tests.TestHelpers;
-    using FluentAssertions;
-    using Xunit;
+    private readonly CallExpressionParser parser;
 
-    using static FakeItEasy.Tests.TestHelpers.ExpressionHelper;
-
-    public class CallExpressionParserTests
+    public CallExpressionParserTests()
     {
-        private readonly CallExpressionParser parser;
+        this.parser = new CallExpressionParser();
+    }
 
-        public CallExpressionParserTests()
-        {
-            this.parser = new CallExpressionParser();
-        }
+    private delegate int IntFunction(string argument1, object argument2);
 
-        private delegate int IntFunction(string argument1, object argument2);
+    [Fact]
+    public void Should_return_parsed_expression_with_instance_method_set()
+    {
+        // Arrange
+        var call = Call(() => string.Empty.Equals(null, StringComparison.Ordinal));
 
-        [Fact]
-        public void Should_return_parsed_expression_with_instance_method_set()
-        {
-            // Arrange
-            var call = Call(() => string.Empty.Equals(null, StringComparison.Ordinal));
+        // Act
+        var result = this.parser.Parse(call);
 
-            // Act
-            var result = this.parser.Parse(call);
+        // Assert
+        result.CalledMethod.Should().BeSameAs(GetMethodInfo<string>(x => x.Equals("some string", StringComparison.Ordinal)));
+    }
 
-            // Assert
-            result.CalledMethod.Should().BeSameAs(GetMethodInfo<string>(x => x.Equals("some string", StringComparison.Ordinal)));
-        }
+    [Fact]
+    public void Should_return_parsed_expression_with_property_getter_method_set()
+    {
+        // Arrange
+        var call = Call(() => string.Empty.Length);
 
-        [Fact]
-        public void Should_return_parsed_expression_with_property_getter_method_set()
-        {
-            // Arrange
-            var call = Call(() => string.Empty.Length);
+        // Act
+        var result = this.parser.Parse(call);
 
-            // Act
-            var result = this.parser.Parse(call);
+        // Assert
+        result.CalledMethod.Should().BeSameAs(GetMethodInfo((string x) => x.Length));
+    }
 
-            // Assert
-            result.CalledMethod.Should().BeSameAs(GetMethodInfo((string x) => x.Length));
-        }
+    [Fact]
+    public void Should_return_parsed_expression_with_property_getter_method_set_when_property_is_internal()
+    {
+        // Arrange
+        var fake = A.Fake<TypeWithInternalProperty>();
+        var call = Call(() => fake.InternalProperty);
 
-        [Fact]
-        public void Should_return_parsed_expression_with_property_getter_method_set_when_property_is_internal()
-        {
-            // Arrange
-            var fake = A.Fake<TypeWithInternalProperty>();
-            var call = Call(() => fake.InternalProperty);
+        // Act
+        var result = this.parser.Parse(call);
 
-            // Act
-            var result = this.parser.Parse(call);
+        // Assert
+        result.CalledMethod.Should().BeSameAs(GetMethodInfo((TypeWithInternalProperty x) => x.InternalProperty));
+    }
 
-            // Assert
-            result.CalledMethod.Should().BeSameAs(GetMethodInfo((TypeWithInternalProperty x) => x.InternalProperty));
-        }
+    [Fact]
+    public void Should_return_parsed_expression_with_static_method_set()
+    {
+        // Arrange
+        var call = Call(() => object.Equals(null, null));
 
-        [Fact]
-        public void Should_return_parsed_expression_with_static_method_set()
-        {
-            // Arrange
-            var call = Call(() => object.Equals(null, null));
+        // Act
+        var result = this.parser.Parse(call);
 
-            // Act
-            var result = this.parser.Parse(call);
+        // Assert
+        result.CalledMethod.Should().BeSameAs(GetMethodInfo<object>(_ => Equals(new object(), new object())));
+    }
 
-            // Assert
-            result.CalledMethod.Should().BeSameAs(GetMethodInfo<object>(_ => Equals(new object(), new object())));
-        }
+    [Fact]
+    public void Should_return_parsed_expression_with_target_instance_set_when_calling_method()
+    {
+        // Arrange
+        var foo = A.Fake<IFoo>();
+        var call = Call(() => foo.Bar());
 
-        [Fact]
-        public void Should_return_parsed_expression_with_target_instance_set_when_calling_method()
-        {
-            // Arrange
-            var foo = A.Fake<IFoo>();
-            var call = Call(() => foo.Bar());
+        // Act
+        var result = this.parser.Parse(call);
 
-            // Act
-            var result = this.parser.Parse(call);
+        // Assert
+        result.CallTarget.Should().Be(foo);
+    }
 
-            // Assert
-            result.CallTarget.Should().Be(foo);
-        }
+    [Fact]
+    public void Should_return_parsed_expression_with_target_instance_set_when_calling_property_getter()
+    {
+        // Arrange
+        var foo = A.Fake<IFoo>();
+        var call = Call(() => foo.ChildFoo);
 
-        [Fact]
-        public void Should_return_parsed_expression_with_target_instance_set_when_calling_property_getter()
-        {
-            // Arrange
-            var foo = A.Fake<IFoo>();
-            var call = Call(() => foo.ChildFoo);
+        // Act
+        var result = this.parser.Parse(call);
 
-            // Act
-            var result = this.parser.Parse(call);
+        // Assert
+        result.CallTarget.Should().Be(foo);
+    }
 
-            // Assert
-            result.CallTarget.Should().Be(foo);
-        }
+    [Fact]
+    public void Should_return_parsed_expression_with_argument_names_set_when_calling_instance_method()
+    {
+        // Arrange
+        var argumentOne = new object();
+        var argumentTwo = new object();
 
-        [Fact]
-        public void Should_return_parsed_expression_with_argument_names_set_when_calling_instance_method()
-        {
-            // Arrange
-            var argumentOne = new object();
-            var argumentTwo = new object();
+        var foo = A.Fake<IFoo>();
+        var call = Call(() => foo.Bar(argumentOne, argumentTwo));
 
-            var foo = A.Fake<IFoo>();
-            var call = Call(() => foo.Bar(argumentOne, argumentTwo));
+        // Act
+        var result = this.parser.Parse(call);
 
-            // Act
-            var result = this.parser.Parse(call);
+        // Assert
+        result.ArgumentsExpressions.Select(x => x.ArgumentInformation.Name).Should().BeEquivalentTo("argument", "argument2");
+    }
 
-            // Assert
-            result.ArgumentsExpressions.Select(x => x.ArgumentInformation.Name).Should().BeEquivalentTo("argument", "argument2");
-        }
+    [Fact]
+    public void Should_return_parsed_expression_with_argument_names_set_when_calling_indexed_property_getter()
+    {
+        // Arrange
+        var foo = A.Fake<IList<string>>();
+        var call = Call(() => foo[10]);
 
-        [Fact]
-        public void Should_return_parsed_expression_with_argument_names_set_when_calling_indexed_property_getter()
-        {
-            // Arrange
-            var foo = A.Fake<IList<string>>();
-            var call = Call(() => foo[10]);
+        // Act
+        var result = this.parser.Parse(call);
 
-            // Act
-            var result = this.parser.Parse(call);
+        // Assert
+        result.ArgumentsExpressions.Select(x => x.ArgumentInformation.Name).Single().Should().Be("index");
+    }
 
-            // Assert
-            result.ArgumentsExpressions.Select(x => x.ArgumentInformation.Name).Single().Should().Be("index");
-        }
+    [Fact]
+    public void Should_throw_when_expression_is_not_method_or_property_getter_or_invocation()
+    {
+        // Arrange
+        var instance = new TypeWithPublicField();
+        var call = Call(() => instance.PublicField);
 
-        [Fact]
-        public void Should_throw_when_expression_is_not_method_or_property_getter_or_invocation()
-        {
-            // Arrange
-            var instance = new TypeWithPublicField();
-            var call = Call(() => instance.PublicField);
+        // Act
+        var exception = Record.Exception(() => this.parser.Parse(call));
 
-            // Act
-            var exception = Record.Exception(() => this.parser.Parse(call));
+        // Assert
+        exception.Should()
+            .BeAnExceptionOfType<ArgumentException>()
+            .WithMessage("The specified expression is not a method call or property getter.");
+    }
 
-            // Assert
-            exception.Should()
-                .BeAnExceptionOfType<ArgumentException>()
-                .WithMessage("The specified expression is not a method call or property getter.");
-        }
+    [Fact]
+    public void Should_parse_invocation_expression_correctly()
+    {
+        // Arrange
+        var d = new IntFunction((x, y) => 10);
 
-        [Fact]
-        public void Should_parse_invocation_expression_correctly()
-        {
-            // Arrange
-            var d = new IntFunction((x, y) => 10);
+        var call = Call(() => d("foo", "bar"));
 
-            var call = Call(() => d("foo", "bar"));
+        // Act
+        var result = this.parser.Parse(call);
 
-            // Act
-            var result = this.parser.Parse(call);
+        // Assert
+        result.CalledMethod.Name.Should().Be("Invoke");
+        result.ArgumentsExpressions.Select(x => x.ArgumentInformation.Name).Should().BeEquivalentTo("argument1", "argument2");
+        result.CallTarget.Should().BeSameAs(d);
+    }
 
-            // Assert
-            result.CalledMethod.Name.Should().Be("Invoke");
-            result.ArgumentsExpressions.Select(x => x.ArgumentInformation.Name).Should().BeEquivalentTo("argument1", "argument2");
-            result.CallTarget.Should().BeSameAs(d);
-        }
+    private static Expression<System.Action> Call(Expression<Action> callExpression)
+    {
+        return callExpression;
+    }
 
-        private static Expression<System.Action> Call(Expression<Action> callExpression)
-        {
-            return callExpression;
-        }
+    private static Expression<System.Func<T>> Call<T>(Expression<Func<T>> callExpression)
+    {
+        return callExpression;
+    }
 
-        private static Expression<System.Func<T>> Call<T>(Expression<Func<T>> callExpression)
-        {
-            return callExpression;
-        }
-
-        private class TypeWithPublicField
-        {
-            public int PublicField = 1;
-        }
+    private class TypeWithPublicField
+    {
+        public int PublicField = 1;
     }
 }

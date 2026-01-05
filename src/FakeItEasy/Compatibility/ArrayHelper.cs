@@ -1,7 +1,7 @@
-namespace FakeItEasy.Compatibility
+namespace FakeItEasy.Compatibility;
+
+internal static class ArrayHelper
 {
-    internal static class ArrayHelper
-    {
 #if LACKS_ARRAY_EMPTY
         public static T[] Empty<T>() => EmptyArrayCache<T>.EmptyArray;
 
@@ -10,7 +10,6 @@ namespace FakeItEasy.Compatibility
             public static readonly T[] EmptyArray = new T[0];
         }
 #else
-        public static T[] Empty<T>() => System.Array.Empty<T>();
+    public static T[] Empty<T>() => System.Array.Empty<T>();
 #endif
-    }
 }

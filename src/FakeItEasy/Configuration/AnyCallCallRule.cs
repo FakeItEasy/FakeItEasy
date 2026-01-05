@@ -1,115 +1,114 @@
-namespace FakeItEasy.Configuration
+namespace FakeItEasy.Configuration;
+
+using System;
+using FakeItEasy.Core;
+
+internal class AnyCallCallRule
+    : BuildableCallRule
 {
-    using System;
-    using FakeItEasy.Core;
+    private readonly FakeManager manager;
+    private Func<ArgumentCollection, bool> argumentsPredicate = x => true;
+    private Type applicableToMembersWithReturnType = typeof(AllReturnTypes);
 
-    internal class AnyCallCallRule
-        : BuildableCallRule
+    public AnyCallCallRule(FakeManager manager)
     {
-        private readonly FakeManager manager;
-        private Func<ArgumentCollection, bool> argumentsPredicate = x => true;
-        private Type applicableToMembersWithReturnType = typeof(AllReturnTypes);
+        this.manager = manager;
+    }
 
-        public AnyCallCallRule(FakeManager manager)
+    public void MakeApplicableToMembersWithReturnType(Type type) => this.applicableToMembersWithReturnType = type;
+
+    public void MakeApplicableToAllNonVoidReturnTypes() => this.applicableToMembersWithReturnType = typeof(AllNonVoidReturnTypes);
+
+    public override void DescribeCallOn(IOutputWriter writer)
+    {
+        this.AppendCall(writer);
+        this.AppendTargetObject(writer);
+    }
+
+    public override void UsePredicateToValidateArguments(Func<ArgumentCollection, bool> predicate)
+    {
+        this.argumentsPredicate = predicate;
+    }
+
+    protected override bool OnIsApplicableTo(IFakeObjectCall fakeObjectCall)
+    {
+        try
         {
-            this.manager = manager;
+            if (!this.argumentsPredicate(fakeObjectCall.Arguments))
+            {
+                return false;
+            }
+        }
+        catch (Exception ex) when (!(ex is FakeConfigurationException))
+        {
+            throw new UserCallbackException(ExceptionMessages.UserCallbackThrewAnException("Arguments predicate"), ex);
         }
 
-        public void MakeApplicableToMembersWithReturnType(Type type) => this.applicableToMembersWithReturnType = type;
-
-        public void MakeApplicableToAllNonVoidReturnTypes() => this.applicableToMembersWithReturnType = typeof(AllNonVoidReturnTypes);
-
-        public override void DescribeCallOn(IOutputWriter writer)
+        if (this.applicableToMembersWithReturnType == typeof(AllReturnTypes))
         {
-            this.AppendCall(writer);
-            this.AppendTargetObject(writer);
+            return true;
         }
 
-        public override void UsePredicateToValidateArguments(Func<ArgumentCollection, bool> predicate)
+        if (this.applicableToMembersWithReturnType == typeof(AllNonVoidReturnTypes))
         {
-            this.argumentsPredicate = predicate;
+            return fakeObjectCall.Method.ReturnType != typeof(void);
         }
 
-        protected override bool OnIsApplicableTo(IFakeObjectCall fakeObjectCall)
+        return this.applicableToMembersWithReturnType == fakeObjectCall.Method.ReturnType;
+    }
+
+    protected override BuildableCallRule CloneCallSpecificationCore() =>
+        new AnyCallCallRule(this.manager)
         {
-            try
-            {
-                if (!this.argumentsPredicate(fakeObjectCall.Arguments))
-                {
-                    return false;
-                }
-            }
-            catch (Exception ex) when (!(ex is FakeConfigurationException))
-            {
-                throw new UserCallbackException(ExceptionMessages.UserCallbackThrewAnException("Arguments predicate"), ex);
-            }
+            argumentsPredicate = this.argumentsPredicate
+        };
 
-            if (this.applicableToMembersWithReturnType == typeof(AllReturnTypes))
-            {
-                return true;
-            }
+    private void AppendCall(IOutputWriter writer)
+    {
+        writer.Write($"Any call {GetCallDescription()}");
 
+        string GetCallDescription()
+        {
             if (this.applicableToMembersWithReturnType == typeof(AllNonVoidReturnTypes))
             {
-                return fakeObjectCall.Method.ReturnType != typeof(void);
+                return "with non-void return type";
             }
-
-            return this.applicableToMembersWithReturnType == fakeObjectCall.Method.ReturnType;
-        }
-
-        protected override BuildableCallRule CloneCallSpecificationCore() =>
-            new AnyCallCallRule(this.manager)
+            else if (this.applicableToMembersWithReturnType == typeof(void))
             {
-                argumentsPredicate = this.argumentsPredicate
-            };
-
-        private void AppendCall(IOutputWriter writer)
-        {
-            writer.Write($"Any call {GetCallDescription()}");
-
-            string GetCallDescription()
+                return "with void return type";
+            }
+            else if (this.applicableToMembersWithReturnType == typeof(AllReturnTypes))
             {
-                if (this.applicableToMembersWithReturnType == typeof(AllNonVoidReturnTypes))
-                {
-                    return "with non-void return type";
-                }
-                else if (this.applicableToMembersWithReturnType == typeof(void))
-                {
-                    return "with void return type";
-                }
-                else if (this.applicableToMembersWithReturnType == typeof(AllReturnTypes))
-                {
-                    return "made";
-                }
-                else
-                {
-                    return $"with return type {this.applicableToMembersWithReturnType}";
-                }
+                return "made";
+            }
+            else
+            {
+                return $"with return type {this.applicableToMembersWithReturnType}";
             }
         }
+    }
 
-        private void AppendTargetObject(IOutputWriter writer)
+    private void AppendTargetObject(IOutputWriter writer)
+    {
+        writer.Write($" to the fake object{GetTargetObjectName()}.");
+
+        string GetTargetObjectName()
         {
-            writer.Write($" to the fake object{GetTargetObjectName()}.");
-
-            string GetTargetObjectName()
+            var fakeName = this.manager.FakeObjectName;
+            if (string.IsNullOrEmpty(fakeName))
             {
-                var fakeName = this.manager.FakeObjectName;
-                if (string.IsNullOrEmpty(fakeName))
-                {
-                    return string.Empty;
-                }
-
-                return $" {fakeName}";
+                return string.Empty;
             }
-        }
 
-        private class AllNonVoidReturnTypes
-        {
+            return $" {fakeName}";
         }
+    }
 
-        private class AllReturnTypes
-        {
-        }
+    private class AllNonVoidReturnTypes
+    {
+    }
+
+    private class AllReturnTypes
+    {
     }
 }

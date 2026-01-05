@@ -13,16 +13,15 @@ public class ValueTaskAsyncReturnValueConfigurationExtensionsGenerator : Strongl
     protected override string GenerateSource()
     {
         return $$"""
-            namespace FakeItEasy
-            {
-                using System;
-                using System.Threading.Tasks;
-                using FakeItEasy.Configuration;
+            namespace FakeItEasy;
 
-                public static partial class ValueTaskAsyncReturnValueConfigurationExtensions
-                {
-            {{Indent(2, OverloadMethod(GenerateMethodImplementation))}}
-                }
+            using System;
+            using System.Threading.Tasks;
+            using FakeItEasy.Configuration;
+
+            public static partial class ValueTaskAsyncReturnValueConfigurationExtensions
+            {
+            {{Indent(1, OverloadMethod(GenerateMethodImplementation))}}
             }
             """;
     }

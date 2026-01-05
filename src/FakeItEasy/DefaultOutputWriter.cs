@@ -1,129 +1,128 @@
-namespace FakeItEasy
+namespace FakeItEasy;
+
+using System;
+using System.Diagnostics.CodeAnalysis;
+using FakeItEasy.Core;
+
+internal class DefaultOutputWriter
+    : IOutputWriter
 {
-    using System;
-    using System.Diagnostics.CodeAnalysis;
-    using FakeItEasy.Core;
+    private const string IndentString = "  ";
+    private readonly Action<char> output;
+    private readonly ArgumentValueFormatter argumentValueFormatter;
+    private string currentIndent;
+    private WriteState writerState;
 
-    internal class DefaultOutputWriter
-        : IOutputWriter
+    public DefaultOutputWriter(Action<char> output, ArgumentValueFormatter argumentValueFormatter)
     {
-        private const string IndentString = "  ";
-        private readonly Action<char> output;
-        private readonly ArgumentValueFormatter argumentValueFormatter;
-        private string currentIndent;
-        private WriteState writerState;
+        this.output = output;
+        this.argumentValueFormatter = argumentValueFormatter;
+        this.currentIndent = string.Empty;
+        this.writerState = new DefaultWriterState(this);
+    }
 
-        public DefaultOutputWriter(Action<char> output, ArgumentValueFormatter argumentValueFormatter)
+    public IOutputWriter Write(string value)
+    {
+        Guard.AgainstNull(value);
+
+        foreach (var character in value)
         {
-            this.output = output;
-            this.argumentValueFormatter = argumentValueFormatter;
-            this.currentIndent = string.Empty;
-            this.writerState = new DefaultWriterState(this);
+            this.writerState.Write(character);
         }
 
-        public IOutputWriter Write(string value)
+        return this;
+    }
+
+    public IOutputWriter WriteArgumentValue(object? value)
+    {
+        return this.Write(this.argumentValueFormatter.GetArgumentValueAsString(value));
+    }
+
+    [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification = "Not critical that dispose runs in all exception paths.")]
+    public IDisposable Indent()
+    {
+        var unindenter = new Unindenter(this, this.currentIndent);
+        this.currentIndent = this.currentIndent + IndentString;
+        return unindenter;
+    }
+
+    private void AppendIndent()
+    {
+        for (int i = 0; i < this.currentIndent.Length; i++)
         {
-            Guard.AgainstNull(value);
+            this.output.Invoke(this.currentIndent[i]);
+        }
+    }
 
-            foreach (var character in value)
-            {
-                this.writerState.Write(character);
-            }
+    private sealed class Unindenter
+        : IDisposable
+    {
+        private readonly DefaultOutputWriter writer;
+        private readonly string previousIndentString;
 
-            return this;
+        public Unindenter(DefaultOutputWriter writer, string previousIndentString)
+        {
+            this.writer = writer;
+            this.previousIndentString = previousIndentString;
         }
 
-        public IOutputWriter WriteArgumentValue(object? value)
+        public void Dispose()
         {
-            return this.Write(this.argumentValueFormatter.GetArgumentValueAsString(value));
+            this.writer.currentIndent = this.previousIndentString;
+        }
+    }
+
+    private abstract class WriteState
+    {
+        public WriteState(DefaultOutputWriter writer)
+        {
+            this.Writer = writer;
         }
 
-        [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification = "Not critical that dispose runs in all exception paths.")]
-        public IDisposable Indent()
+        protected DefaultOutputWriter Writer { get; }
+
+        public abstract void Write(char c);
+    }
+
+    private class DefaultWriterState
+        : WriteState
+    {
+        public DefaultWriterState(DefaultOutputWriter writer)
+            : base(writer)
         {
-            var unindenter = new Unindenter(this, this.currentIndent);
-            this.currentIndent = this.currentIndent + IndentString;
-            return unindenter;
         }
 
-        private void AppendIndent()
+        public override void Write(char c)
         {
-            for (int i = 0; i < this.currentIndent.Length; i++)
+            if (c.Equals('\r') || c.Equals('\n'))
             {
-                this.output.Invoke(this.currentIndent[i]);
+                this.Writer.writerState = new IndentNextNonNewLineCharacterWriterState(this.Writer);
+                this.Writer.writerState.Write(c);
             }
-        }
-
-        private sealed class Unindenter
-            : IDisposable
-        {
-            private readonly DefaultOutputWriter writer;
-            private readonly string previousIndentString;
-
-            public Unindenter(DefaultOutputWriter writer, string previousIndentString)
+            else
             {
-                this.writer = writer;
-                this.previousIndentString = previousIndentString;
-            }
-
-            public void Dispose()
-            {
-                this.writer.currentIndent = this.previousIndentString;
-            }
-        }
-
-        private abstract class WriteState
-        {
-            public WriteState(DefaultOutputWriter writer)
-            {
-                this.Writer = writer;
-            }
-
-            protected DefaultOutputWriter Writer { get; }
-
-            public abstract void Write(char c);
-        }
-
-        private class DefaultWriterState
-            : WriteState
-        {
-            public DefaultWriterState(DefaultOutputWriter writer)
-                : base(writer)
-            {
-            }
-
-            public override void Write(char c)
-            {
-                if (c.Equals('\r') || c.Equals('\n'))
-                {
-                    this.Writer.writerState = new IndentNextNonNewLineCharacterWriterState(this.Writer);
-                    this.Writer.writerState.Write(c);
-                }
-                else
-                {
-                    this.Writer.output.Invoke(c);
-                }
-            }
-        }
-
-        private class IndentNextNonNewLineCharacterWriterState
-            : WriteState
-        {
-            public IndentNextNonNewLineCharacterWriterState(DefaultOutputWriter writer)
-                : base(writer)
-            {
-            }
-
-            public override void Write(char c)
-            {
-                if (!c.Equals('\r') && !c.Equals('\n'))
-                {
-                    this.Writer.writerState = new DefaultWriterState(this.Writer);
-                    this.Writer.AppendIndent();
-                }
-
                 this.Writer.output.Invoke(c);
             }
+        }
+    }
+
+    private class IndentNextNonNewLineCharacterWriterState
+        : WriteState
+    {
+        public IndentNextNonNewLineCharacterWriterState(DefaultOutputWriter writer)
+            : base(writer)
+        {
+        }
+
+        public override void Write(char c)
+        {
+            if (!c.Equals('\r') && !c.Equals('\n'))
+            {
+                this.Writer.writerState = new DefaultWriterState(this.Writer);
+                this.Writer.AppendIndent();
+            }
+
+            this.Writer.output.Invoke(c);
         }
     }
 }

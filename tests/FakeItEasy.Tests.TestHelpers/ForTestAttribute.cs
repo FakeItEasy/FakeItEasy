@@ -1,9 +1,8 @@
-namespace FakeItEasy.Tests.TestHelpers
-{
-    using System;
+namespace FakeItEasy.Tests.TestHelpers;
 
-    [AttributeUsage(AttributeTargets.Class)]
-    public sealed class ForTestAttribute : Attribute
-    {
-    }
+using System;
+
+[AttributeUsage(AttributeTargets.Class)]
+public sealed class ForTestAttribute : Attribute
+{
 }

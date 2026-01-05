@@ -1,14 +1,13 @@
-namespace FakeItEasy.Tests.Core
-{
-    using System.Collections.Generic;
-    using System.Linq;
-    using FakeItEasy.Core;
+namespace FakeItEasy.Tests.Core;
 
-    public class EnumerableOfFakeCallsFactory : DummyFactory<IEnumerable<IFakeObjectCall>>
+using System.Collections.Generic;
+using System.Linq;
+using FakeItEasy.Core;
+
+public class EnumerableOfFakeCallsFactory : DummyFactory<IEnumerable<IFakeObjectCall>>
+{
+    protected override IEnumerable<IFakeObjectCall> Create()
     {
-        protected override IEnumerable<IFakeObjectCall> Create()
-        {
-            return Enumerable.Empty<IFakeObjectCall>();
-        }
+        return Enumerable.Empty<IFakeObjectCall>();
     }
 }

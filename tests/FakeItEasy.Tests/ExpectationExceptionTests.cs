@@ -1,7 +1,6 @@
-namespace FakeItEasy.Tests
+namespace FakeItEasy.Tests;
+
+public class ExpectationExceptionTests
+    : ExceptionContractTests<ExpectationException>
 {
-    public class ExpectationExceptionTests
-        : ExceptionContractTests<ExpectationException>
-    {
-    }
 }

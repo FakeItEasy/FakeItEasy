@@ -1,11 +1,10 @@
-namespace FakeItEasy.Core
-{
-    using System;
+namespace FakeItEasy.Core;
 
-    internal interface IArgumentConstraintTrapper
-    {
-        IArgumentConstraint TrapConstraintOrCreate(
-            Action actionThatProducesConstraint,
-            Func<IArgumentConstraint> constraintFactory);
-    }
+using System;
+
+internal interface IArgumentConstraintTrapper
+{
+    IArgumentConstraint TrapConstraintOrCreate(
+        Action actionThatProducesConstraint,
+        Func<IArgumentConstraint> constraintFactory);
 }

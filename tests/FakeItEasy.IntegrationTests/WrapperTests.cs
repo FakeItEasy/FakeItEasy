@@ -1,42 +1,41 @@
-namespace FakeItEasy.IntegrationTests
+namespace FakeItEasy.IntegrationTests;
+
+using System.Collections.Generic;
+using System.IO;
+using FluentAssertions;
+using Xunit;
+
+public class WrapperTests
 {
-    using System.Collections.Generic;
-    using System.IO;
-    using FluentAssertions;
-    using Xunit;
-
-    public class WrapperTests
+    [Fact]
+    public void Wrapper_should_only_delegate_non_configured_calls()
     {
-        [Fact]
-        public void Wrapper_should_only_delegate_non_configured_calls()
-        {
-            var stream = new MemoryStream();
-            var wrapper = A.Fake<Stream>(x => x.Wrapping(stream));
+        var stream = new MemoryStream();
+        var wrapper = A.Fake<Stream>(x => x.Wrapping(stream));
 
-            wrapper.CanRead.Should().BeTrue();
+        wrapper.CanRead.Should().BeTrue();
 
-            A.CallTo(() => wrapper.CanRead).Returns(false);
+        A.CallTo(() => wrapper.CanRead).Returns(false);
 
-            wrapper.CanRead.Should().BeFalse();
-            stream.CanRead.Should().BeTrue();
-            this.CanRead(wrapper).Should().BeFalse();
-        }
+        wrapper.CanRead.Should().BeFalse();
+        stream.CanRead.Should().BeTrue();
+        this.CanRead(wrapper).Should().BeFalse();
+    }
 
-        [Fact]
-        public void Wrapper_should_pass_values_to_wrapped_instance()
-        {
-            var dictionary = new Dictionary<string, string>();
-            var fake = A.Fake<IDictionary<string, string>>(x => x.Wrapping(dictionary));
+    [Fact]
+    public void Wrapper_should_pass_values_to_wrapped_instance()
+    {
+        var dictionary = new Dictionary<string, string>();
+        var fake = A.Fake<IDictionary<string, string>>(x => x.Wrapping(dictionary));
 
-            fake.Add("foo", "bar");
+        fake.Add("foo", "bar");
 
-            fake["foo"].Should().Be("bar");
-            A.CallTo(() => fake.Add("foo", "bar")).MustHaveHappened();
-        }
+        fake["foo"].Should().Be("bar");
+        A.CallTo(() => fake.Add("foo", "bar")).MustHaveHappened();
+    }
 
-        private bool CanRead(Stream stream)
-        {
-            return stream.CanRead;
-        }
+    private bool CanRead(Stream stream)
+    {
+        return stream.CanRead;
     }
 }

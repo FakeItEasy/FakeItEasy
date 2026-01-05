@@ -1,111 +1,110 @@
-namespace FakeItEasy.Tests.Core
+namespace FakeItEasy.Tests.Core;
+
+using System;
+using FakeItEasy.Core;
+using FakeItEasy.Creation;
+using FluentAssertions;
+using Xunit;
+
+public class FakeManagerProviderTests
 {
-    using System;
-    using FakeItEasy.Core;
-    using FakeItEasy.Creation;
-    using FluentAssertions;
-    using Xunit;
+    private readonly object proxy;
+    private readonly FakeManager fakeManager;
 
-    public class FakeManagerProviderTests
+    private readonly FakeManager.Factory fakeManagerFactory;
+    private readonly IFakeManagerAccessor fakeManagerAccessor;
+    private readonly Type typeOfFake;
+    private readonly IProxyOptions proxyOptions;
+    private readonly FakeManagerProvider fakeManagerProvider;
+
+    public FakeManagerProviderTests()
     {
-        private readonly object proxy;
-        private readonly FakeManager fakeManager;
+        this.fakeManagerFactory = A.Fake<FakeManager.Factory>();
+        this.fakeManagerAccessor = A.Fake<IFakeManagerAccessor>();
+        this.typeOfFake = A.Fake<Type>();
+        this.proxyOptions = A.Fake<IProxyOptions>();
 
-        private readonly FakeManager.Factory fakeManagerFactory;
-        private readonly IFakeManagerAccessor fakeManagerAccessor;
-        private readonly Type typeOfFake;
-        private readonly IProxyOptions proxyOptions;
-        private readonly FakeManagerProvider fakeManagerProvider;
+        this.fakeManagerProvider = new FakeManagerProvider(
+            this.fakeManagerFactory,
+            this.fakeManagerAccessor,
+            this.typeOfFake,
+            this.proxyOptions);
 
-        public FakeManagerProviderTests()
-        {
-            this.fakeManagerFactory = A.Fake<FakeManager.Factory>();
-            this.fakeManagerAccessor = A.Fake<IFakeManagerAccessor>();
-            this.typeOfFake = A.Fake<Type>();
-            this.proxyOptions = A.Fake<IProxyOptions>();
+        this.proxy = new object();
+        this.fakeManager = new FakeManager(typeof(int), this.proxy, null);
+        A.CallTo(() => this.fakeManagerFactory(A<Type>._, this.proxy, A<string>.Ignored)).Returns(this.fakeManager);
+    }
 
-            this.fakeManagerProvider = new FakeManagerProvider(
-                this.fakeManagerFactory,
-                this.fakeManagerAccessor,
-                this.typeOfFake,
-                this.proxyOptions);
+    [Fact]
+    public void Fetch_should_return_a_fake_manager_from_the_factory()
+    {
+        // Arrange
 
-            this.proxy = new object();
-            this.fakeManager = new FakeManager(typeof(int), this.proxy, null);
-            A.CallTo(() => this.fakeManagerFactory(A<Type>._, this.proxy, A<string>.Ignored)).Returns(this.fakeManager);
-        }
+        // Act
+        var fakeCallProcessor = this.fakeManagerProvider.Fetch(this.proxy);
 
-        [Fact]
-        public void Fetch_should_return_a_fake_manager_from_the_factory()
-        {
-            // Arrange
+        // Assert
+        fakeCallProcessor.Should().BeSameAs(this.fakeManager);
+    }
 
-            // Act
-            var fakeCallProcessor = this.fakeManagerProvider.Fetch(this.proxy);
+    [Fact]
+    public void Fetch_should_tag_the_proxy_with_the_manager()
+    {
+        // Arrange
 
-            // Assert
-            fakeCallProcessor.Should().BeSameAs(this.fakeManager);
-        }
+        // Act
+        this.fakeManagerProvider.Fetch(this.proxy);
 
-        [Fact]
-        public void Fetch_should_tag_the_proxy_with_the_manager()
-        {
-            // Arrange
+        // Assert
+        A.CallTo(() => this.fakeManagerAccessor.SetFakeManager(this.proxy, this.fakeManager)).MustHaveHappened();
+    }
 
-            // Act
-            this.fakeManagerProvider.Fetch(this.proxy);
+    [Fact]
+    public void Fetch_should_configure_the_proxy_with_all_fake_configuration_actions()
+    {
+        // Arrange
+        var fakeConfigurationAction1 = A.Fake<Action<object>>();
+        var fakeConfigurationAction2 = A.Fake<Action<object>>();
 
-            // Assert
-            A.CallTo(() => this.fakeManagerAccessor.SetFakeManager(this.proxy, this.fakeManager)).MustHaveHappened();
-        }
+        A.CallTo(() => this.proxyOptions.ProxyConfigurationActions)
+            .Returns(new[] { fakeConfigurationAction1, fakeConfigurationAction2 });
 
-        [Fact]
-        public void Fetch_should_configure_the_proxy_with_all_fake_configuration_actions()
-        {
-            // Arrange
-            var fakeConfigurationAction1 = A.Fake<Action<object>>();
-            var fakeConfigurationAction2 = A.Fake<Action<object>>();
+        // Act
+        this.fakeManagerProvider.Fetch(this.proxy);
 
-            A.CallTo(() => this.proxyOptions.ProxyConfigurationActions)
-                .Returns(new[] { fakeConfigurationAction1, fakeConfigurationAction2 });
+        // Assert
+        A.CallTo(() => fakeConfigurationAction1(this.proxy)).MustHaveHappened();
+        A.CallTo(() => fakeConfigurationAction2(this.proxy)).MustHaveHappened();
+    }
 
-            // Act
-            this.fakeManagerProvider.Fetch(this.proxy);
+    [Fact]
+    public void Fetch_should_create_exactly_one_fake_manager_when_called_repeatedly()
+    {
+        // Arrange
 
-            // Assert
-            A.CallTo(() => fakeConfigurationAction1(this.proxy)).MustHaveHappened();
-            A.CallTo(() => fakeConfigurationAction2(this.proxy)).MustHaveHappened();
-        }
+        // Act
+        var fakeCallProcessor1 = this.fakeManagerProvider.Fetch(this.proxy);
+        var fakeCallProcessor2 = this.fakeManagerProvider.Fetch(this.proxy);
+        var fakeCallProcessor3 = this.fakeManagerProvider.Fetch(this.proxy);
 
-        [Fact]
-        public void Fetch_should_create_exactly_one_fake_manager_when_called_repeatedly()
-        {
-            // Arrange
+        // Assert
+        fakeCallProcessor1.Should().BeSameAs(fakeCallProcessor2);
+        fakeCallProcessor2.Should().BeSameAs(fakeCallProcessor3);
 
-            // Act
-            var fakeCallProcessor1 = this.fakeManagerProvider.Fetch(this.proxy);
-            var fakeCallProcessor2 = this.fakeManagerProvider.Fetch(this.proxy);
-            var fakeCallProcessor3 = this.fakeManagerProvider.Fetch(this.proxy);
+        A.CallTo(() => this.fakeManagerFactory(this.typeOfFake, this.proxy, A<string>.Ignored)).MustHaveHappenedOnceExactly();
+    }
 
-            // Assert
-            fakeCallProcessor1.Should().BeSameAs(fakeCallProcessor2);
-            fakeCallProcessor2.Should().BeSameAs(fakeCallProcessor3);
+    [Fact]
+    public void EnsureInitialized_should_create_exactly_one_fake_manager_when_called_repeatedly()
+    {
+        // Arrange
 
-            A.CallTo(() => this.fakeManagerFactory(this.typeOfFake, this.proxy, A<string>.Ignored)).MustHaveHappenedOnceExactly();
-        }
+        // Act
+        this.fakeManagerProvider.EnsureInitialized(this.proxy);
+        this.fakeManagerProvider.EnsureInitialized(this.proxy);
+        this.fakeManagerProvider.EnsureInitialized(this.proxy);
 
-        [Fact]
-        public void EnsureInitialized_should_create_exactly_one_fake_manager_when_called_repeatedly()
-        {
-            // Arrange
-
-            // Act
-            this.fakeManagerProvider.EnsureInitialized(this.proxy);
-            this.fakeManagerProvider.EnsureInitialized(this.proxy);
-            this.fakeManagerProvider.EnsureInitialized(this.proxy);
-
-            // Assert
-            A.CallTo(() => this.fakeManagerFactory(this.typeOfFake, this.proxy, A<string>.Ignored)).MustHaveHappenedOnceExactly();
-        }
+        // Assert
+        A.CallTo(() => this.fakeManagerFactory(this.typeOfFake, this.proxy, A<string>.Ignored)).MustHaveHappenedOnceExactly();
     }
 }

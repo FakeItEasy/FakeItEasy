@@ -1,27 +1,26 @@
-namespace FakeItEasy.Tests.TestHelpers
-{
-    using System;
-    using System.Text.RegularExpressions;
+namespace FakeItEasy.Tests.TestHelpers;
 
-    public static class StringExtensions
+using System;
+using System.Text.RegularExpressions;
+
+public static class StringExtensions
+{
+    public static string NormalizeLineEndings(this string s)
     {
-        public static string NormalizeLineEndings(this string s)
+        if (string.IsNullOrEmpty(s))
         {
-            if (string.IsNullOrEmpty(s))
-            {
-                return s;
-            }
+            return s;
+        }
 
 #if LACKS_STRING_CONTAINS_COMPARISONTYPE
-            if (s.IndexOf('\n') < 0)
+        if (s.IndexOf('\n') < 0)
 #else
-            if (!s.Contains('\n', StringComparison.Ordinal))
+        if (!s.Contains('\n', StringComparison.Ordinal))
 #endif
-            {
-                return s;
-            }
-
-            return Regex.Replace(s, "\r?\n", Environment.NewLine);
+        {
+            return s;
         }
+
+        return Regex.Replace(s, "\r?\n", Environment.NewLine);
     }
 }

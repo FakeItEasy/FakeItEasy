@@ -1,63 +1,62 @@
-namespace FakeItEasy.Creation
+namespace FakeItEasy.Creation;
+
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Linq.Expressions;
+
+internal class ProxyOptions : IProxyOptions
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.Diagnostics.CodeAnalysis;
-    using System.Linq;
-    using System.Linq.Expressions;
+    private readonly List<Type> additionalInterfacesToImplement = new List<Type>();
+    private readonly List<Action<object>> proxyConfigurationActions = new List<Action<object>>();
+    private readonly List<Expression<Func<Attribute>>> attributes = new List<Expression<Func<Attribute>>>();
 
-    internal class ProxyOptions : IProxyOptions
+    public static IProxyOptions Default { get; } = new DefaultProxyOptions();
+
+    public IEnumerable<object?>? ArgumentsForConstructor { get; set; }
+
+    public ReadOnlyCollection<Type> AdditionalInterfacesToImplement => this.additionalInterfacesToImplement.AsReadOnly();
+
+    public IEnumerable<Action<object>> ProxyConfigurationActions => this.proxyConfigurationActions;
+
+    public IEnumerable<Expression<Func<Attribute>>> Attributes => this.attributes;
+
+    public string? Name { get; set; }
+
+    public void AddInterfaceToImplement(Type interfaceType)
     {
-        private readonly List<Type> additionalInterfacesToImplement = new List<Type>();
-        private readonly List<Action<object>> proxyConfigurationActions = new List<Action<object>>();
-        private readonly List<Expression<Func<Attribute>>> attributes = new List<Expression<Func<Attribute>>>();
+        Guard.AgainstNull(interfaceType);
 
-        public static IProxyOptions Default { get; } = new DefaultProxyOptions();
-
-        public IEnumerable<object?>? ArgumentsForConstructor { get; set; }
-
-        public ReadOnlyCollection<Type> AdditionalInterfacesToImplement => this.additionalInterfacesToImplement.AsReadOnly();
-
-        public IEnumerable<Action<object>> ProxyConfigurationActions => this.proxyConfigurationActions;
-
-        public IEnumerable<Expression<Func<Attribute>>> Attributes => this.attributes;
-
-        public string? Name { get; set; }
-
-        public void AddInterfaceToImplement(Type interfaceType)
+        if (!interfaceType.IsInterface)
         {
-            Guard.AgainstNull(interfaceType);
-
-            if (!interfaceType.IsInterface)
-            {
-                throw new ArgumentException(ExceptionMessages.NotAnInterface(interfaceType));
-            }
-
-            this.additionalInterfacesToImplement.Add(interfaceType);
+            throw new ArgumentException(ExceptionMessages.NotAnInterface(interfaceType));
         }
 
-        public void AddProxyConfigurationAction(Action<object> action)
-        {
-            this.proxyConfigurationActions.Add(action);
-        }
+        this.additionalInterfacesToImplement.Add(interfaceType);
+    }
 
-        public void AddAttribute(Expression<Func<Attribute>> attribute)
-        {
-            this.attributes.Add(attribute);
-        }
+    public void AddProxyConfigurationAction(Action<object> action)
+    {
+        this.proxyConfigurationActions.Add(action);
+    }
 
-        private class DefaultProxyOptions : IProxyOptions
-        {
-            public IEnumerable<object?>? ArgumentsForConstructor { get; }
+    public void AddAttribute(Expression<Func<Attribute>> attribute)
+    {
+        this.attributes.Add(attribute);
+    }
 
-            public ReadOnlyCollection<Type> AdditionalInterfacesToImplement { get; } = new ReadOnlyCollection<Type>(new List<Type>());
+    private class DefaultProxyOptions : IProxyOptions
+    {
+        public IEnumerable<object?>? ArgumentsForConstructor { get; }
 
-            public IEnumerable<Action<object>> ProxyConfigurationActions { get; } = Enumerable.Empty<Action<object>>();
+        public ReadOnlyCollection<Type> AdditionalInterfacesToImplement { get; } = new ReadOnlyCollection<Type>(new List<Type>());
 
-            public IEnumerable<Expression<Func<Attribute>>> Attributes { get; } = Enumerable.Empty<Expression<Func<Attribute>>>();
+        public IEnumerable<Action<object>> ProxyConfigurationActions { get; } = Enumerable.Empty<Action<object>>();
 
-            public string? Name => null;
-        }
+        public IEnumerable<Expression<Func<Attribute>>> Attributes { get; } = Enumerable.Empty<Expression<Func<Attribute>>>();
+
+        public string? Name => null;
     }
 }

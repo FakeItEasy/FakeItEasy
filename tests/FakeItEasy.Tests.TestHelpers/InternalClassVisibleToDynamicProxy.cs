@@ -1,9 +1,8 @@
-namespace FakeItEasy.Tests.TestHelpers
+namespace FakeItEasy.Tests.TestHelpers;
+
+internal class InternalClassVisibleToDynamicProxy
 {
-    internal class InternalClassVisibleToDynamicProxy
+    public virtual void Foo(int argument1, int argument2)
     {
-        public virtual void Foo(int argument1, int argument2)
-        {
-        }
     }
 }

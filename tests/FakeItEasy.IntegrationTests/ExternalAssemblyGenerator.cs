@@ -1,110 +1,110 @@
-namespace FakeItEasy.IntegrationTests
+namespace FakeItEasy.IntegrationTests;
+
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.Versioning;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+
+public class ExternalAssemblyGenerator
 {
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Reflection;
-    using System.Runtime.Versioning;
-    using Microsoft.CodeAnalysis;
-    using Microsoft.CodeAnalysis.CSharp;
-
-    public class ExternalAssemblyGenerator
+    public ExternalAssemblyGenerator()
     {
-        public ExternalAssemblyGenerator()
-        {
-            this.baseDirectory = CreateBaseDirectory();
-            this.AssemblyOriginalPath = this.PrepareAssemblyPath("Original", AssemblyName);
-            this.AssemblyCopyPath = this.PrepareAssemblyPath("Copy", AssemblyName);
-            this.AssemblyDependencyPath = this.PrepareAssemblyPath("Dependency", DependencyAssemblyName);
-            this.EmitDependencyAssembly();
-            this.EmitAssembly();
-            this.CopyAssembly();
-        }
+        this.baseDirectory = CreateBaseDirectory();
+        this.AssemblyOriginalPath = this.PrepareAssemblyPath("Original", AssemblyName);
+        this.AssemblyCopyPath = this.PrepareAssemblyPath("Copy", AssemblyName);
+        this.AssemblyDependencyPath = this.PrepareAssemblyPath("Dependency", DependencyAssemblyName);
+        this.EmitDependencyAssembly();
+        this.EmitAssembly();
+        this.CopyAssembly();
+    }
 
-        /// <summary>
-        /// Gets the path to a generated assembly that contains extension points, but is not referenced by the test assembly.
-        /// </summary>
-        public string AssemblyOriginalPath { get; }
+    /// <summary>
+    /// Gets the path to a generated assembly that contains extension points, but is not referenced by the test assembly.
+    /// </summary>
+    public string AssemblyOriginalPath { get; }
 
-        /// <summary>
-        /// Gets the path to a copy of <see cref="AssemblyOriginalPath"/>.
-        /// </summary>
-        public string AssemblyCopyPath { get; }
+    /// <summary>
+    /// Gets the path to a copy of <see cref="AssemblyOriginalPath"/>.
+    /// </summary>
+    public string AssemblyCopyPath { get; }
 
-        /// <summary>
-        /// Gets the path of an assembly on which a type of FakeItEasy.IntegrationTests.External depends.
-        /// </summary>
-        /// <remarks>
-        /// This assembly is referenced by FakeItEasy.ExtensionPoints.External, but won't be available at run time. This is done in order to
-        /// cause a type load error when we scan the types in FakeItEasy.ExtensionPoints.External, and ensure the error is handled properly.
-        /// </remarks>
-        public string AssemblyDependencyPath { get; }
+    /// <summary>
+    /// Gets the path of an assembly on which a type of FakeItEasy.IntegrationTests.External depends.
+    /// </summary>
+    /// <remarks>
+    /// This assembly is referenced by FakeItEasy.ExtensionPoints.External, but won't be available at run time. This is done in order to
+    /// cause a type load error when we scan the types in FakeItEasy.ExtensionPoints.External, and ensure the error is handled properly.
+    /// </remarks>
+    public string AssemblyDependencyPath { get; }
 
-        private const string AssemblyName = "FakeItEasy.ExtensionPoints.External";
-        private const string DependencyAssemblyName = "FakeItEasy.ExtensionPoints.ExternalDependency";
+    private const string AssemblyName = "FakeItEasy.ExtensionPoints.External";
+    private const string DependencyAssemblyName = "FakeItEasy.ExtensionPoints.ExternalDependency";
 
-        private static IEnumerable<string> GetFrameworkAssemblyLocations()
-        {
-            var systemAssemblyLocation = typeof(object).Assembly.Location;
-            var coreDir = Path.GetDirectoryName(systemAssemblyLocation)!;
-            return new[] { "mscorlib.dll", "System.Runtime.dll" }
-                .Select(s => Path.Combine(coreDir, s))
-                .Concat(new[]
-                {
-                    systemAssemblyLocation
-                });
-        }
-
-        private static string CreateBaseDirectory()
-        {
-            var tfmAttribute = typeof(ExternalAssemblyGenerator).Assembly.GetCustomAttribute<TargetFrameworkAttribute>();
-            var dir = Path.Combine(Path.GetTempPath(), AssemblyName, tfmAttribute!.FrameworkName);
-            if (Directory.Exists(dir))
+    private static IEnumerable<string> GetFrameworkAssemblyLocations()
+    {
+        var systemAssemblyLocation = typeof(object).Assembly.Location;
+        var coreDir = Path.GetDirectoryName(systemAssemblyLocation)!;
+        return new[] { "mscorlib.dll", "System.Runtime.dll" }
+            .Select(s => Path.Combine(coreDir, s))
+            .Concat(new[]
             {
-                Directory.Delete(dir, recursive: true);
-            }
+                systemAssemblyLocation
+            });
+    }
 
-            Directory.CreateDirectory(dir);
-            return dir;
+    private static string CreateBaseDirectory()
+    {
+        var tfmAttribute = typeof(ExternalAssemblyGenerator).Assembly.GetCustomAttribute<TargetFrameworkAttribute>();
+        var dir = Path.Combine(Path.GetTempPath(), AssemblyName, tfmAttribute!.FrameworkName);
+        if (Directory.Exists(dir))
+        {
+            Directory.Delete(dir, recursive: true);
         }
 
-        private string baseDirectory;
+        Directory.CreateDirectory(dir);
+        return dir;
+    }
 
-        private string PrepareAssemblyPath(string subDirectory, string assemblyName)
-        {
-            string directory = Path.Combine(this.baseDirectory, subDirectory);
-            Directory.CreateDirectory(directory);
-            return Path.Combine(directory, assemblyName + ".dll");
-        }
+    private string baseDirectory;
 
-        private void EmitDependencyAssembly()
-        {
-            string assemblyContent = @"
+    private string PrepareAssemblyPath(string subDirectory, string assemblyName)
+    {
+        string directory = Path.Combine(this.baseDirectory, subDirectory);
+        Directory.CreateDirectory(directory);
+        return Path.Combine(directory, assemblyName + ".dll");
+    }
+
+    private void EmitDependencyAssembly()
+    {
+        string assemblyContent = @"
 namespace FakeItEasy.IntegrationTests.ExternalDependency
 {
     public class Foo { }
 }";
 
-            var references = GetFrameworkAssemblyLocations()
-                .Select(l => MetadataReference.CreateFromFile(l));
+        var references = GetFrameworkAssemblyLocations()
+            .Select(l => MetadataReference.CreateFromFile(l));
 
-            var compilation = CSharpCompilation.Create(
-                DependencyAssemblyName,
-                syntaxTrees: new[] { CSharpSyntaxTree.ParseText(assemblyContent) },
-                references: references,
-                options: new CSharpCompilationOptions(outputKind: OutputKind.DynamicallyLinkedLibrary));
+        var compilation = CSharpCompilation.Create(
+            DependencyAssemblyName,
+            syntaxTrees: new[] { CSharpSyntaxTree.ParseText(assemblyContent) },
+            references: references,
+            options: new CSharpCompilationOptions(outputKind: OutputKind.DynamicallyLinkedLibrary));
 
-            var emitResult = compilation.Emit(this.AssemblyDependencyPath);
-            if (!emitResult.Success)
-            {
-                throw new Exception("Failed to create assembly - " + emitResult.Diagnostics[0]);
-            }
-        }
-
-        private void EmitAssembly()
+        var emitResult = compilation.Emit(this.AssemblyDependencyPath);
+        if (!emitResult.Success)
         {
-            string assemblyContent = @"
+            throw new Exception("Failed to create assembly - " + emitResult.Diagnostics[0]);
+        }
+    }
+
+    private void EmitAssembly()
+    {
+        string assemblyContent = @"
 namespace FakeItEasy.IntegrationTests.External
 {
     using System;
@@ -130,29 +130,28 @@ namespace FakeItEasy.IntegrationTests.External
 }
 ";
 
-            var references = GetFrameworkAssemblyLocations()
-                .Concat([
-                    typeof(A).Assembly.Location,
-                    this.AssemblyDependencyPath
-                ])
-                .Select(l => MetadataReference.CreateFromFile(l));
+        var references = GetFrameworkAssemblyLocations()
+            .Concat([
+                typeof(A).Assembly.Location,
+                this.AssemblyDependencyPath
+            ])
+            .Select(l => MetadataReference.CreateFromFile(l));
 
-            var compilation = CSharpCompilation.Create(
-                AssemblyName,
-                syntaxTrees: new[] { CSharpSyntaxTree.ParseText(assemblyContent) },
-                references: references,
-                options: new CSharpCompilationOptions(outputKind: OutputKind.DynamicallyLinkedLibrary));
+        var compilation = CSharpCompilation.Create(
+            AssemblyName,
+            syntaxTrees: new[] { CSharpSyntaxTree.ParseText(assemblyContent) },
+            references: references,
+            options: new CSharpCompilationOptions(outputKind: OutputKind.DynamicallyLinkedLibrary));
 
-            var emitResult = compilation.Emit(this.AssemblyOriginalPath);
-            if (!emitResult.Success)
-            {
-                throw new Exception("Failed to create assembly - " + emitResult.Diagnostics[0]);
-            }
-        }
-
-        private void CopyAssembly()
+        var emitResult = compilation.Emit(this.AssemblyOriginalPath);
+        if (!emitResult.Success)
         {
-            File.Copy(this.AssemblyOriginalPath, this.AssemblyCopyPath);
+            throw new Exception("Failed to create assembly - " + emitResult.Diagnostics[0]);
         }
+    }
+
+    private void CopyAssembly()
+    {
+        File.Copy(this.AssemblyOriginalPath, this.AssemblyCopyPath);
     }
 }

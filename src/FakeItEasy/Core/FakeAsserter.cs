@@ -1,112 +1,111 @@
-namespace FakeItEasy.Core
+namespace FakeItEasy.Core;
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+internal class FakeAsserter : IFakeAsserter
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
+    private readonly CallWriter callWriter;
+    private readonly StringBuilderOutputWriter.Factory outputWriterFactory;
+    private readonly IEnumerable<CompletedFakeObjectCall> calls;
+    private readonly int lastSequenceNumber;
 
-    internal class FakeAsserter : IFakeAsserter
+    public FakeAsserter(IEnumerable<CompletedFakeObjectCall> calls, int lastSequenceNumber, CallWriter callWriter, StringBuilderOutputWriter.Factory outputWriterFactory)
     {
-        private readonly CallWriter callWriter;
-        private readonly StringBuilderOutputWriter.Factory outputWriterFactory;
-        private readonly IEnumerable<CompletedFakeObjectCall> calls;
-        private readonly int lastSequenceNumber;
+        Guard.AgainstNull(calls);
+        Guard.AgainstNull(callWriter);
 
-        public FakeAsserter(IEnumerable<CompletedFakeObjectCall> calls, int lastSequenceNumber, CallWriter callWriter, StringBuilderOutputWriter.Factory outputWriterFactory)
+        this.calls = calls;
+        this.lastSequenceNumber = lastSequenceNumber;
+        this.callWriter = callWriter;
+        this.outputWriterFactory = outputWriterFactory;
+    }
+
+    public delegate IFakeAsserter Factory(IEnumerable<CompletedFakeObjectCall> calls, int lastSequenceNumber);
+
+    public virtual void AssertWasCalled(
+        Func<ICompletedFakeObjectCall, bool> callPredicate, Action<IOutputWriter> callDescriber, CallCountConstraint callCountConstraint)
+    {
+        bool IsBeforeAssertionStart(CompletedFakeObjectCall call) => call.SequenceNumber <= this.lastSequenceNumber;
+
+        var matchedCallCount = this.calls.Count(c => IsBeforeAssertionStart(c) && callPredicate(c));
+        if (!callCountConstraint.Matches(matchedCallCount))
         {
-            Guard.AgainstNull(calls);
-            Guard.AgainstNull(callWriter);
+            var description = this.outputWriterFactory.Invoke();
+            callDescriber.Invoke(description);
 
-            this.calls = calls;
-            this.lastSequenceNumber = lastSequenceNumber;
-            this.callWriter = callWriter;
-            this.outputWriterFactory = outputWriterFactory;
+            var message = this.CreateExceptionMessage(this.calls.Where(IsBeforeAssertionStart), description.Builder.ToString(), callCountConstraint.ToString(), matchedCallCount);
+            throw new ExpectationException(message);
         }
+    }
 
-        public delegate IFakeAsserter Factory(IEnumerable<CompletedFakeObjectCall> calls, int lastSequenceNumber);
+    private static void AppendCallDescription(string callDescription, StringBuilderOutputWriter writer)
+    {
+        writer.WriteLine();
+        writer.Write("Assertion failed for the following call:");
+        writer.WriteLine();
 
-        public virtual void AssertWasCalled(
-            Func<ICompletedFakeObjectCall, bool> callPredicate, Action<IOutputWriter> callDescriber, CallCountConstraint callCountConstraint)
+        using (writer.Indent())
         {
-            bool IsBeforeAssertionStart(CompletedFakeObjectCall call) => call.SequenceNumber <= this.lastSequenceNumber;
-
-            var matchedCallCount = this.calls.Count(c => IsBeforeAssertionStart(c) && callPredicate(c));
-            if (!callCountConstraint.Matches(matchedCallCount))
-            {
-                var description = this.outputWriterFactory.Invoke();
-                callDescriber.Invoke(description);
-
-                var message = this.CreateExceptionMessage(this.calls.Where(IsBeforeAssertionStart), description.Builder.ToString(), callCountConstraint.ToString(), matchedCallCount);
-                throw new ExpectationException(message);
-            }
-        }
-
-        private static void AppendCallDescription(string callDescription, StringBuilderOutputWriter writer)
-        {
-            writer.WriteLine();
-            writer.Write("Assertion failed for the following call:");
-            writer.WriteLine();
-
-            using (writer.Indent())
-            {
-                writer.Write(callDescription);
-                writer.WriteLine();
-            }
-        }
-
-        private static void AppendExpectation(IEnumerable<IFakeObjectCall> calls, string callCountDescription, int matchedCallCount, StringBuilderOutputWriter writer)
-        {
-            writer.Write("Expected to find it {0} ", callCountDescription);
-
-            if (calls.Any())
-            {
-                switch (matchedCallCount)
-                {
-                    case 0:
-                        writer.Write("but didn't find it among the calls:");
-                        break;
-                    case 1:
-                        writer.Write("but found it once among the calls:");
-                        break;
-                    case 2:
-                        writer.Write("but found it twice among the calls:");
-                        break;
-                    default:
-                        writer.Write("but found it {0} times among the calls:", matchedCallCount);
-                        break;
-                }
-            }
-            else
-            {
-                writer.Write("but no calls were made to the fake object.");
-            }
-
+            writer.Write(callDescription);
             writer.WriteLine();
         }
+    }
 
-        private static void AppendCallList(IEnumerable<IFakeObjectCall> calls, CallWriter callWriter, StringBuilderOutputWriter writer)
+    private static void AppendExpectation(IEnumerable<IFakeObjectCall> calls, string callCountDescription, int matchedCallCount, StringBuilderOutputWriter writer)
+    {
+        writer.Write("Expected to find it {0} ", callCountDescription);
+
+        if (calls.Any())
         {
-            using (writer.Indent())
+            switch (matchedCallCount)
             {
-                callWriter.WriteCalls(calls, writer);
+                case 0:
+                    writer.Write("but didn't find it among the calls:");
+                    break;
+                case 1:
+                    writer.Write("but found it once among the calls:");
+                    break;
+                case 2:
+                    writer.Write("but found it twice among the calls:");
+                    break;
+                default:
+                    writer.Write("but found it {0} times among the calls:", matchedCallCount);
+                    break;
             }
         }
-
-        private string CreateExceptionMessage(
-            IEnumerable<IFakeObjectCall> calls, string callDescription, string callCountDescription, int matchedCallCount)
+        else
         {
-            var writer = this.outputWriterFactory.Invoke();
+            writer.Write("but no calls were made to the fake object.");
+        }
+
+        writer.WriteLine();
+    }
+
+    private static void AppendCallList(IEnumerable<IFakeObjectCall> calls, CallWriter callWriter, StringBuilderOutputWriter writer)
+    {
+        using (writer.Indent())
+        {
+            callWriter.WriteCalls(calls, writer);
+        }
+    }
+
+    private string CreateExceptionMessage(
+        IEnumerable<IFakeObjectCall> calls, string callDescription, string callCountDescription, int matchedCallCount)
+    {
+        var writer = this.outputWriterFactory.Invoke();
+        writer.WriteLine();
+
+        using (writer.Indent())
+        {
+            AppendCallDescription(callDescription, writer);
+            AppendExpectation(calls, callCountDescription, matchedCallCount, writer);
+            AppendCallList(calls, this.callWriter, writer);
             writer.WriteLine();
-
-            using (writer.Indent())
-            {
-                AppendCallDescription(callDescription, writer);
-                AppendExpectation(calls, callCountDescription, matchedCallCount, writer);
-                AppendCallList(calls, this.callWriter, writer);
-                writer.WriteLine();
-            }
-
-            return writer.Builder.ToString();
         }
+
+        return writer.Builder.ToString();
     }
 }

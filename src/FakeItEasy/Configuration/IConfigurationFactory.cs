@@ -1,13 +1,12 @@
-namespace FakeItEasy.Configuration
+namespace FakeItEasy.Configuration;
+
+using FakeItEasy.Core;
+
+internal interface IConfigurationFactory
 {
-    using FakeItEasy.Core;
+    IAnyCallConfigurationWithVoidReturnType CreateConfiguration(FakeManager fakeObject, BuildableCallRule callRule);
 
-    internal interface IConfigurationFactory
-    {
-        IAnyCallConfigurationWithVoidReturnType CreateConfiguration(FakeManager fakeObject, BuildableCallRule callRule);
+    IAnyCallConfigurationWithReturnTypeSpecified<TMember> CreateConfiguration<TMember>(FakeManager fakeObject, BuildableCallRule callRule);
 
-        IAnyCallConfigurationWithReturnTypeSpecified<TMember> CreateConfiguration<TMember>(FakeManager fakeObject, BuildableCallRule callRule);
-
-        IAnyCallConfigurationWithNoReturnTypeSpecified CreateAnyCallConfiguration(FakeManager fakeObject, AnyCallCallRule callRule);
-    }
+    IAnyCallConfigurationWithNoReturnTypeSpecified CreateAnyCallConfiguration(FakeManager fakeObject, AnyCallCallRule callRule);
 }

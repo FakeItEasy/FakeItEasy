@@ -1,14 +1,13 @@
-namespace FakeItEasy.Tests
-{
-    using System.Linq.Expressions;
-    using FakeItEasy.Tests.TestHelpers;
+namespace FakeItEasy.Tests;
 
-    public class LambdaExpressionDummyFactory
-        : DummyFactory<LambdaExpression>
+using System.Linq.Expressions;
+using FakeItEasy.Tests.TestHelpers;
+
+public class LambdaExpressionDummyFactory
+    : DummyFactory<LambdaExpression>
+{
+    protected override LambdaExpression Create()
     {
-        protected override LambdaExpression Create()
-        {
-            return ExpressionHelper.CreateExpression<string>(x => object.ReferenceEquals(x, null));
-        }
+        return ExpressionHelper.CreateExpression<string>(x => object.ReferenceEquals(x, null));
     }
 }

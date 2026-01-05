@@ -1,71 +1,70 @@
-namespace FakeItEasy.Tests
+namespace FakeItEasy.Tests;
+
+using System;
+using System.Linq.Expressions;
+using FakeItEasy.Core;
+using Xunit;
+
+public class FakeTests
 {
-    using System;
-    using System.Linq.Expressions;
-    using FakeItEasy.Core;
-    using Xunit;
-
-    public class FakeTests
+    [Fact]
+    public void GetFakeManager_should_be_guarded()
     {
-        [Fact]
-        public void GetFakeManager_should_be_guarded()
-        {
-            // Arrange
+        // Arrange
 
-            // Act
+        // Act
 
-            // Assert
-            Expression<Action> call = () => Fake.GetFakeManager(A.Dummy<IFoo>());
-            call.Should().BeNullGuarded();
-        }
+        // Assert
+        Expression<Action> call = () => Fake.GetFakeManager(A.Dummy<IFoo>());
+        call.Should().BeNullGuarded();
+    }
 
-        [Fact]
-        public void GetCalls_should_be_guarded()
-        {
-            // Arrange
+    [Fact]
+    public void GetCalls_should_be_guarded()
+    {
+        // Arrange
 
-            // Act
+        // Act
 
-            // Assert
-            Expression<Action> call = () => Fake.GetCalls(A.Dummy<object>());
-            call.Should().BeNullGuarded();
-        }
+        // Assert
+        Expression<Action> call = () => Fake.GetCalls(A.Dummy<object>());
+        call.Should().BeNullGuarded();
+    }
 
-        [Fact]
-        public void ClearRecordedCalls_should_be_guarded()
-        {
-            // Arrange
+    [Fact]
+    public void ClearRecordedCalls_should_be_guarded()
+    {
+        // Arrange
 
-            // Act
+        // Act
 
-            // Assert
-            Expression<Action> call = () => Fake.ClearRecordedCalls(A.Dummy<object>());
-            call.Should().BeNullGuarded();
-        }
+        // Assert
+        Expression<Action> call = () => Fake.ClearRecordedCalls(A.Dummy<object>());
+        call.Should().BeNullGuarded();
+    }
 
-        [Fact]
-        public void TryGetFakeManager_should_be_guarded()
-        {
-            // Arrange
+    [Fact]
+    public void TryGetFakeManager_should_be_guarded()
+    {
+        // Arrange
 
-            // Act
+        // Act
 
-            // Assert
-            FakeManager? manager;
-            Expression<Action> call = () => Fake.TryGetFakeManager(A.Dummy<object>(), out manager);
-            call.Should().BeNullGuarded();
-        }
+        // Assert
+        FakeManager? manager;
+        Expression<Action> call = () => Fake.TryGetFakeManager(A.Dummy<object>(), out manager);
+        call.Should().BeNullGuarded();
+    }
 
-        [Fact]
-        public void Reset_should_be_guarded()
-        {
-            // Arrange
+    [Fact]
+    public void Reset_should_be_guarded()
+    {
+        // Arrange
 
-            // Act
+        // Act
 
-            // Assert
-            Expression<Action> call = () => Fake.Reset(A.Dummy<object>());
-            call.Should().BeNullGuarded();
-        }
+        // Assert
+        Expression<Action> call = () => Fake.Reset(A.Dummy<object>());
+        call.Should().BeNullGuarded();
     }
 }

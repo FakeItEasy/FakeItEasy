@@ -1,9 +1,8 @@
-namespace FakeItEasy.Creation
-{
-    using System;
+namespace FakeItEasy.Creation;
 
-    internal interface IDummyValueResolver
-    {
-        CreationResult TryResolveDummyValue(Type typeOfDummy, LoopDetectingResolutionContext resolutionContext);
-    }
+using System;
+
+internal interface IDummyValueResolver
+{
+    CreationResult TryResolveDummyValue(Type typeOfDummy, LoopDetectingResolutionContext resolutionContext);
 }

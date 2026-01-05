@@ -1,140 +1,139 @@
-namespace FakeItEasy.Tests.Core
+namespace FakeItEasy.Tests.Core;
+
+using System;
+using System.Reflection;
+using FakeItEasy.Configuration;
+using FakeItEasy.Core;
+using FluentAssertions;
+using Xunit;
+
+using static FakeItEasy.Tests.TestHelpers.ExpressionHelper;
+
+public class FakeCallEqualityComparerTests
 {
-    using System;
-    using System.Reflection;
-    using FakeItEasy.Configuration;
-    using FakeItEasy.Core;
-    using FluentAssertions;
-    using Xunit;
+    private static readonly MethodInfo ToStringMethod = GetMethodInfo<object>(x => x.ToString());
+    private static readonly MethodInfo EqualsMethod = GetMethodInfo<object>(x => x.Equals(new object()));
 
-    using static FakeItEasy.Tests.TestHelpers.ExpressionHelper;
+    private readonly FakeCallEqualityComparer comparer;
+    private readonly IFakeObjectCall firstCall;
+    private readonly IFakeObjectCall secondCall;
 
-    public class FakeCallEqualityComparerTests
+    public FakeCallEqualityComparerTests()
     {
-        private static readonly MethodInfo ToStringMethod = GetMethodInfo<object>(x => x.ToString());
-        private static readonly MethodInfo EqualsMethod = GetMethodInfo<object>(x => x.Equals(new object()));
+        this.firstCall = CreateFakedFakeObjectCall();
+        this.secondCall = MakeEqualCopy(this.firstCall);
 
-        private readonly FakeCallEqualityComparer comparer;
-        private readonly IFakeObjectCall firstCall;
-        private readonly IFakeObjectCall secondCall;
+        this.comparer = new FakeCallEqualityComparer();
+    }
 
-        public FakeCallEqualityComparerTests()
-        {
-            this.firstCall = CreateFakedFakeObjectCall();
-            this.secondCall = MakeEqualCopy(this.firstCall);
+    [Fact]
+    public void Should_return_true_for_call_where_method_arguments_and_fake_are_the_same()
+    {
+        // Arrange
 
-            this.comparer = new FakeCallEqualityComparer();
-        }
+        // Act
 
-        [Fact]
-        public void Should_return_true_for_call_where_method_arguments_and_fake_are_the_same()
-        {
-            // Arrange
+        // Assert
+        this.comparer.Equals(this.firstCall, this.secondCall).Should().BeTrue();
+    }
 
-            // Act
+    [Fact]
+    public void Should_return_false_when_method_differs()
+    {
+        // Arrang
+        A.CallTo(() => this.firstCall.Method).Returns(EqualsMethod);
+        A.CallTo(() => this.secondCall.Method).Returns(ToStringMethod);
 
-            // Assert
-            this.comparer.Equals(this.firstCall, this.secondCall).Should().BeTrue();
-        }
+        // Act
+        var result = this.comparer.Equals(this.firstCall, this.secondCall);
 
-        [Fact]
-        public void Should_return_false_when_method_differs()
-        {
-            // Arrang
-            A.CallTo(() => this.firstCall.Method).Returns(EqualsMethod);
-            A.CallTo(() => this.secondCall.Method).Returns(ToStringMethod);
+        // Assert
+        result.Should().BeFalse();
+    }
 
-            // Act
-            var result = this.comparer.Equals(this.firstCall, this.secondCall);
+    [Fact]
+    public void Should_return_false_when_argument_differs()
+    {
+        // Arrang
+        A.CallTo(() => this.firstCall.Arguments).Returns(new ArgumentCollection(new[] { new object() }, EqualsMethod));
 
-            // Assert
-            result.Should().BeFalse();
-        }
+        // Act
+        var result = this.comparer.Equals(this.firstCall, this.secondCall);
 
-        [Fact]
-        public void Should_return_false_when_argument_differs()
-        {
-            // Arrang
-            A.CallTo(() => this.firstCall.Arguments).Returns(new ArgumentCollection(new[] { new object() }, EqualsMethod));
+        // Assert
+        result.Should().BeFalse();
+    }
 
-            // Act
-            var result = this.comparer.Equals(this.firstCall, this.secondCall);
+    [Fact]
+    public void Should_return_false_when_faked_object_differs()
+    {
+        // Arrang
+        A.CallTo(() => this.firstCall.FakedObject).Returns(new object());
 
-            // Assert
-            result.Should().BeFalse();
-        }
+        // Act
+        var result = this.comparer.Equals(this.firstCall, this.secondCall);
 
-        [Fact]
-        public void Should_return_false_when_faked_object_differs()
-        {
-            // Arrang
-            A.CallTo(() => this.firstCall.FakedObject).Returns(new object());
+        // Assert
+        result.Should().BeFalse();
+    }
 
-            // Act
-            var result = this.comparer.Equals(this.firstCall, this.secondCall);
+    [Fact]
+    public void Should_return_same_hash_code_for_equal_calls()
+    {
+        // Arrange
 
-            // Assert
-            result.Should().BeFalse();
-        }
+        // Act
 
-        [Fact]
-        public void Should_return_same_hash_code_for_equal_calls()
-        {
-            // Arrange
+        // Assert
+        this.comparer.GetHashCode(this.firstCall).Should().Be(this.comparer.GetHashCode(this.secondCall));
+    }
 
-            // Act
+    [Fact]
+    public void Should_not_fail_when_getting_hash_code_where_arguments_contains_null()
+    {
+        // Arrange
+        A.CallTo(() => this.firstCall.Arguments).Returns(new ArgumentCollection(new object?[] { null }, EqualsMethod));
 
-            // Assert
-            this.comparer.GetHashCode(this.firstCall).Should().Be(this.comparer.GetHashCode(this.secondCall));
-        }
+        // Act
+        var exception = Record.Exception(() => this.comparer.GetHashCode(this.firstCall));
 
-        [Fact]
-        public void Should_not_fail_when_getting_hash_code_where_arguments_contains_null()
-        {
-            // Arrange
-            A.CallTo(() => this.firstCall.Arguments).Returns(new ArgumentCollection(new object?[] { null }, EqualsMethod));
+        // Assert
+        exception.Should().BeNull();
+    }
 
-            // Act
-            var exception = Record.Exception(() => this.comparer.GetHashCode(this.firstCall));
+    [Fact]
+    public void Should_not_fail_getting_hash_code_when_fake_is_strict()
+    {
+        // arrange
+        var call = A.Fake<IFakeObjectCall>();
+        A.CallTo(() => call.FakedObject).Returns(A.Fake<IFoo>(o => o.Strict()));
+        var sut = new FakeCallEqualityComparer();
 
-            // Assert
-            exception.Should().BeNull();
-        }
+        // act
+        var exception = Record.Exception(() => sut.GetHashCode(call));
 
-        [Fact]
-        public void Should_not_fail_getting_hash_code_when_fake_is_strict()
-        {
-            // arrange
-            var call = A.Fake<IFakeObjectCall>();
-            A.CallTo(() => call.FakedObject).Returns(A.Fake<IFoo>(o => o.Strict()));
-            var sut = new FakeCallEqualityComparer();
+        // assert
+        exception.Should().BeNull();
+    }
 
-            // act
-            var exception = Record.Exception(() => sut.GetHashCode(call));
+    private static IFakeObjectCall CreateFakedFakeObjectCall()
+    {
+        var call = A.Fake<IFakeObjectCall>();
 
-            // assert
-            exception.Should().BeNull();
-        }
+        A.CallTo(() => call.Method).Returns(ToStringMethod);
+        A.CallTo(() => call.Arguments).Returns(new ArgumentCollection(Array.Empty<object>(), A.Fake<MethodInfo>()));
 
-        private static IFakeObjectCall CreateFakedFakeObjectCall()
-        {
-            var call = A.Fake<IFakeObjectCall>();
+        return call;
+    }
 
-            A.CallTo(() => call.Method).Returns(ToStringMethod);
-            A.CallTo(() => call.Arguments).Returns(new ArgumentCollection(Array.Empty<object>(), A.Fake<MethodInfo>()));
+    private static IFakeObjectCall MakeEqualCopy(IFakeObjectCall call)
+    {
+        var copy = A.Fake<IFakeObjectCall>();
 
-            return call;
-        }
+        A.CallTo(() => copy.Method).Returns(call.Method);
+        A.CallTo(() => copy.Arguments).Returns(call.Arguments);
+        A.CallTo(() => copy.FakedObject).Returns(call.FakedObject);
 
-        private static IFakeObjectCall MakeEqualCopy(IFakeObjectCall call)
-        {
-            var copy = A.Fake<IFakeObjectCall>();
-
-            A.CallTo(() => copy.Method).Returns(call.Method);
-            A.CallTo(() => copy.Arguments).Returns(call.Arguments);
-            A.CallTo(() => copy.FakedObject).Returns(call.FakedObject);
-
-            return copy;
-        }
+        return copy;
     }
 }

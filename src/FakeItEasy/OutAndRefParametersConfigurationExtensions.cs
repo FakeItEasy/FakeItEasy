@@ -1,30 +1,29 @@
-namespace FakeItEasy
+namespace FakeItEasy;
+
+using System;
+using FakeItEasy.Configuration;
+
+/// <summary>
+/// Provides extension methods for <see cref="IOutAndRefParametersConfiguration{TInterface}"/>.
+/// </summary>
+public static class OutAndRefParametersConfigurationExtensions
 {
-    using System;
-    using FakeItEasy.Configuration;
-
     /// <summary>
-    /// Provides extension methods for <see cref="IOutAndRefParametersConfiguration{TInterface}"/>.
+    /// Specifies output values for out and ref parameters. The values should appear
+    /// in the same order as the out and ref parameters in the configured call.
+    /// Any non out and ref parameters are ignored.
+    /// The function will be called each time this call is made and can return different values.
     /// </summary>
-    public static class OutAndRefParametersConfigurationExtensions
+    /// <typeparam name="TInterface">The type of configuration interface to return.</typeparam>
+    /// <param name="configuration">The configuration to extend.</param>
+    /// <param name="values">The values.</param>
+    /// <returns>A configuration object.</returns>
+    public static IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParameters<TInterface>(
+        this IOutAndRefParametersConfiguration<TInterface> configuration, params object?[] values)
     {
-        /// <summary>
-        /// Specifies output values for out and ref parameters. The values should appear
-        /// in the same order as the out and ref parameters in the configured call.
-        /// Any non out and ref parameters are ignored.
-        /// The function will be called each time this call is made and can return different values.
-        /// </summary>
-        /// <typeparam name="TInterface">The type of configuration interface to return.</typeparam>
-        /// <param name="configuration">The configuration to extend.</param>
-        /// <param name="values">The values.</param>
-        /// <returns>A configuration object.</returns>
-        public static IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParameters<TInterface>(
-            this IOutAndRefParametersConfiguration<TInterface> configuration, params object?[] values)
-        {
-            Guard.AgainstNull(configuration);
-            Guard.AgainstNull(values);
+        Guard.AgainstNull(configuration);
+        Guard.AgainstNull(values);
 
-            return configuration.AssignsOutAndRefParametersLazily(x => values);
-        }
+        return configuration.AssignsOutAndRefParametersLazily(x => values);
     }
 }

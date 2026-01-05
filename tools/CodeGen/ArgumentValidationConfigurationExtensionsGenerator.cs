@@ -13,16 +13,15 @@ public class ArgumentValidationConfigurationExtensionsGenerator : StronglyTypedO
     protected override string GenerateSource()
     {
         return $$"""
-            namespace FakeItEasy
-            {
-                using System;
-                using System.Reflection;
-                using FakeItEasy.Configuration;
+            namespace FakeItEasy;
 
-                public static partial class ArgumentValidationConfigurationExtensions
-                {
-            {{Indent(2, OverloadMethod(GenerateMethodImplementation))}}
-                }
+            using System;
+            using System.Reflection;
+            using FakeItEasy.Configuration;
+
+            public static partial class ArgumentValidationConfigurationExtensions
+            {
+            {{Indent(1, OverloadMethod(GenerateMethodImplementation))}}
             }
             """;
     }

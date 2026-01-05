@@ -1,72 +1,71 @@
-namespace FakeItEasy.Tests.Core
+namespace FakeItEasy.Tests.Core;
+
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+using FakeItEasy.Core;
+using FluentAssertions;
+using Xunit;
+
+public class ArgumentConstraintTrapTests
 {
-    using System;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using FakeItEasy.Core;
-    using FluentAssertions;
-    using Xunit;
+    private static readonly Func<IArgumentConstraint> UnusedConstraintFactory = A.Dummy<Func<IArgumentConstraint>>();
+    private readonly ArgumentConstraintTrap trap = new ArgumentConstraintTrap();
 
-    public class ArgumentConstraintTrapTests
+    [Fact]
+    public void Should_track_constraints_supplied_in_calls_made_from_overlapping_threads()
     {
-        private static readonly Func<IArgumentConstraint> UnusedConstraintFactory = A.Dummy<Func<IArgumentConstraint>>();
-        private readonly ArgumentConstraintTrap trap = new ArgumentConstraintTrap();
+        // Ensures that constraints are properly trapped even when two constraint-trapping threads
+        // overlap. Uses the reset events to ensure that the threads consistently execute like this:
+        // |-----------------------------|
+        //       |---------------|
+        // The thread that starts first will register to trap constraints before the second thread
+        // but will not actually report the constraint until after the second thread has reported
+        // its constraint and finished.
+        // Without per-thread constraint trapping, this would mean that the first thread's constraint
+        // would be lost.
 
-        [Fact]
-        public void Should_track_constraints_supplied_in_calls_made_from_overlapping_threads()
+        // Arrange
+        var lateStartingLock = new ManualResetEventSlim(false);
+        var lateEndingLock = new ManualResetEventSlim(false);
+
+        var earlyStartingConstraint = A.Fake<IArgumentConstraint>();
+        A.CallTo(() => earlyStartingConstraint.ToString()).Returns("earlyStarter");
+        IArgumentConstraint? earlyStartingResult = null;
+
+        var lateStartingConstraint = A.Fake<IArgumentConstraint>();
+        A.CallTo(() => lateStartingConstraint.ToString()).Returns("lateStarter");
+        IArgumentConstraint? lateStartingResult = null;
+
+        // Act
+        var earlyStartingTask = Task.Run(() =>
         {
-            // Ensures that constraints are properly trapped even when two constraint-trapping threads
-            // overlap. Uses the reset events to ensure that the threads consistently execute like this:
-            // |-----------------------------|
-            //       |---------------|
-            // The thread that starts first will register to trap constraints before the second thread
-            // but will not actually report the constraint until after the second thread has reported
-            // its constraint and finished.
-            // Without per-thread constraint trapping, this would mean that the first thread's constraint
-            // would be lost.
+            earlyStartingResult = this.trap.TrapConstraintOrCreate(
+                () =>
+                {
+                    lateStartingLock.Set();
+                    lateEndingLock.Wait();
 
-            // Arrange
-            var lateStartingLock = new ManualResetEventSlim(false);
-            var lateEndingLock = new ManualResetEventSlim(false);
+                    ArgumentConstraintTrap.ReportTrappedConstraint(earlyStartingConstraint);
+                },
+                UnusedConstraintFactory);
+        });
 
-            var earlyStartingConstraint = A.Fake<IArgumentConstraint>();
-            A.CallTo(() => earlyStartingConstraint.ToString()).Returns("earlyStarter");
-            IArgumentConstraint? earlyStartingResult = null;
+        var lateStartingTask = Task.Run(() =>
+        {
+            lateStartingLock.Wait();
 
-            var lateStartingConstraint = A.Fake<IArgumentConstraint>();
-            A.CallTo(() => lateStartingConstraint.ToString()).Returns("lateStarter");
-            IArgumentConstraint? lateStartingResult = null;
+            lateStartingResult = this.trap.TrapConstraintOrCreate(
+                () => ArgumentConstraintTrap.ReportTrappedConstraint(lateStartingConstraint),
+                UnusedConstraintFactory);
 
-            // Act
-            var earlyStartingTask = Task.Run(() =>
-            {
-                earlyStartingResult = this.trap.TrapConstraintOrCreate(
-                    () =>
-                        {
-                            lateStartingLock.Set();
-                            lateEndingLock.Wait();
+            lateEndingLock.Set();
+        });
 
-                            ArgumentConstraintTrap.ReportTrappedConstraint(earlyStartingConstraint);
-                        },
-                    UnusedConstraintFactory);
-            });
+        Task.WaitAll(earlyStartingTask, lateStartingTask);
 
-            var lateStartingTask = Task.Run(() =>
-            {
-                lateStartingLock.Wait();
-
-                lateStartingResult = this.trap.TrapConstraintOrCreate(
-                    () => ArgumentConstraintTrap.ReportTrappedConstraint(lateStartingConstraint),
-                    UnusedConstraintFactory);
-
-                lateEndingLock.Set();
-            });
-
-            Task.WaitAll(earlyStartingTask, lateStartingTask);
-
-            // Assert
-            new[] { earlyStartingResult, lateStartingResult }
-                .Should().Equal(earlyStartingConstraint, lateStartingConstraint);
-        }
+        // Assert
+        new[] { earlyStartingResult, lateStartingResult }
+            .Should().Equal(earlyStartingConstraint, lateStartingConstraint);
     }
 }

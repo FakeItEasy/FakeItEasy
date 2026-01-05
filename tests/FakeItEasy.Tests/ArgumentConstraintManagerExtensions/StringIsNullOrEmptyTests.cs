@@ -1,47 +1,46 @@
-namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
+namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions;
+
+using System.Collections.Generic;
+using FakeItEasy.Tests.TestHelpers;
+using Xunit;
+
+public class StringIsNullOrEmptyTests
+    : ArgumentConstraintTestBase<string>
 {
-    using System.Collections.Generic;
-    using FakeItEasy.Tests.TestHelpers;
-    using Xunit;
+    protected override string ExpectedDescription => "NULL or string.Empty";
 
-    public class StringIsNullOrEmptyTests
-        : ArgumentConstraintTestBase<string>
+    public static IEnumerable<object?[]> InvalidValues()
     {
-        protected override string ExpectedDescription => "NULL or string.Empty";
+        return TestCases.FromObject(
+            "foo",
+            "bar",
+            "a",
+            "b");
+    }
 
-        public static IEnumerable<object?[]> InvalidValues()
-        {
-            return TestCases.FromObject(
-                "foo",
-                "bar",
-                "a",
-                "b");
-        }
+    public static IEnumerable<object?[]> ValidValues()
+    {
+        return TestCases.FromObject(
+            string.Empty,
+            null!);
+    }
 
-        public static IEnumerable<object?[]> ValidValues()
-        {
-            return TestCases.FromObject(
-                string.Empty,
-                null!);
-        }
+    [Theory]
+    [MemberData(nameof(InvalidValues))]
+    public override void IsValid_should_return_false_for_invalid_values(object invalidValue)
+    {
+        base.IsValid_should_return_false_for_invalid_values(invalidValue);
+    }
 
-        [Theory]
-        [MemberData(nameof(InvalidValues))]
-        public override void IsValid_should_return_false_for_invalid_values(object invalidValue)
-        {
-            base.IsValid_should_return_false_for_invalid_values(invalidValue);
-        }
+    [Theory]
+    [MemberData(nameof(ValidValues))]
+    public override void IsValid_should_return_true_for_valid_values(object validValue)
+    {
+        base.IsValid_should_return_true_for_valid_values(validValue);
+    }
 
-        [Theory]
-        [MemberData(nameof(ValidValues))]
-        public override void IsValid_should_return_true_for_valid_values(object validValue)
-        {
-            base.IsValid_should_return_true_for_valid_values(validValue);
-        }
-
-        protected override void CreateConstraint(INegatableArgumentConstraintManager<string> scope)
-        {
-            scope.IsNullOrEmpty();
-        }
+    protected override void CreateConstraint(INegatableArgumentConstraintManager<string> scope)
+    {
+        scope.IsNullOrEmpty();
     }
 }

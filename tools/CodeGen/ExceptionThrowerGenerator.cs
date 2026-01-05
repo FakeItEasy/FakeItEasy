@@ -13,45 +13,44 @@ public class ExceptionThrowerGenerator : StronglyTypedOverloadsGenerator
     protected override string GenerateSource()
     {
         return $$"""
-            namespace FakeItEasy.Configuration
+            namespace FakeItEasy.Configuration;
+
+            using System;
+            using System.Reflection;
+            using FakeItEasy.Core;
+
+            public partial interface IExceptionThrowerConfiguration<out TInterface>
             {
-                using System;
-                using System.Reflection;
-                using FakeItEasy.Core;
+            {{Indent(1, OverloadMethod(GenerateMethodDeclaration))}}
+            }
 
-                public partial interface IExceptionThrowerConfiguration<out TInterface>
+            internal partial class RuleBuilder
+            {
+            {{Indent(1, GenerateMethodImplementations("IVoidConfiguration"))}}
+
+                public partial class ReturnValueConfiguration<TMember>
                 {
-            {{Indent(2, OverloadMethod(GenerateMethodDeclaration))}}
+            {{Indent(2, GenerateMethodImplementations("IReturnValueConfiguration<TMember>"))}}
                 }
+            }
 
-                internal partial class RuleBuilder
-                {
-            {{Indent(2, GenerateMethodImplementations("IVoidConfiguration"))}}
+            internal partial class AnyCallConfiguration
+            {
+            {{Indent(1, GenerateMethodImplementations("IVoidConfiguration"))}}
+            }
 
-                    public partial class ReturnValueConfiguration<TMember>
-                    {
-            {{Indent(3, GenerateMethodImplementations("IReturnValueConfiguration<TMember>"))}}
-                    }
-                }
+            internal partial class PropertySetterConfiguration<TValue>
+            {
+            {{Indent(1, GenerateMethodImplementations("IPropertySetterConfiguration"))}}
 
-                internal partial class AnyCallConfiguration
-                {
-            {{Indent(2, GenerateMethodImplementations("IVoidConfiguration"))}}
-                }
-
-                internal partial class PropertySetterConfiguration<TValue>
+                private partial class PropertySetterAdapter
                 {
             {{Indent(2, GenerateMethodImplementations("IPropertySetterConfiguration"))}}
+                }
 
-                    private partial class PropertySetterAdapter
-                    {
-            {{Indent(3, GenerateMethodImplementations("IPropertySetterConfiguration"))}}
-                    }
-
-                    private partial class PropertySetterAfterCallbackConfiguredAdapter
-                    {
-            {{Indent(3, GenerateMethodImplementations("IPropertySetterConfiguration"))}}
-                    }
+                private partial class PropertySetterAfterCallbackConfiguredAdapter
+                {
+            {{Indent(2, GenerateMethodImplementations("IPropertySetterConfiguration"))}}
                 }
             }
             """;

@@ -13,16 +13,15 @@ public class CallbackConfigurationExtensionsGenerator : StronglyTypedOverloadsGe
     protected override string GenerateSource()
     {
         return $$"""
-            namespace FakeItEasy
-            {
-                using System;
-                using System.Reflection;
-                using FakeItEasy.Configuration;
+            namespace FakeItEasy;
 
-                public static partial class CallbackConfigurationExtensions
-                {
-            {{Indent(2, OverloadMethod(GenerateMethodImplementation))}}
-                }
+            using System;
+            using System.Reflection;
+            using FakeItEasy.Configuration;
+
+            public static partial class CallbackConfigurationExtensions
+            {
+            {{Indent(1, OverloadMethod(GenerateMethodImplementation))}}
             }
             """;
     }

@@ -1,9 +1,8 @@
-namespace FakeItEasy.Expressions
-{
-    using FakeItEasy.Core;
+namespace FakeItEasy.Expressions;
 
-    internal interface IExpressionCallMatcherFactory
-    {
-        ICallMatcher CreateCallMatcher(ParsedCallExpression callSpecification);
-    }
+using FakeItEasy.Core;
+
+internal interface IExpressionCallMatcherFactory
+{
+    ICallMatcher CreateCallMatcher(ParsedCallExpression callSpecification);
 }

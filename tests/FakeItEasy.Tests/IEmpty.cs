@@ -1,9 +1,8 @@
-namespace FakeItEasy.Tests
-{
-    using System.Diagnostics.CodeAnalysis;
+namespace FakeItEasy.Tests;
 
-    [SuppressMessage("Microsoft.Design", "CA1040:AvoidEmptyInterfaces", Justification = "Required for testing.")]
-    public interface IEmpty
-    {
-    }
+using System.Diagnostics.CodeAnalysis;
+
+[SuppressMessage("Microsoft.Design", "CA1040:AvoidEmptyInterfaces", Justification = "Required for testing.")]
+public interface IEmpty
+{
 }

@@ -14,34 +14,33 @@ public class OutAndRefParametersGenerator : StronglyTypedOverloadsGenerator
     {
         return $$"""
             #nullable enable
-            namespace FakeItEasy.Configuration
+            namespace FakeItEasy.Configuration;
+
+            using System;
+            using System.Reflection;
+
+            public partial interface IOutAndRefParametersConfiguration<out TInterface>
             {
-                using System;
-                using System.Reflection;
+            {{Indent(1, OverloadMethod(GenerateMethodDeclaration))}}
+            }
 
-                public partial interface IOutAndRefParametersConfiguration<out TInterface>
+            internal partial class RuleBuilder
+            {
+                private const string NameOfOutRefLazilyFeature = "assigns out and ref parameters lazily";
+
+            {{Indent(1, GenerateMethodImplementations("IVoidConfiguration"))}}
+
+                public partial class ReturnValueConfiguration<TMember>
                 {
-            {{Indent(2, OverloadMethod(GenerateMethodDeclaration))}}
+            {{Indent(2, GenerateMethodImplementations("IReturnValueConfiguration<TMember>"))}}
                 }
+            }
 
-                internal partial class RuleBuilder
-                {
-                    private const string NameOfOutRefLazilyFeature = "assigns out and ref parameters lazily";
+            internal partial class AnyCallConfiguration
+            {
+                private const string NameOfOutRefLazilyFeature = "assigns out and ref parameters lazily";
 
-            {{Indent(2, GenerateMethodImplementations("IVoidConfiguration"))}}
-
-                    public partial class ReturnValueConfiguration<TMember>
-                    {
-            {{Indent(3, GenerateMethodImplementations("IReturnValueConfiguration<TMember>"))}}
-                    }
-                }
-
-                internal partial class AnyCallConfiguration
-                {
-                    private const string NameOfOutRefLazilyFeature = "assigns out and ref parameters lazily";
-
-            {{Indent(2, GenerateMethodImplementations("IVoidConfiguration"))}}
-                }
+            {{Indent(1, GenerateMethodImplementations("IVoidConfiguration"))}}
             }
             """;
     }

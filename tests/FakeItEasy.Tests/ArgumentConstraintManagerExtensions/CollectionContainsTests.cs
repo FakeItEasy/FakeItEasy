@@ -1,49 +1,48 @@
-namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
+namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions;
+
+using System;
+using System.Collections.Generic;
+using FakeItEasy.Tests.TestHelpers;
+using Xunit;
+
+public class CollectionContainsTests
+    : ArgumentConstraintTestBase<IEnumerable<object>>
 {
-    using System;
-    using System.Collections.Generic;
-    using FakeItEasy.Tests.TestHelpers;
-    using Xunit;
+    protected override string ExpectedDescription => "sequence that contains the value 10";
 
-    public class CollectionContainsTests
-        : ArgumentConstraintTestBase<IEnumerable<object>>
+    public static IEnumerable<object?[]> InvalidValues()
     {
-        protected override string ExpectedDescription => "sequence that contains the value 10";
+        return TestCases.FromObject(
+            (object?)null,
+            Array.Empty<object>(),
+            new object?[] { null },
+            new object[] { 1, 2, 3, "foo", "bar" });
+    }
 
-        public static IEnumerable<object?[]> InvalidValues()
-        {
-            return TestCases.FromObject(
-                (object?)null,
-                Array.Empty<object>(),
-                new object?[] { null },
-                new object[] { 1, 2, 3, "foo", "bar" });
-        }
+    public static IEnumerable<object?[]> ValidValues()
+    {
+        return TestCases.FromObject(
+            new object[] { 10 },
+            new object[] { 10, 11 },
+            new object[] { "foo", 10 });
+    }
 
-        public static IEnumerable<object?[]> ValidValues()
-        {
-            return TestCases.FromObject(
-                new object[] { 10 },
-                new object[] { 10, 11 },
-                new object[] { "foo", 10 });
-        }
+    [Theory]
+    [MemberData(nameof(InvalidValues))]
+    public override void IsValid_should_return_false_for_invalid_values(object invalidValue)
+    {
+        base.IsValid_should_return_false_for_invalid_values(invalidValue);
+    }
 
-        [Theory]
-        [MemberData(nameof(InvalidValues))]
-        public override void IsValid_should_return_false_for_invalid_values(object invalidValue)
-        {
-            base.IsValid_should_return_false_for_invalid_values(invalidValue);
-        }
+    [Theory]
+    [MemberData(nameof(ValidValues))]
+    public override void IsValid_should_return_true_for_valid_values(object validValue)
+    {
+        base.IsValid_should_return_true_for_valid_values(validValue);
+    }
 
-        [Theory]
-        [MemberData(nameof(ValidValues))]
-        public override void IsValid_should_return_true_for_valid_values(object validValue)
-        {
-            base.IsValid_should_return_true_for_valid_values(validValue);
-        }
-
-        protected override void CreateConstraint(INegatableArgumentConstraintManager<IEnumerable<object>> scope)
-        {
-            scope.Contains(10);
-        }
+    protected override void CreateConstraint(INegatableArgumentConstraintManager<IEnumerable<object>> scope)
+    {
+        scope.Contains(10);
     }
 }

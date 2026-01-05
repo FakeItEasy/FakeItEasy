@@ -1,9 +1,8 @@
-namespace FakeItEasy.Configuration
-{
-    using System.Reflection;
+namespace FakeItEasy.Configuration;
 
-    internal interface IInterceptionAsserter
-    {
-        void AssertThatMethodCanBeInterceptedOnInstance(MethodInfo method, object? callTarget);
-    }
+using System.Reflection;
+
+internal interface IInterceptionAsserter
+{
+    void AssertThatMethodCanBeInterceptedOnInstance(MethodInfo method, object? callTarget);
 }

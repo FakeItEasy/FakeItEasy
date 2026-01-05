@@ -1,86 +1,85 @@
-namespace FakeItEasy.Core
+namespace FakeItEasy.Core;
+
+using System;
+using System.Linq;
+using System.Reflection;
+using FakeItEasy.Compatibility;
+
+/// <content>Property behavior rule.</content>
+public partial class FakeManager
 {
-    using System;
-    using System.Linq;
-    using System.Reflection;
-    using FakeItEasy.Compatibility;
-
-    /// <content>Property behavior rule.</content>
-    public partial class FakeManager
+    private class PropertyBehaviorRule
+        : IStatefulFakeObjectCallRule
     {
-        private class PropertyBehaviorRule
-            : IStatefulFakeObjectCallRule
+        private readonly MethodInfo? propertyGetter;
+        private readonly MethodInfo? propertySetter;
+
+        public PropertyBehaviorRule(MethodInfo propertyGetterOrSetter)
         {
-            private readonly MethodInfo? propertyGetter;
-            private readonly MethodInfo? propertySetter;
+            var property = GetProperty(propertyGetterOrSetter);
 
-            public PropertyBehaviorRule(MethodInfo propertyGetterOrSetter)
-            {
-                var property = GetProperty(propertyGetterOrSetter);
+            this.propertySetter = property.GetSetMethod();
+            this.propertyGetter = property.GetGetMethod(true);
+        }
 
-                this.propertySetter = property.GetSetMethod();
-                this.propertyGetter = property.GetGetMethod(true);
-            }
+        public object? Value { get; set; }
 
-            public object? Value { get; set; }
+        public object?[] Indices { get; set; } = ArrayHelper.Empty<object?>();
 
-            public object?[] Indices { get; set; } = ArrayHelper.Empty<object?>();
+        public int? NumberOfTimesToCall => null;
 
-            public int? NumberOfTimesToCall => null;
+        public static bool IsPropertySetter(MethodInfo method)
+        {
+            return method.IsSpecialName && method.Name.StartsWith("set_", StringComparison.Ordinal);
+        }
 
-            public static bool IsPropertySetter(MethodInfo method)
-            {
-                return method.IsSpecialName && method.Name.StartsWith("set_", StringComparison.Ordinal);
-            }
+        public static bool IsPropertyGetter(MethodInfo method)
+        {
+            return method.IsSpecialName && method.Name.StartsWith("get_", StringComparison.Ordinal);
+        }
 
-            public static bool IsPropertyGetter(MethodInfo method)
-            {
-                return method.IsSpecialName && method.Name.StartsWith("get_", StringComparison.Ordinal);
-            }
+        public bool IsMatchForSetter(IFakeObjectCall fakeObjectCall) => this.IsPropertySetter(fakeObjectCall);
 
-            public bool IsMatchForSetter(IFakeObjectCall fakeObjectCall) => this.IsPropertySetter(fakeObjectCall);
+        public bool IsApplicableTo(IFakeObjectCall fakeObjectCall)
+        {
+            return this.IsPropertyGetter(fakeObjectCall);
+        }
 
-            public bool IsApplicableTo(IFakeObjectCall fakeObjectCall)
-            {
-                return this.IsPropertyGetter(fakeObjectCall);
-            }
+        public void Apply(IInterceptedFakeObjectCall fakeObjectCall)
+        {
+            Guard.AgainstNull(fakeObjectCall);
 
-            public void Apply(IInterceptedFakeObjectCall fakeObjectCall)
-            {
-                Guard.AgainstNull(fakeObjectCall);
+            fakeObjectCall.SetReturnValue(this.Value);
+        }
 
-                fakeObjectCall.SetReturnValue(this.Value);
-            }
+        public IFakeObjectCallRule GetSnapshot()
+        {
+            return (IFakeObjectCallRule)this.MemberwiseClone();
+        }
 
-            public IFakeObjectCallRule GetSnapshot()
-            {
-                return (IFakeObjectCallRule)this.MemberwiseClone();
-            }
+        private static PropertyInfo GetProperty(MethodInfo propertyGetterOrSetter)
+        {
+            return
+                (from property in propertyGetterOrSetter.DeclaringType!.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+                    let getMethod = property.GetGetMethod(true)
+                    let setMethod = property.GetSetMethod(true)
+                    where (getMethod is not null && getMethod.GetBaseDefinition().Equals(propertyGetterOrSetter.GetBaseDefinition()))
+                          || (setMethod is not null && setMethod.GetBaseDefinition().Equals(propertyGetterOrSetter.GetBaseDefinition()))
+                    select property).Single();
+        }
 
-            private static PropertyInfo GetProperty(MethodInfo propertyGetterOrSetter)
-            {
-                return
-                    (from property in propertyGetterOrSetter.DeclaringType!.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-                     let getMethod = property.GetGetMethod(true)
-                     let setMethod = property.GetSetMethod(true)
-                     where (getMethod is not null && getMethod.GetBaseDefinition().Equals(propertyGetterOrSetter.GetBaseDefinition()))
-                         || (setMethod is not null && setMethod.GetBaseDefinition().Equals(propertyGetterOrSetter.GetBaseDefinition()))
-                     select property).Single();
-            }
+        private bool IsPropertySetter(IFakeObjectCall fakeObjectCall)
+        {
+            return this.propertySetter is not null &&
+                   this.propertySetter.GetBaseDefinition().Equals(fakeObjectCall.Method.GetBaseDefinition()) &&
+                   this.Indices.SequenceEqual(fakeObjectCall.Arguments.Take(fakeObjectCall.Arguments.Count - 1));
+        }
 
-            private bool IsPropertySetter(IFakeObjectCall fakeObjectCall)
-            {
-                return this.propertySetter is not null &&
-                       this.propertySetter.GetBaseDefinition().Equals(fakeObjectCall.Method.GetBaseDefinition()) &&
-                       this.Indices.SequenceEqual(fakeObjectCall.Arguments.Take(fakeObjectCall.Arguments.Count - 1));
-            }
-
-            private bool IsPropertyGetter(IFakeObjectCall fakeObjectCall)
-            {
-                return this.propertyGetter is not null &&
-                       this.propertyGetter.GetBaseDefinition().Equals(fakeObjectCall.Method.GetBaseDefinition()) &&
-                       this.Indices.SequenceEqual(fakeObjectCall.Arguments);
-            }
+        private bool IsPropertyGetter(IFakeObjectCall fakeObjectCall)
+        {
+            return this.propertyGetter is not null &&
+                   this.propertyGetter.GetBaseDefinition().Equals(fakeObjectCall.Method.GetBaseDefinition()) &&
+                   this.Indices.SequenceEqual(fakeObjectCall.Arguments);
         }
     }
 }

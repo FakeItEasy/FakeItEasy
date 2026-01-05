@@ -1,57 +1,56 @@
-namespace FakeItEasy.Tests.Core
+namespace FakeItEasy.Tests.Core;
+
+using System.Collections.Generic;
+using FakeItEasy.Core;
+using FakeItEasy.Tests.TestHelpers;
+using FluentAssertions;
+using Xunit;
+
+public class FakeAsserterTests
 {
-    using System.Collections.Generic;
-    using FakeItEasy.Core;
-    using FakeItEasy.Tests.TestHelpers;
-    using FluentAssertions;
-    using Xunit;
+    private readonly List<CompletedFakeObjectCall> calls;
+    private readonly CallWriter callWriter;
+    private readonly StringBuilderOutputWriter.Factory outputWriterFactory;
 
-    public class FakeAsserterTests
+    public FakeAsserterTests()
     {
-        private readonly List<CompletedFakeObjectCall> calls;
-        private readonly CallWriter callWriter;
-        private readonly StringBuilderOutputWriter.Factory outputWriterFactory;
+        this.calls = new List<CompletedFakeObjectCall>();
+        this.callWriter = A.Fake<CallWriter>();
+        this.outputWriterFactory = A.Fake<StringBuilderOutputWriter.Factory>();
+    }
 
-        public FakeAsserterTests()
-        {
-            this.calls = new List<CompletedFakeObjectCall>();
-            this.callWriter = A.Fake<CallWriter>();
-            this.outputWriterFactory = A.Fake<StringBuilderOutputWriter.Factory>();
-        }
+    [Fact]
+    public void Exception_message_should_not_contain_matching_call_when_call_is_recorded_after_checking_count()
+    {
+        var asserter = this.CreateAsserter();
 
-        [Fact]
-        public void Exception_message_should_not_contain_matching_call_when_call_is_recorded_after_checking_count()
-        {
-            var asserter = this.CreateAsserter();
-
-            // This will cause the call to be recorded after checking the count
-            var callCountConstraintThatSimulatesALateArrivingCall = new CallCountConstraint(
-                n =>
-                {
-                    this.StubCalls(1);
-                    return false;
-                },
-                "no match");
-
-            var exception = Record.Exception(() =>
-                asserter.AssertWasCalled(x => true, outputWriter => { }, callCountConstraintThatSimulatesALateArrivingCall));
-
-            exception.Should().BeAnExceptionOfType<ExpectationException>()
-                .And.Message.Should().Contain("no calls were made to the fake object.");
-        }
-
-        private FakeAsserter CreateAsserter()
-        {
-            return new FakeAsserter(this.calls, 0, this.callWriter, this.outputWriterFactory);
-        }
-
-        private void StubCalls(int numberOfCalls)
-        {
-            for (int i = 0; i < numberOfCalls; i++)
+        // This will cause the call to be recorded after checking the count
+        var callCountConstraintThatSimulatesALateArrivingCall = new CallCountConstraint(
+            n =>
             {
-                var completedFakeObjectCall = A.Dummy<CompletedFakeObjectCall>();
-                this.calls.Add(completedFakeObjectCall);
-            }
+                this.StubCalls(1);
+                return false;
+            },
+            "no match");
+
+        var exception = Record.Exception(() =>
+            asserter.AssertWasCalled(x => true, outputWriter => { }, callCountConstraintThatSimulatesALateArrivingCall));
+
+        exception.Should().BeAnExceptionOfType<ExpectationException>()
+            .And.Message.Should().Contain("no calls were made to the fake object.");
+    }
+
+    private FakeAsserter CreateAsserter()
+    {
+        return new FakeAsserter(this.calls, 0, this.callWriter, this.outputWriterFactory);
+    }
+
+    private void StubCalls(int numberOfCalls)
+    {
+        for (int i = 0; i < numberOfCalls; i++)
+        {
+            var completedFakeObjectCall = A.Dummy<CompletedFakeObjectCall>();
+            this.calls.Add(completedFakeObjectCall);
         }
     }
 }

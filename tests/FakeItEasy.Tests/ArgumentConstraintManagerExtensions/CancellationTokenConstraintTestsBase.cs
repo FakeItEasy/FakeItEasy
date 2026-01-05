@@ -1,39 +1,38 @@
-namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
+namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions;
+
+using System.Collections.Generic;
+using System.Threading;
+using FakeItEasy.Tests.TestHelpers;
+
+public abstract class CancellationTokenConstraintTestsBase : ArgumentConstraintTestBase<CancellationToken>
 {
-    using System.Collections.Generic;
-    using System.Threading;
-    using FakeItEasy.Tests.TestHelpers;
+    private static readonly CancellationTokenSource CanceledSource = CreateCancellationTokenSource(true);
+    private static readonly CancellationTokenSource NonCanceledSource = CreateCancellationTokenSource(false);
 
-    public abstract class CancellationTokenConstraintTestsBase : ArgumentConstraintTestBase<CancellationToken>
+    public static IEnumerable<object?[]> NonCanceledTokens()
     {
-        private static readonly CancellationTokenSource CanceledSource = CreateCancellationTokenSource(true);
-        private static readonly CancellationTokenSource NonCanceledSource = CreateCancellationTokenSource(false);
+        return TestCases.FromObject(
+            CancellationToken.None,
+            default(CancellationToken),
+            new CancellationToken(false),
+            NonCanceledSource.Token);
+    }
 
-        public static IEnumerable<object?[]> NonCanceledTokens()
+    public static IEnumerable<object?[]> CanceledTokens()
+    {
+        return TestCases.FromObject(
+            new CancellationToken(true),
+            CanceledSource.Token);
+    }
+
+    private static CancellationTokenSource CreateCancellationTokenSource(bool canceled)
+    {
+        var source = new CancellationTokenSource();
+        if (canceled)
         {
-            return TestCases.FromObject(
-                CancellationToken.None,
-                default(CancellationToken),
-                new CancellationToken(false),
-                NonCanceledSource.Token);
+            source.Cancel();
         }
 
-        public static IEnumerable<object?[]> CanceledTokens()
-        {
-            return TestCases.FromObject(
-                new CancellationToken(true),
-                CanceledSource.Token);
-        }
-
-        private static CancellationTokenSource CreateCancellationTokenSource(bool canceled)
-        {
-            var source = new CancellationTokenSource();
-            if (canceled)
-            {
-                source.Cancel();
-            }
-
-            return source;
-        }
+        return source;
     }
 }

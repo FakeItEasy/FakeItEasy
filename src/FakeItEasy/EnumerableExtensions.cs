@@ -1,136 +1,135 @@
-namespace FakeItEasy
+namespace FakeItEasy;
+
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+/// <summary>
+/// Provides extension methods for generic usage of <see cref="IEnumerable{T}"/>.
+/// </summary>
+internal static class EnumerableExtensions
 {
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-
     /// <summary>
-    /// Provides extension methods for generic usage of <see cref="IEnumerable{T}"/>.
+    /// Joins the collection to a string.
     /// </summary>
-    internal static class EnumerableExtensions
+    /// <typeparam name="T">The type of items in the collection.</typeparam>
+    /// <param name="items">The items to join.</param>
+    /// <param name="stringConverter">A function that converts from an item to a string value.</param>
+    /// <param name="separator">Separator to insert between each item.</param>
+    /// <returns>A string representation of the collection.</returns>
+    public static string ToCollectionString<T>(this IEnumerable<T> items, Func<T, string?> stringConverter, string separator)
     {
-        /// <summary>
-        /// Joins the collection to a string.
-        /// </summary>
-        /// <typeparam name="T">The type of items in the collection.</typeparam>
-        /// <param name="items">The items to join.</param>
-        /// <param name="stringConverter">A function that converts from an item to a string value.</param>
-        /// <param name="separator">Separator to insert between each item.</param>
-        /// <returns>A string representation of the collection.</returns>
-        public static string ToCollectionString<T>(this IEnumerable<T> items, Func<T, string?> stringConverter, string separator)
+        var result = new StringBuilder();
+
+        foreach (var item in items)
         {
-            var result = new StringBuilder();
-
-            foreach (var item in items)
+            if (result.Length > 0)
             {
-                if (result.Length > 0)
-                {
-                    result.Append(separator);
-                }
-
-                result.Append(stringConverter(item));
+                result.Append(separator);
             }
 
-            return result.ToString();
+            result.Append(stringConverter(item));
         }
 
-        public static IEnumerable<T> Concat<T>(this IEnumerable<T> source, T item)
+        return result.ToString();
+    }
+
+    public static IEnumerable<T> Concat<T>(this IEnumerable<T> source, T item)
+    {
+        return source.Concat(new[] { item });
+    }
+
+    /// <summary>
+    /// Returns the sequence as a list in order to avoid multiple enumerations of the original sequence.
+    /// </summary>
+    /// <typeparam name="T">The type of items in the sequence.</typeparam>
+    /// <param name="source">The sequence to return as a list.</param>
+    /// <returns>The sequence cast as a list if it's actually a list; otherwise, a new list with the elements from the sequence.</returns>
+    public static IList<T> AsList<T>(this IEnumerable<T> source)
+    {
+        return source as IList<T> ?? source.ToList();
+    }
+
+    /// <summary>
+    /// Returns the sequence as a list in order to avoid multiple enumerations of the original sequence.
+    /// </summary>
+    /// <param name="source">The sequence to return as a list.</param>
+    /// <returns>The sequence cast as a list if it's actually a list; otherwise, a new list with the elements from the sequence.</returns>
+    public static IList<object> AsList(this IEnumerable source)
+    {
+        return source as IList<object> ?? source.Cast<object>().ToList();
+    }
+
+    public static bool HasSameElementsAs<T>(
+        this IEnumerable<T> collection,
+        IEnumerable<T> other,
+        IEqualityComparer<T>? comparer)
+    {
+        Guard.AgainstNull(collection);
+        Guard.AgainstNull(other);
+
+        // Fail fast if counts differ, when we can get the count without enumerating
+        if (collection.TryGetNonEnumeratedCount(out int collectionCount)
+            && other.TryGetNonEnumeratedCount(out int otherCount)
+            && collectionCount != otherCount)
         {
-            return source.Concat(new[] { item });
+            return false;
         }
 
-        /// <summary>
-        /// Returns the sequence as a list in order to avoid multiple enumerations of the original sequence.
-        /// </summary>
-        /// <typeparam name="T">The type of items in the sequence.</typeparam>
-        /// <param name="source">The sequence to return as a list.</param>
-        /// <returns>The sequence cast as a list if it's actually a list; otherwise, a new list with the elements from the sequence.</returns>
-        public static IList<T> AsList<T>(this IEnumerable<T> source)
+        var boxComparer = new BoxEqualityComparer<T>(comparer);
+        var elementCounts = other
+            .GroupBy(x => new Box<T>(x), boxComparer)
+            .ToDictionary(g => g.Key, g => g.Count(), boxComparer);
+        foreach (var element in collection)
         {
-            return source as IList<T> ?? source.ToList();
-        }
-
-        /// <summary>
-        /// Returns the sequence as a list in order to avoid multiple enumerations of the original sequence.
-        /// </summary>
-        /// <param name="source">The sequence to return as a list.</param>
-        /// <returns>The sequence cast as a list if it's actually a list; otherwise, a new list with the elements from the sequence.</returns>
-        public static IList<object> AsList(this IEnumerable source)
-        {
-            return source as IList<object> ?? source.Cast<object>().ToList();
-        }
-
-        public static bool HasSameElementsAs<T>(
-            this IEnumerable<T> collection,
-            IEnumerable<T> other,
-            IEqualityComparer<T>? comparer)
-        {
-            Guard.AgainstNull(collection);
-            Guard.AgainstNull(other);
-
-            // Fail fast if counts differ, when we can get the count without enumerating
-            if (collection.TryGetNonEnumeratedCount(out int collectionCount)
-                && other.TryGetNonEnumeratedCount(out int otherCount)
-                && collectionCount != otherCount)
+            var box = new Box<T>(element);
+            if (!elementCounts.TryGetValue(box, out var count))
             {
+                // collection contains element that isn't in other
                 return false;
             }
 
-            var boxComparer = new BoxEqualityComparer<T>(comparer);
-            var elementCounts = other
-                .GroupBy(x => new Box<T>(x), boxComparer)
-                .ToDictionary(g => g.Key, g => g.Count(), boxComparer);
-            foreach (var element in collection)
+            if (--count == 0)
             {
-                var box = new Box<T>(element);
-                if (!elementCounts.TryGetValue(box, out var count))
-                {
-                    // collection contains element that isn't in other
-                    return false;
-                }
-
-                if (--count == 0)
-                {
-                    elementCounts.Remove(box);
-                }
-                else
-                {
-                    elementCounts[box] = count;
-                }
+                elementCounts.Remove(box);
             }
-
-            // Ensure we consumed all elements from other.
-            // If not, collection had fewer elements than other
-            return elementCounts.Count == 0;
+            else
+            {
+                elementCounts[box] = count;
+            }
         }
 
-        /// <summary>
-        /// Wraps a possibly null value in a struct to allow usage as a key in dictionaries.
-        /// </summary>
-        /// <param name="Value">The value to wrap.</param>
-        /// <typeparam name="T">The type of the value.</typeparam>
-        private record struct Box<T>(T Value);
+        // Ensure we consumed all elements from other.
+        // If not, collection had fewer elements than other
+        return elementCounts.Count == 0;
+    }
 
-        private class BoxEqualityComparer<T> : IEqualityComparer<Box<T>>
+    /// <summary>
+    /// Wraps a possibly null value in a struct to allow usage as a key in dictionaries.
+    /// </summary>
+    /// <param name="Value">The value to wrap.</param>
+    /// <typeparam name="T">The type of the value.</typeparam>
+    private record struct Box<T>(T Value);
+
+    private class BoxEqualityComparer<T> : IEqualityComparer<Box<T>>
+    {
+        private readonly IEqualityComparer<T> comparer;
+
+        public BoxEqualityComparer(IEqualityComparer<T>? comparer)
         {
-            private readonly IEqualityComparer<T> comparer;
+            this.comparer = comparer ?? EqualityComparer<T>.Default;
+        }
 
-            public BoxEqualityComparer(IEqualityComparer<T>? comparer)
-            {
-                this.comparer = comparer ?? EqualityComparer<T>.Default;
-            }
+        public bool Equals(Box<T> x, Box<T> y)
+        {
+            return this.comparer.Equals(x.Value, y.Value);
+        }
 
-            public bool Equals(Box<T> x, Box<T> y)
-            {
-                return this.comparer.Equals(x.Value, y.Value);
-            }
-
-            public int GetHashCode(Box<T> obj)
-            {
-                return this.comparer.GetHashCode(obj.Value!);
-            }
+        public int GetHashCode(Box<T> obj)
+        {
+            return this.comparer.GetHashCode(obj.Value!);
         }
     }
 }

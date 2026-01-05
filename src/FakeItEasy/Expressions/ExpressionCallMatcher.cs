@@ -1,154 +1,153 @@
-namespace FakeItEasy.Expressions
+namespace FakeItEasy.Expressions;
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using FakeItEasy.Configuration;
+using FakeItEasy.Core;
+using FakeItEasy.Expressions.ArgumentConstraints;
+
+/// <summary>
+/// Handles the matching of fake object calls to expressions.
+/// </summary>
+internal class ExpressionCallMatcher
+    : ICallMatcher
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Reflection;
-    using FakeItEasy.Configuration;
-    using FakeItEasy.Core;
-    using FakeItEasy.Expressions.ArgumentConstraints;
+    private readonly MethodInfoManager methodInfoManager;
+    private readonly ParsedCallExpression parsedExpression;
+    private IArgumentConstraint[] argumentConstraints;
+    private Func<ArgumentCollection, bool> argumentsPredicate;
+    private bool useExplicitArgumentsPredicate;
 
     /// <summary>
-    /// Handles the matching of fake object calls to expressions.
+    /// Initializes a new instance of the <see cref="ExpressionCallMatcher" /> class.
     /// </summary>
-    internal class ExpressionCallMatcher
-        : ICallMatcher
+    /// <param name="parsedExpression">The parsed call specification.</param>
+    /// <param name="constraintFactory">The constraint factory.</param>
+    /// <param name="methodInfoManager">The method info manager to use.</param>
+    public ExpressionCallMatcher(ParsedCallExpression parsedExpression, ExpressionArgumentConstraintFactory constraintFactory, MethodInfoManager methodInfoManager)
     {
-        private readonly MethodInfoManager methodInfoManager;
-        private readonly ParsedCallExpression parsedExpression;
-        private IArgumentConstraint[] argumentConstraints;
-        private Func<ArgumentCollection, bool> argumentsPredicate;
-        private bool useExplicitArgumentsPredicate;
+        this.parsedExpression = parsedExpression;
+        this.methodInfoManager = methodInfoManager;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ExpressionCallMatcher" /> class.
-        /// </summary>
-        /// <param name="parsedExpression">The parsed call specification.</param>
-        /// <param name="constraintFactory">The constraint factory.</param>
-        /// <param name="methodInfoManager">The method info manager to use.</param>
-        public ExpressionCallMatcher(ParsedCallExpression parsedExpression, ExpressionArgumentConstraintFactory constraintFactory, MethodInfoManager methodInfoManager)
+        var constraints = new IArgumentConstraint[parsedExpression.ArgumentsExpressions.Length];
+        for (var i = 0; i < constraints.Length; i++)
         {
-            this.parsedExpression = parsedExpression;
-            this.methodInfoManager = methodInfoManager;
+            constraints[i] = constraintFactory.GetArgumentConstraint(parsedExpression.ArgumentsExpressions[i]);
+        }
 
-            var constraints = new IArgumentConstraint[parsedExpression.ArgumentsExpressions.Length];
-            for (var i = 0; i < constraints.Length; i++)
+        this.argumentConstraints = constraints;
+        this.argumentsPredicate = this.ArgumentsMatchesArgumentConstraints;
+    }
+
+    private MethodInfo Method => this.parsedExpression.CalledMethod;
+
+    private object? CallTarget => this.parsedExpression.CallTarget;
+
+    /// <summary>
+    /// Writes a description of calls the rule is applicable to.
+    /// </summary>
+    /// <param name="writer">The writer on which to describe the call.</param>
+    public virtual void DescribeCallOn(IOutputWriter writer) => CallConstraintDescriber.DescribeCallOn(writer, this.CallTarget, this.Method, this.argumentConstraints);
+
+    /// <summary>
+    /// Matches the specified call against the expression.
+    /// </summary>
+    /// <param name="call">The call to match.</param>
+    /// <returns>True if the call is matched by the expression.</returns>
+    public virtual bool Matches(IFakeObjectCall call)
+    {
+        Guard.AgainstNull(call);
+
+        return this.InvokesSameMethodOnTarget(call.FakedObject.GetType(), call.Method, this.Method)
+               && this.ArgumentsMatches(call.Arguments);
+    }
+
+    public virtual void UsePredicateToValidateArguments(Func<ArgumentCollection, bool> predicate)
+    {
+        this.argumentsPredicate = predicate;
+        this.argumentConstraints = this.argumentConstraints.Select(a => new PredicatedArgumentConstraint()).ToArray();
+        this.useExplicitArgumentsPredicate = true;
+    }
+
+    public Func<IFakeObjectCall, ICollection<object?>> GetOutAndRefParametersValueProducer()
+    {
+        List<object?>? values = null;
+
+        foreach (var argumentConstraint in this.argumentConstraints)
+        {
+            if (argumentConstraint is IArgumentValueProvider valueProvidingConstraint)
             {
-                constraints[i] = constraintFactory.GetArgumentConstraint(parsedExpression.ArgumentsExpressions[i]);
-            }
-
-            this.argumentConstraints = constraints;
-            this.argumentsPredicate = this.ArgumentsMatchesArgumentConstraints;
-        }
-
-        private MethodInfo Method => this.parsedExpression.CalledMethod;
-
-        private object? CallTarget => this.parsedExpression.CallTarget;
-
-        /// <summary>
-        /// Writes a description of calls the rule is applicable to.
-        /// </summary>
-        /// <param name="writer">The writer on which to describe the call.</param>
-        public virtual void DescribeCallOn(IOutputWriter writer) => CallConstraintDescriber.DescribeCallOn(writer, this.CallTarget, this.Method, this.argumentConstraints);
-
-        /// <summary>
-        /// Matches the specified call against the expression.
-        /// </summary>
-        /// <param name="call">The call to match.</param>
-        /// <returns>True if the call is matched by the expression.</returns>
-        public virtual bool Matches(IFakeObjectCall call)
-        {
-            Guard.AgainstNull(call);
-
-            return this.InvokesSameMethodOnTarget(call.FakedObject.GetType(), call.Method, this.Method)
-                && this.ArgumentsMatches(call.Arguments);
-        }
-
-        public virtual void UsePredicateToValidateArguments(Func<ArgumentCollection, bool> predicate)
-        {
-            this.argumentsPredicate = predicate;
-            this.argumentConstraints = this.argumentConstraints.Select(a => new PredicatedArgumentConstraint()).ToArray();
-            this.useExplicitArgumentsPredicate = true;
-        }
-
-        public Func<IFakeObjectCall, ICollection<object?>> GetOutAndRefParametersValueProducer()
-        {
-            List<object?>? values = null;
-
-            foreach (var argumentConstraint in this.argumentConstraints)
-            {
-                if (argumentConstraint is IArgumentValueProvider valueProvidingConstraint)
+                if (values is null)
                 {
-                    if (values is null)
-                    {
-                        values = new List<object?>();
-                    }
-
-                    values.Add(valueProvidingConstraint.Value);
+                    values = new List<object?>();
                 }
-            }
 
-            return values is null ? BuildableCallRule.DefaultOutAndRefParametersValueProducer : call => values!;
-        }
-
-        public void PerformConstraintMatcherSideEffects(IFakeObjectCall fakeObjectCall)
-        {
-            for (int i = 0; i < fakeObjectCall.Arguments.Count; ++i)
-            {
-                if (this.argumentConstraints[i] is IHaveASideEffect constraintWithSideEffect)
-                {
-                    constraintWithSideEffect.ApplySideEffect(fakeObjectCall.Arguments[i]);
-                }
+                values.Add(valueProvidingConstraint.Value);
             }
         }
 
-        private bool InvokesSameMethodOnTarget(Type type, MethodInfo first, MethodInfo second)
-        {
-            return this.methodInfoManager.WillInvokeSameMethodOnTarget(type, first, second);
-        }
+        return values is null ? BuildableCallRule.DefaultOutAndRefParametersValueProducer : call => values!;
+    }
 
-        private bool ArgumentsMatches(ArgumentCollection argumentCollection)
+    public void PerformConstraintMatcherSideEffects(IFakeObjectCall fakeObjectCall)
+    {
+        for (int i = 0; i < fakeObjectCall.Arguments.Count; ++i)
         {
-            try
+            if (this.argumentConstraints[i] is IHaveASideEffect constraintWithSideEffect)
             {
-                return this.argumentsPredicate(argumentCollection);
-            }
-            catch (Exception ex) when (this.useExplicitArgumentsPredicate && !(ex is FakeConfigurationException))
-            {
-                throw new UserCallbackException(ExceptionMessages.UserCallbackThrewAnException("Arguments predicate"), ex);
+                constraintWithSideEffect.ApplySideEffect(fakeObjectCall.Arguments[i]);
             }
         }
+    }
 
-        private bool ArgumentsMatchesArgumentConstraints(ArgumentCollection argumentCollection)
+    private bool InvokesSameMethodOnTarget(Type type, MethodInfo first, MethodInfo second)
+    {
+        return this.methodInfoManager.WillInvokeSameMethodOnTarget(type, first, second);
+    }
+
+    private bool ArgumentsMatches(ArgumentCollection argumentCollection)
+    {
+        try
         {
-            for (int i = 0; i < argumentCollection.Count; ++i)
-            {
-                if (!this.argumentConstraints[i].IsValid(argumentCollection[i]))
-                {
-                    return false;
-                }
-            }
+            return this.argumentsPredicate(argumentCollection);
+        }
+        catch (Exception ex) when (this.useExplicitArgumentsPredicate && !(ex is FakeConfigurationException))
+        {
+            throw new UserCallbackException(ExceptionMessages.UserCallbackThrewAnException("Arguments predicate"), ex);
+        }
+    }
 
+    private bool ArgumentsMatchesArgumentConstraints(ArgumentCollection argumentCollection)
+    {
+        for (int i = 0; i < argumentCollection.Count; ++i)
+        {
+            if (!this.argumentConstraints[i].IsValid(argumentCollection[i]))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private class PredicatedArgumentConstraint
+        : IArgumentConstraint
+    {
+        public bool IsValid(object? argument)
+        {
             return true;
         }
 
-        private class PredicatedArgumentConstraint
-            : IArgumentConstraint
+        public override string ToString()
         {
-            public bool IsValid(object? argument)
-            {
-                return true;
-            }
+            return "<Predicated>";
+        }
 
-            public override string ToString()
-            {
-                return "<Predicated>";
-            }
-
-            public void WriteDescription(IOutputWriter writer)
-            {
-                writer.Write(this.ToString());
-            }
+        public void WriteDescription(IOutputWriter writer)
+        {
+            writer.Write(this.ToString());
         }
     }
 }

@@ -1,57 +1,56 @@
-namespace FakeItEasy.Expressions.ArgumentConstraints
+namespace FakeItEasy.Expressions.ArgumentConstraints;
+
+using System;
+using System.Diagnostics.CodeAnalysis;
+using FakeItEasy.Core;
+
+internal class EqualityArgumentConstraint
+    : IArgumentConstraint
 {
-    using System;
-    using System.Diagnostics.CodeAnalysis;
-    using FakeItEasy.Core;
+    private readonly object expectedValue;
 
-    internal class EqualityArgumentConstraint
-        : IArgumentConstraint
+    private EqualityArgumentConstraint(object expectedValue)
     {
-        private readonly object expectedValue;
+        this.expectedValue = expectedValue;
+    }
 
-        private EqualityArgumentConstraint(object expectedValue)
+    public string ConstraintDescription => this.ToString();
+
+    public static IArgumentConstraint FromExpectedValue(object? expectedValue)
+        => expectedValue is null
+            ? NullArgumentConstraint.Instance
+            : new EqualityArgumentConstraint(expectedValue);
+
+    public bool IsValid(object? argument)
+    {
+        if (argument is null)
         {
-            this.expectedValue = expectedValue;
+            return false;
         }
 
-        public string ConstraintDescription => this.ToString();
+        var argumentEqualityComparer = ServiceLocator.Resolve<ArgumentEqualityComparer>();
+        return argumentEqualityComparer.AreEqual(this.expectedValue, argument);
+    }
 
-        public static IArgumentConstraint FromExpectedValue(object? expectedValue)
-            => expectedValue is null
-                ? NullArgumentConstraint.Instance
-                : new EqualityArgumentConstraint(expectedValue);
-
-        public bool IsValid(object? argument)
+    [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Any type of exception may be encountered.")]
+    public override string ToString()
+    {
+        try
         {
-            if (argument is null)
-            {
-                return false;
-            }
-
-            var argumentEqualityComparer = ServiceLocator.Resolve<ArgumentEqualityComparer>();
-            return argumentEqualityComparer.AreEqual(this.expectedValue, argument);
+            var writer = ServiceLocator.Resolve<StringBuilderOutputWriter.Factory>().Invoke();
+            writer.WriteArgumentValue(this.expectedValue);
+            return writer.Builder.ToString();
         }
-
-        [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Any type of exception may be encountered.")]
-        public override string ToString()
+        catch (Exception ex) when (ex is not UserCallbackException)
         {
-            try
-            {
-                var writer = ServiceLocator.Resolve<StringBuilderOutputWriter.Factory>().Invoke();
-                writer.WriteArgumentValue(this.expectedValue);
-                return writer.Builder.ToString();
-            }
-            catch (Exception ex) when (ex is not UserCallbackException)
-            {
-                return Fake.TryGetFakeManager(this.expectedValue, out var manager)
-                    ? manager.FakeObjectDisplayName
-                    : this.expectedValue.GetType().ToString();
-            }
+            return Fake.TryGetFakeManager(this.expectedValue, out var manager)
+                ? manager.FakeObjectDisplayName
+                : this.expectedValue.GetType().ToString();
         }
+    }
 
-        public void WriteDescription(IOutputWriter writer)
-        {
-            writer.Write(this.ConstraintDescription);
-        }
+    public void WriteDescription(IOutputWriter writer)
+    {
+        writer.Write(this.ConstraintDescription);
     }
 }

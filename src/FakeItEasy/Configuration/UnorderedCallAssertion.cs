@@ -1,62 +1,61 @@
-namespace FakeItEasy.Configuration
+namespace FakeItEasy.Configuration;
+
+using System;
+using FakeItEasy.Core;
+
+/// <summary>
+/// Allows clients to check that calls happened in the desired order.
+/// </summary>
+public sealed class UnorderedCallAssertion : IOrderableCallAssertion
 {
-    using System;
-    using FakeItEasy.Core;
+    private readonly FakeManager fakeManager;
+    private readonly ICallMatcher matcher;
+    private readonly Action<IOutputWriter> callDescriber;
+    private readonly CallCountConstraint callCountConstraint;
+
+    internal UnorderedCallAssertion(FakeManager fakeManager, ICallMatcher matcher, Action<IOutputWriter> callDescriber, CallCountConstraint callCountConstraint)
+    {
+        this.fakeManager = fakeManager;
+        this.matcher = matcher;
+        this.callDescriber = callDescriber;
+        this.callCountConstraint = callCountConstraint;
+    }
 
     /// <summary>
-    /// Allows clients to check that calls happened in the desired order.
+    /// Checks that the asserted call happened in order relative to others in the assertion chain.
     /// </summary>
-    public sealed class UnorderedCallAssertion : IOrderableCallAssertion
+    /// <param name="nextAssertion">An assertion describing the next call that should occur.</param>
+    /// <returns>An object that can be used to assert that a following call was made in the expected order.</returns>
+    /// <exception cref="ExpectationException">The call was not made in the expected order.</exception>
+    public IOrderableCallAssertion Then(UnorderedCallAssertion nextAssertion)
     {
-        private readonly FakeManager fakeManager;
-        private readonly ICallMatcher matcher;
-        private readonly Action<IOutputWriter> callDescriber;
-        private readonly CallCountConstraint callCountConstraint;
+        Guard.AgainstNull(nextAssertion);
 
-        internal UnorderedCallAssertion(FakeManager fakeManager, ICallMatcher matcher, Action<IOutputWriter> callDescriber, CallCountConstraint callCountConstraint)
+        var context = ServiceLocator.Resolve<SequentialCallContext.Factory>().Invoke();
+        this.CheckCallHappenedInOrder(context);
+        return new OrderedCallAssertion(context).Then(nextAssertion);
+    }
+
+    private void CheckCallHappenedInOrder(SequentialCallContext context)
+    {
+        context.CheckNextCall(this.fakeManager, this.matcher.Matches, this.callDescriber, this.callCountConstraint);
+    }
+
+    private class OrderedCallAssertion : IOrderableCallAssertion
+    {
+        private readonly SequentialCallContext context;
+
+        public OrderedCallAssertion(SequentialCallContext context)
         {
-            this.fakeManager = fakeManager;
-            this.matcher = matcher;
-            this.callDescriber = callDescriber;
-            this.callCountConstraint = callCountConstraint;
+            this.context = context;
         }
 
-        /// <summary>
-        /// Checks that the asserted call happened in order relative to others in the assertion chain.
-        /// </summary>
-        /// <param name="nextAssertion">An assertion describing the next call that should occur.</param>
-        /// <returns>An object that can be used to assert that a following call was made in the expected order.</returns>
-        /// <exception cref="ExpectationException">The call was not made in the expected order.</exception>
         public IOrderableCallAssertion Then(UnorderedCallAssertion nextAssertion)
         {
             Guard.AgainstNull(nextAssertion);
 
-            var context = ServiceLocator.Resolve<SequentialCallContext.Factory>().Invoke();
-            this.CheckCallHappenedInOrder(context);
-            return new OrderedCallAssertion(context).Then(nextAssertion);
-        }
-
-        private void CheckCallHappenedInOrder(SequentialCallContext context)
-        {
-            context.CheckNextCall(this.fakeManager, this.matcher.Matches, this.callDescriber, this.callCountConstraint);
-        }
-
-        private class OrderedCallAssertion : IOrderableCallAssertion
-        {
-            private readonly SequentialCallContext context;
-
-            public OrderedCallAssertion(SequentialCallContext context)
-            {
-                this.context = context;
-            }
-
-            public IOrderableCallAssertion Then(UnorderedCallAssertion nextAssertion)
-            {
-                Guard.AgainstNull(nextAssertion);
-
-                nextAssertion.CheckCallHappenedInOrder(this.context);
-                return this;
-            }
+            nextAssertion.CheckCallHappenedInOrder(this.context);
+            return this;
         }
     }
 }

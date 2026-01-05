@@ -1,58 +1,57 @@
-namespace FakeItEasy.Specs
+namespace FakeItEasy.Specs;
+
+using System;
+using System.Diagnostics.CodeAnalysis;
+using FluentAssertions;
+using LambdaTale;
+
+public static class DisposableSpecs
 {
-    using System;
-    using System.Diagnostics.CodeAnalysis;
-    using FluentAssertions;
-    using LambdaTale;
+    private static Exception? exception;
 
-    public static class DisposableSpecs
+    [SuppressMessage("Microsoft.Reliability", "CA2001:AvoidCallingProblematicMethods", MessageId = "System.GC.Collect", Justification = "Required for testing.")]
+    [Scenario]
+    public static void FakingDisposable(IDisposable? fake)
     {
-        private static Exception? exception;
-
-        [SuppressMessage("Microsoft.Reliability", "CA2001:AvoidCallingProblematicMethods", MessageId = "System.GC.Collect", Justification = "Required for testing.")]
-        [Scenario]
-        public static void FakingDisposable(IDisposable? fake)
-        {
-            "Given a fake of a disposable class"
-                .x(() =>
-                    {
-                        AppDomain.CurrentDomain.UnhandledException += UnhandledExceptionHandler;
-
-                        fake = A.Fake<SomeDisposable>();
-                    })
-                .Teardown(() => AppDomain.CurrentDomain.UnhandledException -= UnhandledExceptionHandler);
-
-            "When the fake is finalized"
-                .x(() =>
-                    {
-                        fake = null;
-                        GC.Collect();
-                        GC.WaitForPendingFinalizers();
-                    });
-
-            "Then no exception is thrown"
-                .x(() => exception.Should().BeNull());
-        }
-
-        private static void UnhandledExceptionHandler(object sender, UnhandledExceptionEventArgs e)
-        {
-            exception = (Exception)e.ExceptionObject;
-        }
-
-        public abstract class SomeDisposable : IDisposable
-        {
-            ~SomeDisposable()
+        "Given a fake of a disposable class"
+            .x(() =>
             {
-                this.Dispose(false);
-            }
+                AppDomain.CurrentDomain.UnhandledException += UnhandledExceptionHandler;
 
-            public void Dispose()
+                fake = A.Fake<SomeDisposable>();
+            })
+            .Teardown(() => AppDomain.CurrentDomain.UnhandledException -= UnhandledExceptionHandler);
+
+        "When the fake is finalized"
+            .x(() =>
             {
-                this.Dispose(true);
-                GC.SuppressFinalize(this);
-            }
+                fake = null;
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+            });
 
-            protected abstract void Dispose(bool shouldCleanupManaged);
+        "Then no exception is thrown"
+            .x(() => exception.Should().BeNull());
+    }
+
+    private static void UnhandledExceptionHandler(object sender, UnhandledExceptionEventArgs e)
+    {
+        exception = (Exception)e.ExceptionObject;
+    }
+
+    public abstract class SomeDisposable : IDisposable
+    {
+        ~SomeDisposable()
+        {
+            this.Dispose(false);
         }
+
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected abstract void Dispose(bool shouldCleanupManaged);
     }
 }

@@ -1,122 +1,121 @@
-namespace FakeItEasy.Core
+namespace FakeItEasy.Core;
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+internal class CallWriter
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
+    private const int MaxNumberOfCallsToWrite = 19;
+    private readonly IEqualityComparer<IFakeObjectCall> callComparer;
+    private readonly IFakeObjectCallFormatter callFormatter;
 
-    internal class CallWriter
+    public CallWriter(IFakeObjectCallFormatter callFormatter, IEqualityComparer<IFakeObjectCall> callComparer)
     {
-        private const int MaxNumberOfCallsToWrite = 19;
-        private readonly IEqualityComparer<IFakeObjectCall> callComparer;
-        private readonly IFakeObjectCallFormatter callFormatter;
+        this.callFormatter = callFormatter;
+        this.callComparer = callComparer;
+    }
 
-        public CallWriter(IFakeObjectCallFormatter callFormatter, IEqualityComparer<IFakeObjectCall> callComparer)
+    public virtual void WriteCalls<T>(IEnumerable<T> calls, IOutputWriter writer) where T : IFakeObjectCall
+    {
+        var callArray = calls.ToArray();
+        if (callArray.Length == 0)
         {
-            this.callFormatter = callFormatter;
-            this.callComparer = callComparer;
+            return;
         }
 
-        public virtual void WriteCalls<T>(IEnumerable<T> calls, IOutputWriter writer) where T : IFakeObjectCall
+        var callInfos = new List<CallInfo>();
+
+        for (var i = 0; i < callArray.Length && i < MaxNumberOfCallsToWrite; i++)
         {
-            var callArray = calls.ToArray();
-            if (callArray.Length == 0)
+            var call = callArray[i];
+
+            if (i > 0 && this.callComparer.Equals(callInfos[callInfos.Count - 1].Call, call))
             {
-                return;
+                callInfos[callInfos.Count - 1].NumberOfOccurrences++;
             }
-
-            var callInfos = new List<CallInfo>();
-
-            for (var i = 0; i < callArray.Length && i < MaxNumberOfCallsToWrite; i++)
+            else
             {
-                var call = callArray[i];
-
-                if (i > 0 && this.callComparer.Equals(callInfos[callInfos.Count - 1].Call, call))
-                {
-                    callInfos[callInfos.Count - 1].NumberOfOccurrences++;
-                }
-                else
-                {
-                    callInfos.Add(new CallInfo(
-                        call,
-                        i + 1,
-                        this.callFormatter.GetDescription(call)));
-                }
+                callInfos.Add(new CallInfo(
+                    call,
+                    i + 1,
+                    this.callFormatter.GetDescription(call)));
             }
+        }
 
-            WriteCalls(callInfos, writer);
+        WriteCalls(callInfos, writer);
 
-            if (callArray.Length > MaxNumberOfCallsToWrite)
+        if (callArray.Length > MaxNumberOfCallsToWrite)
+        {
+            writer.WriteLine();
+            writer.Write("... Found {0} more calls not displayed here.", callArray.Length - MaxNumberOfCallsToWrite);
+        }
+
+        writer.WriteLine();
+    }
+
+    private static void WriteCalls(List<CallInfo> callInfos, IOutputWriter writer)
+    {
+        var lastCall = callInfos.Last();
+        var numberOfDigitsInLastCallNumber = lastCall.NumberOfDigitsInCallNumber();
+
+        foreach (var call in callInfos)
+        {
+            if (call.CallNumber > 1)
             {
                 writer.WriteLine();
-                writer.Write("... Found {0} more calls not displayed here.", callArray.Length - MaxNumberOfCallsToWrite);
             }
 
-            writer.WriteLine();
-        }
+            writer.Write(call.CallNumber);
+            writer.Write(": ");
 
-        private static void WriteCalls(List<CallInfo> callInfos, IOutputWriter writer)
-        {
-            var lastCall = callInfos.Last();
-            var numberOfDigitsInLastCallNumber = lastCall.NumberOfDigitsInCallNumber();
+            WriteSpaces(writer, numberOfDigitsInLastCallNumber - call.NumberOfDigitsInCallNumber());
 
-            foreach (var call in callInfos)
+            using (writer.Indent())
             {
-                if (call.CallNumber > 1)
-                {
-                    writer.WriteLine();
-                }
-
-                writer.Write(call.CallNumber);
-                writer.Write(": ");
-
-                WriteSpaces(writer, numberOfDigitsInLastCallNumber - call.NumberOfDigitsInCallNumber());
-
-                using (writer.Indent())
-                {
-                    writer.Write(call.StringRepresentation);
-                }
-
-                if (call.NumberOfOccurrences > 1)
-                {
-                    writer.Write(" ");
-                    writer.Write(call.NumberOfOccurrences);
-                    writer.Write(" times");
-                    writer.WriteLine();
-                    writer.Write("...");
-                }
+                writer.Write(call.StringRepresentation);
             }
-        }
 
-        private static void WriteSpaces(IOutputWriter writer, int numberOfSpaces)
-        {
-            for (var i = 0; i < numberOfSpaces; i++)
+            if (call.NumberOfOccurrences > 1)
             {
                 writer.Write(" ");
+                writer.Write(call.NumberOfOccurrences);
+                writer.Write(" times");
+                writer.WriteLine();
+                writer.Write("...");
             }
         }
+    }
 
-        private class CallInfo
+    private static void WriteSpaces(IOutputWriter writer, int numberOfSpaces)
+    {
+        for (var i = 0; i < numberOfSpaces; i++)
         {
-            public CallInfo(IFakeObjectCall call, int callNumber, string stringRepresentation)
-            {
-                this.Call = call;
-                this.CallNumber = callNumber;
-                this.StringRepresentation = stringRepresentation;
-                this.NumberOfOccurrences = 1;
-            }
+            writer.Write(" ");
+        }
+    }
 
-            public IFakeObjectCall Call { get; }
+    private class CallInfo
+    {
+        public CallInfo(IFakeObjectCall call, int callNumber, string stringRepresentation)
+        {
+            this.Call = call;
+            this.CallNumber = callNumber;
+            this.StringRepresentation = stringRepresentation;
+            this.NumberOfOccurrences = 1;
+        }
 
-            public int CallNumber { get; }
+        public IFakeObjectCall Call { get; }
 
-            public int NumberOfOccurrences { get; set; }
+        public int CallNumber { get; }
 
-            public string StringRepresentation { get; }
+        public int NumberOfOccurrences { get; set; }
 
-            public int NumberOfDigitsInCallNumber()
-            {
-                return (int)Math.Log10(this.CallNumber);
-            }
+        public string StringRepresentation { get; }
+
+        public int NumberOfDigitsInCallNumber()
+        {
+            return (int)Math.Log10(this.CallNumber);
         }
     }
 }
