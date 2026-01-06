@@ -12,8 +12,11 @@ dotnet_diagnostic.SA1601.severity = none    # Partial elements should be documen
 dotnet_diagnostic.SA1628.severity = warning # Documentation text must begin with a capital letter
 dotnet_diagnostic.SA1629.severity = warning # Documentation text must end with a period
 dotnet_diagnostic.SA1633.severity = none    # Files should have file headers
+dotnet_diagnostic.IDE0160.severity = warning
+dotnet_diagnostic.IDE0161.severity = warning
 
 csharp_using_directive_placement = inside_namespace
+csharp_style_namespace_declarations = file_scoped
 resharper_csharp_qualified_using_at_nested_scope = true
 
 dotnet_style_qualification_for_field = true
