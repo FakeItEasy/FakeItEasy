@@ -1,9 +1,8 @@
-namespace FakeItEasy.Tests.Configuration
-{
-    using FakeItEasy.Configuration;
+namespace FakeItEasy.Tests.Configuration;
 
-    public class FakeConfigurationExceptionTests
-        : ExceptionContractTests<FakeConfigurationException>
-    {
-    }
+using FakeItEasy.Configuration;
+
+public class FakeConfigurationExceptionTests
+    : ExceptionContractTests<FakeConfigurationException>
+{
 }

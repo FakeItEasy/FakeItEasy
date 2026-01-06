@@ -1,9 +1,8 @@
-namespace FakeItEasy.Core
-{
-    using System;
+namespace FakeItEasy.Core;
 
-    internal interface IFakeAsserter
-    {
-        void AssertWasCalled(Func<ICompletedFakeObjectCall, bool> callPredicate, Action<IOutputWriter> callDescriber, CallCountConstraint callCountConstraint);
-    }
+using System;
+
+internal interface IFakeAsserter
+{
+    void AssertWasCalled(Func<ICompletedFakeObjectCall, bool> callPredicate, Action<IOutputWriter> callDescriber, CallCountConstraint callCountConstraint);
 }

@@ -1,15 +1,14 @@
-namespace FakeItEasy.Creation
+namespace FakeItEasy.Creation;
+
+using System;
+
+internal class ResolvedArgument
 {
-    using System;
+    public ResolvedArgument(Type argumentType) => this.ArgumentType = argumentType;
 
-    internal class ResolvedArgument
-    {
-        public ResolvedArgument(Type argumentType) => this.ArgumentType = argumentType;
+    public Type ArgumentType { get; }
 
-        public Type ArgumentType { get; }
+    public object? ResolvedValue { get; set; }
 
-        public object? ResolvedValue { get; set; }
-
-        public bool WasResolved { get; set; }
-    }
+    public bool WasResolved { get; set; }
 }

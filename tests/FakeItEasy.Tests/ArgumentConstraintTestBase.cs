@@ -1,42 +1,41 @@
-namespace FakeItEasy.Tests
+namespace FakeItEasy.Tests;
+
+using System;
+using FakeItEasy.Core;
+using FluentAssertions;
+using Xunit;
+
+public abstract class ArgumentConstraintTestBase
 {
-    using System;
-    using FakeItEasy.Core;
-    using FluentAssertions;
-    using Xunit;
+    private IArgumentConstraint? constraint;
 
-    public abstract class ArgumentConstraintTestBase
+    internal IArgumentConstraint Constraint
     {
-        private IArgumentConstraint? constraint;
+        get => this.constraint ?? throw new InvalidOperationException($"{nameof(this.Constraint)} isn't set");
+        set => this.constraint = value;
+    }
 
-        internal IArgumentConstraint Constraint
-        {
-            get => this.constraint ?? throw new InvalidOperationException($"{nameof(this.Constraint)} isn't set");
-            set => this.constraint = value;
-        }
+    protected abstract string ExpectedDescription { get; }
 
-        protected abstract string ExpectedDescription { get; }
+    public virtual void IsValid_should_return_false_for_invalid_values(object invalidValue)
+    {
+        this.Constraint.IsValid(invalidValue).Should().BeFalse();
+    }
 
-        public virtual void IsValid_should_return_false_for_invalid_values(object invalidValue)
-        {
-            this.Constraint.IsValid(invalidValue).Should().BeFalse();
-        }
+    public virtual void IsValid_should_return_true_for_valid_values(object validValue)
+    {
+        var result = this.Constraint.IsValid(validValue);
 
-        public virtual void IsValid_should_return_true_for_valid_values(object validValue)
-        {
-            var result = this.Constraint.IsValid(validValue);
+        result.Should().BeTrue();
+    }
 
-            result.Should().BeTrue();
-        }
+    [Fact]
+    public virtual void Constraint_should_provide_correct_description()
+    {
+        var writer = ServiceLocator.Resolve<StringBuilderOutputWriter.Factory>().Invoke();
 
-        [Fact]
-        public virtual void Constraint_should_provide_correct_description()
-        {
-            var writer = ServiceLocator.Resolve<StringBuilderOutputWriter.Factory>().Invoke();
+        this.Constraint.WriteDescription(writer);
 
-            this.Constraint.WriteDescription(writer);
-
-            writer.Builder.ToString().Should().Be("<" + this.ExpectedDescription + ">");
-        }
+        writer.Builder.ToString().Should().Be("<" + this.ExpectedDescription + ">");
     }
 }

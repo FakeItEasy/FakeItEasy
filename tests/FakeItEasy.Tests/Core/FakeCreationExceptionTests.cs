@@ -1,24 +1,23 @@
-namespace FakeItEasy.Tests.Core
+namespace FakeItEasy.Tests.Core;
+
+using FakeItEasy.Core;
+using FakeItEasy.Tests.TestHelpers;
+using FluentAssertions;
+using Xunit;
+
+public class FakeCreationExceptionTests
+    : ExceptionContractTests<FakeCreationException>
 {
-    using FakeItEasy.Core;
-    using FakeItEasy.Tests.TestHelpers;
-    using FluentAssertions;
-    using Xunit;
-
-    public class FakeCreationExceptionTests
-        : ExceptionContractTests<FakeCreationException>
+    [Fact]
+    [UsingCulture("en-US")]
+    public void DefaultConstructor_should_set_correct_error_message()
     {
-        [Fact]
-        [UsingCulture("en-US")]
-        public void DefaultConstructor_should_set_correct_error_message()
-        {
-            // Arrange
-            var exception = new FakeCreationException();
+        // Arrange
+        var exception = new FakeCreationException();
 
-            // Act
+        // Act
 
-            // Assert
-            exception.Message.Should().Be("Unable to create fake object.");
-        }
+        // Assert
+        exception.Message.Should().Be("Unable to create fake object.");
     }
 }

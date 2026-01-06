@@ -5,243 +5,242 @@
 //     Changes to this file will be lost when the project is rebuilt.
 // </auto-generated>
 //------------------------------------------------------------------------------
-namespace FakeItEasy
+namespace FakeItEasy;
+
+using System;
+using System.Reflection;
+using System.Threading.Tasks;
+using FakeItEasy.Configuration;
+
+public static partial class ValueTaskReturnValueConfigurationExtensions
 {
-    using System;
-    using System.Reflection;
-    using System.Threading.Tasks;
-    using FakeItEasy.Configuration;
+    private const string NameOfReturnsLazilyFeature = "returns lazily";
 
-    public static partial class ValueTaskReturnValueConfigurationExtensions
+    /// <summary>
+    /// Specifies a function used to produce the <see cref="ValueTask{T}.Result"/> of the <see cref="ValueTask{T}"/> which is returned when the configured call is made.
+    /// The function will be called each time the configured call is made and can return different values each time.
+    /// The <see cref="ValueTask{T}"/> returned from the configured call will have its <see cref="ValueTask{T}.IsCompletedSuccessfully"/> property set to <c>true</c>".
+    /// </summary>
+    /// <typeparam name="TReturnType">The type of the result produced by the <see cref="ValueTask{T}"/>.</typeparam>
+    /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
+    /// <param name="configuration">The configuration to extend.</param>
+    /// <param name="valueProducer">A function that produces the <see cref="ValueTask{T}.Result"/> of the <see cref="ValueTask{T}"/>.</param>
+    /// <returns>The configuration object.</returns>
+    /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="valueProducer"/> do not match.</exception>
+    public static IAfterCallConfiguredWithOutAndRefParametersConfiguration<IReturnValueConfiguration<ValueTask<TReturnType>>>
+        ReturnsLazily<TReturnType, T1>(this IReturnValueConfiguration<ValueTask<TReturnType>> configuration, Func<T1, TReturnType> valueProducer)
     {
-        private const string NameOfReturnsLazilyFeature = "returns lazily";
+        Guard.AgainstNull(configuration);
+        Guard.AgainstNull(valueProducer);
 
-        /// <summary>
-        /// Specifies a function used to produce the <see cref="ValueTask{T}.Result"/> of the <see cref="ValueTask{T}"/> which is returned when the configured call is made.
-        /// The function will be called each time the configured call is made and can return different values each time.
-        /// The <see cref="ValueTask{T}"/> returned from the configured call will have its <see cref="ValueTask{T}.IsCompletedSuccessfully"/> property set to <c>true</c>".
-        /// </summary>
-        /// <typeparam name="TReturnType">The type of the result produced by the <see cref="ValueTask{T}"/>.</typeparam>
-        /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
-        /// <param name="configuration">The configuration to extend.</param>
-        /// <param name="valueProducer">A function that produces the <see cref="ValueTask{T}.Result"/> of the <see cref="ValueTask{T}"/>.</param>
-        /// <returns>The configuration object.</returns>
-        /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="valueProducer"/> do not match.</exception>
-        public static IAfterCallConfiguredWithOutAndRefParametersConfiguration<IReturnValueConfiguration<ValueTask<TReturnType>>>
-            ReturnsLazily<TReturnType, T1>(this IReturnValueConfiguration<ValueTask<TReturnType>> configuration, Func<T1, TReturnType> valueProducer)
+        return configuration.ReturnsLazily(call =>
         {
-            Guard.AgainstNull(configuration);
-            Guard.AgainstNull(valueProducer);
+            ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, valueProducer.GetMethodInfo(), NameOfReturnsLazilyFeature);
 
-            return configuration.ReturnsLazily(call =>
-            {
-                ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, valueProducer.GetMethodInfo(), NameOfReturnsLazilyFeature);
+            return new ValueTask<TReturnType>(valueProducer(call.GetArgument<T1>(0)!));
+        });
+    }
 
-                return new ValueTask<TReturnType>(valueProducer(call.GetArgument<T1>(0)!));
-            });
-        }
+    /// <summary>
+    /// Specifies a function used to produce the <see cref="ValueTask{T}.Result"/> of the <see cref="ValueTask{T}"/> which is returned when the configured call is made.
+    /// The function will be called each time the configured call is made and can return different values each time.
+    /// The <see cref="ValueTask{T}"/> returned from the configured call will have its <see cref="ValueTask{T}.IsCompletedSuccessfully"/> property set to <c>true</c>".
+    /// </summary>
+    /// <typeparam name="TReturnType">The type of the result produced by the <see cref="ValueTask{T}"/>.</typeparam>
+    /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
+    /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
+    /// <param name="configuration">The configuration to extend.</param>
+    /// <param name="valueProducer">A function that produces the <see cref="ValueTask{T}.Result"/> of the <see cref="ValueTask{T}"/>.</param>
+    /// <returns>The configuration object.</returns>
+    /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="valueProducer"/> do not match.</exception>
+    public static IAfterCallConfiguredWithOutAndRefParametersConfiguration<IReturnValueConfiguration<ValueTask<TReturnType>>>
+        ReturnsLazily<TReturnType, T1, T2>(this IReturnValueConfiguration<ValueTask<TReturnType>> configuration, Func<T1, T2, TReturnType> valueProducer)
+    {
+        Guard.AgainstNull(configuration);
+        Guard.AgainstNull(valueProducer);
 
-        /// <summary>
-        /// Specifies a function used to produce the <see cref="ValueTask{T}.Result"/> of the <see cref="ValueTask{T}"/> which is returned when the configured call is made.
-        /// The function will be called each time the configured call is made and can return different values each time.
-        /// The <see cref="ValueTask{T}"/> returned from the configured call will have its <see cref="ValueTask{T}.IsCompletedSuccessfully"/> property set to <c>true</c>".
-        /// </summary>
-        /// <typeparam name="TReturnType">The type of the result produced by the <see cref="ValueTask{T}"/>.</typeparam>
-        /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
-        /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
-        /// <param name="configuration">The configuration to extend.</param>
-        /// <param name="valueProducer">A function that produces the <see cref="ValueTask{T}.Result"/> of the <see cref="ValueTask{T}"/>.</param>
-        /// <returns>The configuration object.</returns>
-        /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="valueProducer"/> do not match.</exception>
-        public static IAfterCallConfiguredWithOutAndRefParametersConfiguration<IReturnValueConfiguration<ValueTask<TReturnType>>>
-            ReturnsLazily<TReturnType, T1, T2>(this IReturnValueConfiguration<ValueTask<TReturnType>> configuration, Func<T1, T2, TReturnType> valueProducer)
+        return configuration.ReturnsLazily(call =>
         {
-            Guard.AgainstNull(configuration);
-            Guard.AgainstNull(valueProducer);
+            ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, valueProducer.GetMethodInfo(), NameOfReturnsLazilyFeature);
 
-            return configuration.ReturnsLazily(call =>
-            {
-                ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, valueProducer.GetMethodInfo(), NameOfReturnsLazilyFeature);
+            return new ValueTask<TReturnType>(valueProducer(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!));
+        });
+    }
 
-                return new ValueTask<TReturnType>(valueProducer(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!));
-            });
-        }
+    /// <summary>
+    /// Specifies a function used to produce the <see cref="ValueTask{T}.Result"/> of the <see cref="ValueTask{T}"/> which is returned when the configured call is made.
+    /// The function will be called each time the configured call is made and can return different values each time.
+    /// The <see cref="ValueTask{T}"/> returned from the configured call will have its <see cref="ValueTask{T}.IsCompletedSuccessfully"/> property set to <c>true</c>".
+    /// </summary>
+    /// <typeparam name="TReturnType">The type of the result produced by the <see cref="ValueTask{T}"/>.</typeparam>
+    /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
+    /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
+    /// <typeparam name="T3">The type of the third argument of the faked method call.</typeparam>
+    /// <param name="configuration">The configuration to extend.</param>
+    /// <param name="valueProducer">A function that produces the <see cref="ValueTask{T}.Result"/> of the <see cref="ValueTask{T}"/>.</param>
+    /// <returns>The configuration object.</returns>
+    /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="valueProducer"/> do not match.</exception>
+    public static IAfterCallConfiguredWithOutAndRefParametersConfiguration<IReturnValueConfiguration<ValueTask<TReturnType>>>
+        ReturnsLazily<TReturnType, T1, T2, T3>(this IReturnValueConfiguration<ValueTask<TReturnType>> configuration, Func<T1, T2, T3, TReturnType> valueProducer)
+    {
+        Guard.AgainstNull(configuration);
+        Guard.AgainstNull(valueProducer);
 
-        /// <summary>
-        /// Specifies a function used to produce the <see cref="ValueTask{T}.Result"/> of the <see cref="ValueTask{T}"/> which is returned when the configured call is made.
-        /// The function will be called each time the configured call is made and can return different values each time.
-        /// The <see cref="ValueTask{T}"/> returned from the configured call will have its <see cref="ValueTask{T}.IsCompletedSuccessfully"/> property set to <c>true</c>".
-        /// </summary>
-        /// <typeparam name="TReturnType">The type of the result produced by the <see cref="ValueTask{T}"/>.</typeparam>
-        /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
-        /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
-        /// <typeparam name="T3">The type of the third argument of the faked method call.</typeparam>
-        /// <param name="configuration">The configuration to extend.</param>
-        /// <param name="valueProducer">A function that produces the <see cref="ValueTask{T}.Result"/> of the <see cref="ValueTask{T}"/>.</param>
-        /// <returns>The configuration object.</returns>
-        /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="valueProducer"/> do not match.</exception>
-        public static IAfterCallConfiguredWithOutAndRefParametersConfiguration<IReturnValueConfiguration<ValueTask<TReturnType>>>
-            ReturnsLazily<TReturnType, T1, T2, T3>(this IReturnValueConfiguration<ValueTask<TReturnType>> configuration, Func<T1, T2, T3, TReturnType> valueProducer)
+        return configuration.ReturnsLazily(call =>
         {
-            Guard.AgainstNull(configuration);
-            Guard.AgainstNull(valueProducer);
+            ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, valueProducer.GetMethodInfo(), NameOfReturnsLazilyFeature);
 
-            return configuration.ReturnsLazily(call =>
-            {
-                ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, valueProducer.GetMethodInfo(), NameOfReturnsLazilyFeature);
+            return new ValueTask<TReturnType>(valueProducer(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!, call.GetArgument<T3>(2)!));
+        });
+    }
 
-                return new ValueTask<TReturnType>(valueProducer(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!, call.GetArgument<T3>(2)!));
-            });
-        }
+    /// <summary>
+    /// Specifies a function used to produce the <see cref="ValueTask{T}.Result"/> of the <see cref="ValueTask{T}"/> which is returned when the configured call is made.
+    /// The function will be called each time the configured call is made and can return different values each time.
+    /// The <see cref="ValueTask{T}"/> returned from the configured call will have its <see cref="ValueTask{T}.IsCompletedSuccessfully"/> property set to <c>true</c>".
+    /// </summary>
+    /// <typeparam name="TReturnType">The type of the result produced by the <see cref="ValueTask{T}"/>.</typeparam>
+    /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
+    /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
+    /// <typeparam name="T3">The type of the third argument of the faked method call.</typeparam>
+    /// <typeparam name="T4">The type of the fourth argument of the faked method call.</typeparam>
+    /// <param name="configuration">The configuration to extend.</param>
+    /// <param name="valueProducer">A function that produces the <see cref="ValueTask{T}.Result"/> of the <see cref="ValueTask{T}"/>.</param>
+    /// <returns>The configuration object.</returns>
+    /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="valueProducer"/> do not match.</exception>
+    public static IAfterCallConfiguredWithOutAndRefParametersConfiguration<IReturnValueConfiguration<ValueTask<TReturnType>>>
+        ReturnsLazily<TReturnType, T1, T2, T3, T4>(this IReturnValueConfiguration<ValueTask<TReturnType>> configuration, Func<T1, T2, T3, T4, TReturnType> valueProducer)
+    {
+        Guard.AgainstNull(configuration);
+        Guard.AgainstNull(valueProducer);
 
-        /// <summary>
-        /// Specifies a function used to produce the <see cref="ValueTask{T}.Result"/> of the <see cref="ValueTask{T}"/> which is returned when the configured call is made.
-        /// The function will be called each time the configured call is made and can return different values each time.
-        /// The <see cref="ValueTask{T}"/> returned from the configured call will have its <see cref="ValueTask{T}.IsCompletedSuccessfully"/> property set to <c>true</c>".
-        /// </summary>
-        /// <typeparam name="TReturnType">The type of the result produced by the <see cref="ValueTask{T}"/>.</typeparam>
-        /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
-        /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
-        /// <typeparam name="T3">The type of the third argument of the faked method call.</typeparam>
-        /// <typeparam name="T4">The type of the fourth argument of the faked method call.</typeparam>
-        /// <param name="configuration">The configuration to extend.</param>
-        /// <param name="valueProducer">A function that produces the <see cref="ValueTask{T}.Result"/> of the <see cref="ValueTask{T}"/>.</param>
-        /// <returns>The configuration object.</returns>
-        /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="valueProducer"/> do not match.</exception>
-        public static IAfterCallConfiguredWithOutAndRefParametersConfiguration<IReturnValueConfiguration<ValueTask<TReturnType>>>
-            ReturnsLazily<TReturnType, T1, T2, T3, T4>(this IReturnValueConfiguration<ValueTask<TReturnType>> configuration, Func<T1, T2, T3, T4, TReturnType> valueProducer)
+        return configuration.ReturnsLazily(call =>
         {
-            Guard.AgainstNull(configuration);
-            Guard.AgainstNull(valueProducer);
+            ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, valueProducer.GetMethodInfo(), NameOfReturnsLazilyFeature);
 
-            return configuration.ReturnsLazily(call =>
-            {
-                ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, valueProducer.GetMethodInfo(), NameOfReturnsLazilyFeature);
+            return new ValueTask<TReturnType>(valueProducer(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!, call.GetArgument<T3>(2)!, call.GetArgument<T4>(3)!));
+        });
+    }
 
-                return new ValueTask<TReturnType>(valueProducer(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!, call.GetArgument<T3>(2)!, call.GetArgument<T4>(3)!));
-            });
-        }
+    /// <summary>
+    /// Specifies a function used to produce the <see cref="ValueTask{T}.Result"/> of the <see cref="ValueTask{T}"/> which is returned when the configured call is made.
+    /// The function will be called each time the configured call is made and can return different values each time.
+    /// The <see cref="ValueTask{T}"/> returned from the configured call will have its <see cref="ValueTask{T}.IsCompletedSuccessfully"/> property set to <c>true</c>".
+    /// </summary>
+    /// <typeparam name="TReturnType">The type of the result produced by the <see cref="ValueTask{T}"/>.</typeparam>
+    /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
+    /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
+    /// <typeparam name="T3">The type of the third argument of the faked method call.</typeparam>
+    /// <typeparam name="T4">The type of the fourth argument of the faked method call.</typeparam>
+    /// <typeparam name="T5">The type of the fifth argument of the faked method call.</typeparam>
+    /// <param name="configuration">The configuration to extend.</param>
+    /// <param name="valueProducer">A function that produces the <see cref="ValueTask{T}.Result"/> of the <see cref="ValueTask{T}"/>.</param>
+    /// <returns>The configuration object.</returns>
+    /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="valueProducer"/> do not match.</exception>
+    public static IAfterCallConfiguredWithOutAndRefParametersConfiguration<IReturnValueConfiguration<ValueTask<TReturnType>>>
+        ReturnsLazily<TReturnType, T1, T2, T3, T4, T5>(this IReturnValueConfiguration<ValueTask<TReturnType>> configuration, Func<T1, T2, T3, T4, T5, TReturnType> valueProducer)
+    {
+        Guard.AgainstNull(configuration);
+        Guard.AgainstNull(valueProducer);
 
-        /// <summary>
-        /// Specifies a function used to produce the <see cref="ValueTask{T}.Result"/> of the <see cref="ValueTask{T}"/> which is returned when the configured call is made.
-        /// The function will be called each time the configured call is made and can return different values each time.
-        /// The <see cref="ValueTask{T}"/> returned from the configured call will have its <see cref="ValueTask{T}.IsCompletedSuccessfully"/> property set to <c>true</c>".
-        /// </summary>
-        /// <typeparam name="TReturnType">The type of the result produced by the <see cref="ValueTask{T}"/>.</typeparam>
-        /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
-        /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
-        /// <typeparam name="T3">The type of the third argument of the faked method call.</typeparam>
-        /// <typeparam name="T4">The type of the fourth argument of the faked method call.</typeparam>
-        /// <typeparam name="T5">The type of the fifth argument of the faked method call.</typeparam>
-        /// <param name="configuration">The configuration to extend.</param>
-        /// <param name="valueProducer">A function that produces the <see cref="ValueTask{T}.Result"/> of the <see cref="ValueTask{T}"/>.</param>
-        /// <returns>The configuration object.</returns>
-        /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="valueProducer"/> do not match.</exception>
-        public static IAfterCallConfiguredWithOutAndRefParametersConfiguration<IReturnValueConfiguration<ValueTask<TReturnType>>>
-            ReturnsLazily<TReturnType, T1, T2, T3, T4, T5>(this IReturnValueConfiguration<ValueTask<TReturnType>> configuration, Func<T1, T2, T3, T4, T5, TReturnType> valueProducer)
+        return configuration.ReturnsLazily(call =>
         {
-            Guard.AgainstNull(configuration);
-            Guard.AgainstNull(valueProducer);
+            ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, valueProducer.GetMethodInfo(), NameOfReturnsLazilyFeature);
 
-            return configuration.ReturnsLazily(call =>
-            {
-                ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, valueProducer.GetMethodInfo(), NameOfReturnsLazilyFeature);
+            return new ValueTask<TReturnType>(valueProducer(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!, call.GetArgument<T3>(2)!, call.GetArgument<T4>(3)!, call.GetArgument<T5>(4)!));
+        });
+    }
 
-                return new ValueTask<TReturnType>(valueProducer(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!, call.GetArgument<T3>(2)!, call.GetArgument<T4>(3)!, call.GetArgument<T5>(4)!));
-            });
-        }
+    /// <summary>
+    /// Specifies a function used to produce the <see cref="ValueTask{T}.Result"/> of the <see cref="ValueTask{T}"/> which is returned when the configured call is made.
+    /// The function will be called each time the configured call is made and can return different values each time.
+    /// The <see cref="ValueTask{T}"/> returned from the configured call will have its <see cref="ValueTask{T}.IsCompletedSuccessfully"/> property set to <c>true</c>".
+    /// </summary>
+    /// <typeparam name="TReturnType">The type of the result produced by the <see cref="ValueTask{T}"/>.</typeparam>
+    /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
+    /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
+    /// <typeparam name="T3">The type of the third argument of the faked method call.</typeparam>
+    /// <typeparam name="T4">The type of the fourth argument of the faked method call.</typeparam>
+    /// <typeparam name="T5">The type of the fifth argument of the faked method call.</typeparam>
+    /// <typeparam name="T6">The type of the sixth argument of the faked method call.</typeparam>
+    /// <param name="configuration">The configuration to extend.</param>
+    /// <param name="valueProducer">A function that produces the <see cref="ValueTask{T}.Result"/> of the <see cref="ValueTask{T}"/>.</param>
+    /// <returns>The configuration object.</returns>
+    /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="valueProducer"/> do not match.</exception>
+    public static IAfterCallConfiguredWithOutAndRefParametersConfiguration<IReturnValueConfiguration<ValueTask<TReturnType>>>
+        ReturnsLazily<TReturnType, T1, T2, T3, T4, T5, T6>(this IReturnValueConfiguration<ValueTask<TReturnType>> configuration, Func<T1, T2, T3, T4, T5, T6, TReturnType> valueProducer)
+    {
+        Guard.AgainstNull(configuration);
+        Guard.AgainstNull(valueProducer);
 
-        /// <summary>
-        /// Specifies a function used to produce the <see cref="ValueTask{T}.Result"/> of the <see cref="ValueTask{T}"/> which is returned when the configured call is made.
-        /// The function will be called each time the configured call is made and can return different values each time.
-        /// The <see cref="ValueTask{T}"/> returned from the configured call will have its <see cref="ValueTask{T}.IsCompletedSuccessfully"/> property set to <c>true</c>".
-        /// </summary>
-        /// <typeparam name="TReturnType">The type of the result produced by the <see cref="ValueTask{T}"/>.</typeparam>
-        /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
-        /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
-        /// <typeparam name="T3">The type of the third argument of the faked method call.</typeparam>
-        /// <typeparam name="T4">The type of the fourth argument of the faked method call.</typeparam>
-        /// <typeparam name="T5">The type of the fifth argument of the faked method call.</typeparam>
-        /// <typeparam name="T6">The type of the sixth argument of the faked method call.</typeparam>
-        /// <param name="configuration">The configuration to extend.</param>
-        /// <param name="valueProducer">A function that produces the <see cref="ValueTask{T}.Result"/> of the <see cref="ValueTask{T}"/>.</param>
-        /// <returns>The configuration object.</returns>
-        /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="valueProducer"/> do not match.</exception>
-        public static IAfterCallConfiguredWithOutAndRefParametersConfiguration<IReturnValueConfiguration<ValueTask<TReturnType>>>
-            ReturnsLazily<TReturnType, T1, T2, T3, T4, T5, T6>(this IReturnValueConfiguration<ValueTask<TReturnType>> configuration, Func<T1, T2, T3, T4, T5, T6, TReturnType> valueProducer)
+        return configuration.ReturnsLazily(call =>
         {
-            Guard.AgainstNull(configuration);
-            Guard.AgainstNull(valueProducer);
+            ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, valueProducer.GetMethodInfo(), NameOfReturnsLazilyFeature);
 
-            return configuration.ReturnsLazily(call =>
-            {
-                ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, valueProducer.GetMethodInfo(), NameOfReturnsLazilyFeature);
+            return new ValueTask<TReturnType>(valueProducer(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!, call.GetArgument<T3>(2)!, call.GetArgument<T4>(3)!, call.GetArgument<T5>(4)!, call.GetArgument<T6>(5)!));
+        });
+    }
 
-                return new ValueTask<TReturnType>(valueProducer(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!, call.GetArgument<T3>(2)!, call.GetArgument<T4>(3)!, call.GetArgument<T5>(4)!, call.GetArgument<T6>(5)!));
-            });
-        }
+    /// <summary>
+    /// Specifies a function used to produce the <see cref="ValueTask{T}.Result"/> of the <see cref="ValueTask{T}"/> which is returned when the configured call is made.
+    /// The function will be called each time the configured call is made and can return different values each time.
+    /// The <see cref="ValueTask{T}"/> returned from the configured call will have its <see cref="ValueTask{T}.IsCompletedSuccessfully"/> property set to <c>true</c>".
+    /// </summary>
+    /// <typeparam name="TReturnType">The type of the result produced by the <see cref="ValueTask{T}"/>.</typeparam>
+    /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
+    /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
+    /// <typeparam name="T3">The type of the third argument of the faked method call.</typeparam>
+    /// <typeparam name="T4">The type of the fourth argument of the faked method call.</typeparam>
+    /// <typeparam name="T5">The type of the fifth argument of the faked method call.</typeparam>
+    /// <typeparam name="T6">The type of the sixth argument of the faked method call.</typeparam>
+    /// <typeparam name="T7">The type of the seventh argument of the faked method call.</typeparam>
+    /// <param name="configuration">The configuration to extend.</param>
+    /// <param name="valueProducer">A function that produces the <see cref="ValueTask{T}.Result"/> of the <see cref="ValueTask{T}"/>.</param>
+    /// <returns>The configuration object.</returns>
+    /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="valueProducer"/> do not match.</exception>
+    public static IAfterCallConfiguredWithOutAndRefParametersConfiguration<IReturnValueConfiguration<ValueTask<TReturnType>>>
+        ReturnsLazily<TReturnType, T1, T2, T3, T4, T5, T6, T7>(this IReturnValueConfiguration<ValueTask<TReturnType>> configuration, Func<T1, T2, T3, T4, T5, T6, T7, TReturnType> valueProducer)
+    {
+        Guard.AgainstNull(configuration);
+        Guard.AgainstNull(valueProducer);
 
-        /// <summary>
-        /// Specifies a function used to produce the <see cref="ValueTask{T}.Result"/> of the <see cref="ValueTask{T}"/> which is returned when the configured call is made.
-        /// The function will be called each time the configured call is made and can return different values each time.
-        /// The <see cref="ValueTask{T}"/> returned from the configured call will have its <see cref="ValueTask{T}.IsCompletedSuccessfully"/> property set to <c>true</c>".
-        /// </summary>
-        /// <typeparam name="TReturnType">The type of the result produced by the <see cref="ValueTask{T}"/>.</typeparam>
-        /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
-        /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
-        /// <typeparam name="T3">The type of the third argument of the faked method call.</typeparam>
-        /// <typeparam name="T4">The type of the fourth argument of the faked method call.</typeparam>
-        /// <typeparam name="T5">The type of the fifth argument of the faked method call.</typeparam>
-        /// <typeparam name="T6">The type of the sixth argument of the faked method call.</typeparam>
-        /// <typeparam name="T7">The type of the seventh argument of the faked method call.</typeparam>
-        /// <param name="configuration">The configuration to extend.</param>
-        /// <param name="valueProducer">A function that produces the <see cref="ValueTask{T}.Result"/> of the <see cref="ValueTask{T}"/>.</param>
-        /// <returns>The configuration object.</returns>
-        /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="valueProducer"/> do not match.</exception>
-        public static IAfterCallConfiguredWithOutAndRefParametersConfiguration<IReturnValueConfiguration<ValueTask<TReturnType>>>
-            ReturnsLazily<TReturnType, T1, T2, T3, T4, T5, T6, T7>(this IReturnValueConfiguration<ValueTask<TReturnType>> configuration, Func<T1, T2, T3, T4, T5, T6, T7, TReturnType> valueProducer)
+        return configuration.ReturnsLazily(call =>
         {
-            Guard.AgainstNull(configuration);
-            Guard.AgainstNull(valueProducer);
+            ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, valueProducer.GetMethodInfo(), NameOfReturnsLazilyFeature);
 
-            return configuration.ReturnsLazily(call =>
-            {
-                ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, valueProducer.GetMethodInfo(), NameOfReturnsLazilyFeature);
+            return new ValueTask<TReturnType>(valueProducer(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!, call.GetArgument<T3>(2)!, call.GetArgument<T4>(3)!, call.GetArgument<T5>(4)!, call.GetArgument<T6>(5)!, call.GetArgument<T7>(6)!));
+        });
+    }
 
-                return new ValueTask<TReturnType>(valueProducer(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!, call.GetArgument<T3>(2)!, call.GetArgument<T4>(3)!, call.GetArgument<T5>(4)!, call.GetArgument<T6>(5)!, call.GetArgument<T7>(6)!));
-            });
-        }
+    /// <summary>
+    /// Specifies a function used to produce the <see cref="ValueTask{T}.Result"/> of the <see cref="ValueTask{T}"/> which is returned when the configured call is made.
+    /// The function will be called each time the configured call is made and can return different values each time.
+    /// The <see cref="ValueTask{T}"/> returned from the configured call will have its <see cref="ValueTask{T}.IsCompletedSuccessfully"/> property set to <c>true</c>".
+    /// </summary>
+    /// <typeparam name="TReturnType">The type of the result produced by the <see cref="ValueTask{T}"/>.</typeparam>
+    /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
+    /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
+    /// <typeparam name="T3">The type of the third argument of the faked method call.</typeparam>
+    /// <typeparam name="T4">The type of the fourth argument of the faked method call.</typeparam>
+    /// <typeparam name="T5">The type of the fifth argument of the faked method call.</typeparam>
+    /// <typeparam name="T6">The type of the sixth argument of the faked method call.</typeparam>
+    /// <typeparam name="T7">The type of the seventh argument of the faked method call.</typeparam>
+    /// <typeparam name="T8">The type of the eighth argument of the faked method call.</typeparam>
+    /// <param name="configuration">The configuration to extend.</param>
+    /// <param name="valueProducer">A function that produces the <see cref="ValueTask{T}.Result"/> of the <see cref="ValueTask{T}"/>.</param>
+    /// <returns>The configuration object.</returns>
+    /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="valueProducer"/> do not match.</exception>
+    public static IAfterCallConfiguredWithOutAndRefParametersConfiguration<IReturnValueConfiguration<ValueTask<TReturnType>>>
+        ReturnsLazily<TReturnType, T1, T2, T3, T4, T5, T6, T7, T8>(this IReturnValueConfiguration<ValueTask<TReturnType>> configuration, Func<T1, T2, T3, T4, T5, T6, T7, T8, TReturnType> valueProducer)
+    {
+        Guard.AgainstNull(configuration);
+        Guard.AgainstNull(valueProducer);
 
-        /// <summary>
-        /// Specifies a function used to produce the <see cref="ValueTask{T}.Result"/> of the <see cref="ValueTask{T}"/> which is returned when the configured call is made.
-        /// The function will be called each time the configured call is made and can return different values each time.
-        /// The <see cref="ValueTask{T}"/> returned from the configured call will have its <see cref="ValueTask{T}.IsCompletedSuccessfully"/> property set to <c>true</c>".
-        /// </summary>
-        /// <typeparam name="TReturnType">The type of the result produced by the <see cref="ValueTask{T}"/>.</typeparam>
-        /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
-        /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
-        /// <typeparam name="T3">The type of the third argument of the faked method call.</typeparam>
-        /// <typeparam name="T4">The type of the fourth argument of the faked method call.</typeparam>
-        /// <typeparam name="T5">The type of the fifth argument of the faked method call.</typeparam>
-        /// <typeparam name="T6">The type of the sixth argument of the faked method call.</typeparam>
-        /// <typeparam name="T7">The type of the seventh argument of the faked method call.</typeparam>
-        /// <typeparam name="T8">The type of the eighth argument of the faked method call.</typeparam>
-        /// <param name="configuration">The configuration to extend.</param>
-        /// <param name="valueProducer">A function that produces the <see cref="ValueTask{T}.Result"/> of the <see cref="ValueTask{T}"/>.</param>
-        /// <returns>The configuration object.</returns>
-        /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="valueProducer"/> do not match.</exception>
-        public static IAfterCallConfiguredWithOutAndRefParametersConfiguration<IReturnValueConfiguration<ValueTask<TReturnType>>>
-            ReturnsLazily<TReturnType, T1, T2, T3, T4, T5, T6, T7, T8>(this IReturnValueConfiguration<ValueTask<TReturnType>> configuration, Func<T1, T2, T3, T4, T5, T6, T7, T8, TReturnType> valueProducer)
+        return configuration.ReturnsLazily(call =>
         {
-            Guard.AgainstNull(configuration);
-            Guard.AgainstNull(valueProducer);
+            ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, valueProducer.GetMethodInfo(), NameOfReturnsLazilyFeature);
 
-            return configuration.ReturnsLazily(call =>
-            {
-                ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, valueProducer.GetMethodInfo(), NameOfReturnsLazilyFeature);
-
-                return new ValueTask<TReturnType>(valueProducer(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!, call.GetArgument<T3>(2)!, call.GetArgument<T4>(3)!, call.GetArgument<T5>(4)!, call.GetArgument<T6>(5)!, call.GetArgument<T7>(6)!, call.GetArgument<T8>(7)!));
-            });
-        }
+            return new ValueTask<TReturnType>(valueProducer(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!, call.GetArgument<T3>(2)!, call.GetArgument<T4>(3)!, call.GetArgument<T5>(4)!, call.GetArgument<T6>(5)!, call.GetArgument<T7>(6)!, call.GetArgument<T8>(7)!));
+        });
     }
 }

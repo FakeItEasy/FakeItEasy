@@ -13,19 +13,18 @@ public class ValueTaskReturnValueConfigurationExtensionsGenerator : StronglyType
     protected override string GenerateSource()
     {
         return $$"""
-            namespace FakeItEasy
+            namespace FakeItEasy;
+
+            using System;
+            using System.Reflection;
+            using System.Threading.Tasks;
+            using FakeItEasy.Configuration;
+
+            public static partial class ValueTaskReturnValueConfigurationExtensions
             {
-                using System;
-                using System.Reflection;
-                using System.Threading.Tasks;
-                using FakeItEasy.Configuration;
+                private const string NameOfReturnsLazilyFeature = "returns lazily";
 
-                public static partial class ValueTaskReturnValueConfigurationExtensions
-                {
-                    private const string NameOfReturnsLazilyFeature = "returns lazily";
-
-            {{Indent(2, OverloadMethod(GenerateMethodImplementation))}}
-                }
+            {{Indent(1, OverloadMethod(GenerateMethodImplementation))}}
             }
             """;
     }

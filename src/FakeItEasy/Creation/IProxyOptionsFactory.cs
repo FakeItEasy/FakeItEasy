@@ -1,9 +1,8 @@
-namespace FakeItEasy.Creation
-{
-    using System;
+namespace FakeItEasy.Creation;
 
-    internal interface IProxyOptionsFactory
-    {
-        IProxyOptions BuildProxyOptions(Type typeOfFake, Action<IFakeOptions>? optionsBuilder);
-    }
+using System;
+
+internal interface IProxyOptionsFactory
+{
+    IProxyOptions BuildProxyOptions(Type typeOfFake, Action<IFakeOptions>? optionsBuilder);
 }

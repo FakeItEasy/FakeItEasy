@@ -1,29 +1,28 @@
-﻿namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
+﻿namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions;
+
+using System.Threading;
+using Xunit;
+
+public class CancellationTokenIsCanceledTests : CancellationTokenConstraintTestsBase
 {
-    using System.Threading;
-    using Xunit;
+    protected override string ExpectedDescription => "canceled cancellation token";
 
-    public class CancellationTokenIsCanceledTests : CancellationTokenConstraintTestsBase
+    [Theory]
+    [MemberData(nameof(NonCanceledTokens))]
+    public override void IsValid_should_return_false_for_invalid_values(object invalidValue)
     {
-        protected override string ExpectedDescription => "canceled cancellation token";
+        base.IsValid_should_return_false_for_invalid_values(invalidValue);
+    }
 
-        [Theory]
-        [MemberData(nameof(NonCanceledTokens))]
-        public override void IsValid_should_return_false_for_invalid_values(object invalidValue)
-        {
-            base.IsValid_should_return_false_for_invalid_values(invalidValue);
-        }
+    [Theory]
+    [MemberData(nameof(CanceledTokens))]
+    public override void IsValid_should_return_true_for_valid_values(object validValue)
+    {
+        base.IsValid_should_return_true_for_valid_values(validValue);
+    }
 
-        [Theory]
-        [MemberData(nameof(CanceledTokens))]
-        public override void IsValid_should_return_true_for_valid_values(object validValue)
-        {
-            base.IsValid_should_return_true_for_valid_values(validValue);
-        }
-
-        protected override void CreateConstraint(INegatableArgumentConstraintManager<CancellationToken> scope)
-        {
-            scope.IsCanceled();
-        }
+    protected override void CreateConstraint(INegatableArgumentConstraintManager<CancellationToken> scope)
+    {
+        scope.IsCanceled();
     }
 }

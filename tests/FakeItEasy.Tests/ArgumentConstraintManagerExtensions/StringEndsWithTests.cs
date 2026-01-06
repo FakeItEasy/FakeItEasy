@@ -1,55 +1,54 @@
-namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
+namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions;
+
+using System.Collections.Generic;
+using FakeItEasy.Tests.TestHelpers;
+using Xunit;
+
+public class StringEndsWithTests
+    : ArgumentConstraintTestBase<string>
 {
-    using System.Collections.Generic;
-    using FakeItEasy.Tests.TestHelpers;
-    using Xunit;
+    protected override string ExpectedDescription => "string that ends with \"table\"";
 
-    public class StringEndsWithTests
-        : ArgumentConstraintTestBase<string>
+    public static IEnumerable<object?[]> InvalidValues()
     {
-        protected override string ExpectedDescription => "string that ends with \"table\"";
+        return TestCases.FromObject(
+            "rabbit",
+            "apple",
+            "bear",
+            "chicken",
+            "lorem ipsum",
+            (object?)null,
+            "tabletop",
+            "stabled");
+    }
 
-        public static IEnumerable<object?[]> InvalidValues()
-        {
-            return TestCases.FromObject(
-                "rabbit",
-                "apple",
-                "bear",
-                "chicken",
-                "lorem ipsum",
-                (object?)null,
-                "tabletop",
-                "stabled");
-        }
+    public static IEnumerable<object?[]> ValidValues()
+    {
+        return TestCases.FromObject(
+            "comfortable",
+            "portable",
+            "immutable",
+            "lorem ipsum table");
+    }
 
-        public static IEnumerable<object?[]> ValidValues()
-        {
-            return TestCases.FromObject(
-                "comfortable",
-                "portable",
-                "immutable",
-                "lorem ipsum table");
-        }
+    [Theory]
+    [MemberData(nameof(InvalidValues))]
+    public override void IsValid_should_return_false_for_invalid_values(object invalidValue)
+    {
+        base.IsValid_should_return_false_for_invalid_values(invalidValue);
+    }
 
-        [Theory]
-        [MemberData(nameof(InvalidValues))]
-        public override void IsValid_should_return_false_for_invalid_values(object invalidValue)
-        {
-            base.IsValid_should_return_false_for_invalid_values(invalidValue);
-        }
+    [Theory]
+    [MemberData(nameof(ValidValues))]
+    public override void IsValid_should_return_true_for_valid_values(object validValue)
+    {
+        base.IsValid_should_return_true_for_valid_values(validValue);
+    }
 
-        [Theory]
-        [MemberData(nameof(ValidValues))]
-        public override void IsValid_should_return_true_for_valid_values(object validValue)
-        {
-            base.IsValid_should_return_true_for_valid_values(validValue);
-        }
-
-        protected override void CreateConstraint(INegatableArgumentConstraintManager<string> scope)
-        {
+    protected override void CreateConstraint(INegatableArgumentConstraintManager<string> scope)
+    {
 #pragma warning disable CA1307 // Specify StringComparison
-            scope.EndsWith("table");
+        scope.EndsWith("table");
 #pragma warning restore CA1307 // Specify StringComparison
-        }
     }
 }

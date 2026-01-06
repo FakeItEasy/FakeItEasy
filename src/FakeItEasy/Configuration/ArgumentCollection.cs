@@ -1,143 +1,142 @@
-namespace FakeItEasy.Configuration
+namespace FakeItEasy.Configuration;
+
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Reflection;
+
+/// <summary>
+///   A collection of method arguments.
+/// </summary>
+public class ArgumentCollection
+    : IEnumerable<object?>
 {
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Diagnostics;
-    using System.Diagnostics.CodeAnalysis;
-    using System.Linq;
-    using System.Reflection;
+    /// <summary>
+    ///   The arguments this collection contains.
+    /// </summary>
+    private readonly object?[] arguments;
+    private readonly Lazy<string?[]> argumentNames;
 
     /// <summary>
-    ///   A collection of method arguments.
+    ///   Initializes a new instance of the <see cref = "ArgumentCollection" /> class.
     /// </summary>
-    public class ArgumentCollection
-        : IEnumerable<object?>
+    /// <param name = "arguments">The arguments.</param>
+    /// <param name = "method">The method.</param>
+    [DebuggerStepThrough]
+    internal ArgumentCollection(object?[] arguments, MethodInfo method)
     {
-        /// <summary>
-        ///   The arguments this collection contains.
-        /// </summary>
-        private readonly object?[] arguments;
-        private readonly Lazy<string?[]> argumentNames;
+        Guard.AgainstNull(arguments);
+        Guard.AgainstNull(method);
 
-        /// <summary>
-        ///   Initializes a new instance of the <see cref = "ArgumentCollection" /> class.
-        /// </summary>
-        /// <param name = "arguments">The arguments.</param>
-        /// <param name = "method">The method.</param>
+        if (arguments.Length != method.GetParameters().Length)
+        {
+            throw new ArgumentException(ExceptionMessages.WrongNumberOfArguments);
+        }
+
+        this.arguments = arguments;
+        this.Method = method;
+        this.argumentNames = new Lazy<string?[]>(this.GetArgumentNames);
+    }
+
+    /// <summary>
+    ///   Gets the number of arguments in the list.
+    /// </summary>
+    public int Count
+    {
         [DebuggerStepThrough]
-        internal ArgumentCollection(object?[] arguments, MethodInfo method)
-        {
-            Guard.AgainstNull(arguments);
-            Guard.AgainstNull(method);
+        get => this.arguments.Length;
+    }
 
-            if (arguments.Length != method.GetParameters().Length)
+    /// <summary>
+    ///   Gets the names of the arguments in the list.
+    ///   It's possible to declare methods with anonymous parameters (for example, in F#),
+    ///   in which case the argument names will be <c>null</c>.
+    /// </summary>
+    public IEnumerable<string?> ArgumentNames => this.argumentNames.Value;
+
+    internal MethodInfo Method { get; }
+
+    /// <summary>
+    ///   Gets the argument at the specified index.
+    /// </summary>
+    /// <param name = "argumentIndex">The index of the argument to get.</param>
+    /// <returns>The argument at the specified index.</returns>
+    public object? this[int argumentIndex]
+    {
+        [DebuggerStepThrough]
+        get { return this.arguments[argumentIndex]; }
+    }
+
+    /// <summary>
+    ///   Returns an enumerator that iterates through the collection of argument values.
+    /// </summary>
+    /// <returns>
+    ///   A <see cref = "System.Collections.Generic.IEnumerator{T}" /> that can be used to iterate through the collection.
+    /// </returns>
+    public IEnumerator<object?> GetEnumerator()
+    {
+        return ((IEnumerable<object?>)this.arguments).GetEnumerator();
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return this.GetEnumerator();
+    }
+
+    /// <summary>
+    ///   Gets the argument at the specified index.
+    /// </summary>
+    /// <typeparam name = "T">The type of the argument to get.</typeparam>
+    /// <param name = "index">The index of the argument.</param>
+    /// <returns>
+    /// The argument at the specified index. Note that the value is taken from method's arguments and so may be <c>null</c>,
+    /// even if <typeparamref name="T"/> is non-nullable.
+    /// </returns>
+    [return: MaybeNull]
+    public T Get<T>(int index)
+    {
+        return (T)this.arguments[index]!;
+    }
+
+    /// <summary>
+    ///   Gets the argument with the specified name.
+    /// </summary>
+    /// <typeparam name = "T">The type of the argument to get.</typeparam>
+    /// <param name = "argumentName">The name of the argument.</param>
+    /// <returns>
+    /// The argument with the specified name. Note that the value is taken from method's arguments and so may be <c>null</c>,
+    /// even if <typeparamref name="T"/> is non-nullable.
+    /// </returns>
+    [return: MaybeNull]
+    public T Get<T>(string argumentName)
+    {
+        Guard.AgainstNull(argumentName);
+
+        var index = this.GetArgumentIndex(argumentName);
+        return this.Get<T>(index);
+    }
+
+    internal object?[] GetUnderlyingArgumentsArray()
+    {
+        return this.arguments;
+    }
+
+    private string?[] GetArgumentNames() => this.Method.GetParameters().Select(x => x.Name).ToArray();
+
+    private int GetArgumentIndex(string argumentName)
+    {
+        var names = this.argumentNames.Value;
+        for (int index = 0; index < names.Length; ++index)
+        {
+            if (string.Equals(names[index], argumentName, StringComparison.Ordinal))
             {
-                throw new ArgumentException(ExceptionMessages.WrongNumberOfArguments);
+                return index;
             }
-
-            this.arguments = arguments;
-            this.Method = method;
-            this.argumentNames = new Lazy<string?[]>(this.GetArgumentNames);
         }
 
-        /// <summary>
-        ///   Gets the number of arguments in the list.
-        /// </summary>
-        public int Count
-        {
-            [DebuggerStepThrough]
-            get => this.arguments.Length;
-        }
-
-        /// <summary>
-        ///   Gets the names of the arguments in the list.
-        ///   It's possible to declare methods with anonymous parameters (for example, in F#),
-        ///   in which case the argument names will be <c>null</c>.
-        /// </summary>
-        public IEnumerable<string?> ArgumentNames => this.argumentNames.Value;
-
-        internal MethodInfo Method { get; }
-
-        /// <summary>
-        ///   Gets the argument at the specified index.
-        /// </summary>
-        /// <param name = "argumentIndex">The index of the argument to get.</param>
-        /// <returns>The argument at the specified index.</returns>
-        public object? this[int argumentIndex]
-        {
-            [DebuggerStepThrough]
-            get { return this.arguments[argumentIndex]; }
-        }
-
-        /// <summary>
-        ///   Returns an enumerator that iterates through the collection of argument values.
-        /// </summary>
-        /// <returns>
-        ///   A <see cref = "System.Collections.Generic.IEnumerator{T}" /> that can be used to iterate through the collection.
-        /// </returns>
-        public IEnumerator<object?> GetEnumerator()
-        {
-            return ((IEnumerable<object?>)this.arguments).GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return this.GetEnumerator();
-        }
-
-        /// <summary>
-        ///   Gets the argument at the specified index.
-        /// </summary>
-        /// <typeparam name = "T">The type of the argument to get.</typeparam>
-        /// <param name = "index">The index of the argument.</param>
-        /// <returns>
-        /// The argument at the specified index. Note that the value is taken from method's arguments and so may be <c>null</c>,
-        /// even if <typeparamref name="T"/> is non-nullable.
-        /// </returns>
-        [return: MaybeNull]
-        public T Get<T>(int index)
-        {
-            return (T)this.arguments[index]!;
-        }
-
-        /// <summary>
-        ///   Gets the argument with the specified name.
-        /// </summary>
-        /// <typeparam name = "T">The type of the argument to get.</typeparam>
-        /// <param name = "argumentName">The name of the argument.</param>
-        /// <returns>
-        /// The argument with the specified name. Note that the value is taken from method's arguments and so may be <c>null</c>,
-        /// even if <typeparamref name="T"/> is non-nullable.
-        /// </returns>
-        [return: MaybeNull]
-        public T Get<T>(string argumentName)
-        {
-            Guard.AgainstNull(argumentName);
-
-            var index = this.GetArgumentIndex(argumentName);
-            return this.Get<T>(index);
-        }
-
-        internal object?[] GetUnderlyingArgumentsArray()
-        {
-            return this.arguments;
-        }
-
-        private string?[] GetArgumentNames() => this.Method.GetParameters().Select(x => x.Name).ToArray();
-
-        private int GetArgumentIndex(string argumentName)
-        {
-            var names = this.argumentNames.Value;
-            for (int index = 0; index < names.Length; ++index)
-            {
-                if (string.Equals(names[index], argumentName, StringComparison.Ordinal))
-                {
-                    return index;
-                }
-            }
-
-            throw new ArgumentException(ExceptionMessages.ArgumentNameDoesNotExist, nameof(argumentName));
-        }
+        throw new ArgumentException(ExceptionMessages.ArgumentNameDoesNotExist, nameof(argumentName));
     }
 }

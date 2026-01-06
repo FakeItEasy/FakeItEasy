@@ -1,9 +1,8 @@
-namespace FakeItEasy.Tests.TestHelpers
+namespace FakeItEasy.Tests.TestHelpers;
+
+public class ClassWithInternalConstructorVisibleToDynamicProxy
 {
-    public class ClassWithInternalConstructorVisibleToDynamicProxy
+    internal ClassWithInternalConstructorVisibleToDynamicProxy()
     {
-        internal ClassWithInternalConstructorVisibleToDynamicProxy()
-        {
-        }
     }
 }

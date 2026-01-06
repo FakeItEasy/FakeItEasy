@@ -5,216 +5,215 @@
 //     Changes to this file will be lost when the project is rebuilt.
 // </auto-generated>
 //------------------------------------------------------------------------------
-namespace FakeItEasy
+namespace FakeItEasy;
+
+using System;
+using System.Reflection;
+using FakeItEasy.Configuration;
+
+public static partial class CallbackConfigurationExtensions
 {
-    using System;
-    using System.Reflection;
-    using FakeItEasy.Configuration;
-
-    public static partial class CallbackConfigurationExtensions
+    /// <summary>
+    /// Executes the specified action when a matching call is being made.
+    /// </summary>
+    /// <param name="configuration">The configuration that is extended.</param>
+    /// <param name="actionToInvoke">The <see cref="Action{T1}"/> to invoke.</param>
+    /// <typeparam name="TInterface">The type of configuration interface to return.</typeparam>
+    /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
+    /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="actionToInvoke"/> do not match.</exception>
+    /// <returns>The configuration object.</returns>
+    public static TInterface Invokes<TInterface, T1>(this ICallbackConfiguration<TInterface> configuration, Action<T1> actionToInvoke)
     {
-        /// <summary>
-        /// Executes the specified action when a matching call is being made.
-        /// </summary>
-        /// <param name="configuration">The configuration that is extended.</param>
-        /// <param name="actionToInvoke">The <see cref="Action{T1}"/> to invoke.</param>
-        /// <typeparam name="TInterface">The type of configuration interface to return.</typeparam>
-        /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
-        /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="actionToInvoke"/> do not match.</exception>
-        /// <returns>The configuration object.</returns>
-        public static TInterface Invokes<TInterface, T1>(this ICallbackConfiguration<TInterface> configuration, Action<T1> actionToInvoke)
-        {
-            Guard.AgainstNull(configuration);
-            Guard.AgainstNull(actionToInvoke);
+        Guard.AgainstNull(configuration);
+        Guard.AgainstNull(actionToInvoke);
 
-            return configuration.Invokes(call =>
-                {
-                    ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, actionToInvoke.GetMethodInfo(), NameOfInvokesFeature);
+        return configuration.Invokes(call =>
+            {
+                ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, actionToInvoke.GetMethodInfo(), NameOfInvokesFeature);
 
-                    actionToInvoke(call.GetArgument<T1>(0)!);
-                });
-        }
+                actionToInvoke(call.GetArgument<T1>(0)!);
+            });
+    }
 
-        /// <summary>
-        /// Executes the specified action when a matching call is being made.
-        /// </summary>
-        /// <param name="configuration">The configuration that is extended.</param>
-        /// <param name="actionToInvoke">The <see cref="Action{T1, T2}"/> to invoke.</param>
-        /// <typeparam name="TInterface">The type of configuration interface to return.</typeparam>
-        /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
-        /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
-        /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="actionToInvoke"/> do not match.</exception>
-        /// <returns>The configuration object.</returns>
-        public static TInterface Invokes<TInterface, T1, T2>(this ICallbackConfiguration<TInterface> configuration, Action<T1, T2> actionToInvoke)
-        {
-            Guard.AgainstNull(configuration);
-            Guard.AgainstNull(actionToInvoke);
+    /// <summary>
+    /// Executes the specified action when a matching call is being made.
+    /// </summary>
+    /// <param name="configuration">The configuration that is extended.</param>
+    /// <param name="actionToInvoke">The <see cref="Action{T1, T2}"/> to invoke.</param>
+    /// <typeparam name="TInterface">The type of configuration interface to return.</typeparam>
+    /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
+    /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
+    /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="actionToInvoke"/> do not match.</exception>
+    /// <returns>The configuration object.</returns>
+    public static TInterface Invokes<TInterface, T1, T2>(this ICallbackConfiguration<TInterface> configuration, Action<T1, T2> actionToInvoke)
+    {
+        Guard.AgainstNull(configuration);
+        Guard.AgainstNull(actionToInvoke);
 
-            return configuration.Invokes(call =>
-                {
-                    ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, actionToInvoke.GetMethodInfo(), NameOfInvokesFeature);
+        return configuration.Invokes(call =>
+            {
+                ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, actionToInvoke.GetMethodInfo(), NameOfInvokesFeature);
 
-                    actionToInvoke(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!);
-                });
-        }
+                actionToInvoke(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!);
+            });
+    }
 
-        /// <summary>
-        /// Executes the specified action when a matching call is being made.
-        /// </summary>
-        /// <param name="configuration">The configuration that is extended.</param>
-        /// <param name="actionToInvoke">The <see cref="Action{T1, T2, T3}"/> to invoke.</param>
-        /// <typeparam name="TInterface">The type of configuration interface to return.</typeparam>
-        /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
-        /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
-        /// <typeparam name="T3">The type of the third argument of the faked method call.</typeparam>
-        /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="actionToInvoke"/> do not match.</exception>
-        /// <returns>The configuration object.</returns>
-        public static TInterface Invokes<TInterface, T1, T2, T3>(this ICallbackConfiguration<TInterface> configuration, Action<T1, T2, T3> actionToInvoke)
-        {
-            Guard.AgainstNull(configuration);
-            Guard.AgainstNull(actionToInvoke);
+    /// <summary>
+    /// Executes the specified action when a matching call is being made.
+    /// </summary>
+    /// <param name="configuration">The configuration that is extended.</param>
+    /// <param name="actionToInvoke">The <see cref="Action{T1, T2, T3}"/> to invoke.</param>
+    /// <typeparam name="TInterface">The type of configuration interface to return.</typeparam>
+    /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
+    /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
+    /// <typeparam name="T3">The type of the third argument of the faked method call.</typeparam>
+    /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="actionToInvoke"/> do not match.</exception>
+    /// <returns>The configuration object.</returns>
+    public static TInterface Invokes<TInterface, T1, T2, T3>(this ICallbackConfiguration<TInterface> configuration, Action<T1, T2, T3> actionToInvoke)
+    {
+        Guard.AgainstNull(configuration);
+        Guard.AgainstNull(actionToInvoke);
 
-            return configuration.Invokes(call =>
-                {
-                    ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, actionToInvoke.GetMethodInfo(), NameOfInvokesFeature);
+        return configuration.Invokes(call =>
+            {
+                ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, actionToInvoke.GetMethodInfo(), NameOfInvokesFeature);
 
-                    actionToInvoke(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!, call.GetArgument<T3>(2)!);
-                });
-        }
+                actionToInvoke(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!, call.GetArgument<T3>(2)!);
+            });
+    }
 
-        /// <summary>
-        /// Executes the specified action when a matching call is being made.
-        /// </summary>
-        /// <param name="configuration">The configuration that is extended.</param>
-        /// <param name="actionToInvoke">The <see cref="Action{T1, T2, T3, T4}"/> to invoke.</param>
-        /// <typeparam name="TInterface">The type of configuration interface to return.</typeparam>
-        /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
-        /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
-        /// <typeparam name="T3">The type of the third argument of the faked method call.</typeparam>
-        /// <typeparam name="T4">The type of the fourth argument of the faked method call.</typeparam>
-        /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="actionToInvoke"/> do not match.</exception>
-        /// <returns>The configuration object.</returns>
-        public static TInterface Invokes<TInterface, T1, T2, T3, T4>(this ICallbackConfiguration<TInterface> configuration, Action<T1, T2, T3, T4> actionToInvoke)
-        {
-            Guard.AgainstNull(configuration);
-            Guard.AgainstNull(actionToInvoke);
+    /// <summary>
+    /// Executes the specified action when a matching call is being made.
+    /// </summary>
+    /// <param name="configuration">The configuration that is extended.</param>
+    /// <param name="actionToInvoke">The <see cref="Action{T1, T2, T3, T4}"/> to invoke.</param>
+    /// <typeparam name="TInterface">The type of configuration interface to return.</typeparam>
+    /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
+    /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
+    /// <typeparam name="T3">The type of the third argument of the faked method call.</typeparam>
+    /// <typeparam name="T4">The type of the fourth argument of the faked method call.</typeparam>
+    /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="actionToInvoke"/> do not match.</exception>
+    /// <returns>The configuration object.</returns>
+    public static TInterface Invokes<TInterface, T1, T2, T3, T4>(this ICallbackConfiguration<TInterface> configuration, Action<T1, T2, T3, T4> actionToInvoke)
+    {
+        Guard.AgainstNull(configuration);
+        Guard.AgainstNull(actionToInvoke);
 
-            return configuration.Invokes(call =>
-                {
-                    ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, actionToInvoke.GetMethodInfo(), NameOfInvokesFeature);
+        return configuration.Invokes(call =>
+            {
+                ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, actionToInvoke.GetMethodInfo(), NameOfInvokesFeature);
 
-                    actionToInvoke(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!, call.GetArgument<T3>(2)!, call.GetArgument<T4>(3)!);
-                });
-        }
+                actionToInvoke(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!, call.GetArgument<T3>(2)!, call.GetArgument<T4>(3)!);
+            });
+    }
 
-        /// <summary>
-        /// Executes the specified action when a matching call is being made.
-        /// </summary>
-        /// <param name="configuration">The configuration that is extended.</param>
-        /// <param name="actionToInvoke">The <see cref="Action{T1, T2, T3, T4, T5}"/> to invoke.</param>
-        /// <typeparam name="TInterface">The type of configuration interface to return.</typeparam>
-        /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
-        /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
-        /// <typeparam name="T3">The type of the third argument of the faked method call.</typeparam>
-        /// <typeparam name="T4">The type of the fourth argument of the faked method call.</typeparam>
-        /// <typeparam name="T5">The type of the fifth argument of the faked method call.</typeparam>
-        /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="actionToInvoke"/> do not match.</exception>
-        /// <returns>The configuration object.</returns>
-        public static TInterface Invokes<TInterface, T1, T2, T3, T4, T5>(this ICallbackConfiguration<TInterface> configuration, Action<T1, T2, T3, T4, T5> actionToInvoke)
-        {
-            Guard.AgainstNull(configuration);
-            Guard.AgainstNull(actionToInvoke);
+    /// <summary>
+    /// Executes the specified action when a matching call is being made.
+    /// </summary>
+    /// <param name="configuration">The configuration that is extended.</param>
+    /// <param name="actionToInvoke">The <see cref="Action{T1, T2, T3, T4, T5}"/> to invoke.</param>
+    /// <typeparam name="TInterface">The type of configuration interface to return.</typeparam>
+    /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
+    /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
+    /// <typeparam name="T3">The type of the third argument of the faked method call.</typeparam>
+    /// <typeparam name="T4">The type of the fourth argument of the faked method call.</typeparam>
+    /// <typeparam name="T5">The type of the fifth argument of the faked method call.</typeparam>
+    /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="actionToInvoke"/> do not match.</exception>
+    /// <returns>The configuration object.</returns>
+    public static TInterface Invokes<TInterface, T1, T2, T3, T4, T5>(this ICallbackConfiguration<TInterface> configuration, Action<T1, T2, T3, T4, T5> actionToInvoke)
+    {
+        Guard.AgainstNull(configuration);
+        Guard.AgainstNull(actionToInvoke);
 
-            return configuration.Invokes(call =>
-                {
-                    ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, actionToInvoke.GetMethodInfo(), NameOfInvokesFeature);
+        return configuration.Invokes(call =>
+            {
+                ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, actionToInvoke.GetMethodInfo(), NameOfInvokesFeature);
 
-                    actionToInvoke(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!, call.GetArgument<T3>(2)!, call.GetArgument<T4>(3)!, call.GetArgument<T5>(4)!);
-                });
-        }
+                actionToInvoke(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!, call.GetArgument<T3>(2)!, call.GetArgument<T4>(3)!, call.GetArgument<T5>(4)!);
+            });
+    }
 
-        /// <summary>
-        /// Executes the specified action when a matching call is being made.
-        /// </summary>
-        /// <param name="configuration">The configuration that is extended.</param>
-        /// <param name="actionToInvoke">The <see cref="Action{T1, T2, T3, T4, T5, T6}"/> to invoke.</param>
-        /// <typeparam name="TInterface">The type of configuration interface to return.</typeparam>
-        /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
-        /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
-        /// <typeparam name="T3">The type of the third argument of the faked method call.</typeparam>
-        /// <typeparam name="T4">The type of the fourth argument of the faked method call.</typeparam>
-        /// <typeparam name="T5">The type of the fifth argument of the faked method call.</typeparam>
-        /// <typeparam name="T6">The type of the sixth argument of the faked method call.</typeparam>
-        /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="actionToInvoke"/> do not match.</exception>
-        /// <returns>The configuration object.</returns>
-        public static TInterface Invokes<TInterface, T1, T2, T3, T4, T5, T6>(this ICallbackConfiguration<TInterface> configuration, Action<T1, T2, T3, T4, T5, T6> actionToInvoke)
-        {
-            Guard.AgainstNull(configuration);
-            Guard.AgainstNull(actionToInvoke);
+    /// <summary>
+    /// Executes the specified action when a matching call is being made.
+    /// </summary>
+    /// <param name="configuration">The configuration that is extended.</param>
+    /// <param name="actionToInvoke">The <see cref="Action{T1, T2, T3, T4, T5, T6}"/> to invoke.</param>
+    /// <typeparam name="TInterface">The type of configuration interface to return.</typeparam>
+    /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
+    /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
+    /// <typeparam name="T3">The type of the third argument of the faked method call.</typeparam>
+    /// <typeparam name="T4">The type of the fourth argument of the faked method call.</typeparam>
+    /// <typeparam name="T5">The type of the fifth argument of the faked method call.</typeparam>
+    /// <typeparam name="T6">The type of the sixth argument of the faked method call.</typeparam>
+    /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="actionToInvoke"/> do not match.</exception>
+    /// <returns>The configuration object.</returns>
+    public static TInterface Invokes<TInterface, T1, T2, T3, T4, T5, T6>(this ICallbackConfiguration<TInterface> configuration, Action<T1, T2, T3, T4, T5, T6> actionToInvoke)
+    {
+        Guard.AgainstNull(configuration);
+        Guard.AgainstNull(actionToInvoke);
 
-            return configuration.Invokes(call =>
-                {
-                    ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, actionToInvoke.GetMethodInfo(), NameOfInvokesFeature);
+        return configuration.Invokes(call =>
+            {
+                ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, actionToInvoke.GetMethodInfo(), NameOfInvokesFeature);
 
-                    actionToInvoke(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!, call.GetArgument<T3>(2)!, call.GetArgument<T4>(3)!, call.GetArgument<T5>(4)!, call.GetArgument<T6>(5)!);
-                });
-        }
+                actionToInvoke(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!, call.GetArgument<T3>(2)!, call.GetArgument<T4>(3)!, call.GetArgument<T5>(4)!, call.GetArgument<T6>(5)!);
+            });
+    }
 
-        /// <summary>
-        /// Executes the specified action when a matching call is being made.
-        /// </summary>
-        /// <param name="configuration">The configuration that is extended.</param>
-        /// <param name="actionToInvoke">The <see cref="Action{T1, T2, T3, T4, T5, T6, T7}"/> to invoke.</param>
-        /// <typeparam name="TInterface">The type of configuration interface to return.</typeparam>
-        /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
-        /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
-        /// <typeparam name="T3">The type of the third argument of the faked method call.</typeparam>
-        /// <typeparam name="T4">The type of the fourth argument of the faked method call.</typeparam>
-        /// <typeparam name="T5">The type of the fifth argument of the faked method call.</typeparam>
-        /// <typeparam name="T6">The type of the sixth argument of the faked method call.</typeparam>
-        /// <typeparam name="T7">The type of the seventh argument of the faked method call.</typeparam>
-        /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="actionToInvoke"/> do not match.</exception>
-        /// <returns>The configuration object.</returns>
-        public static TInterface Invokes<TInterface, T1, T2, T3, T4, T5, T6, T7>(this ICallbackConfiguration<TInterface> configuration, Action<T1, T2, T3, T4, T5, T6, T7> actionToInvoke)
-        {
-            Guard.AgainstNull(configuration);
-            Guard.AgainstNull(actionToInvoke);
+    /// <summary>
+    /// Executes the specified action when a matching call is being made.
+    /// </summary>
+    /// <param name="configuration">The configuration that is extended.</param>
+    /// <param name="actionToInvoke">The <see cref="Action{T1, T2, T3, T4, T5, T6, T7}"/> to invoke.</param>
+    /// <typeparam name="TInterface">The type of configuration interface to return.</typeparam>
+    /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
+    /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
+    /// <typeparam name="T3">The type of the third argument of the faked method call.</typeparam>
+    /// <typeparam name="T4">The type of the fourth argument of the faked method call.</typeparam>
+    /// <typeparam name="T5">The type of the fifth argument of the faked method call.</typeparam>
+    /// <typeparam name="T6">The type of the sixth argument of the faked method call.</typeparam>
+    /// <typeparam name="T7">The type of the seventh argument of the faked method call.</typeparam>
+    /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="actionToInvoke"/> do not match.</exception>
+    /// <returns>The configuration object.</returns>
+    public static TInterface Invokes<TInterface, T1, T2, T3, T4, T5, T6, T7>(this ICallbackConfiguration<TInterface> configuration, Action<T1, T2, T3, T4, T5, T6, T7> actionToInvoke)
+    {
+        Guard.AgainstNull(configuration);
+        Guard.AgainstNull(actionToInvoke);
 
-            return configuration.Invokes(call =>
-                {
-                    ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, actionToInvoke.GetMethodInfo(), NameOfInvokesFeature);
+        return configuration.Invokes(call =>
+            {
+                ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, actionToInvoke.GetMethodInfo(), NameOfInvokesFeature);
 
-                    actionToInvoke(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!, call.GetArgument<T3>(2)!, call.GetArgument<T4>(3)!, call.GetArgument<T5>(4)!, call.GetArgument<T6>(5)!, call.GetArgument<T7>(6)!);
-                });
-        }
+                actionToInvoke(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!, call.GetArgument<T3>(2)!, call.GetArgument<T4>(3)!, call.GetArgument<T5>(4)!, call.GetArgument<T6>(5)!, call.GetArgument<T7>(6)!);
+            });
+    }
 
-        /// <summary>
-        /// Executes the specified action when a matching call is being made.
-        /// </summary>
-        /// <param name="configuration">The configuration that is extended.</param>
-        /// <param name="actionToInvoke">The <see cref="Action{T1, T2, T3, T4, T5, T6, T7, T8}"/> to invoke.</param>
-        /// <typeparam name="TInterface">The type of configuration interface to return.</typeparam>
-        /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
-        /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
-        /// <typeparam name="T3">The type of the third argument of the faked method call.</typeparam>
-        /// <typeparam name="T4">The type of the fourth argument of the faked method call.</typeparam>
-        /// <typeparam name="T5">The type of the fifth argument of the faked method call.</typeparam>
-        /// <typeparam name="T6">The type of the sixth argument of the faked method call.</typeparam>
-        /// <typeparam name="T7">The type of the seventh argument of the faked method call.</typeparam>
-        /// <typeparam name="T8">The type of the eighth argument of the faked method call.</typeparam>
-        /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="actionToInvoke"/> do not match.</exception>
-        /// <returns>The configuration object.</returns>
-        public static TInterface Invokes<TInterface, T1, T2, T3, T4, T5, T6, T7, T8>(this ICallbackConfiguration<TInterface> configuration, Action<T1, T2, T3, T4, T5, T6, T7, T8> actionToInvoke)
-        {
-            Guard.AgainstNull(configuration);
-            Guard.AgainstNull(actionToInvoke);
+    /// <summary>
+    /// Executes the specified action when a matching call is being made.
+    /// </summary>
+    /// <param name="configuration">The configuration that is extended.</param>
+    /// <param name="actionToInvoke">The <see cref="Action{T1, T2, T3, T4, T5, T6, T7, T8}"/> to invoke.</param>
+    /// <typeparam name="TInterface">The type of configuration interface to return.</typeparam>
+    /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
+    /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
+    /// <typeparam name="T3">The type of the third argument of the faked method call.</typeparam>
+    /// <typeparam name="T4">The type of the fourth argument of the faked method call.</typeparam>
+    /// <typeparam name="T5">The type of the fifth argument of the faked method call.</typeparam>
+    /// <typeparam name="T6">The type of the sixth argument of the faked method call.</typeparam>
+    /// <typeparam name="T7">The type of the seventh argument of the faked method call.</typeparam>
+    /// <typeparam name="T8">The type of the eighth argument of the faked method call.</typeparam>
+    /// <exception cref="FakeConfigurationException">The signatures of the faked method and the <paramref name="actionToInvoke"/> do not match.</exception>
+    /// <returns>The configuration object.</returns>
+    public static TInterface Invokes<TInterface, T1, T2, T3, T4, T5, T6, T7, T8>(this ICallbackConfiguration<TInterface> configuration, Action<T1, T2, T3, T4, T5, T6, T7, T8> actionToInvoke)
+    {
+        Guard.AgainstNull(configuration);
+        Guard.AgainstNull(actionToInvoke);
 
-            return configuration.Invokes(call =>
-                {
-                    ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, actionToInvoke.GetMethodInfo(), NameOfInvokesFeature);
+        return configuration.Invokes(call =>
+            {
+                ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(call.Method, actionToInvoke.GetMethodInfo(), NameOfInvokesFeature);
 
-                    actionToInvoke(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!, call.GetArgument<T3>(2)!, call.GetArgument<T4>(3)!, call.GetArgument<T5>(4)!, call.GetArgument<T6>(5)!, call.GetArgument<T7>(6)!, call.GetArgument<T8>(7)!);
-                });
-        }
+                actionToInvoke(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!, call.GetArgument<T3>(2)!, call.GetArgument<T4>(3)!, call.GetArgument<T5>(4)!, call.GetArgument<T6>(5)!, call.GetArgument<T7>(6)!, call.GetArgument<T8>(7)!);
+            });
     }
 }

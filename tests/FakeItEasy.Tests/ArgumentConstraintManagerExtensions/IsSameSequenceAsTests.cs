@@ -1,60 +1,59 @@
-namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions
+namespace FakeItEasy.Tests.ArgumentConstraintManagerExtensions;
+
+using System;
+using System.Collections.Generic;
+using FakeItEasy.Tests.TestHelpers;
+using Xunit;
+
+public abstract class IsSameSequenceAsTestsBase
+    : ArgumentConstraintTestBase<IEnumerable<string?>>
 {
-    using System;
-    using System.Collections.Generic;
-    using FakeItEasy.Tests.TestHelpers;
-    using Xunit;
+    protected override string ExpectedDescription => "\"a\", \"b\", NULL, \"y\", \"z\"";
 
-    public abstract class IsSameSequenceAsTestsBase
-        : ArgumentConstraintTestBase<IEnumerable<string?>>
+    public static IEnumerable<object?[]> InvalidValues()
     {
-        protected override string ExpectedDescription => "\"a\", \"b\", NULL, \"y\", \"z\"";
-
-        public static IEnumerable<object?[]> InvalidValues()
-        {
-            return TestCases.FromObject(
-                new[] { "1", "2", "x", "y" },
-                Array.Empty<string>(),
-                (object?)null,
-                new[] { "a", "b", null, "z", "x" },
-                new[] { "a", "b" });
-        }
-
-        public static IEnumerable<object?[]> ValidValues()
-        {
-            return TestCases.FromObject(
-                new[] { "a", "b", null, "y", "z" },
-                new List<string?> { "a", "b", null, "y", "z" });
-        }
-
-        [Theory]
-        [MemberData(nameof(InvalidValues))]
-        public override void IsValid_should_return_false_for_invalid_values(object invalidValue)
-        {
-            base.IsValid_should_return_false_for_invalid_values(invalidValue);
-        }
-
-        [Theory]
-        [MemberData(nameof(ValidValues))]
-        public override void IsValid_should_return_true_for_valid_values(object validValue)
-        {
-            base.IsValid_should_return_true_for_valid_values(validValue);
-        }
+        return TestCases.FromObject(
+            new[] { "1", "2", "x", "y" },
+            Array.Empty<string>(),
+            (object?)null,
+            new[] { "a", "b", null, "z", "x" },
+            new[] { "a", "b" });
     }
 
-    public class IsSameSequenceAsTestsWithEnumerable : IsSameSequenceAsTestsBase
+    public static IEnumerable<object?[]> ValidValues()
     {
-        protected override void CreateConstraint(INegatableArgumentConstraintManager<IEnumerable<string?>> scope)
-        {
-            scope.IsSameSequenceAs(new List<object?> { "a", "b", null, "y", "z" });
-        }
+        return TestCases.FromObject(
+            new[] { "a", "b", null, "y", "z" },
+            new List<string?> { "a", "b", null, "y", "z" });
     }
 
-    public class IsSameSequenceAsTestsWithParams : IsSameSequenceAsTestsBase
+    [Theory]
+    [MemberData(nameof(InvalidValues))]
+    public override void IsValid_should_return_false_for_invalid_values(object invalidValue)
     {
-        protected override void CreateConstraint(INegatableArgumentConstraintManager<IEnumerable<string?>> scope)
-        {
-            scope.IsSameSequenceAs("a", "b", null, "y", "z");
-        }
+        base.IsValid_should_return_false_for_invalid_values(invalidValue);
+    }
+
+    [Theory]
+    [MemberData(nameof(ValidValues))]
+    public override void IsValid_should_return_true_for_valid_values(object validValue)
+    {
+        base.IsValid_should_return_true_for_valid_values(validValue);
+    }
+}
+
+public class IsSameSequenceAsTestsWithEnumerable : IsSameSequenceAsTestsBase
+{
+    protected override void CreateConstraint(INegatableArgumentConstraintManager<IEnumerable<string?>> scope)
+    {
+        scope.IsSameSequenceAs(new List<object?> { "a", "b", null, "y", "z" });
+    }
+}
+
+public class IsSameSequenceAsTestsWithParams : IsSameSequenceAsTestsBase
+{
+    protected override void CreateConstraint(INegatableArgumentConstraintManager<IEnumerable<string?>> scope)
+    {
+        scope.IsSameSequenceAs("a", "b", null, "y", "z");
     }
 }

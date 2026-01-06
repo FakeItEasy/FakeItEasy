@@ -1,60 +1,59 @@
-namespace FakeItEasy
+namespace FakeItEasy;
+
+using System;
+using System.Diagnostics.CodeAnalysis;
+using FakeItEasy.Configuration;
+
+/// <summary>
+/// Provides the extension methods for <see cref="IExceptionThrowerConfiguration{TInterface}"/>.
+/// </summary>
+public static class ExceptionThrowerConfigurationExtensions
 {
-    using System;
-    using System.Diagnostics.CodeAnalysis;
-    using FakeItEasy.Configuration;
+    /// <summary>
+    /// Throws the specified exception when the currently configured
+    /// call gets called.
+    /// </summary>
+    /// <param name="configuration">The configuration to use.</param>
+    /// <param name="exception">The exception to throw when a call that matches is invoked.</param>
+    /// <typeparam name="TInterface">The type of configuration interface to return.</typeparam>
+    /// <returns>Configuration object.</returns>
+    public static IAfterCallConfiguredConfiguration<TInterface> Throws<TInterface>(this IExceptionThrowerConfiguration<TInterface> configuration, Exception exception)
+    {
+        Guard.AgainstNull(configuration);
+        Guard.AgainstNull(exception);
+
+        return configuration.Throws(_ => exception);
+    }
 
     /// <summary>
-    /// Provides the extension methods for <see cref="IExceptionThrowerConfiguration{TInterface}"/>.
+    /// Throws the specified exception when the currently configured
+    /// call gets called.
     /// </summary>
-    public static class ExceptionThrowerConfigurationExtensions
+    /// <param name="configuration">The configuration to use.</param>
+    /// <param name="exceptionFactory">A function that returns the exception to throw when invoked.</param>
+    /// <typeparam name="TInterface">The type of configuration interface to return.</typeparam>
+    /// <returns>Configuration object.</returns>
+    public static IAfterCallConfiguredConfiguration<TInterface> Throws<TInterface>(this IExceptionThrowerConfiguration<TInterface> configuration, Func<Exception> exceptionFactory)
     {
-        /// <summary>
-        /// Throws the specified exception when the currently configured
-        /// call gets called.
-        /// </summary>
-        /// <param name="configuration">The configuration to use.</param>
-        /// <param name="exception">The exception to throw when a call that matches is invoked.</param>
-        /// <typeparam name="TInterface">The type of configuration interface to return.</typeparam>
-        /// <returns>Configuration object.</returns>
-        public static IAfterCallConfiguredConfiguration<TInterface> Throws<TInterface>(this IExceptionThrowerConfiguration<TInterface> configuration, Exception exception)
-        {
-            Guard.AgainstNull(configuration);
-            Guard.AgainstNull(exception);
+        Guard.AgainstNull(configuration);
+        Guard.AgainstNull(exceptionFactory);
 
-            return configuration.Throws(_ => exception);
-        }
+        return configuration.Throws(_ => exceptionFactory());
+    }
 
-        /// <summary>
-        /// Throws the specified exception when the currently configured
-        /// call gets called.
-        /// </summary>
-        /// <param name="configuration">The configuration to use.</param>
-        /// <param name="exceptionFactory">A function that returns the exception to throw when invoked.</param>
-        /// <typeparam name="TInterface">The type of configuration interface to return.</typeparam>
-        /// <returns>Configuration object.</returns>
-        public static IAfterCallConfiguredConfiguration<TInterface> Throws<TInterface>(this IExceptionThrowerConfiguration<TInterface> configuration, Func<Exception> exceptionFactory)
-        {
-            Guard.AgainstNull(configuration);
-            Guard.AgainstNull(exceptionFactory);
+    /// <summary>
+    /// Throws the specified exception when the currently configured
+    /// call gets called.
+    /// </summary>
+    /// <param name="configuration">The configuration to use.</param>
+    /// <typeparam name="TInterface">The type of configuration interface to return.</typeparam>
+    /// <typeparam name="T">The type of exception to throw.</typeparam>
+    /// <returns>Configuration object.</returns>
+    [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "By design.")]
+    internal static IAfterCallConfiguredConfiguration<TInterface> Throws<TInterface, T>(this IExceptionThrowerConfiguration<TInterface> configuration) where T : Exception, new()
+    {
+        Guard.AgainstNull(configuration);
 
-            return configuration.Throws(_ => exceptionFactory());
-        }
-
-        /// <summary>
-        /// Throws the specified exception when the currently configured
-        /// call gets called.
-        /// </summary>
-        /// <param name="configuration">The configuration to use.</param>
-        /// <typeparam name="TInterface">The type of configuration interface to return.</typeparam>
-        /// <typeparam name="T">The type of exception to throw.</typeparam>
-        /// <returns>Configuration object.</returns>
-        [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "By design.")]
-        internal static IAfterCallConfiguredConfiguration<TInterface> Throws<TInterface, T>(this IExceptionThrowerConfiguration<TInterface> configuration) where T : Exception, new()
-        {
-            Guard.AgainstNull(configuration);
-
-            return configuration.Throws(_ => new T());
-        }
+        return configuration.Throws(_ => new T());
     }
 }

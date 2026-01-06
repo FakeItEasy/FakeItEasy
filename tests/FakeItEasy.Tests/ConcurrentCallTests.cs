@@ -1,54 +1,53 @@
-namespace FakeItEasy.Tests
+namespace FakeItEasy.Tests;
+
+using System.Threading;
+using System.Threading.Tasks;
+using FluentAssertions;
+using Xunit;
+using Xunit.Abstractions;
+
+public class ConcurrentCallTests
 {
-    using System.Threading;
-    using System.Threading.Tasks;
-    using FluentAssertions;
-    using Xunit;
-    using Xunit.Abstractions;
+    private readonly ITestOutputHelper output;
 
-    public class ConcurrentCallTests
+    public ConcurrentCallTests(ITestOutputHelper output)
     {
-        private readonly ITestOutputHelper output;
+        this.output = output;
+    }
 
-        public ConcurrentCallTests(ITestOutputHelper output)
-        {
-            this.output = output;
-        }
+    public interface ITestInterface
+    {
+        int MyMethod();
+    }
 
-        public interface ITestInterface
+    [Fact]
+    public void Concurrent_calls_are_correctly_recorded()
+    {
+        for (int i = 0; i < 100; i++)
         {
-            int MyMethod();
-        }
-
-        [Fact]
-        public void Concurrent_calls_are_correctly_recorded()
-        {
-            for (int i = 0; i < 100; i++)
+            try
             {
-                try
+                ITestInterface fake = A.Fake<ITestInterface>();
+
+                int count = 0;
+                A.CallTo(() => fake.MyMethod()).ReturnsLazily(p => Interlocked.Increment(ref count));
+
+                Task<int>[] tasks =
                 {
-                    ITestInterface fake = A.Fake<ITestInterface>();
+                    Task.Run(() => fake.MyMethod()),
+                    Task.Run(() => fake.MyMethod()),
+                };
 
-                    int count = 0;
-                    A.CallTo(() => fake.MyMethod()).ReturnsLazily(p => Interlocked.Increment(ref count));
+                int[] result = Task.WhenAll(tasks).Result;
 
-                    Task<int>[] tasks =
-                    {
-                        Task.Run(() => fake.MyMethod()),
-                        Task.Run(() => fake.MyMethod()),
-                    };
+                result.Should().BeEquivalentTo(1, 2);
 
-                    int[] result = Task.WhenAll(tasks).Result;
-
-                    result.Should().BeEquivalentTo(1, 2);
-
-                    A.CallTo(() => fake.MyMethod()).MustHaveHappenedTwiceExactly();
-                }
-                catch
-                {
-                    this.output.WriteLine($"Failed at iteration {i}");
-                    throw;
-                }
+                A.CallTo(() => fake.MyMethod()).MustHaveHappenedTwiceExactly();
+            }
+            catch
+            {
+                this.output.WriteLine($"Failed at iteration {i}");
+                throw;
             }
         }
     }

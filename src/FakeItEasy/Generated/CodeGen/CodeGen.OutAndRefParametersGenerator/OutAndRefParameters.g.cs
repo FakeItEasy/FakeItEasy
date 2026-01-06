@@ -6,158 +6,388 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 #nullable enable
-namespace FakeItEasy.Configuration
+namespace FakeItEasy.Configuration;
+
+using System;
+using System.Reflection;
+
+public partial interface IOutAndRefParametersConfiguration<out TInterface>
 {
-    using System;
-    using System.Reflection;
+    /// <summary>
+    /// Specifies a function used to produce output values for out and ref parameters.
+    /// The values should appear in the same order as the out and ref parameters in the configured call.
+    /// Any non out and ref parameters are ignored.
+    /// The function will be called each time this call is made and can return different values.
+    /// </summary>
+    /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
+    /// <param name="valueProducer">A function that produces the output values.</param>
+    /// <returns>A configuration object.</returns>
+    /// <exception cref="FakeConfigurationException">
+    /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
+    /// </exception>
+    IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily<T1>(Func<T1, object?[]> valueProducer);
 
-    public partial interface IOutAndRefParametersConfiguration<out TInterface>
+    /// <summary>
+    /// Specifies a function used to produce output values for out and ref parameters.
+    /// The values should appear in the same order as the out and ref parameters in the configured call.
+    /// Any non out and ref parameters are ignored.
+    /// The function will be called each time this call is made and can return different values.
+    /// </summary>
+    /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
+    /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
+    /// <param name="valueProducer">A function that produces the output values.</param>
+    /// <returns>A configuration object.</returns>
+    /// <exception cref="FakeConfigurationException">
+    /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
+    /// </exception>
+    IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily<T1, T2>(Func<T1, T2, object?[]> valueProducer);
+
+    /// <summary>
+    /// Specifies a function used to produce output values for out and ref parameters.
+    /// The values should appear in the same order as the out and ref parameters in the configured call.
+    /// Any non out and ref parameters are ignored.
+    /// The function will be called each time this call is made and can return different values.
+    /// </summary>
+    /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
+    /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
+    /// <typeparam name="T3">The type of the third argument of the faked method call.</typeparam>
+    /// <param name="valueProducer">A function that produces the output values.</param>
+    /// <returns>A configuration object.</returns>
+    /// <exception cref="FakeConfigurationException">
+    /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
+    /// </exception>
+    IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily<T1, T2, T3>(Func<T1, T2, T3, object?[]> valueProducer);
+
+    /// <summary>
+    /// Specifies a function used to produce output values for out and ref parameters.
+    /// The values should appear in the same order as the out and ref parameters in the configured call.
+    /// Any non out and ref parameters are ignored.
+    /// The function will be called each time this call is made and can return different values.
+    /// </summary>
+    /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
+    /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
+    /// <typeparam name="T3">The type of the third argument of the faked method call.</typeparam>
+    /// <typeparam name="T4">The type of the fourth argument of the faked method call.</typeparam>
+    /// <param name="valueProducer">A function that produces the output values.</param>
+    /// <returns>A configuration object.</returns>
+    /// <exception cref="FakeConfigurationException">
+    /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
+    /// </exception>
+    IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily<T1, T2, T3, T4>(Func<T1, T2, T3, T4, object?[]> valueProducer);
+
+    /// <summary>
+    /// Specifies a function used to produce output values for out and ref parameters.
+    /// The values should appear in the same order as the out and ref parameters in the configured call.
+    /// Any non out and ref parameters are ignored.
+    /// The function will be called each time this call is made and can return different values.
+    /// </summary>
+    /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
+    /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
+    /// <typeparam name="T3">The type of the third argument of the faked method call.</typeparam>
+    /// <typeparam name="T4">The type of the fourth argument of the faked method call.</typeparam>
+    /// <typeparam name="T5">The type of the fifth argument of the faked method call.</typeparam>
+    /// <param name="valueProducer">A function that produces the output values.</param>
+    /// <returns>A configuration object.</returns>
+    /// <exception cref="FakeConfigurationException">
+    /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
+    /// </exception>
+    IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5>(Func<T1, T2, T3, T4, T5, object?[]> valueProducer);
+
+    /// <summary>
+    /// Specifies a function used to produce output values for out and ref parameters.
+    /// The values should appear in the same order as the out and ref parameters in the configured call.
+    /// Any non out and ref parameters are ignored.
+    /// The function will be called each time this call is made and can return different values.
+    /// </summary>
+    /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
+    /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
+    /// <typeparam name="T3">The type of the third argument of the faked method call.</typeparam>
+    /// <typeparam name="T4">The type of the fourth argument of the faked method call.</typeparam>
+    /// <typeparam name="T5">The type of the fifth argument of the faked method call.</typeparam>
+    /// <typeparam name="T6">The type of the sixth argument of the faked method call.</typeparam>
+    /// <param name="valueProducer">A function that produces the output values.</param>
+    /// <returns>A configuration object.</returns>
+    /// <exception cref="FakeConfigurationException">
+    /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
+    /// </exception>
+    IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5, T6>(Func<T1, T2, T3, T4, T5, T6, object?[]> valueProducer);
+
+    /// <summary>
+    /// Specifies a function used to produce output values for out and ref parameters.
+    /// The values should appear in the same order as the out and ref parameters in the configured call.
+    /// Any non out and ref parameters are ignored.
+    /// The function will be called each time this call is made and can return different values.
+    /// </summary>
+    /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
+    /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
+    /// <typeparam name="T3">The type of the third argument of the faked method call.</typeparam>
+    /// <typeparam name="T4">The type of the fourth argument of the faked method call.</typeparam>
+    /// <typeparam name="T5">The type of the fifth argument of the faked method call.</typeparam>
+    /// <typeparam name="T6">The type of the sixth argument of the faked method call.</typeparam>
+    /// <typeparam name="T7">The type of the seventh argument of the faked method call.</typeparam>
+    /// <param name="valueProducer">A function that produces the output values.</param>
+    /// <returns>A configuration object.</returns>
+    /// <exception cref="FakeConfigurationException">
+    /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
+    /// </exception>
+    IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5, T6, T7>(Func<T1, T2, T3, T4, T5, T6, T7, object?[]> valueProducer);
+
+    /// <summary>
+    /// Specifies a function used to produce output values for out and ref parameters.
+    /// The values should appear in the same order as the out and ref parameters in the configured call.
+    /// Any non out and ref parameters are ignored.
+    /// The function will be called each time this call is made and can return different values.
+    /// </summary>
+    /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
+    /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
+    /// <typeparam name="T3">The type of the third argument of the faked method call.</typeparam>
+    /// <typeparam name="T4">The type of the fourth argument of the faked method call.</typeparam>
+    /// <typeparam name="T5">The type of the fifth argument of the faked method call.</typeparam>
+    /// <typeparam name="T6">The type of the sixth argument of the faked method call.</typeparam>
+    /// <typeparam name="T7">The type of the seventh argument of the faked method call.</typeparam>
+    /// <typeparam name="T8">The type of the eighth argument of the faked method call.</typeparam>
+    /// <param name="valueProducer">A function that produces the output values.</param>
+    /// <returns>A configuration object.</returns>
+    /// <exception cref="FakeConfigurationException">
+    /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
+    /// </exception>
+    IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5, T6, T7, T8>(Func<T1, T2, T3, T4, T5, T6, T7, T8, object?[]> valueProducer);
+}
+
+internal partial class RuleBuilder
+{
+    private const string NameOfOutRefLazilyFeature = "assigns out and ref parameters lazily";
+
+    /// <summary>
+    /// Specifies a function used to produce output values for out and ref parameters.
+    /// The values should appear in the same order as the out and ref parameters in the configured call.
+    /// Any non out and ref parameters are ignored.
+    /// The function will be called each time this call is made and can return different values.
+    /// </summary>
+    /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
+    /// <param name="valueProducer">A function that produces the output values.</param>
+    /// <returns>A configuration object.</returns>
+    /// <exception cref="FakeConfigurationException">
+    /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
+    /// </exception>
+    public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1>(Func<T1, object?[]> valueProducer)
     {
-        /// <summary>
-        /// Specifies a function used to produce output values for out and ref parameters.
-        /// The values should appear in the same order as the out and ref parameters in the configured call.
-        /// Any non out and ref parameters are ignored.
-        /// The function will be called each time this call is made and can return different values.
-        /// </summary>
-        /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
-        /// <param name="valueProducer">A function that produces the output values.</param>
-        /// <returns>A configuration object.</returns>
-        /// <exception cref="FakeConfigurationException">
-        /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
-        /// </exception>
-        IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily<T1>(Func<T1, object?[]> valueProducer);
+        Guard.AgainstNull(valueProducer);
 
-        /// <summary>
-        /// Specifies a function used to produce output values for out and ref parameters.
-        /// The values should appear in the same order as the out and ref parameters in the configured call.
-        /// Any non out and ref parameters are ignored.
-        /// The function will be called each time this call is made and can return different values.
-        /// </summary>
-        /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
-        /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
-        /// <param name="valueProducer">A function that produces the output values.</param>
-        /// <returns>A configuration object.</returns>
-        /// <exception cref="FakeConfigurationException">
-        /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
-        /// </exception>
-        IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily<T1, T2>(Func<T1, T2, object?[]> valueProducer);
+        return this.AssignsOutAndRefParametersLazily(call =>
+        {
+            ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(
+                call.Method, valueProducer.GetMethodInfo(), NameOfOutRefLazilyFeature);
 
-        /// <summary>
-        /// Specifies a function used to produce output values for out and ref parameters.
-        /// The values should appear in the same order as the out and ref parameters in the configured call.
-        /// Any non out and ref parameters are ignored.
-        /// The function will be called each time this call is made and can return different values.
-        /// </summary>
-        /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
-        /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
-        /// <typeparam name="T3">The type of the third argument of the faked method call.</typeparam>
-        /// <param name="valueProducer">A function that produces the output values.</param>
-        /// <returns>A configuration object.</returns>
-        /// <exception cref="FakeConfigurationException">
-        /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
-        /// </exception>
-        IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily<T1, T2, T3>(Func<T1, T2, T3, object?[]> valueProducer);
-
-        /// <summary>
-        /// Specifies a function used to produce output values for out and ref parameters.
-        /// The values should appear in the same order as the out and ref parameters in the configured call.
-        /// Any non out and ref parameters are ignored.
-        /// The function will be called each time this call is made and can return different values.
-        /// </summary>
-        /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
-        /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
-        /// <typeparam name="T3">The type of the third argument of the faked method call.</typeparam>
-        /// <typeparam name="T4">The type of the fourth argument of the faked method call.</typeparam>
-        /// <param name="valueProducer">A function that produces the output values.</param>
-        /// <returns>A configuration object.</returns>
-        /// <exception cref="FakeConfigurationException">
-        /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
-        /// </exception>
-        IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily<T1, T2, T3, T4>(Func<T1, T2, T3, T4, object?[]> valueProducer);
-
-        /// <summary>
-        /// Specifies a function used to produce output values for out and ref parameters.
-        /// The values should appear in the same order as the out and ref parameters in the configured call.
-        /// Any non out and ref parameters are ignored.
-        /// The function will be called each time this call is made and can return different values.
-        /// </summary>
-        /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
-        /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
-        /// <typeparam name="T3">The type of the third argument of the faked method call.</typeparam>
-        /// <typeparam name="T4">The type of the fourth argument of the faked method call.</typeparam>
-        /// <typeparam name="T5">The type of the fifth argument of the faked method call.</typeparam>
-        /// <param name="valueProducer">A function that produces the output values.</param>
-        /// <returns>A configuration object.</returns>
-        /// <exception cref="FakeConfigurationException">
-        /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
-        /// </exception>
-        IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5>(Func<T1, T2, T3, T4, T5, object?[]> valueProducer);
-
-        /// <summary>
-        /// Specifies a function used to produce output values for out and ref parameters.
-        /// The values should appear in the same order as the out and ref parameters in the configured call.
-        /// Any non out and ref parameters are ignored.
-        /// The function will be called each time this call is made and can return different values.
-        /// </summary>
-        /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
-        /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
-        /// <typeparam name="T3">The type of the third argument of the faked method call.</typeparam>
-        /// <typeparam name="T4">The type of the fourth argument of the faked method call.</typeparam>
-        /// <typeparam name="T5">The type of the fifth argument of the faked method call.</typeparam>
-        /// <typeparam name="T6">The type of the sixth argument of the faked method call.</typeparam>
-        /// <param name="valueProducer">A function that produces the output values.</param>
-        /// <returns>A configuration object.</returns>
-        /// <exception cref="FakeConfigurationException">
-        /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
-        /// </exception>
-        IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5, T6>(Func<T1, T2, T3, T4, T5, T6, object?[]> valueProducer);
-
-        /// <summary>
-        /// Specifies a function used to produce output values for out and ref parameters.
-        /// The values should appear in the same order as the out and ref parameters in the configured call.
-        /// Any non out and ref parameters are ignored.
-        /// The function will be called each time this call is made and can return different values.
-        /// </summary>
-        /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
-        /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
-        /// <typeparam name="T3">The type of the third argument of the faked method call.</typeparam>
-        /// <typeparam name="T4">The type of the fourth argument of the faked method call.</typeparam>
-        /// <typeparam name="T5">The type of the fifth argument of the faked method call.</typeparam>
-        /// <typeparam name="T6">The type of the sixth argument of the faked method call.</typeparam>
-        /// <typeparam name="T7">The type of the seventh argument of the faked method call.</typeparam>
-        /// <param name="valueProducer">A function that produces the output values.</param>
-        /// <returns>A configuration object.</returns>
-        /// <exception cref="FakeConfigurationException">
-        /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
-        /// </exception>
-        IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5, T6, T7>(Func<T1, T2, T3, T4, T5, T6, T7, object?[]> valueProducer);
-
-        /// <summary>
-        /// Specifies a function used to produce output values for out and ref parameters.
-        /// The values should appear in the same order as the out and ref parameters in the configured call.
-        /// Any non out and ref parameters are ignored.
-        /// The function will be called each time this call is made and can return different values.
-        /// </summary>
-        /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
-        /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
-        /// <typeparam name="T3">The type of the third argument of the faked method call.</typeparam>
-        /// <typeparam name="T4">The type of the fourth argument of the faked method call.</typeparam>
-        /// <typeparam name="T5">The type of the fifth argument of the faked method call.</typeparam>
-        /// <typeparam name="T6">The type of the sixth argument of the faked method call.</typeparam>
-        /// <typeparam name="T7">The type of the seventh argument of the faked method call.</typeparam>
-        /// <typeparam name="T8">The type of the eighth argument of the faked method call.</typeparam>
-        /// <param name="valueProducer">A function that produces the output values.</param>
-        /// <returns>A configuration object.</returns>
-        /// <exception cref="FakeConfigurationException">
-        /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
-        /// </exception>
-        IAfterCallConfiguredConfiguration<TInterface> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5, T6, T7, T8>(Func<T1, T2, T3, T4, T5, T6, T7, T8, object?[]> valueProducer);
+            return valueProducer(call.GetArgument<T1>(0)!);
+        });
     }
 
-    internal partial class RuleBuilder
+    /// <summary>
+    /// Specifies a function used to produce output values for out and ref parameters.
+    /// The values should appear in the same order as the out and ref parameters in the configured call.
+    /// Any non out and ref parameters are ignored.
+    /// The function will be called each time this call is made and can return different values.
+    /// </summary>
+    /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
+    /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
+    /// <param name="valueProducer">A function that produces the output values.</param>
+    /// <returns>A configuration object.</returns>
+    /// <exception cref="FakeConfigurationException">
+    /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
+    /// </exception>
+    public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2>(Func<T1, T2, object?[]> valueProducer)
     {
-        private const string NameOfOutRefLazilyFeature = "assigns out and ref parameters lazily";
+        Guard.AgainstNull(valueProducer);
 
+        return this.AssignsOutAndRefParametersLazily(call =>
+        {
+            ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(
+                call.Method, valueProducer.GetMethodInfo(), NameOfOutRefLazilyFeature);
+
+            return valueProducer(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!);
+        });
+    }
+
+    /// <summary>
+    /// Specifies a function used to produce output values for out and ref parameters.
+    /// The values should appear in the same order as the out and ref parameters in the configured call.
+    /// Any non out and ref parameters are ignored.
+    /// The function will be called each time this call is made and can return different values.
+    /// </summary>
+    /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
+    /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
+    /// <typeparam name="T3">The type of the third argument of the faked method call.</typeparam>
+    /// <param name="valueProducer">A function that produces the output values.</param>
+    /// <returns>A configuration object.</returns>
+    /// <exception cref="FakeConfigurationException">
+    /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
+    /// </exception>
+    public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3>(Func<T1, T2, T3, object?[]> valueProducer)
+    {
+        Guard.AgainstNull(valueProducer);
+
+        return this.AssignsOutAndRefParametersLazily(call =>
+        {
+            ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(
+                call.Method, valueProducer.GetMethodInfo(), NameOfOutRefLazilyFeature);
+
+            return valueProducer(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!, call.GetArgument<T3>(2)!);
+        });
+    }
+
+    /// <summary>
+    /// Specifies a function used to produce output values for out and ref parameters.
+    /// The values should appear in the same order as the out and ref parameters in the configured call.
+    /// Any non out and ref parameters are ignored.
+    /// The function will be called each time this call is made and can return different values.
+    /// </summary>
+    /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
+    /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
+    /// <typeparam name="T3">The type of the third argument of the faked method call.</typeparam>
+    /// <typeparam name="T4">The type of the fourth argument of the faked method call.</typeparam>
+    /// <param name="valueProducer">A function that produces the output values.</param>
+    /// <returns>A configuration object.</returns>
+    /// <exception cref="FakeConfigurationException">
+    /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
+    /// </exception>
+    public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3, T4>(Func<T1, T2, T3, T4, object?[]> valueProducer)
+    {
+        Guard.AgainstNull(valueProducer);
+
+        return this.AssignsOutAndRefParametersLazily(call =>
+        {
+            ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(
+                call.Method, valueProducer.GetMethodInfo(), NameOfOutRefLazilyFeature);
+
+            return valueProducer(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!, call.GetArgument<T3>(2)!, call.GetArgument<T4>(3)!);
+        });
+    }
+
+    /// <summary>
+    /// Specifies a function used to produce output values for out and ref parameters.
+    /// The values should appear in the same order as the out and ref parameters in the configured call.
+    /// Any non out and ref parameters are ignored.
+    /// The function will be called each time this call is made and can return different values.
+    /// </summary>
+    /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
+    /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
+    /// <typeparam name="T3">The type of the third argument of the faked method call.</typeparam>
+    /// <typeparam name="T4">The type of the fourth argument of the faked method call.</typeparam>
+    /// <typeparam name="T5">The type of the fifth argument of the faked method call.</typeparam>
+    /// <param name="valueProducer">A function that produces the output values.</param>
+    /// <returns>A configuration object.</returns>
+    /// <exception cref="FakeConfigurationException">
+    /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
+    /// </exception>
+    public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5>(Func<T1, T2, T3, T4, T5, object?[]> valueProducer)
+    {
+        Guard.AgainstNull(valueProducer);
+
+        return this.AssignsOutAndRefParametersLazily(call =>
+        {
+            ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(
+                call.Method, valueProducer.GetMethodInfo(), NameOfOutRefLazilyFeature);
+
+            return valueProducer(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!, call.GetArgument<T3>(2)!, call.GetArgument<T4>(3)!, call.GetArgument<T5>(4)!);
+        });
+    }
+
+    /// <summary>
+    /// Specifies a function used to produce output values for out and ref parameters.
+    /// The values should appear in the same order as the out and ref parameters in the configured call.
+    /// Any non out and ref parameters are ignored.
+    /// The function will be called each time this call is made and can return different values.
+    /// </summary>
+    /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
+    /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
+    /// <typeparam name="T3">The type of the third argument of the faked method call.</typeparam>
+    /// <typeparam name="T4">The type of the fourth argument of the faked method call.</typeparam>
+    /// <typeparam name="T5">The type of the fifth argument of the faked method call.</typeparam>
+    /// <typeparam name="T6">The type of the sixth argument of the faked method call.</typeparam>
+    /// <param name="valueProducer">A function that produces the output values.</param>
+    /// <returns>A configuration object.</returns>
+    /// <exception cref="FakeConfigurationException">
+    /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
+    /// </exception>
+    public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5, T6>(Func<T1, T2, T3, T4, T5, T6, object?[]> valueProducer)
+    {
+        Guard.AgainstNull(valueProducer);
+
+        return this.AssignsOutAndRefParametersLazily(call =>
+        {
+            ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(
+                call.Method, valueProducer.GetMethodInfo(), NameOfOutRefLazilyFeature);
+
+            return valueProducer(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!, call.GetArgument<T3>(2)!, call.GetArgument<T4>(3)!, call.GetArgument<T5>(4)!, call.GetArgument<T6>(5)!);
+        });
+    }
+
+    /// <summary>
+    /// Specifies a function used to produce output values for out and ref parameters.
+    /// The values should appear in the same order as the out and ref parameters in the configured call.
+    /// Any non out and ref parameters are ignored.
+    /// The function will be called each time this call is made and can return different values.
+    /// </summary>
+    /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
+    /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
+    /// <typeparam name="T3">The type of the third argument of the faked method call.</typeparam>
+    /// <typeparam name="T4">The type of the fourth argument of the faked method call.</typeparam>
+    /// <typeparam name="T5">The type of the fifth argument of the faked method call.</typeparam>
+    /// <typeparam name="T6">The type of the sixth argument of the faked method call.</typeparam>
+    /// <typeparam name="T7">The type of the seventh argument of the faked method call.</typeparam>
+    /// <param name="valueProducer">A function that produces the output values.</param>
+    /// <returns>A configuration object.</returns>
+    /// <exception cref="FakeConfigurationException">
+    /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
+    /// </exception>
+    public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5, T6, T7>(Func<T1, T2, T3, T4, T5, T6, T7, object?[]> valueProducer)
+    {
+        Guard.AgainstNull(valueProducer);
+
+        return this.AssignsOutAndRefParametersLazily(call =>
+        {
+            ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(
+                call.Method, valueProducer.GetMethodInfo(), NameOfOutRefLazilyFeature);
+
+            return valueProducer(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!, call.GetArgument<T3>(2)!, call.GetArgument<T4>(3)!, call.GetArgument<T5>(4)!, call.GetArgument<T6>(5)!, call.GetArgument<T7>(6)!);
+        });
+    }
+
+    /// <summary>
+    /// Specifies a function used to produce output values for out and ref parameters.
+    /// The values should appear in the same order as the out and ref parameters in the configured call.
+    /// Any non out and ref parameters are ignored.
+    /// The function will be called each time this call is made and can return different values.
+    /// </summary>
+    /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
+    /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
+    /// <typeparam name="T3">The type of the third argument of the faked method call.</typeparam>
+    /// <typeparam name="T4">The type of the fourth argument of the faked method call.</typeparam>
+    /// <typeparam name="T5">The type of the fifth argument of the faked method call.</typeparam>
+    /// <typeparam name="T6">The type of the sixth argument of the faked method call.</typeparam>
+    /// <typeparam name="T7">The type of the seventh argument of the faked method call.</typeparam>
+    /// <typeparam name="T8">The type of the eighth argument of the faked method call.</typeparam>
+    /// <param name="valueProducer">A function that produces the output values.</param>
+    /// <returns>A configuration object.</returns>
+    /// <exception cref="FakeConfigurationException">
+    /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
+    /// </exception>
+    public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5, T6, T7, T8>(Func<T1, T2, T3, T4, T5, T6, T7, T8, object?[]> valueProducer)
+    {
+        Guard.AgainstNull(valueProducer);
+
+        return this.AssignsOutAndRefParametersLazily(call =>
+        {
+            ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(
+                call.Method, valueProducer.GetMethodInfo(), NameOfOutRefLazilyFeature);
+
+            return valueProducer(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!, call.GetArgument<T3>(2)!, call.GetArgument<T4>(3)!, call.GetArgument<T5>(4)!, call.GetArgument<T6>(5)!, call.GetArgument<T7>(6)!, call.GetArgument<T8>(7)!);
+        });
+    }
+
+    public partial class ReturnValueConfiguration<TMember>
+    {
         /// <summary>
         /// Specifies a function used to produce output values for out and ref parameters.
         /// The values should appear in the same order as the out and ref parameters in the configured call.
@@ -170,7 +400,7 @@ namespace FakeItEasy.Configuration
         /// <exception cref="FakeConfigurationException">
         /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
         /// </exception>
-        public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1>(Func<T1, object?[]> valueProducer)
+        public IAfterCallConfiguredConfiguration<IReturnValueConfiguration<TMember>> AssignsOutAndRefParametersLazily<T1>(Func<T1, object?[]> valueProducer)
         {
             Guard.AgainstNull(valueProducer);
 
@@ -196,7 +426,7 @@ namespace FakeItEasy.Configuration
         /// <exception cref="FakeConfigurationException">
         /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
         /// </exception>
-        public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2>(Func<T1, T2, object?[]> valueProducer)
+        public IAfterCallConfiguredConfiguration<IReturnValueConfiguration<TMember>> AssignsOutAndRefParametersLazily<T1, T2>(Func<T1, T2, object?[]> valueProducer)
         {
             Guard.AgainstNull(valueProducer);
 
@@ -223,7 +453,7 @@ namespace FakeItEasy.Configuration
         /// <exception cref="FakeConfigurationException">
         /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
         /// </exception>
-        public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3>(Func<T1, T2, T3, object?[]> valueProducer)
+        public IAfterCallConfiguredConfiguration<IReturnValueConfiguration<TMember>> AssignsOutAndRefParametersLazily<T1, T2, T3>(Func<T1, T2, T3, object?[]> valueProducer)
         {
             Guard.AgainstNull(valueProducer);
 
@@ -251,7 +481,7 @@ namespace FakeItEasy.Configuration
         /// <exception cref="FakeConfigurationException">
         /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
         /// </exception>
-        public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3, T4>(Func<T1, T2, T3, T4, object?[]> valueProducer)
+        public IAfterCallConfiguredConfiguration<IReturnValueConfiguration<TMember>> AssignsOutAndRefParametersLazily<T1, T2, T3, T4>(Func<T1, T2, T3, T4, object?[]> valueProducer)
         {
             Guard.AgainstNull(valueProducer);
 
@@ -280,7 +510,7 @@ namespace FakeItEasy.Configuration
         /// <exception cref="FakeConfigurationException">
         /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
         /// </exception>
-        public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5>(Func<T1, T2, T3, T4, T5, object?[]> valueProducer)
+        public IAfterCallConfiguredConfiguration<IReturnValueConfiguration<TMember>> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5>(Func<T1, T2, T3, T4, T5, object?[]> valueProducer)
         {
             Guard.AgainstNull(valueProducer);
 
@@ -310,7 +540,7 @@ namespace FakeItEasy.Configuration
         /// <exception cref="FakeConfigurationException">
         /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
         /// </exception>
-        public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5, T6>(Func<T1, T2, T3, T4, T5, T6, object?[]> valueProducer)
+        public IAfterCallConfiguredConfiguration<IReturnValueConfiguration<TMember>> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5, T6>(Func<T1, T2, T3, T4, T5, T6, object?[]> valueProducer)
         {
             Guard.AgainstNull(valueProducer);
 
@@ -341,7 +571,7 @@ namespace FakeItEasy.Configuration
         /// <exception cref="FakeConfigurationException">
         /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
         /// </exception>
-        public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5, T6, T7>(Func<T1, T2, T3, T4, T5, T6, T7, object?[]> valueProducer)
+        public IAfterCallConfiguredConfiguration<IReturnValueConfiguration<TMember>> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5, T6, T7>(Func<T1, T2, T3, T4, T5, T6, T7, object?[]> valueProducer)
         {
             Guard.AgainstNull(valueProducer);
 
@@ -373,7 +603,7 @@ namespace FakeItEasy.Configuration
         /// <exception cref="FakeConfigurationException">
         /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
         /// </exception>
-        public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5, T6, T7, T8>(Func<T1, T2, T3, T4, T5, T6, T7, T8, object?[]> valueProducer)
+        public IAfterCallConfiguredConfiguration<IReturnValueConfiguration<TMember>> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5, T6, T7, T8>(Func<T1, T2, T3, T4, T5, T6, T7, T8, object?[]> valueProducer)
         {
             Guard.AgainstNull(valueProducer);
 
@@ -384,470 +614,239 @@ namespace FakeItEasy.Configuration
 
                 return valueProducer(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!, call.GetArgument<T3>(2)!, call.GetArgument<T4>(3)!, call.GetArgument<T5>(4)!, call.GetArgument<T6>(5)!, call.GetArgument<T7>(6)!, call.GetArgument<T8>(7)!);
             });
-        }
-
-        public partial class ReturnValueConfiguration<TMember>
-        {
-            /// <summary>
-            /// Specifies a function used to produce output values for out and ref parameters.
-            /// The values should appear in the same order as the out and ref parameters in the configured call.
-            /// Any non out and ref parameters are ignored.
-            /// The function will be called each time this call is made and can return different values.
-            /// </summary>
-            /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
-            /// <param name="valueProducer">A function that produces the output values.</param>
-            /// <returns>A configuration object.</returns>
-            /// <exception cref="FakeConfigurationException">
-            /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
-            /// </exception>
-            public IAfterCallConfiguredConfiguration<IReturnValueConfiguration<TMember>> AssignsOutAndRefParametersLazily<T1>(Func<T1, object?[]> valueProducer)
-            {
-                Guard.AgainstNull(valueProducer);
-
-                return this.AssignsOutAndRefParametersLazily(call =>
-                {
-                    ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(
-                        call.Method, valueProducer.GetMethodInfo(), NameOfOutRefLazilyFeature);
-
-                    return valueProducer(call.GetArgument<T1>(0)!);
-                });
-            }
-
-            /// <summary>
-            /// Specifies a function used to produce output values for out and ref parameters.
-            /// The values should appear in the same order as the out and ref parameters in the configured call.
-            /// Any non out and ref parameters are ignored.
-            /// The function will be called each time this call is made and can return different values.
-            /// </summary>
-            /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
-            /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
-            /// <param name="valueProducer">A function that produces the output values.</param>
-            /// <returns>A configuration object.</returns>
-            /// <exception cref="FakeConfigurationException">
-            /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
-            /// </exception>
-            public IAfterCallConfiguredConfiguration<IReturnValueConfiguration<TMember>> AssignsOutAndRefParametersLazily<T1, T2>(Func<T1, T2, object?[]> valueProducer)
-            {
-                Guard.AgainstNull(valueProducer);
-
-                return this.AssignsOutAndRefParametersLazily(call =>
-                {
-                    ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(
-                        call.Method, valueProducer.GetMethodInfo(), NameOfOutRefLazilyFeature);
-
-                    return valueProducer(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!);
-                });
-            }
-
-            /// <summary>
-            /// Specifies a function used to produce output values for out and ref parameters.
-            /// The values should appear in the same order as the out and ref parameters in the configured call.
-            /// Any non out and ref parameters are ignored.
-            /// The function will be called each time this call is made and can return different values.
-            /// </summary>
-            /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
-            /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
-            /// <typeparam name="T3">The type of the third argument of the faked method call.</typeparam>
-            /// <param name="valueProducer">A function that produces the output values.</param>
-            /// <returns>A configuration object.</returns>
-            /// <exception cref="FakeConfigurationException">
-            /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
-            /// </exception>
-            public IAfterCallConfiguredConfiguration<IReturnValueConfiguration<TMember>> AssignsOutAndRefParametersLazily<T1, T2, T3>(Func<T1, T2, T3, object?[]> valueProducer)
-            {
-                Guard.AgainstNull(valueProducer);
-
-                return this.AssignsOutAndRefParametersLazily(call =>
-                {
-                    ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(
-                        call.Method, valueProducer.GetMethodInfo(), NameOfOutRefLazilyFeature);
-
-                    return valueProducer(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!, call.GetArgument<T3>(2)!);
-                });
-            }
-
-            /// <summary>
-            /// Specifies a function used to produce output values for out and ref parameters.
-            /// The values should appear in the same order as the out and ref parameters in the configured call.
-            /// Any non out and ref parameters are ignored.
-            /// The function will be called each time this call is made and can return different values.
-            /// </summary>
-            /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
-            /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
-            /// <typeparam name="T3">The type of the third argument of the faked method call.</typeparam>
-            /// <typeparam name="T4">The type of the fourth argument of the faked method call.</typeparam>
-            /// <param name="valueProducer">A function that produces the output values.</param>
-            /// <returns>A configuration object.</returns>
-            /// <exception cref="FakeConfigurationException">
-            /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
-            /// </exception>
-            public IAfterCallConfiguredConfiguration<IReturnValueConfiguration<TMember>> AssignsOutAndRefParametersLazily<T1, T2, T3, T4>(Func<T1, T2, T3, T4, object?[]> valueProducer)
-            {
-                Guard.AgainstNull(valueProducer);
-
-                return this.AssignsOutAndRefParametersLazily(call =>
-                {
-                    ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(
-                        call.Method, valueProducer.GetMethodInfo(), NameOfOutRefLazilyFeature);
-
-                    return valueProducer(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!, call.GetArgument<T3>(2)!, call.GetArgument<T4>(3)!);
-                });
-            }
-
-            /// <summary>
-            /// Specifies a function used to produce output values for out and ref parameters.
-            /// The values should appear in the same order as the out and ref parameters in the configured call.
-            /// Any non out and ref parameters are ignored.
-            /// The function will be called each time this call is made and can return different values.
-            /// </summary>
-            /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
-            /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
-            /// <typeparam name="T3">The type of the third argument of the faked method call.</typeparam>
-            /// <typeparam name="T4">The type of the fourth argument of the faked method call.</typeparam>
-            /// <typeparam name="T5">The type of the fifth argument of the faked method call.</typeparam>
-            /// <param name="valueProducer">A function that produces the output values.</param>
-            /// <returns>A configuration object.</returns>
-            /// <exception cref="FakeConfigurationException">
-            /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
-            /// </exception>
-            public IAfterCallConfiguredConfiguration<IReturnValueConfiguration<TMember>> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5>(Func<T1, T2, T3, T4, T5, object?[]> valueProducer)
-            {
-                Guard.AgainstNull(valueProducer);
-
-                return this.AssignsOutAndRefParametersLazily(call =>
-                {
-                    ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(
-                        call.Method, valueProducer.GetMethodInfo(), NameOfOutRefLazilyFeature);
-
-                    return valueProducer(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!, call.GetArgument<T3>(2)!, call.GetArgument<T4>(3)!, call.GetArgument<T5>(4)!);
-                });
-            }
-
-            /// <summary>
-            /// Specifies a function used to produce output values for out and ref parameters.
-            /// The values should appear in the same order as the out and ref parameters in the configured call.
-            /// Any non out and ref parameters are ignored.
-            /// The function will be called each time this call is made and can return different values.
-            /// </summary>
-            /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
-            /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
-            /// <typeparam name="T3">The type of the third argument of the faked method call.</typeparam>
-            /// <typeparam name="T4">The type of the fourth argument of the faked method call.</typeparam>
-            /// <typeparam name="T5">The type of the fifth argument of the faked method call.</typeparam>
-            /// <typeparam name="T6">The type of the sixth argument of the faked method call.</typeparam>
-            /// <param name="valueProducer">A function that produces the output values.</param>
-            /// <returns>A configuration object.</returns>
-            /// <exception cref="FakeConfigurationException">
-            /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
-            /// </exception>
-            public IAfterCallConfiguredConfiguration<IReturnValueConfiguration<TMember>> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5, T6>(Func<T1, T2, T3, T4, T5, T6, object?[]> valueProducer)
-            {
-                Guard.AgainstNull(valueProducer);
-
-                return this.AssignsOutAndRefParametersLazily(call =>
-                {
-                    ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(
-                        call.Method, valueProducer.GetMethodInfo(), NameOfOutRefLazilyFeature);
-
-                    return valueProducer(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!, call.GetArgument<T3>(2)!, call.GetArgument<T4>(3)!, call.GetArgument<T5>(4)!, call.GetArgument<T6>(5)!);
-                });
-            }
-
-            /// <summary>
-            /// Specifies a function used to produce output values for out and ref parameters.
-            /// The values should appear in the same order as the out and ref parameters in the configured call.
-            /// Any non out and ref parameters are ignored.
-            /// The function will be called each time this call is made and can return different values.
-            /// </summary>
-            /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
-            /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
-            /// <typeparam name="T3">The type of the third argument of the faked method call.</typeparam>
-            /// <typeparam name="T4">The type of the fourth argument of the faked method call.</typeparam>
-            /// <typeparam name="T5">The type of the fifth argument of the faked method call.</typeparam>
-            /// <typeparam name="T6">The type of the sixth argument of the faked method call.</typeparam>
-            /// <typeparam name="T7">The type of the seventh argument of the faked method call.</typeparam>
-            /// <param name="valueProducer">A function that produces the output values.</param>
-            /// <returns>A configuration object.</returns>
-            /// <exception cref="FakeConfigurationException">
-            /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
-            /// </exception>
-            public IAfterCallConfiguredConfiguration<IReturnValueConfiguration<TMember>> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5, T6, T7>(Func<T1, T2, T3, T4, T5, T6, T7, object?[]> valueProducer)
-            {
-                Guard.AgainstNull(valueProducer);
-
-                return this.AssignsOutAndRefParametersLazily(call =>
-                {
-                    ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(
-                        call.Method, valueProducer.GetMethodInfo(), NameOfOutRefLazilyFeature);
-
-                    return valueProducer(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!, call.GetArgument<T3>(2)!, call.GetArgument<T4>(3)!, call.GetArgument<T5>(4)!, call.GetArgument<T6>(5)!, call.GetArgument<T7>(6)!);
-                });
-            }
-
-            /// <summary>
-            /// Specifies a function used to produce output values for out and ref parameters.
-            /// The values should appear in the same order as the out and ref parameters in the configured call.
-            /// Any non out and ref parameters are ignored.
-            /// The function will be called each time this call is made and can return different values.
-            /// </summary>
-            /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
-            /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
-            /// <typeparam name="T3">The type of the third argument of the faked method call.</typeparam>
-            /// <typeparam name="T4">The type of the fourth argument of the faked method call.</typeparam>
-            /// <typeparam name="T5">The type of the fifth argument of the faked method call.</typeparam>
-            /// <typeparam name="T6">The type of the sixth argument of the faked method call.</typeparam>
-            /// <typeparam name="T7">The type of the seventh argument of the faked method call.</typeparam>
-            /// <typeparam name="T8">The type of the eighth argument of the faked method call.</typeparam>
-            /// <param name="valueProducer">A function that produces the output values.</param>
-            /// <returns>A configuration object.</returns>
-            /// <exception cref="FakeConfigurationException">
-            /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
-            /// </exception>
-            public IAfterCallConfiguredConfiguration<IReturnValueConfiguration<TMember>> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5, T6, T7, T8>(Func<T1, T2, T3, T4, T5, T6, T7, T8, object?[]> valueProducer)
-            {
-                Guard.AgainstNull(valueProducer);
-
-                return this.AssignsOutAndRefParametersLazily(call =>
-                {
-                    ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(
-                        call.Method, valueProducer.GetMethodInfo(), NameOfOutRefLazilyFeature);
-
-                    return valueProducer(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!, call.GetArgument<T3>(2)!, call.GetArgument<T4>(3)!, call.GetArgument<T5>(4)!, call.GetArgument<T6>(5)!, call.GetArgument<T7>(6)!, call.GetArgument<T8>(7)!);
-                });
-            }
         }
     }
+}
 
-    internal partial class AnyCallConfiguration
+internal partial class AnyCallConfiguration
+{
+    private const string NameOfOutRefLazilyFeature = "assigns out and ref parameters lazily";
+
+    /// <summary>
+    /// Specifies a function used to produce output values for out and ref parameters.
+    /// The values should appear in the same order as the out and ref parameters in the configured call.
+    /// Any non out and ref parameters are ignored.
+    /// The function will be called each time this call is made and can return different values.
+    /// </summary>
+    /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
+    /// <param name="valueProducer">A function that produces the output values.</param>
+    /// <returns>A configuration object.</returns>
+    /// <exception cref="FakeConfigurationException">
+    /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
+    /// </exception>
+    public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1>(Func<T1, object?[]> valueProducer)
     {
-        private const string NameOfOutRefLazilyFeature = "assigns out and ref parameters lazily";
+        Guard.AgainstNull(valueProducer);
 
-        /// <summary>
-        /// Specifies a function used to produce output values for out and ref parameters.
-        /// The values should appear in the same order as the out and ref parameters in the configured call.
-        /// Any non out and ref parameters are ignored.
-        /// The function will be called each time this call is made and can return different values.
-        /// </summary>
-        /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
-        /// <param name="valueProducer">A function that produces the output values.</param>
-        /// <returns>A configuration object.</returns>
-        /// <exception cref="FakeConfigurationException">
-        /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
-        /// </exception>
-        public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1>(Func<T1, object?[]> valueProducer)
+        return this.AssignsOutAndRefParametersLazily(call =>
         {
-            Guard.AgainstNull(valueProducer);
+            ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(
+                call.Method, valueProducer.GetMethodInfo(), NameOfOutRefLazilyFeature);
 
-            return this.AssignsOutAndRefParametersLazily(call =>
-            {
-                ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(
-                    call.Method, valueProducer.GetMethodInfo(), NameOfOutRefLazilyFeature);
+            return valueProducer(call.GetArgument<T1>(0)!);
+        });
+    }
 
-                return valueProducer(call.GetArgument<T1>(0)!);
-            });
-        }
+    /// <summary>
+    /// Specifies a function used to produce output values for out and ref parameters.
+    /// The values should appear in the same order as the out and ref parameters in the configured call.
+    /// Any non out and ref parameters are ignored.
+    /// The function will be called each time this call is made and can return different values.
+    /// </summary>
+    /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
+    /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
+    /// <param name="valueProducer">A function that produces the output values.</param>
+    /// <returns>A configuration object.</returns>
+    /// <exception cref="FakeConfigurationException">
+    /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
+    /// </exception>
+    public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2>(Func<T1, T2, object?[]> valueProducer)
+    {
+        Guard.AgainstNull(valueProducer);
 
-        /// <summary>
-        /// Specifies a function used to produce output values for out and ref parameters.
-        /// The values should appear in the same order as the out and ref parameters in the configured call.
-        /// Any non out and ref parameters are ignored.
-        /// The function will be called each time this call is made and can return different values.
-        /// </summary>
-        /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
-        /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
-        /// <param name="valueProducer">A function that produces the output values.</param>
-        /// <returns>A configuration object.</returns>
-        /// <exception cref="FakeConfigurationException">
-        /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
-        /// </exception>
-        public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2>(Func<T1, T2, object?[]> valueProducer)
+        return this.AssignsOutAndRefParametersLazily(call =>
         {
-            Guard.AgainstNull(valueProducer);
+            ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(
+                call.Method, valueProducer.GetMethodInfo(), NameOfOutRefLazilyFeature);
 
-            return this.AssignsOutAndRefParametersLazily(call =>
-            {
-                ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(
-                    call.Method, valueProducer.GetMethodInfo(), NameOfOutRefLazilyFeature);
+            return valueProducer(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!);
+        });
+    }
 
-                return valueProducer(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!);
-            });
-        }
+    /// <summary>
+    /// Specifies a function used to produce output values for out and ref parameters.
+    /// The values should appear in the same order as the out and ref parameters in the configured call.
+    /// Any non out and ref parameters are ignored.
+    /// The function will be called each time this call is made and can return different values.
+    /// </summary>
+    /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
+    /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
+    /// <typeparam name="T3">The type of the third argument of the faked method call.</typeparam>
+    /// <param name="valueProducer">A function that produces the output values.</param>
+    /// <returns>A configuration object.</returns>
+    /// <exception cref="FakeConfigurationException">
+    /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
+    /// </exception>
+    public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3>(Func<T1, T2, T3, object?[]> valueProducer)
+    {
+        Guard.AgainstNull(valueProducer);
 
-        /// <summary>
-        /// Specifies a function used to produce output values for out and ref parameters.
-        /// The values should appear in the same order as the out and ref parameters in the configured call.
-        /// Any non out and ref parameters are ignored.
-        /// The function will be called each time this call is made and can return different values.
-        /// </summary>
-        /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
-        /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
-        /// <typeparam name="T3">The type of the third argument of the faked method call.</typeparam>
-        /// <param name="valueProducer">A function that produces the output values.</param>
-        /// <returns>A configuration object.</returns>
-        /// <exception cref="FakeConfigurationException">
-        /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
-        /// </exception>
-        public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3>(Func<T1, T2, T3, object?[]> valueProducer)
+        return this.AssignsOutAndRefParametersLazily(call =>
         {
-            Guard.AgainstNull(valueProducer);
+            ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(
+                call.Method, valueProducer.GetMethodInfo(), NameOfOutRefLazilyFeature);
 
-            return this.AssignsOutAndRefParametersLazily(call =>
-            {
-                ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(
-                    call.Method, valueProducer.GetMethodInfo(), NameOfOutRefLazilyFeature);
+            return valueProducer(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!, call.GetArgument<T3>(2)!);
+        });
+    }
 
-                return valueProducer(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!, call.GetArgument<T3>(2)!);
-            });
-        }
+    /// <summary>
+    /// Specifies a function used to produce output values for out and ref parameters.
+    /// The values should appear in the same order as the out and ref parameters in the configured call.
+    /// Any non out and ref parameters are ignored.
+    /// The function will be called each time this call is made and can return different values.
+    /// </summary>
+    /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
+    /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
+    /// <typeparam name="T3">The type of the third argument of the faked method call.</typeparam>
+    /// <typeparam name="T4">The type of the fourth argument of the faked method call.</typeparam>
+    /// <param name="valueProducer">A function that produces the output values.</param>
+    /// <returns>A configuration object.</returns>
+    /// <exception cref="FakeConfigurationException">
+    /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
+    /// </exception>
+    public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3, T4>(Func<T1, T2, T3, T4, object?[]> valueProducer)
+    {
+        Guard.AgainstNull(valueProducer);
 
-        /// <summary>
-        /// Specifies a function used to produce output values for out and ref parameters.
-        /// The values should appear in the same order as the out and ref parameters in the configured call.
-        /// Any non out and ref parameters are ignored.
-        /// The function will be called each time this call is made and can return different values.
-        /// </summary>
-        /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
-        /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
-        /// <typeparam name="T3">The type of the third argument of the faked method call.</typeparam>
-        /// <typeparam name="T4">The type of the fourth argument of the faked method call.</typeparam>
-        /// <param name="valueProducer">A function that produces the output values.</param>
-        /// <returns>A configuration object.</returns>
-        /// <exception cref="FakeConfigurationException">
-        /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
-        /// </exception>
-        public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3, T4>(Func<T1, T2, T3, T4, object?[]> valueProducer)
+        return this.AssignsOutAndRefParametersLazily(call =>
         {
-            Guard.AgainstNull(valueProducer);
+            ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(
+                call.Method, valueProducer.GetMethodInfo(), NameOfOutRefLazilyFeature);
 
-            return this.AssignsOutAndRefParametersLazily(call =>
-            {
-                ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(
-                    call.Method, valueProducer.GetMethodInfo(), NameOfOutRefLazilyFeature);
+            return valueProducer(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!, call.GetArgument<T3>(2)!, call.GetArgument<T4>(3)!);
+        });
+    }
 
-                return valueProducer(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!, call.GetArgument<T3>(2)!, call.GetArgument<T4>(3)!);
-            });
-        }
+    /// <summary>
+    /// Specifies a function used to produce output values for out and ref parameters.
+    /// The values should appear in the same order as the out and ref parameters in the configured call.
+    /// Any non out and ref parameters are ignored.
+    /// The function will be called each time this call is made and can return different values.
+    /// </summary>
+    /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
+    /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
+    /// <typeparam name="T3">The type of the third argument of the faked method call.</typeparam>
+    /// <typeparam name="T4">The type of the fourth argument of the faked method call.</typeparam>
+    /// <typeparam name="T5">The type of the fifth argument of the faked method call.</typeparam>
+    /// <param name="valueProducer">A function that produces the output values.</param>
+    /// <returns>A configuration object.</returns>
+    /// <exception cref="FakeConfigurationException">
+    /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
+    /// </exception>
+    public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5>(Func<T1, T2, T3, T4, T5, object?[]> valueProducer)
+    {
+        Guard.AgainstNull(valueProducer);
 
-        /// <summary>
-        /// Specifies a function used to produce output values for out and ref parameters.
-        /// The values should appear in the same order as the out and ref parameters in the configured call.
-        /// Any non out and ref parameters are ignored.
-        /// The function will be called each time this call is made and can return different values.
-        /// </summary>
-        /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
-        /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
-        /// <typeparam name="T3">The type of the third argument of the faked method call.</typeparam>
-        /// <typeparam name="T4">The type of the fourth argument of the faked method call.</typeparam>
-        /// <typeparam name="T5">The type of the fifth argument of the faked method call.</typeparam>
-        /// <param name="valueProducer">A function that produces the output values.</param>
-        /// <returns>A configuration object.</returns>
-        /// <exception cref="FakeConfigurationException">
-        /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
-        /// </exception>
-        public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5>(Func<T1, T2, T3, T4, T5, object?[]> valueProducer)
+        return this.AssignsOutAndRefParametersLazily(call =>
         {
-            Guard.AgainstNull(valueProducer);
+            ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(
+                call.Method, valueProducer.GetMethodInfo(), NameOfOutRefLazilyFeature);
 
-            return this.AssignsOutAndRefParametersLazily(call =>
-            {
-                ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(
-                    call.Method, valueProducer.GetMethodInfo(), NameOfOutRefLazilyFeature);
+            return valueProducer(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!, call.GetArgument<T3>(2)!, call.GetArgument<T4>(3)!, call.GetArgument<T5>(4)!);
+        });
+    }
 
-                return valueProducer(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!, call.GetArgument<T3>(2)!, call.GetArgument<T4>(3)!, call.GetArgument<T5>(4)!);
-            });
-        }
+    /// <summary>
+    /// Specifies a function used to produce output values for out and ref parameters.
+    /// The values should appear in the same order as the out and ref parameters in the configured call.
+    /// Any non out and ref parameters are ignored.
+    /// The function will be called each time this call is made and can return different values.
+    /// </summary>
+    /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
+    /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
+    /// <typeparam name="T3">The type of the third argument of the faked method call.</typeparam>
+    /// <typeparam name="T4">The type of the fourth argument of the faked method call.</typeparam>
+    /// <typeparam name="T5">The type of the fifth argument of the faked method call.</typeparam>
+    /// <typeparam name="T6">The type of the sixth argument of the faked method call.</typeparam>
+    /// <param name="valueProducer">A function that produces the output values.</param>
+    /// <returns>A configuration object.</returns>
+    /// <exception cref="FakeConfigurationException">
+    /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
+    /// </exception>
+    public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5, T6>(Func<T1, T2, T3, T4, T5, T6, object?[]> valueProducer)
+    {
+        Guard.AgainstNull(valueProducer);
 
-        /// <summary>
-        /// Specifies a function used to produce output values for out and ref parameters.
-        /// The values should appear in the same order as the out and ref parameters in the configured call.
-        /// Any non out and ref parameters are ignored.
-        /// The function will be called each time this call is made and can return different values.
-        /// </summary>
-        /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
-        /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
-        /// <typeparam name="T3">The type of the third argument of the faked method call.</typeparam>
-        /// <typeparam name="T4">The type of the fourth argument of the faked method call.</typeparam>
-        /// <typeparam name="T5">The type of the fifth argument of the faked method call.</typeparam>
-        /// <typeparam name="T6">The type of the sixth argument of the faked method call.</typeparam>
-        /// <param name="valueProducer">A function that produces the output values.</param>
-        /// <returns>A configuration object.</returns>
-        /// <exception cref="FakeConfigurationException">
-        /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
-        /// </exception>
-        public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5, T6>(Func<T1, T2, T3, T4, T5, T6, object?[]> valueProducer)
+        return this.AssignsOutAndRefParametersLazily(call =>
         {
-            Guard.AgainstNull(valueProducer);
+            ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(
+                call.Method, valueProducer.GetMethodInfo(), NameOfOutRefLazilyFeature);
 
-            return this.AssignsOutAndRefParametersLazily(call =>
-            {
-                ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(
-                    call.Method, valueProducer.GetMethodInfo(), NameOfOutRefLazilyFeature);
+            return valueProducer(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!, call.GetArgument<T3>(2)!, call.GetArgument<T4>(3)!, call.GetArgument<T5>(4)!, call.GetArgument<T6>(5)!);
+        });
+    }
 
-                return valueProducer(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!, call.GetArgument<T3>(2)!, call.GetArgument<T4>(3)!, call.GetArgument<T5>(4)!, call.GetArgument<T6>(5)!);
-            });
-        }
+    /// <summary>
+    /// Specifies a function used to produce output values for out and ref parameters.
+    /// The values should appear in the same order as the out and ref parameters in the configured call.
+    /// Any non out and ref parameters are ignored.
+    /// The function will be called each time this call is made and can return different values.
+    /// </summary>
+    /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
+    /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
+    /// <typeparam name="T3">The type of the third argument of the faked method call.</typeparam>
+    /// <typeparam name="T4">The type of the fourth argument of the faked method call.</typeparam>
+    /// <typeparam name="T5">The type of the fifth argument of the faked method call.</typeparam>
+    /// <typeparam name="T6">The type of the sixth argument of the faked method call.</typeparam>
+    /// <typeparam name="T7">The type of the seventh argument of the faked method call.</typeparam>
+    /// <param name="valueProducer">A function that produces the output values.</param>
+    /// <returns>A configuration object.</returns>
+    /// <exception cref="FakeConfigurationException">
+    /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
+    /// </exception>
+    public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5, T6, T7>(Func<T1, T2, T3, T4, T5, T6, T7, object?[]> valueProducer)
+    {
+        Guard.AgainstNull(valueProducer);
 
-        /// <summary>
-        /// Specifies a function used to produce output values for out and ref parameters.
-        /// The values should appear in the same order as the out and ref parameters in the configured call.
-        /// Any non out and ref parameters are ignored.
-        /// The function will be called each time this call is made and can return different values.
-        /// </summary>
-        /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
-        /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
-        /// <typeparam name="T3">The type of the third argument of the faked method call.</typeparam>
-        /// <typeparam name="T4">The type of the fourth argument of the faked method call.</typeparam>
-        /// <typeparam name="T5">The type of the fifth argument of the faked method call.</typeparam>
-        /// <typeparam name="T6">The type of the sixth argument of the faked method call.</typeparam>
-        /// <typeparam name="T7">The type of the seventh argument of the faked method call.</typeparam>
-        /// <param name="valueProducer">A function that produces the output values.</param>
-        /// <returns>A configuration object.</returns>
-        /// <exception cref="FakeConfigurationException">
-        /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
-        /// </exception>
-        public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5, T6, T7>(Func<T1, T2, T3, T4, T5, T6, T7, object?[]> valueProducer)
+        return this.AssignsOutAndRefParametersLazily(call =>
         {
-            Guard.AgainstNull(valueProducer);
+            ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(
+                call.Method, valueProducer.GetMethodInfo(), NameOfOutRefLazilyFeature);
 
-            return this.AssignsOutAndRefParametersLazily(call =>
-            {
-                ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(
-                    call.Method, valueProducer.GetMethodInfo(), NameOfOutRefLazilyFeature);
+            return valueProducer(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!, call.GetArgument<T3>(2)!, call.GetArgument<T4>(3)!, call.GetArgument<T5>(4)!, call.GetArgument<T6>(5)!, call.GetArgument<T7>(6)!);
+        });
+    }
 
-                return valueProducer(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!, call.GetArgument<T3>(2)!, call.GetArgument<T4>(3)!, call.GetArgument<T5>(4)!, call.GetArgument<T6>(5)!, call.GetArgument<T7>(6)!);
-            });
-        }
+    /// <summary>
+    /// Specifies a function used to produce output values for out and ref parameters.
+    /// The values should appear in the same order as the out and ref parameters in the configured call.
+    /// Any non out and ref parameters are ignored.
+    /// The function will be called each time this call is made and can return different values.
+    /// </summary>
+    /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
+    /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
+    /// <typeparam name="T3">The type of the third argument of the faked method call.</typeparam>
+    /// <typeparam name="T4">The type of the fourth argument of the faked method call.</typeparam>
+    /// <typeparam name="T5">The type of the fifth argument of the faked method call.</typeparam>
+    /// <typeparam name="T6">The type of the sixth argument of the faked method call.</typeparam>
+    /// <typeparam name="T7">The type of the seventh argument of the faked method call.</typeparam>
+    /// <typeparam name="T8">The type of the eighth argument of the faked method call.</typeparam>
+    /// <param name="valueProducer">A function that produces the output values.</param>
+    /// <returns>A configuration object.</returns>
+    /// <exception cref="FakeConfigurationException">
+    /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
+    /// </exception>
+    public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5, T6, T7, T8>(Func<T1, T2, T3, T4, T5, T6, T7, T8, object?[]> valueProducer)
+    {
+        Guard.AgainstNull(valueProducer);
 
-        /// <summary>
-        /// Specifies a function used to produce output values for out and ref parameters.
-        /// The values should appear in the same order as the out and ref parameters in the configured call.
-        /// Any non out and ref parameters are ignored.
-        /// The function will be called each time this call is made and can return different values.
-        /// </summary>
-        /// <typeparam name="T1">The type of the first argument of the faked method call.</typeparam>
-        /// <typeparam name="T2">The type of the second argument of the faked method call.</typeparam>
-        /// <typeparam name="T3">The type of the third argument of the faked method call.</typeparam>
-        /// <typeparam name="T4">The type of the fourth argument of the faked method call.</typeparam>
-        /// <typeparam name="T5">The type of the fifth argument of the faked method call.</typeparam>
-        /// <typeparam name="T6">The type of the sixth argument of the faked method call.</typeparam>
-        /// <typeparam name="T7">The type of the seventh argument of the faked method call.</typeparam>
-        /// <typeparam name="T8">The type of the eighth argument of the faked method call.</typeparam>
-        /// <param name="valueProducer">A function that produces the output values.</param>
-        /// <returns>A configuration object.</returns>
-        /// <exception cref="FakeConfigurationException">
-        /// The signatures of the faked method and the <paramref name="valueProducer"/> do not match.
-        /// </exception>
-        public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily<T1, T2, T3, T4, T5, T6, T7, T8>(Func<T1, T2, T3, T4, T5, T6, T7, T8, object?[]> valueProducer)
+        return this.AssignsOutAndRefParametersLazily(call =>
         {
-            Guard.AgainstNull(valueProducer);
+            ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(
+                call.Method, valueProducer.GetMethodInfo(), NameOfOutRefLazilyFeature);
 
-            return this.AssignsOutAndRefParametersLazily(call =>
-            {
-                ValueProducerSignatureHelper.AssertThatValueProducerSignatureSatisfiesCallSignature(
-                    call.Method, valueProducer.GetMethodInfo(), NameOfOutRefLazilyFeature);
-
-                return valueProducer(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!, call.GetArgument<T3>(2)!, call.GetArgument<T4>(3)!, call.GetArgument<T5>(4)!, call.GetArgument<T6>(5)!, call.GetArgument<T7>(6)!, call.GetArgument<T8>(7)!);
-            });
-        }
+            return valueProducer(call.GetArgument<T1>(0)!, call.GetArgument<T2>(1)!, call.GetArgument<T3>(2)!, call.GetArgument<T4>(3)!, call.GetArgument<T5>(4)!, call.GetArgument<T6>(5)!, call.GetArgument<T7>(6)!, call.GetArgument<T8>(7)!);
+        });
     }
 }

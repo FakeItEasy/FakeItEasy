@@ -1,41 +1,40 @@
-namespace FakeItEasy.Specs
+namespace FakeItEasy.Specs;
+
+using System;
+using System.Diagnostics.CodeAnalysis;
+
+public class MakesVirtualCallInConstructor
 {
-    using System;
-    using System.Diagnostics.CodeAnalysis;
-
-    public class MakesVirtualCallInConstructor
+    [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Required for testing.")]
+    [SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors", Justification = "Required for testing.")]
+    public MakesVirtualCallInConstructor()
     {
-        [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Required for testing.")]
-        [SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors", Justification = "Required for testing.")]
-        public MakesVirtualCallInConstructor()
+        try
         {
-            try
-            {
-                this.VirtualMethodValueDuringConstructorCall = this.VirtualMethod("call in constructor");
-            }
-            catch (Exception e)
-            {
-                this.ExceptionFromVirtualMethodCallInConstructor = e;
-            }
+            this.VirtualMethodValueDuringConstructorCall = this.VirtualMethod("call in constructor");
         }
-
-        public MakesVirtualCallInConstructor(string argument1, int argument2)
+        catch (Exception e)
         {
-            this.ConstructorArgument1 = argument1;
-            this.ConstructorArgument2 = argument2;
+            this.ExceptionFromVirtualMethodCallInConstructor = e;
         }
+    }
 
-        public string? ConstructorArgument1 { get; }
+    public MakesVirtualCallInConstructor(string argument1, int argument2)
+    {
+        this.ConstructorArgument1 = argument1;
+        this.ConstructorArgument2 = argument2;
+    }
 
-        public int ConstructorArgument2 { get; }
+    public string? ConstructorArgument1 { get; }
 
-        public Exception? ExceptionFromVirtualMethodCallInConstructor { get; }
+    public int ConstructorArgument2 { get; }
 
-        public string? VirtualMethodValueDuringConstructorCall { get; }
+    public Exception? ExceptionFromVirtualMethodCallInConstructor { get; }
 
-        public virtual string VirtualMethod(string? parameter)
-        {
-            return "implementation value";
-        }
+    public string? VirtualMethodValueDuringConstructorCall { get; }
+
+    public virtual string VirtualMethod(string? parameter)
+    {
+        return "implementation value";
     }
 }

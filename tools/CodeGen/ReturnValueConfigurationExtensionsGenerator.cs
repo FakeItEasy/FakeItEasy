@@ -13,17 +13,16 @@ public class ReturnValueConfigurationExtensionsGenerator : StronglyTypedOverload
     protected override string GenerateSource()
     {
         return $$"""
-            namespace FakeItEasy
-            {
-                using System;
-                using System.Reflection;
-                using System.Threading.Tasks;
-                using FakeItEasy.Configuration;
+            namespace FakeItEasy;
 
-                public static partial class ReturnValueConfigurationExtensions
-                {
-            {{Indent(2, OverloadMethod(GenerateMethodImplementation))}}
-                }
+            using System;
+            using System.Reflection;
+            using System.Threading.Tasks;
+            using FakeItEasy.Configuration;
+
+            public static partial class ReturnValueConfigurationExtensions
+            {
+            {{Indent(1, OverloadMethod(GenerateMethodImplementation))}}
             }
             """;
     }

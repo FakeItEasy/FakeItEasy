@@ -1,55 +1,54 @@
-namespace FakeItEasy.Core
+namespace FakeItEasy.Core;
+
+using System;
+using System.Runtime.CompilerServices;
+
+/// <summary>
+/// Default implementation of <see cref="IFakeManagerAccessor"/>.
+/// </summary>
+internal class DefaultFakeManagerAccessor
+    : IFakeManagerAccessor
 {
-    using System;
-    using System.Runtime.CompilerServices;
+    private static readonly ConditionalWeakTable<object, FakeManager> FakeManagers = new ConditionalWeakTable<object, FakeManager>();
 
     /// <summary>
-    /// Default implementation of <see cref="IFakeManagerAccessor"/>.
+    /// Gets the fake manager associated with the proxy.
     /// </summary>
-    internal class DefaultFakeManagerAccessor
-        : IFakeManagerAccessor
+    /// <param name="proxy">The proxy to get the manager from.</param>
+    /// <returns>A fake manager.</returns>
+    /// <exception cref="ArgumentException">If <paramref name="proxy"/> is not actually a faked object.</exception>
+    public FakeManager GetFakeManager(object proxy)
     {
-        private static readonly ConditionalWeakTable<object, FakeManager> FakeManagers = new ConditionalWeakTable<object, FakeManager>();
+        Guard.AgainstNull(proxy);
 
-        /// <summary>
-        /// Gets the fake manager associated with the proxy.
-        /// </summary>
-        /// <param name="proxy">The proxy to get the manager from.</param>
-        /// <returns>A fake manager.</returns>
-        /// <exception cref="ArgumentException">If <paramref name="proxy"/> is not actually a faked object.</exception>
-        public FakeManager GetFakeManager(object proxy)
+        FakeManager? result = this.TryGetFakeManager(proxy);
+
+        if (result is null)
         {
-            Guard.AgainstNull(proxy);
-
-            FakeManager? result = this.TryGetFakeManager(proxy);
-
-            if (result is null)
-            {
-                throw new ArgumentException(ExceptionMessages.NotRecognizedAsAFake(proxy, proxy.GetType()));
-            }
-
-            return result;
+            throw new ArgumentException(ExceptionMessages.NotRecognizedAsAFake(proxy, proxy.GetType()));
         }
 
-        /// <summary>
-        /// Gets the fake manager associated with the proxy, if any.
-        /// </summary>
-        /// <param name="proxy">The proxy to get the manager from.</param>
-        /// <returns>The fake manager, or <c>null</c> if <paramref name="proxy"/> is not actually a faked object.</returns>
-        public FakeManager? TryGetFakeManager(object proxy)
-        {
-            Guard.AgainstNull(proxy);
+        return result;
+    }
 
-            FakeManagers.TryGetValue(proxy, out FakeManager? fakeManager);
-            return fakeManager;
-        }
+    /// <summary>
+    /// Gets the fake manager associated with the proxy, if any.
+    /// </summary>
+    /// <param name="proxy">The proxy to get the manager from.</param>
+    /// <returns>The fake manager, or <c>null</c> if <paramref name="proxy"/> is not actually a faked object.</returns>
+    public FakeManager? TryGetFakeManager(object proxy)
+    {
+        Guard.AgainstNull(proxy);
 
-        public void SetFakeManager(object proxy, FakeManager manager)
-        {
-            Guard.AgainstNull(proxy);
-            Guard.AgainstNull(manager);
+        FakeManagers.TryGetValue(proxy, out FakeManager? fakeManager);
+        return fakeManager;
+    }
 
-            FakeManagers.Add(proxy, manager);
-        }
+    public void SetFakeManager(object proxy, FakeManager manager)
+    {
+        Guard.AgainstNull(proxy);
+        Guard.AgainstNull(manager);
+
+        FakeManagers.Add(proxy, manager);
     }
 }

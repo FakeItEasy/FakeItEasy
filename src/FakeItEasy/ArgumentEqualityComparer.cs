@@ -28,7 +28,7 @@ public abstract class ArgumentEqualityComparer<T> : IArgumentEqualityComparer
     /// Indicates whether <paramref name="expectedValue"/> and <paramref name="argumentValue"/> are considered equal.
     /// Requires that <paramref name="argumentValue"/> be a <typeparamref name="T"/>; otherwise returns <c>false</c>.
     /// (The <paramref name="expectedValue"/> is assumed to be a <typeparamref name="T"/> already, since this method
-    /// is only invoked if <see cref="CanCompare(Type)"/> is <c>true</c>.
+    /// is only invoked if <see cref="CanCompare(Type)"/> is <c>true</c>).
     /// </summary>
     /// <param name="expectedValue">The first object to compare.</param>
     /// <param name="argumentValue">The second object to compare.</param>

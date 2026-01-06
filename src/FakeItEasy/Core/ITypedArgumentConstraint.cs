@@ -1,9 +1,8 @@
-namespace FakeItEasy.Core
-{
-    using System;
+namespace FakeItEasy.Core;
 
-    internal interface ITypedArgumentConstraint : IArgumentConstraint
-    {
-        Type Type { get; }
-    }
+using System;
+
+internal interface ITypedArgumentConstraint : IArgumentConstraint
+{
+    Type Type { get; }
 }

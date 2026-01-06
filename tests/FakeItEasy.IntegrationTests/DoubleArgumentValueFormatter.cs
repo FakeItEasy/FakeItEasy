@@ -1,10 +1,9 @@
-namespace FakeItEasy.IntegrationTests
+namespace FakeItEasy.IntegrationTests;
+
+public class DoubleValueFormatter : ArgumentValueFormatter<double>
 {
-    public class DoubleValueFormatter : ArgumentValueFormatter<double>
+    protected override string GetStringValue(double argumentValue)
     {
-        protected override string GetStringValue(double argumentValue)
-        {
-            return "[" + argumentValue + "]";
-        }
+        return "[" + argumentValue + "]";
     }
 }

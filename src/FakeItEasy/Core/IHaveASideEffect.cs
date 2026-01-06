@@ -1,7 +1,6 @@
-namespace FakeItEasy.Core
+namespace FakeItEasy.Core;
+
+internal interface IHaveASideEffect
 {
-    internal interface IHaveASideEffect
-    {
-        void ApplySideEffect(object? input);
-    }
+    void ApplySideEffect(object? input);
 }

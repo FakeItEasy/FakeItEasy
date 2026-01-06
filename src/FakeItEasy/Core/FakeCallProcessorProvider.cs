@@ -1,10 +1,9 @@
-namespace FakeItEasy.Core
-{
-    using System;
-    using FakeItEasy.Creation;
+namespace FakeItEasy.Core;
 
-    internal static class FakeCallProcessorProvider
-    {
-        public delegate IFakeCallProcessorProvider Factory(Type typeOfFake, IProxyOptions proxyOptions);
-    }
+using System;
+using FakeItEasy.Creation;
+
+internal static class FakeCallProcessorProvider
+{
+    public delegate IFakeCallProcessorProvider Factory(Type typeOfFake, IProxyOptions proxyOptions);
 }

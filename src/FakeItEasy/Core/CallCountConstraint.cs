@@ -1,33 +1,32 @@
-namespace FakeItEasy.Core
+namespace FakeItEasy.Core;
+
+using System;
+
+internal sealed class CallCountConstraint
 {
-    using System;
+    private readonly Func<int, bool> predicate;
+    private readonly string description;
 
-    internal sealed class CallCountConstraint
+    public CallCountConstraint(Func<int, bool> predicate, string description)
     {
-        private readonly Func<int, bool> predicate;
-        private readonly string description;
+        this.predicate = predicate;
+        this.description = description;
+    }
 
-        public CallCountConstraint(Func<int, bool> predicate, string description)
+    public bool Matches(int callCount)
+    {
+        try
         {
-            this.predicate = predicate;
-            this.description = description;
+            return this.predicate.Invoke(callCount);
         }
+        catch (Exception ex)
+        {
+            throw new UserCallbackException(ExceptionMessages.UserCallbackThrewAnException($"Call count constraint <{this.description}>"), ex);
+        }
+    }
 
-        public bool Matches(int callCount)
-        {
-            try
-            {
-                return this.predicate.Invoke(callCount);
-            }
-            catch (Exception ex)
-            {
-                throw new UserCallbackException(ExceptionMessages.UserCallbackThrewAnException($"Call count constraint <{this.description}>"), ex);
-            }
-        }
-
-        public override string ToString()
-        {
-            return this.description;
-        }
+    public override string ToString()
+    {
+        return this.description;
     }
 }

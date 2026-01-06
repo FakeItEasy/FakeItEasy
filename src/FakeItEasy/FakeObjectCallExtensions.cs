@@ -1,65 +1,64 @@
-namespace FakeItEasy
-{
-    using System.Diagnostics.CodeAnalysis;
+namespace FakeItEasy;
 
-    using FakeItEasy.Core;
+using System.Diagnostics.CodeAnalysis;
+
+using FakeItEasy.Core;
+
+/// <summary>
+/// Provides extension methods for <see cref="IFakeObjectCall"/>.
+/// </summary>
+public static class FakeObjectCallExtensions
+{
+    /// <summary>
+    /// Gets the argument at the specified index in the arguments collection
+    /// for the call.
+    /// </summary>
+    /// <typeparam name="T">The type of the argument to get.</typeparam>
+    /// <param name="call">The call to get the argument from.</param>
+    /// <param name="argumentIndex">The index of the argument.</param>
+    /// <returns>The value of the argument with the specified index.</returns>
+    [return: MaybeNull]
+    [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "Generic argument is used to cast the result.")]
+    public static T GetArgument<T>(this IFakeObjectCall call, int argumentIndex)
+    {
+        Guard.AgainstNull(call);
+
+        return call.Arguments.Get<T>(argumentIndex);
+    }
 
     /// <summary>
-    /// Provides extension methods for <see cref="IFakeObjectCall"/>.
+    /// Gets the argument with the specified name in the arguments collection
+    /// for the call.
     /// </summary>
-    public static class FakeObjectCallExtensions
+    /// <typeparam name="T">The type of the argument to get.</typeparam>
+    /// <param name="call">The call to get the argument from.</param>
+    /// <param name="argumentName">The name of the argument.</param>
+    /// <returns>The value of the argument with the specified name.</returns>
+    [return: MaybeNull]
+    [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "Generic argument is used to cast the result.")]
+    public static T GetArgument<T>(this IFakeObjectCall call, string argumentName)
     {
-        /// <summary>
-        /// Gets the argument at the specified index in the arguments collection
-        /// for the call.
-        /// </summary>
-        /// <typeparam name="T">The type of the argument to get.</typeparam>
-        /// <param name="call">The call to get the argument from.</param>
-        /// <param name="argumentIndex">The index of the argument.</param>
-        /// <returns>The value of the argument with the specified index.</returns>
-        [return: MaybeNull]
-        [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "Generic argument is used to cast the result.")]
-        public static T GetArgument<T>(this IFakeObjectCall call, int argumentIndex)
-        {
-            Guard.AgainstNull(call);
+        Guard.AgainstNull(call);
+        Guard.AgainstNull(argumentName);
 
-            return call.Arguments.Get<T>(argumentIndex);
-        }
+        return call.Arguments.Get<T>(argumentName);
+    }
 
-        /// <summary>
-        /// Gets the argument with the specified name in the arguments collection
-        /// for the call.
-        /// </summary>
-        /// <typeparam name="T">The type of the argument to get.</typeparam>
-        /// <param name="call">The call to get the argument from.</param>
-        /// <param name="argumentName">The name of the argument.</param>
-        /// <returns>The value of the argument with the specified name.</returns>
-        [return: MaybeNull]
-        [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "Generic argument is used to cast the result.")]
-        public static T GetArgument<T>(this IFakeObjectCall call, string argumentName)
-        {
-            Guard.AgainstNull(call);
-            Guard.AgainstNull(argumentName);
+    /// <summary>
+    /// Gets the description of a call to a fake object.
+    /// </summary>
+    /// <param name="fakeObjectCall">The call to describe.</param>
+    /// <returns>A description of the call.</returns>
+    internal static string GetDescription(this IFakeObjectCall fakeObjectCall)
+    {
+        var method = fakeObjectCall.Method;
+        return $"{method.DeclaringType}.{method.Name}({GetParametersString(fakeObjectCall)})";
+    }
 
-            return call.Arguments.Get<T>(argumentName);
-        }
-
-        /// <summary>
-        /// Gets the description of a call to a fake object.
-        /// </summary>
-        /// <param name="fakeObjectCall">The call to describe.</param>
-        /// <returns>A description of the call.</returns>
-        internal static string GetDescription(this IFakeObjectCall fakeObjectCall)
-        {
-            var method = fakeObjectCall.Method;
-            return $"{method.DeclaringType}.{method.Name}({GetParametersString(fakeObjectCall)})";
-        }
-
-        private static string GetParametersString(IFakeObjectCall fakeObjectCall)
-        {
-            var writer = ServiceLocator.Resolve<StringBuilderOutputWriter.Factory>().Invoke();
-            writer.WriteArgumentValues(fakeObjectCall.Arguments);
-            return writer.Builder.ToString();
-        }
+    private static string GetParametersString(IFakeObjectCall fakeObjectCall)
+    {
+        var writer = ServiceLocator.Resolve<StringBuilderOutputWriter.Factory>().Invoke();
+        writer.WriteArgumentValues(fakeObjectCall.Arguments);
+        return writer.Builder.ToString();
     }
 }

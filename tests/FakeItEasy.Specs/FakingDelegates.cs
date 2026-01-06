@@ -1,159 +1,158 @@
-namespace FakeItEasy.Specs
+namespace FakeItEasy.Specs;
+
+using System;
+using FakeItEasy.Configuration;
+using FakeItEasy.Tests.TestHelpers;
+using FluentAssertions;
+using LambdaTale;
+using Xunit;
+
+public static class FakingDelegates
 {
-    using System;
-    using FakeItEasy.Configuration;
-    using FakeItEasy.Tests.TestHelpers;
-    using FluentAssertions;
-    using LambdaTale;
-    using Xunit;
+    public delegate void VoidDelegateWithOutAndRefValues(out string outString, ref int refInt);
 
-    public static class FakingDelegates
+    public delegate int NonVoidDelegateWithOutAndRefValues(ref string? refString, out int outInt);
+
+    [Scenario]
+    public static void WithoutConfiguration(Func<string, int> fakedDelegate)
     {
-        public delegate void VoidDelegateWithOutAndRefValues(out string outString, ref int refInt);
+        "Given a faked delegate"
+            .x(() => fakedDelegate = A.Fake<Func<string, int>>());
 
-        public delegate int NonVoidDelegateWithOutAndRefValues(ref string? refString, out int outInt);
+        "When I invoke it via the Invoke method"
+            .x(() => fakedDelegate.Invoke("foo"));
 
-        [Scenario]
-        public static void WithoutConfiguration(Func<string, int> fakedDelegate)
-        {
-            "Given a faked delegate"
-                .x(() => fakedDelegate = A.Fake<Func<string, int>>());
+        "Then an assertion that Invoke was called passes"
+            .x(() => A.CallTo(() => fakedDelegate.Invoke("foo")).MustHaveHappened());
 
-            "When I invoke it via the Invoke method"
-                .x(() => fakedDelegate.Invoke("foo"));
+        "And an assertion that the delegate was called without mentioning Invoke passes"
+            .x(() => A.CallTo(() => fakedDelegate("foo")).MustHaveHappened());
+    }
 
-            "Then an assertion that Invoke was called passes"
-                .x(() => A.CallTo(() => fakedDelegate.Invoke("foo")).MustHaveHappened());
+    [Scenario]
+    public static void ConfiguredToReturn(Func<string, int> fakedDelegate, int result)
+    {
+        "Given a faked delegate"
+            .x(() => fakedDelegate = A.Fake<Func<string, int>>());
 
-            "And an assertion that the delegate was called without mentioning Invoke passes"
-                .x(() => A.CallTo(() => fakedDelegate("foo")).MustHaveHappened());
-        }
+        "And I configure it to return 10"
+            .x(() => A.CallTo(() => fakedDelegate.Invoke(A<string>._)).Returns(10));
 
-        [Scenario]
-        public static void ConfiguredToReturn(Func<string, int> fakedDelegate, int result)
-        {
-            "Given a faked delegate"
-                .x(() => fakedDelegate = A.Fake<Func<string, int>>());
+        "When I invoke it"
+            .x(() => result = fakedDelegate.Invoke("foo"));
 
-            "And I configure it to return 10"
-                .x(() => A.CallTo(() => fakedDelegate.Invoke(A<string>._)).Returns(10));
+        "Then it returns the configured value"
+            .x(() => result.Should().Be(10));
+    }
 
-            "When I invoke it"
-                .x(() => result = fakedDelegate.Invoke("foo"));
+    [Scenario]
+    public static void ConfiguredToReturnLazily(Func<string, int> fakedDelegate, int result)
+    {
+        "Given a faked delegate"
+            .x(() => fakedDelegate = A.Fake<Func<string, int>>());
 
-            "Then it returns the configured value"
-                .x(() => result.Should().Be(10));
-        }
+        "And I configure it to return lazily"
+            .x(() => A.CallTo(() => fakedDelegate.Invoke(A<string>._)).ReturnsLazily((string s) => int.Parse(s)));
 
-        [Scenario]
-        public static void ConfiguredToReturnLazily(Func<string, int> fakedDelegate, int result)
-        {
-            "Given a faked delegate"
-                .x(() => fakedDelegate = A.Fake<Func<string, int>>());
+        "When I invoke it"
+            .x(() => result = fakedDelegate.Invoke("-27"));
 
-            "And I configure it to return lazily"
-                .x(() => A.CallTo(() => fakedDelegate.Invoke(A<string>._)).ReturnsLazily((string s) => int.Parse(s)));
+        "Then it returns a value constructed from the input"
+            .x(() => result.Should().Be(-27));
+    }
 
-            "When I invoke it"
-                .x(() => result = fakedDelegate.Invoke("-27"));
+    [Scenario]
+    public static void Throws(Func<string, int> fakedDelegate, FormatException expectedException, Exception exception)
+    {
+        "Given a faked delegate"
+            .x(() => fakedDelegate = A.Fake<Func<string, int>>());
 
-            "Then it returns a value constructed from the input"
-                .x(() => result.Should().Be(-27));
-        }
+        "And I configure it to throw an exception"
+            .x(() => A.CallTo(() => fakedDelegate.Invoke(A<string>._)).Throws(expectedException = new FormatException()));
 
-        [Scenario]
-        public static void Throws(Func<string, int> fakedDelegate, FormatException expectedException, Exception exception)
-        {
-            "Given a faked delegate"
-                .x(() => fakedDelegate = A.Fake<Func<string, int>>());
+        "When I invoke it"
+            .x(() => exception = Record.Exception(() => fakedDelegate(string.Empty)));
 
-            "And I configure it to throw an exception"
-                .x(() => A.CallTo(() => fakedDelegate.Invoke(A<string>._)).Throws(expectedException = new FormatException()));
+        "Then it throws the configured exception"
+            .x(() => exception.Should().BeSameAs(expectedException));
+    }
 
-            "When I invoke it"
-                .x(() => exception = Record.Exception(() => fakedDelegate(string.Empty)));
+    [Scenario]
+    public static void MissingInvoke(Func<string, int> fakedDelegate, int result)
+    {
+        "Given a faked delegate"
+            .x(() => fakedDelegate = A.Fake<Func<string, int>>());
 
-            "Then it throws the configured exception"
-                .x(() => exception.Should().BeSameAs(expectedException));
-        }
+        "And I configure it to return 10 without specifying the Invoke method explicitly"
+            .x(() => A.CallTo(() => fakedDelegate(A<string>._)).Returns(10));
 
-        [Scenario]
-        public static void MissingInvoke(Func<string, int> fakedDelegate, int result)
-        {
-            "Given a faked delegate"
-                .x(() => fakedDelegate = A.Fake<Func<string, int>>());
+        "When I invoke it without specifying the Invoke method explicitly"
+            .x(() => result = fakedDelegate(string.Empty));
 
-            "And I configure it to return 10 without specifying the Invoke method explicitly"
-                .x(() => A.CallTo(() => fakedDelegate(A<string>._)).Returns(10));
+        "Then it returns the configured value"
+            .x(() => result.Should().Be(10));
+    }
 
-            "When I invoke it without specifying the Invoke method explicitly"
-                .x(() => result = fakedDelegate(string.Empty));
+    [Scenario]
+    public static void CannotBeConfiguredToCallBaseMethod(Action fake, Exception exception)
+    {
+        "Given a fake delegate"
+            .x(() => fake = A.Fake<Action>());
 
-            "Then it returns the configured value"
-                .x(() => result.Should().Be(10));
-        }
+        "When I configure it to call its base method"
+            .x(() => exception = Record.Exception(() => A.CallTo(() => fake.Invoke()).CallsBaseMethod()));
 
-        [Scenario]
-        public static void CannotBeConfiguredToCallBaseMethod(Action fake, Exception exception)
-        {
-            "Given a fake delegate"
-                .x(() => fake = A.Fake<Action>());
+        "Then it throws a not supported exception"
+            .x(() => exception.Should()
+                .BeAnExceptionOfType<FakeConfigurationException>()
+                .WithMessage("Can not configure a delegate proxy to call a base method."));
+    }
 
-            "When I configure it to call its base method"
-                .x(() => exception = Record.Exception(() => A.CallTo(() => fake.Invoke()).CallsBaseMethod()));
+    [Scenario]
+    public static void SetOutAndRefVoid(VoidDelegateWithOutAndRefValues fake, string theOutParameter, int theRefParameter)
+    {
+        "Given a fake delegate with void return and out and ref parameters"
+            .x(() => fake = A.Fake<VoidDelegateWithOutAndRefValues>());
 
-            "Then it throws a not supported exception"
-                .x(() => exception.Should()
-                    .BeAnExceptionOfType<FakeConfigurationException>()
-                    .WithMessage("Can not configure a delegate proxy to call a base method."));
-        }
+        "And I configure it to set ref and out parameters"
+            .x(() =>
+            {
+                string outString;
+                int refInt = 0;
+                A.CallTo(() => fake.Invoke(out outString, ref refInt)).AssignsOutAndRefParameters("fancy out string", 3);
+            });
 
-        [Scenario]
-        public static void SetOutAndRefVoid(VoidDelegateWithOutAndRefValues fake, string theOutParameter, int theRefParameter)
-        {
-            "Given a fake delegate with void return and out and ref parameters"
-                .x(() => fake = A.Fake<VoidDelegateWithOutAndRefValues>());
+        "When I invoke it"
+            .x(() => fake.Invoke(out theOutParameter, ref theRefParameter));
 
-            "And I configure it to set ref and out parameters"
-                .x(() =>
-                {
-                    string outString;
-                    int refInt = 0;
-                    A.CallTo(() => fake.Invoke(out outString, ref refInt)).AssignsOutAndRefParameters("fancy out string", 3);
-                });
+        "Then it sets the proper out value"
+            .x(() => theOutParameter.Should().Be("fancy out string"));
 
-            "When I invoke it"
-                .x(() => fake.Invoke(out theOutParameter, ref theRefParameter));
+        "And it sets the proper ref value"
+            .x(() => theRefParameter.Should().Be(3));
+    }
 
-            "Then it sets the proper out value"
-                .x(() => theOutParameter.Should().Be("fancy out string"));
+    [Scenario]
+    public static void SetOutAndRefNonVoid(NonVoidDelegateWithOutAndRefValues fake, string? theRefParameter, int theOutParameter)
+    {
+        "Given a fake delegate with non-void return and out and ref parameters"
+            .x(() => fake = A.Fake<NonVoidDelegateWithOutAndRefValues>());
 
-            "And it sets the proper ref value"
-                .x(() => theRefParameter.Should().Be(3));
-        }
+        "And I configure it to set ref and out parameters"
+            .x(() =>
+            {
+                string? refString = null;
+                int outInt;
+                A.CallTo(() => fake.Invoke(ref refString, out outInt)).AssignsOutAndRefParameters("fancy ref string", 5);
+            });
 
-        [Scenario]
-        public static void SetOutAndRefNonVoid(NonVoidDelegateWithOutAndRefValues fake, string? theRefParameter, int theOutParameter)
-        {
-            "Given a fake delegate with non-void return and out and ref parameters"
-                .x(() => fake = A.Fake<NonVoidDelegateWithOutAndRefValues>());
+        "When I invoke it"
+            .x(() => fake.Invoke(ref theRefParameter, out theOutParameter));
 
-            "And I configure it to set ref and out parameters"
-                .x(() =>
-                {
-                    string? refString = null;
-                    int outInt;
-                    A.CallTo(() => fake.Invoke(ref refString, out outInt)).AssignsOutAndRefParameters("fancy ref string", 5);
-                });
+        "Then it sets the proper ref value"
+            .x(() => theRefParameter.Should().Be("fancy ref string"));
 
-            "When I invoke it"
-                .x(() => fake.Invoke(ref theRefParameter, out theOutParameter));
-
-            "Then it sets the proper ref value"
-                .x(() => theRefParameter.Should().Be("fancy ref string"));
-
-            "And it sets the proper out value"
-                .x(() => theOutParameter.Should().Be(5));
-        }
+        "And it sets the proper out value"
+            .x(() => theOutParameter.Should().Be(5));
     }
 }

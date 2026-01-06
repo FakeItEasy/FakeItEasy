@@ -1,49 +1,48 @@
-namespace FakeItEasy.Tests
+namespace FakeItEasy.Tests;
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using FakeItEasy.Tests.TestHelpers;
+using FluentAssertions;
+using Xunit;
+
+public class ACallToTests
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Linq.Expressions;
-    using FakeItEasy.Tests.TestHelpers;
-    using FluentAssertions;
-    using Xunit;
+    public static IEnumerable<object?[]> CallSpecificationActions =>
+        TestCases.FromObject<Action<IFoo>>(
+            foo => A.CallTo(() => foo.Bar()),
+            foo => A.CallTo(() => foo.Baz()),
+            foo => A.CallToSet(() => foo.SomeProperty),
+            foo => A.CallTo(foo));
 
-    public class ACallToTests
+    [Theory]
+    [MemberData(nameof(CallSpecificationActions))]
+    public void CallTo_should_not_add_rule_to_manager(Action<IFoo> action)
     {
-        public static IEnumerable<object?[]> CallSpecificationActions =>
-            TestCases.FromObject<Action<IFoo>>(
-                foo => A.CallTo(() => foo.Bar()),
-                foo => A.CallTo(() => foo.Baz()),
-                foo => A.CallToSet(() => foo.SomeProperty),
-                foo => A.CallTo(foo));
+        // Arrange
+        var foo = A.Fake<IFoo>();
+        var manager = Fake.GetFakeManager(foo);
+        var initialRules = manager.Rules.ToList();
 
-        [Theory]
-        [MemberData(nameof(CallSpecificationActions))]
-        public void CallTo_should_not_add_rule_to_manager(Action<IFoo> action)
-        {
-            // Arrange
-            var foo = A.Fake<IFoo>();
-            var manager = Fake.GetFakeManager(foo);
-            var initialRules = manager.Rules.ToList();
+        // Act
+        action(foo);
 
-            // Act
-            action(foo);
+        // Assert
+        manager.Rules.Should().Equal(initialRules);
+    }
 
-            // Assert
-            manager.Rules.Should().Equal(initialRules);
-        }
+    [Fact]
+    public void CallToSet_should_be_null_guarded()
+    {
+        // Arrange
+        var foo = A.Fake<IFoo>();
+        Expression<Action> call = () => A.CallToSet(() => foo.SomeProperty);
 
-        [Fact]
-        public void CallToSet_should_be_null_guarded()
-        {
-            // Arrange
-            var foo = A.Fake<IFoo>();
-            Expression<Action> call = () => A.CallToSet(() => foo.SomeProperty);
+        // Act
 
-            // Act
-
-            // Assert
-            call.Should().BeNullGuarded();
-        }
+        // Assert
+        call.Should().BeNullGuarded();
     }
 }

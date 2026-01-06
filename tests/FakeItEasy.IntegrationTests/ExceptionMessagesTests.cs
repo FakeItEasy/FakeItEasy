@@ -1,92 +1,91 @@
-namespace FakeItEasy.IntegrationTests
+namespace FakeItEasy.IntegrationTests;
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using FakeItEasy.Configuration;
+using FakeItEasy.Tests.TestHelpers;
+using FluentAssertions;
+using Xunit;
+
+public class ExceptionMessagesTests
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using FakeItEasy.Configuration;
-    using FakeItEasy.Tests.TestHelpers;
-    using FluentAssertions;
-    using Xunit;
-
-    public class ExceptionMessagesTests
+    [Fact]
+    public void Should_give_pretty_message_when_trying_to_fake_static_method()
     {
-        [Fact]
-        public void Should_give_pretty_message_when_trying_to_fake_static_method()
-        {
-            // Act
-            var exception = Record.Exception(() => A.CallTo(() => object.Equals(null, null)));
+        // Act
+        var exception = Record.Exception(() => A.CallTo(() => object.Equals(null, null)));
 
-            // Assert
-            var expectedMessage =
-@"
+        // Assert
+        var expectedMessage =
+            @"
 
   The current proxy generator can not intercept the method System.Object.Equals(System.Object objA, System.Object objB) for the following reason:
     - Static methods can not be intercepted.
 
 ";
 
-            exception.Should().BeAnExceptionOfType<FakeConfigurationException>().WithMessageModuloLineEndings(expectedMessage);
-        }
+        exception.Should().BeAnExceptionOfType<FakeConfigurationException>().WithMessageModuloLineEndings(expectedMessage);
+    }
 
-        [Fact]
-        public void Should_give_pretty_message_when_trying_to_fake_extension_method()
-        {
-            // Arrange
-            var fake = A.Fake<List<int>>();
+    [Fact]
+    public void Should_give_pretty_message_when_trying_to_fake_extension_method()
+    {
+        // Arrange
+        var fake = A.Fake<List<int>>();
 
-            // Act
-            var exception = Record.Exception(() => A.CallTo(() => fake.Average()));
+        // Act
+        var exception = Record.Exception(() => A.CallTo(() => fake.Average()));
 
-            // Assert
-            var expectedMessage =
-@"
+        // Assert
+        var expectedMessage =
+            @"
 
   The current proxy generator can not intercept the method System.Linq.Enumerable.Average(System.Collections.Generic.IEnumerable`1[System.Int32] source) for the following reason:
     - Extension methods can not be intercepted since they're static.
 
 ";
 
-            exception.Should().BeAnExceptionOfType<FakeConfigurationException>().WithMessageModuloLineEndings(expectedMessage);
-        }
+        exception.Should().BeAnExceptionOfType<FakeConfigurationException>().WithMessageModuloLineEndings(expectedMessage);
+    }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "astatic", Justification = "Refers to the two words 'a static'.")]
-        [Fact]
-        public void Should_give_pretty_message_when_trying_to_fake_a_static_property()
-        {
-            // Act
-            var exception = Record.Exception(() => A.CallTo(() => Environment.NewLine));
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "astatic", Justification = "Refers to the two words 'a static'.")]
+    [Fact]
+    public void Should_give_pretty_message_when_trying_to_fake_a_static_property()
+    {
+        // Act
+        var exception = Record.Exception(() => A.CallTo(() => Environment.NewLine));
 
-            // Assert
-            var expectedMessage =
-                @"
+        // Assert
+        var expectedMessage =
+            @"
 
   The current proxy generator can not intercept the property System.Environment.NewLine for the following reason:
     - Static methods can not be intercepted.
 
 ";
 
-            exception.Should().BeAnExceptionOfType<FakeConfigurationException>().WithMessageModuloLineEndings(expectedMessage);
-        }
+        exception.Should().BeAnExceptionOfType<FakeConfigurationException>().WithMessageModuloLineEndings(expectedMessage);
+    }
 
-        [Fact]
-        public void Should_give_pretty_message_when_trying_to_fake_an_indexed_property_that_is_not_virtual()
-        {
-            // Arrange
-            var fake = A.Fake<Dictionary<string, int>>();
+    [Fact]
+    public void Should_give_pretty_message_when_trying_to_fake_an_indexed_property_that_is_not_virtual()
+    {
+        // Arrange
+        var fake = A.Fake<Dictionary<string, int>>();
 
-            // Act
-            var exception = Record.Exception(() => A.CallTo(() => fake["foo"]));
+        // Act
+        var exception = Record.Exception(() => A.CallTo(() => fake["foo"]));
 
-            // Assert
-            var expectedMessage =
-                @"
+        // Assert
+        var expectedMessage =
+            @"
 
   The current proxy generator can not intercept the property System.Collections.Generic.Dictionary`2[System.String,System.Int32].Item[System.String key] for the following reason:
     - Non-virtual or sealed members can not be intercepted. Only interface members and non-sealed virtual, overriding, and abstract members can be intercepted.
 
 ";
 
-            exception.Should().BeAnExceptionOfType<FakeConfigurationException>().WithMessageModuloLineEndings(expectedMessage);
-        }
+        exception.Should().BeAnExceptionOfType<FakeConfigurationException>().WithMessageModuloLineEndings(expectedMessage);
     }
 }

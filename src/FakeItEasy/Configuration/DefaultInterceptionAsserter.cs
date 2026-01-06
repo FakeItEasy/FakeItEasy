@@ -1,27 +1,26 @@
-namespace FakeItEasy.Configuration
+namespace FakeItEasy.Configuration;
+
+using System.Reflection;
+using System.Text;
+using FakeItEasy.Creation;
+
+internal class DefaultInterceptionAsserter
+    : IInterceptionAsserter
 {
-    using System.Reflection;
-    using System.Text;
-    using FakeItEasy.Creation;
+    private readonly IMethodInterceptionValidator methodInterceptionValidator;
 
-    internal class DefaultInterceptionAsserter
-        : IInterceptionAsserter
+    public DefaultInterceptionAsserter(IMethodInterceptionValidator methodInterceptionValidator)
     {
-        private readonly IMethodInterceptionValidator methodInterceptionValidator;
+        this.methodInterceptionValidator = methodInterceptionValidator;
+    }
 
-        public DefaultInterceptionAsserter(IMethodInterceptionValidator methodInterceptionValidator)
+    public void AssertThatMethodCanBeInterceptedOnInstance(MethodInfo method, object? callTarget)
+    {
+        if (!this.methodInterceptionValidator.MethodCanBeInterceptedOnInstance(method, callTarget, out string? failReason))
         {
-            this.methodInterceptionValidator = methodInterceptionValidator;
-        }
-
-        public void AssertThatMethodCanBeInterceptedOnInstance(MethodInfo method, object? callTarget)
-        {
-            if (!this.methodInterceptionValidator.MethodCanBeInterceptedOnInstance(method, callTarget, out string? failReason))
-            {
-                string memberType = method.IsPropertyGetterOrSetter() ? "property" : "method";
-                string description = method.GetDescription();
-                throw new FakeConfigurationException(ExceptionMessages.CannotInterceptMember(failReason, memberType, description));
-            }
+            string memberType = method.IsPropertyGetterOrSetter() ? "property" : "method";
+            string description = method.GetDescription();
+            throw new FakeConfigurationException(ExceptionMessages.CannotInterceptMember(failReason, memberType, description));
         }
     }
 }

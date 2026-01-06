@@ -1,92 +1,91 @@
-namespace FakeItEasy.Configuration
+namespace FakeItEasy.Configuration;
+
+using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
+using FakeItEasy.Core;
+
+internal partial class AnyCallConfiguration
+    : IAnyCallConfigurationWithNoReturnTypeSpecified
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq.Expressions;
-    using FakeItEasy.Core;
+    private readonly IConfigurationFactory configurationFactory;
+    private readonly AnyCallCallRule configuredRule;
+    private readonly FakeManager manager;
 
-    internal partial class AnyCallConfiguration
-        : IAnyCallConfigurationWithNoReturnTypeSpecified
+    public AnyCallConfiguration(FakeManager manager, AnyCallCallRule configuredRule, IConfigurationFactory configurationFactory)
     {
-        private readonly IConfigurationFactory configurationFactory;
-        private readonly AnyCallCallRule configuredRule;
-        private readonly FakeManager manager;
+        this.manager = manager;
+        this.configuredRule = configuredRule;
+        this.configurationFactory = configurationFactory;
+    }
 
-        public AnyCallConfiguration(FakeManager manager, AnyCallCallRule configuredRule, IConfigurationFactory configurationFactory)
-        {
-            this.manager = manager;
-            this.configuredRule = configuredRule;
-            this.configurationFactory = configurationFactory;
-        }
+    private IVoidArgumentValidationConfiguration VoidConfiguration =>
+        this.configurationFactory.CreateConfiguration(this.manager, this.configuredRule);
 
-        private IVoidArgumentValidationConfiguration VoidConfiguration =>
-            this.configurationFactory.CreateConfiguration(this.manager, this.configuredRule);
+    public IAnyCallConfigurationWithReturnTypeSpecified<TMember> WithReturnType<TMember>()
+    {
+        this.configuredRule.MakeApplicableToMembersWithReturnType(typeof(TMember));
+        return this.configurationFactory.CreateConfiguration<TMember>(this.manager, this.configuredRule);
+    }
 
-        public IAnyCallConfigurationWithReturnTypeSpecified<TMember> WithReturnType<TMember>()
-        {
-            this.configuredRule.MakeApplicableToMembersWithReturnType(typeof(TMember));
-            return this.configurationFactory.CreateConfiguration<TMember>(this.manager, this.configuredRule);
-        }
+    public IAnyCallConfigurationWithReturnTypeSpecified<object?> WithNonVoidReturnType()
+    {
+        this.configuredRule.MakeApplicableToAllNonVoidReturnTypes();
+        return this.configurationFactory.CreateConfiguration<object?>(this.manager, this.configuredRule);
+    }
 
-        public IAnyCallConfigurationWithReturnTypeSpecified<object?> WithNonVoidReturnType()
-        {
-            this.configuredRule.MakeApplicableToAllNonVoidReturnTypes();
-            return this.configurationFactory.CreateConfiguration<object?>(this.manager, this.configuredRule);
-        }
+    public IAnyCallConfigurationWithVoidReturnType WithVoidReturnType()
+    {
+        this.configuredRule.MakeApplicableToMembersWithReturnType(typeof(void));
+        return this.configurationFactory.CreateConfiguration(this.manager, this.configuredRule);
+    }
 
-        public IAnyCallConfigurationWithVoidReturnType WithVoidReturnType()
-        {
-            this.configuredRule.MakeApplicableToMembersWithReturnType(typeof(void));
-            return this.configurationFactory.CreateConfiguration(this.manager, this.configuredRule);
-        }
+    public IAfterCallConfiguredConfiguration<IVoidConfiguration> DoesNothing() => this.VoidConfiguration.DoesNothing();
 
-        public IAfterCallConfiguredConfiguration<IVoidConfiguration> DoesNothing() => this.VoidConfiguration.DoesNothing();
+    public IAfterCallConfiguredConfiguration<IVoidConfiguration> Throws(Func<IFakeObjectCall, Exception> exceptionFactory) =>
+        this.VoidConfiguration.Throws(exceptionFactory);
 
-        public IAfterCallConfiguredConfiguration<IVoidConfiguration> Throws(Func<IFakeObjectCall, Exception> exceptionFactory) =>
-            this.VoidConfiguration.Throws(exceptionFactory);
+    public IAfterCallConfiguredConfiguration<IVoidConfiguration> Throws<T>() where T : Exception, new() =>
+        this.Throws<IVoidConfiguration, T>();
 
-        public IAfterCallConfiguredConfiguration<IVoidConfiguration> Throws<T>() where T : Exception, new() =>
-            this.Throws<IVoidConfiguration, T>();
+    public IVoidAfterCallbackConfiguredConfiguration Invokes(Action<IFakeObjectCall> action) => this.VoidConfiguration.Invokes(action);
 
-        public IVoidAfterCallbackConfiguredConfiguration Invokes(Action<IFakeObjectCall> action) => this.VoidConfiguration.Invokes(action);
+    public IAfterCallConfiguredConfiguration<IVoidConfiguration> CallsBaseMethod() =>
+        this.VoidConfiguration.CallsBaseMethod();
 
-        public IAfterCallConfiguredConfiguration<IVoidConfiguration> CallsBaseMethod() =>
-            this.VoidConfiguration.CallsBaseMethod();
+    public IAfterCallConfiguredConfiguration<IVoidConfiguration> CallsWrappedMethod() =>
+        this.VoidConfiguration.CallsWrappedMethod();
 
-        public IAfterCallConfiguredConfiguration<IVoidConfiguration> CallsWrappedMethod() =>
-            this.VoidConfiguration.CallsWrappedMethod();
+    public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily(Func<IFakeObjectCall, ICollection<object?>> valueProducer) =>
+        this.VoidConfiguration.AssignsOutAndRefParametersLazily(valueProducer);
 
-        public IAfterCallConfiguredConfiguration<IVoidConfiguration> AssignsOutAndRefParametersLazily(Func<IFakeObjectCall, ICollection<object?>> valueProducer) =>
-            this.VoidConfiguration.AssignsOutAndRefParametersLazily(valueProducer);
+    public UnorderedCallAssertion MustHaveHappened(int numberOfTimes, Times timesOption)
+    {
+        Guard.AgainstNull(timesOption);
 
-        public UnorderedCallAssertion MustHaveHappened(int numberOfTimes, Times timesOption)
-        {
-            Guard.AgainstNull(timesOption);
+        return this.VoidConfiguration.MustHaveHappened(numberOfTimes, timesOption);
+    }
 
-            return this.VoidConfiguration.MustHaveHappened(numberOfTimes, timesOption);
-        }
+    public UnorderedCallAssertion MustHaveHappenedANumberOfTimesMatching(Expression<Func<int, bool>> predicate)
+    {
+        Guard.AgainstNull(predicate);
 
-        public UnorderedCallAssertion MustHaveHappenedANumberOfTimesMatching(Expression<Func<int, bool>> predicate)
-        {
-            Guard.AgainstNull(predicate);
+        return this.VoidConfiguration.MustHaveHappenedANumberOfTimesMatching(predicate);
+    }
 
-            return this.VoidConfiguration.MustHaveHappenedANumberOfTimesMatching(predicate);
-        }
+    public IAnyCallConfigurationWithNoReturnTypeSpecified Where(Func<IFakeObjectCall, bool> predicate, Action<IOutputWriter> descriptionWriter)
+    {
+        Guard.AgainstNull(predicate);
 
-        public IAnyCallConfigurationWithNoReturnTypeSpecified Where(Func<IFakeObjectCall, bool> predicate, Action<IOutputWriter> descriptionWriter)
-        {
-            Guard.AgainstNull(predicate);
+        this.configuredRule.ApplyWherePredicate(predicate, descriptionWriter);
+        return this;
+    }
 
-            this.configuredRule.ApplyWherePredicate(predicate, descriptionWriter);
-            return this;
-        }
+    public IVoidConfiguration WhenArgumentsMatch(Func<ArgumentCollection, bool> argumentsPredicate)
+    {
+        Guard.AgainstNull(argumentsPredicate);
 
-        public IVoidConfiguration WhenArgumentsMatch(Func<ArgumentCollection, bool> argumentsPredicate)
-        {
-            Guard.AgainstNull(argumentsPredicate);
-
-            this.configuredRule.UsePredicateToValidateArguments(argumentsPredicate);
-            return this;
-        }
+        this.configuredRule.UsePredicateToValidateArguments(argumentsPredicate);
+        return this;
     }
 }

@@ -1,0 +1,5 @@
+# Revs to be ignored by git blame. Configure blame.ignoreRevsFile as follows to use it:
+# git config blame.ignoreRevsFile .git-blame-ignore-revs
+
+# Big reformatting to use file-scoped namespaces
+4d68b6db0a3c1c4f49f87818945e38657481ebd6
