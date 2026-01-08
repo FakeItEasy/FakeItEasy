@@ -19,6 +19,8 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-22.04
+    permissions:
+      id-token: write # enable GitHub OIDC token issuance, needed for Nuget trusted publishing
     steps:
     - uses: actions/checkout@v4
       with:
