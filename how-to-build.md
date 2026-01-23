@@ -140,5 +140,5 @@ If you wish to update the packages used, edit `pyproject.toml`, specifying the d
 uv lock
 ```
 
-from the root of the repository. After verifying the generated documentation, you can commit both
+from the `docs` directory. After verifying the generated documentation, you can commit both
 `pyproject.toml` and `uv.lock`.
